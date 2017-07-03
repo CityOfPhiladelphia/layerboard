@@ -3,6 +3,7 @@
     <div class="year-selector-container"
          v-show="activeBasemap.startsWith('imagery')"
     >
+    
       <ul>
         <li v-for="imageryYear in imageryYears"
             :class="{ active: activeBasemap === 'imagery' + imageryYear }"
