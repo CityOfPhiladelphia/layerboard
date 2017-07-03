@@ -1,3 +1,9 @@
+#mapboard {
+  position: absolute;
+  bottom: 0;
+  height: 800px;
+}
+
 header.site-header > .row:last-of-type {
     background: #2176d2;
 }

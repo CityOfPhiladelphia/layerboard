@@ -109,7 +109,9 @@ accounting.settings.currency.precision = 0;
 
 Mapboard.default({
   rootStyle: {
-    height: '600px'
+    height: '800px'
+    // position: 'absolute',
+    // bottom: 0
   },
   baseConfig: '//raw.githubusercontent.com/rbrtmrtn/mapboard-base-config/develop/config.js',
   // baseConfig: '//rawgit.com/rbrtmrtn/mapboard-base-config/9605e5dca32277b1b877e8965d2156631b0b7443/config.js',
