@@ -49,12 +49,15 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
     map: {
       center: config.map.center,
       zoom: config.map.zoom,
+      scale: null,
       map: null,
       bounds: null,
       basemap: defaultTopic.basemap,
       circleMarkers: [],
       webMap: null,
       webMapActiveLayers: [],
+      webMapRestData: null,
+      webMapLayersAndRest: [],
       // features: {
       //   markers: [
       //     // {
@@ -157,6 +160,12 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       setWebMapActiveLayers(state, payload) {
         state.map.webMapActiveLayers = payload;
       },
+      setWebMapRestData(state, payload) {
+        state.map.webMapRestData = payload;
+      },
+      setWebMapLayersAndRest(state, payload) {
+        state.map.webMapLayersAndRest = payload;
+      },
       setMapBounds(state, payload) {
         state.map.bounds = payload.bounds
       },
@@ -165,6 +174,9 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       },
       setMapZoom(state, payload) {
         state.map.zoom = payload
+      },
+      setMapScale(state, payload) {
+        state.map.scale = payload
       },
       setDorParcels(state, payload) {
         state.dorParcels = payload;

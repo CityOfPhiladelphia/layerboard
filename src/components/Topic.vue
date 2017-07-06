@@ -16,8 +16,9 @@
       <form action="#/">
         <fieldset class="options">
           <ul class="no-bullet">
-            <checkbox v-for="(layer, index) in topicLayerMap[topicKey]"
-                      :layer=layer
+            <checkbox v-for="(layer, index) in this.wmLayers"
+                      :layer="layer.title.split('_')[1]"
+                      :shouldBeDisabled="shouldBeDisabled(layer)"
                       :index=index
                       :topicKey=topicKey
                       :key=index
@@ -45,6 +46,16 @@
             'topicLayerMap'
     ],
     computed: {
+      scale() {
+        return this.$store.state.map.scale;
+      },
+      wmLayers() {
+        const layers = this.$store.state.map.webMapLayersAndRest;
+        // const layersFilt = layers.filter(layer => layer.title.split('_')[0] === this.$props.topicKey && this.$props.topiclayerMap[this.$props.topicKey].includes(layer.title.split('_')[1]));
+        const layersFilt = layers.filter(layer => this.$props.topicLayerMap[this.$props.topicKey].includes(layer.title.split('_')[1]));
+        return layersFilt;
+        // return this.$store.state.map.webMapLayersAndRest.filter(title => title.split('_')[0] === topicKey);
+      },
       topic() {
         const topicKey = this.$props.topicKey;
         let topic = {
@@ -136,6 +147,21 @@
       },
     },
     methods: {
+      shouldBeDisabled(layer) {
+        // console.log('shouldBeDisabled is running', layer);
+        if (layer.rest.layerDefinition) {
+          if (layer.rest.layerDefinition.minScale) {
+            // console.log('minScale for', layer.title, 'is', layer.rest.layerDefinition.minScale, 'and current scale is', this.scale);
+            if (this.scale > layer.rest.layerDefinition.minScale) {
+              // console.log('checkLayer used layerDefinition and is returning true for', layer.title);
+              return true;
+            }
+          }
+        } else {
+          return false;
+        }
+      },
+
       // TODO use mapMuptations for less boilerplate
       setActiveTopics() {
         const topic = this.$props.topicKey;

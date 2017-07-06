@@ -5,16 +5,20 @@
     props: [
       'id',
       'layer',
+      'layerDefinition'
     ],
+    computed: {
+      scale() {
+        return this.$store.state.map.scale;
+      }
+    },
     mounted() {
       const leafletElement = this.$leafletElement = this.retrieveLeafletElement();
       const map = this.$store.state.map.map;
 
       // REVIEW kind of hacky/not reactive?
       if (map) {
-        console.log('WebMapLayer.vue mounted if(map)', leafletElement);
         leafletElement.addTo(map);
-        console.log('added layer to map');
         // map.attributionControl.removeAttribution('overwrite');
       }
     },
@@ -29,6 +33,7 @@
     methods: {
       retrieveLeafletElement() {
         console.log('WebMapLayer.vue retrieveLeafletElement', this.id, this.layer);
+        console.log(this.layer);
         return this.layer;
       },
       parentMounted(parent) {

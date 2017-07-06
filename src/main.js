@@ -34,6 +34,13 @@ export default (clientConfig) => {
       //     success(bennyEndpoints) {
       //       console.log(bennyEndpoints);
       //       console.log(bennyRepresentation);
+      // const webmapId = 'f60e4fa0c01f408882a07ee50e8910b9';
+      //
+      // $.ajax({
+      //   dataType: 'json',
+      //   url: "https://www.arcgis.com/sharing/rest/content/items/"+ webmapId +"/data",
+      //   success(restEndpoint) {
+
 
 
           $.ajax({
@@ -45,6 +52,7 @@ export default (clientConfig) => {
             },
             success(dataOut) {
               const records = dataOut.records;
+
               const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
 
               // const recordsFiltered = records;

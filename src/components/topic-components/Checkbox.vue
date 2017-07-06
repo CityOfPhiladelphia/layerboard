@@ -1,9 +1,12 @@
 <template>
   <div>
     <li>
-      <label :for="'checkbox-'+layer">
+      <label :for="'checkbox-'+layer"
+             :class="{ disabled: shouldBeDisabled }"
+      >
         <input :id="topicKey+'_'+layer"
                type="checkbox"
+               :disabled="shouldBeDisabled"
                :checked="webMapActiveLayers.includes(topicKey+'_'+layer)"
                @click=checkboxToggle
         >
@@ -25,6 +28,7 @@
     props: ['layer',
             'index',
             'topicKey',
+            'shouldBeDisabled'
     ],
     computed: {
       topicLayerUrls() {
@@ -70,39 +74,7 @@
 </script>
 
 <style scoped>
-  /*.mb-badge {
-    padding: 0;
-    margin: 0 auto;
-    margin-bottom: inherit;
+  .disabled {
+    color: #d3d3d3;
   }
-
-  @media (max-width: 640px) {
-    .mb-badge {
-      width: 100%;
-    }
-  }
-
-  @media (min-width: 640px) {
-    .mb-badge {
-      width: 300px;
-    }
-  }
-
-  .mb-badge-header {
-    color: #eee;
-    text-align: center;
-  }
-
-  .mb-badge-header h4 {
-    margin: 0;
-  }
-
-  .mb-badge-body {
-    padding: 10px;
-  }
-
-  .mb-badge-body > h1 {
-    margin: 0;
-    margin-bottom: 5px;
-  }*/
 </style>

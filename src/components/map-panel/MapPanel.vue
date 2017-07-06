@@ -7,8 +7,9 @@
           @l-moveend="handleMapMove"
           zoom-control-position="bottomright"
           :min-zoom="this.$config.map.minZoom"
-          :max-zoom="this.$config.map.maxZoom"
+          :max-zoom="25"
     >
+    <!-- :max-zoom="this.$config.map.maxZoom" -->
     <!-- :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }" -->
       <!-- loading mask -->
       <div v-show="isGeocoding" class="mb-map-loading-mask">
@@ -20,12 +21,12 @@
 
       <!-- webmap -->
       <esri-web-map>
-        <!-- <esri-web-map-layer v-for="(layer, key) in (webMap || {}).layers || []" -->
-        <esri-web-map-layer v-for="(layer, key) in (webMap || {}).layers || []"
-                            v-if="webMapActiveLayers.includes(layer.title)"
+        <esri-web-map-layer v-for="(layer, key) in this.wmLayers"
+                            v-if="shouldShowFeatureLayer(layer)"
                             :key="key"
                             :id="layer.title"
                             :layer="layer.layer"
+                            :layerDefinition="layer.rest.layerDefinition"
         />
       </esri-web-map>
 
@@ -94,12 +95,12 @@
       />
 
       <!-- geojson features -->
-      <geojson v-for="geojsonFeature in geojsonFeatures"
+      <!-- <geojson v-for="geojsonFeature in geojsonFeatures"
                :geojson="geojsonFeature.geojson"
                :color="geojsonFeature.color"
                :weight="2"
                :key="geojsonFeature.key"
-       />
+       /> -->
        <!-- :overlay="geojsonFeature.overlayFeature" -->
 
        <!-- TODO give these a real key -->
@@ -256,8 +257,17 @@
       CyclomediaRecordingCircle
     },
     computed: {
+      scale() {
+        return this.$store.state.map.scale;
+      },
       webMap() {
         return this.$store.state.map.webMap;
+      },
+      restLayers(){
+        return this.$store.state.map.webMapRestData.operationalLayers;
+      },
+      wmLayers() {
+        return this.$store.state.map.webMapLayersAndRest;
       },
       webMapActiveLayers() {
         return this.$store.state.map.webMapActiveLayers;
@@ -375,8 +385,19 @@
       }
     },
     methods: {
-      shouldShowFeatureLayer(key, minZoom) {
-        if (this.activeFeatureLayers.includes(key) && this.$store.state.map.zoom >= minZoom) {
+      shouldShowFeatureLayer(layer) {
+        if (layer.rest.layerDefinition) {
+          if (layer.rest.layerDefinition.minScale) {
+            // console.log('minZoom for', layer.title, 'is', layer.rest.layerDefinition.minScale, typeof layer.rest.layerDefinition.minScale, 'and current scale is', this.scale, typeof this.scale);
+            if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title)) {
+              // console.log('checkLayer used layerDefinition and is returning true for', layer.title);
+              return true;
+            }
+          } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title)) {
+            return true;
+          }
+        } else if (this.webMapActiveLayers.includes(layer.title)) {
+          // console.log('checkLayer is returning true for', layer.title);
           return true;
         } else {
           return false;
@@ -405,7 +426,34 @@
         this.$store.commit('setMapCenter', center);
         const zoom = this.$store.state.map.map.getZoom();
         this.$store.commit('setMapZoom', zoom);
+        const scale = this.getScale(zoom);
+        this.$store.commit('setMapScale', scale);
         this.updateCyclomediaRecordings();
+      },
+      getScale(zoom) {
+        const scales = {
+          20: 1128.497220,
+          19: 2256.994440,
+          18: 4513.988880,
+          17: 9027.977761,
+          16: 18055.955520,
+          15: 36111.911040,
+          14: 72223.822090,
+          13: 144447.644200,
+          12: 288895.288400,
+          11: 577790.576700,
+          10: 1155581.153000,
+          9: 2311162.307000,
+          8: 4622324.614000,
+          7: 9244649.227000,
+          6: 18489298.450000,
+          5: 36978596.910000,
+          4: 73957193.820000,
+          3: 147914387.600000,
+          2: 295828775.300000,
+          1: 591657550.500000,
+        }
+        return scales[zoom];
       },
       handleSearchFormSubmit(e) {
         const input = e.target[0].value;
