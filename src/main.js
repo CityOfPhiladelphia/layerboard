@@ -15,85 +15,33 @@ export default (clientConfig) => {
   return $.ajax({
     url: baseConfigUrl,
     success(data) {
-
-      // $.getJSON("representation.json", function(bennyRepresentation) {
-      //   console.log(bennyRepresentation);
-      // $.ajax({
-      //   dataType: "json",
-      //   url: "representation.json",
-      //   success(bennyRepresentation) {
-      //     console.log(bennyRepresentation);
-      //     console.log(data);
-      //
-      //
-      //   // $.getJSON("endpoints.json", function(bennyEndpoints) {
-      //   //   console.log(bennyEndpoints);
-      //   $.ajax({
-      //     dataType: "json",
-      //     url: "endpoints.json",
-      //     success(bennyEndpoints) {
-      //       console.log(bennyEndpoints);
-      //       console.log(bennyRepresentation);
-      // const webmapId = 'f60e4fa0c01f408882a07ee50e8910b9';
-      //
-      // $.ajax({
-      //   dataType: 'json',
-      //   url: "https://www.arcgis.com/sharing/rest/content/items/"+ webmapId +"/data",
-      //   success(restEndpoint) {
-
-
-
-          $.ajax({
-            dataType: 'json',
-            url: "https://api.knackhq.com/v1/objects/object_4/records/export?type=json",
-            headers: {
-              'X-Knack-Application-Id': '550c60d00711ffe12e9efc64',
-              'X-Knack-REST-API-Key': '7bce4520-28dc-11e5-9f0a-4d758115b820'
-            },
-            success(dataOut) {
-              const records = dataOut.records;
-
-              const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
-
-              // const recordsFiltered = records;
-
-              // const bennyEndpoints = recordsFiltered;
-              let bennyEndpoints = {};
-              for (let record of recordsFiltered) {
-                //let endpoint = {};
-                const url = record.field_25.split('"')[1]//.split('query')[0];
-                // console.log('url:', url);
-                let url2;
-                if (url) {
-                  url2 = url.split('query')[0].replace('https://', '').replace('http://', '').replace(/\/$/, "").toLowerCase();
-                } else {
-                  url2 = null;
-                }
-                // console.log('url2:', url2);
-                if (record.field_13_raw.length > 0) {
-                  bennyEndpoints[url2] = record.field_13_raw[0].id;
-                  // endpoint['"'+url2+'"'] = record.field_13_raw[0].id;
-                } else {
-                  bennyEndpoints[url2] = '';
-                  // endpoint['"'+url2+'"'] = '';
-                }
-                // console.log(endpoint);
-                //bennyEndpoints.push(endpoint)
-
-                // endpoint['url'] = record.field_25.split('"')[1];
-                // if (record.field_13.length > 0) {
-                //   endpoint['identifier'] = record.field_13[1].identifier;
-                //   bennyEndpoints['id'] = record.field_13[1].id;
-                // }
-              }
-
-
-              // console.log(bennyEndpoints);
-            //       console.log(bennyRepresentation);
-          // })
-
-          // parse raw js. yes, it's ok to use eval :)
-          // http://stackoverflow.com/a/87260/676001
+      // get metadata info from Knack
+      $.ajax({
+        dataType: 'json',
+        url: "https://api.knackhq.com/v1/objects/object_4/records/export?type=json",
+        headers: {
+          'X-Knack-Application-Id': '550c60d00711ffe12e9efc64',
+          'X-Knack-REST-API-Key': '7bce4520-28dc-11e5-9f0a-4d758115b820'
+        },
+        success(dataOut) {
+          const records = dataOut.records;
+          const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
+          let bennyEndpoints = {};
+          for (let record of recordsFiltered) {
+            const url = record.field_25.split('"')[1];
+            let url2;
+            if (url) {
+              url2 = url.split('query')[0].replace('https://', '').replace('http://', '').replace(/\/$/, "").toLowerCase();
+            } else {
+              url2 = null;
+            }
+            if (record.field_13_raw.length > 0) {
+              bennyEndpoints[url2] = record.field_13_raw[0].id;
+            } else {
+              bennyEndpoints[url2] = '';
+            }
+          }
+          
           const baseConfig = eval(data);
 
           // deep merge base config and client config
@@ -119,30 +67,9 @@ export default (clientConfig) => {
             const callback = events[eventName];
             vm.$eventBus.$on(eventName, callback);
           }
-
-          // event api for host apps
-          // this doesn't work now that we're getting the base config
-          // asynchronously. see above for workaround.
-          // REVIEW it would be nice to return the jquery ajax deferred and have the
-          // client app call .then() on it.
-          // return {
-          //   on(eventName, callback) {
-          //     vm.$eventBus.$on(eventName, callback);
-          //     return this;
-          //   },
-          //   off(eventName, callback) {
-          //     vm.$eventBus.$off(eventName, callback);
-          //     return this;
-          //   }
-          // };
         }
-        });
-      // }
-      // });
+      });
     },
-
-
-
 
     error(err) {
       console.error('Error loading base config:', err);

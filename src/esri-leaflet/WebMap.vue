@@ -14,15 +14,8 @@
 
   export default {
 
-    // we don't actually render anything, but need to define either a template
-    // or a render function
-    // render(h) {
-    //   return;
-    // },
     methods: {
       parentMounted(parent) {
-        // $("#testButton").on('click', this.testAddLayer);
-        // console.log('webMap parentMounted running')
         const self = this;
         const map = this.$store.state.map.map;
 
@@ -34,17 +27,12 @@
             self.$store.commit('setWebMapRestData', restData);
 
             const webMap = this.$webMap = new EsriWebMap(webmapId, { map: map });
-            // const defBase = map.getLayer('defaultBasemap');
-            // console.log('defBase', defBase);
             self.$store.commit('setWebMap', webMap);
 
             webMap.on('load', function() {
-              console.log('webMap', webMap);
-              console.log('map', map);
-              console.log('map layer 1', map._layers[1]);
-              // map._layers[1].setOpacity(0);
-              //map._layers[1].remove();
-
+              // console.log('webMap', webMap);
+              // console.log('map', map);
+              // console.log('map layer 1', map._layers[1]);
 
               const ignore = ["CityBasemap", "CityBasemap_Labels"];
               const layers = webMap.layers
@@ -95,13 +83,7 @@
             return webMap;
           }
         });
-
       },
-      // testAddLayer() {
-      //   console.log('clicked');
-      //   const webMap = this.$store.state.map.webMap;
-      //   console.log(webMap);
-      // }
     }
   };
 </script>
