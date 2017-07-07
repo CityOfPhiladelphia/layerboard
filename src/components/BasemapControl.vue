@@ -39,6 +39,12 @@
       'imageryYears'
     ],
     computed: {
+      webMapLayers() {
+        this.$store.state.map.webMap.layers
+      },
+      map() {
+        this.$store.state.map.map
+      },
       activeBasemap() {
         const basemap = this.$store.state.map.basemap;
         return basemap;
@@ -66,7 +72,7 @@
       },
       // return a list of imagery basemap years in descending order
       handleImageryToggleButtonClick(e) {
-        // console.log('handleImageryToggleButtonClick from BasemapControl fired')
+        console.log('handleImageryToggleButtonClick from BasemapControl fired')
         const prevBasemap = this.activeBasemap;
         const prevBasemapConfig = this.configForBasemap(prevBasemap);
         const prevBasemapType = prevBasemapConfig.type;
@@ -80,10 +86,14 @@
         }
         // imagery => feature map
         else {
-          const activeTopic = this.$store.state.activeTopic;
-          const activeTopicConfig = this.$config.topics.filter(topic => topic.key === activeTopic)[0];
-          nextBasemap = activeTopicConfig.basemap;
+          // const activeTopic = this.$store.state.activeTopic;
+          // const activeTopicConfig = this.$config.topics.filter(topic => topic.key === activeTopic)[0];
+          // nextBasemap = activeTopicConfig.basemap;
+          nextBasemap = 'pwd';
+
         }
+
+        console.log('nextBasemap', nextBasemap);
 
         this.$store.commit('setBasemap', nextBasemap);
       },

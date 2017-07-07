@@ -32,22 +32,23 @@
 
 
       <!-- basemaps -->
-      <!-- <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
+      <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                          v-if="activeBasemap === key"
                          :key="key"
                          :url="basemap.url"
                          :max-zoom="basemap.maxZoom"
+                         :zIndex="basemap.zIndex"
                          :attribution="basemap.attribution"
-      /> -->
+      />
 
       <!-- basemap labels and parcels outlines -->
-      <!-- <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
+      <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
                          v-if="activeTiles.includes(key)"
                          :key="key"
                          :url="tiledLayer.url"
                          :zIndex="tiledLayer.zIndex"
                          :attribution="tiledLayer.attribution"
-      /> -->
+      />
 
       <!-- <esri-dynamic-map-layer v-for="(dynamicLayer, key) in this.$config.map.dynamicMapLayers"
                           v-if="activeDynamicMaps.includes(key)"
@@ -128,7 +129,7 @@
 
       <!-- CONTROLS: -->
       <!-- basemap control -->
-      <!-- <div v-once>
+      <div v-once>
         <basemap-control v-if="hasImageryBasemaps"
                          v-once
                          :position="'topright'"
@@ -142,9 +143,9 @@
                          :position="'topright'"
                          :historic-years="historicYears"
         />
-      </div> -->
+      </div>
 
-      <div v-once>
+      <!-- <div v-once>
         <pictometry-button v-if="this.$config.pictometry.enabled"
                            v-once
                            :position="'topright'"
@@ -161,7 +162,7 @@
                            :imgSrc="'../../src/assets/cyclomedia.png'"
                            @click="handleCyclomediaButtonClick"
         />
-      </div>
+      </div> -->
 
       <!-- search control -->
       <!-- custom components seem to have to be wrapped like this to work
@@ -183,7 +184,7 @@
         </control>
       </div>
 
-      <cyclomedia-recording-circle v-for="recording in cyclomediaRecordings"
+      <!-- <cyclomedia-recording-circle v-for="recording in cyclomediaRecordings"
                                    v-if="cyclomediaActive"
                                    :key="recording.imageId"
                                    :imageId="recording.imageId"
@@ -192,7 +193,7 @@
                                    :color="'#3388ff'"
                                    :weight="1"
                                    @l-click="handleCyclomediaRecordingClick"
-      />
+      /> -->
     </map_>
     <slot class='widget-slot' name="cycloWidget" />
     <slot class='widget-slot' name="pictWidget" />
@@ -212,7 +213,7 @@
   import Control from '../../leaflet/Control';
   import EsriWebMap from '../../esri-leaflet/WebMap';
   import EsriWebMapLayer from '../../esri-leaflet/WebMapLayer';
-  // import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
+  import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
   // import EsriDynamicMapLayer from '../../esri-leaflet/DynamicMapLayer';
   // import EsriFeatureLayer from '../../esri-leaflet/FeatureLayer';
   import Geojson from '../../leaflet/Geojson';
@@ -241,7 +242,7 @@
       Control,
       EsriWebMap,
       EsriWebMapLayer,
-      // EsriTiledMapLayer,
+      EsriTiledMapLayer,
       // EsriDynamicMapLayer,
       // EsriFeatureLayer,
       Geojson,

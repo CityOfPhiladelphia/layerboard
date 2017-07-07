@@ -53,6 +53,7 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       map: null,
       bounds: null,
       basemap: defaultTopic.basemap,
+      // basemap: 'imagery2016',
       circleMarkers: [],
       webMap: null,
       webMapActiveLayers: [],
