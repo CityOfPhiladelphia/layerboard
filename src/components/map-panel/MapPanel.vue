@@ -128,6 +128,8 @@
        /> -->
 
       <!-- CONTROLS: -->
+      <!-- <legend-control :position="'topright'"
+      /> -->
       <!-- basemap control -->
       <div v-once>
         <basemap-control v-if="hasImageryBasemaps"
@@ -228,6 +230,7 @@
   import PictometryButton from '../../pictometry/Button';
   import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
+  import LegendControl from '../../esri-leaflet/Legend.vue';
 
   export default {
     mixins: [
@@ -255,7 +258,8 @@
       HistoricmapControl,
       PictometryButton,
       CyclomediaButton,
-      CyclomediaRecordingCircle
+      CyclomediaRecordingCircle,
+      LegendControl
     },
     computed: {
       scale() {

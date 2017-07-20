@@ -41,7 +41,7 @@ export default (clientConfig) => {
               bennyEndpoints[url2] = '';
             }
           }
-          
+
           const baseConfig = eval(data);
 
           // deep merge base config and client config
@@ -67,6 +67,8 @@ export default (clientConfig) => {
             const callback = events[eventName];
             vm.$eventBus.$on(eventName, callback);
           }
+
+          console.log('!!!!!', L.esri.legendControl);
         }
       });
     },
