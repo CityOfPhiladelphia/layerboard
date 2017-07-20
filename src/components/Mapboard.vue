@@ -105,19 +105,19 @@
   @media (min-width: 1024px) {
     .mb-root {
       /*height: 100%;*/
-      height: 800px;
+      /*height: 800px;*/
     }
   }
 
   @media (min-width: 1024px) {
     .mb-root {
       /*height: 100%;*/
-      height: 800px;
+      /*height: 800px;*/
     }
   }
 
   .mb-root {
-    height: 800px;
+    /*height: 800px;*/
     /*position: absolute;
     bottom: 0;*/
   }

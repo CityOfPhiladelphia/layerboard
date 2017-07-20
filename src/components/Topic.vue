@@ -198,8 +198,8 @@
     display: block;
     font-size: 18px;
     font-weight: normal;
-    height: 70px;
-    line-height: 45px;
+    height: 40px;
+    line-height: 20px;
     padding: 10px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     margin-bottom: 8px;
@@ -216,8 +216,8 @@
   }
 
   .topic-body {
-    padding: 10px;
-    margin-bottom: 20px;
+    padding-left: 10px;
+    /*margin-bottom: 20px;*/
   }
 
   .loading {
