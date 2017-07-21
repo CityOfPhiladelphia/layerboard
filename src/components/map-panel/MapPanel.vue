@@ -35,16 +35,28 @@
       <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                          v-if="activeBasemap === key"
                          :key="key"
+                         :name="key"
                          :url="basemap.url"
                          :max-zoom="basemap.maxZoom"
                          :zIndex="basemap.zIndex"
                          :attribution="basemap.attribution"
       />
 
+      <!-- <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
+                         v-if="shouldShowLeftMap(key)"
+                         :key="key"
+                         :name="key"
+                         :url="basemap.url"
+                         :max-zoom="basemap.maxZoom"
+                         :zIndex="basemap.zIndex"
+                         :attribution="basemap.attribution"
+      /> -->
+
       <!-- basemap labels and parcels outlines -->
       <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
                          v-if="activeTiles.includes(key)"
                          :key="key"
+                         :name="key"
                          :url="tiledLayer.url"
                          :zIndex="tiledLayer.zIndex"
                          :attribution="tiledLayer.attribution"
@@ -131,6 +143,12 @@
       <!-- <legend-control :position="'topright'"
       /> -->
       <!-- basemap control -->
+      <!-- <div v-once>
+        <side-by-side-button :position="'topright'"
+                             v-once
+        />
+      </div> -->
+
       <div v-once>
         <basemap-control v-if="hasImageryBasemaps"
                          v-once
@@ -146,6 +164,27 @@
                          :historic-years="historicYears"
         />
       </div>
+
+      <!-- <div>
+        <basemap-control-left :position="'topleft'"
+                              :imagery-years="imageryYears"
+                              v-show="this.sideBySideActive"
+        />
+      </div>
+
+      <div>
+        <historicmap-control-left :position="'topleft'"
+                                  :historic-years="historicYears"
+                                  v-show="this.sideBySideActive"
+        />
+      </div> -->
+
+      <!-- <div v-once>
+        <side-by-side v-once
+        />
+      </div> -->
+
+
 
       <!-- <div v-once>
         <pictometry-button v-if="this.$config.pictometry.enabled"
@@ -170,7 +209,7 @@
       <!-- custom components seem to have to be wrapped like this to work
            with v-once
       -->
-      <div v-once>
+      <!-- <div v-once>
         <control position="topleft">
           <div class="mb-search-control-container">
             <form @submit.prevent="handleSearchFormSubmit">
@@ -184,7 +223,7 @@
             </form>
           </div>
         </control>
-      </div>
+      </div> -->
 
       <!-- <cyclomedia-recording-circle v-for="recording in cyclomediaRecordings"
                                    v-if="cyclomediaActive"
@@ -226,11 +265,14 @@
   import SvgMarker from '../SvgMarker';
   import BasemapControl from '../BasemapControl';
   import HistoricmapControl from '../HistoricmapControl';
+  import BasemapControlLeft from '../BasemapControlLeft';
+  import HistoricmapControlLeft from '../HistoricmapControlLeft';
   import CyclomediaButton from '../../cyclomedia/Button';
   import PictometryButton from '../../pictometry/Button';
   import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
   import LegendControl from '../../esri-leaflet/Legend.vue';
+  import SideBySideButton from '../../components/SideBySideButton.vue';
 
   export default {
     mixins: [
@@ -256,12 +298,18 @@
       SvgMarker,
       BasemapControl,
       HistoricmapControl,
+      BasemapControlLeft,
+      HistoricmapControlLeft,
       PictometryButton,
       CyclomediaButton,
       CyclomediaRecordingCircle,
-      LegendControl
+      LegendControl,
+      SideBySideButton,
     },
     computed: {
+      sideBySideActive() {
+        return this.$store.state.map.sideBySideActive;
+      },
       scale() {
         return this.$store.state.map.scale;
       },
@@ -282,6 +330,9 @@
       },
       activeTiles() {
         return this.$config.map.basemaps[this.activeBasemap].tiledLayers;
+      },
+      activeBasemapLeft() {
+        return this.$store.state.map.basemapLeft;
       },
       activeDynamicMaps() {
         if (!this.activeTopicConfig || !this.activeTopicConfig.dynamicMapLayers) {
@@ -390,6 +441,9 @@
       }
     },
     methods: {
+      shouldShowLeftMap(key) {
+        return this.activeBasemapLeft === key && this.sideBySideActive
+      },
       shouldShowFeatureLayer(layer) {
         if (layer.rest.layerDefinition) {
           if (layer.rest.layerDefinition.minScale) {

@@ -107,11 +107,36 @@
   };
 </script>
 
-<style>
+<style scoped>
+
+  /*.scroll {overflow:auto;}
+  .scroll::-webkit-scrollbar {
+    width:16px;
+    height:16px;
+    background:inherit;
+  }
+  .scroll::-webkit-scrollbar-track:vertical {
+    border-right:8px solid rgba(0,0,0,.2);
+  }
+  .scroll::-webkit-scrollbar-thumb:vertical {
+    border-right:8px solid rgba(255,255,255,.2);
+  }
+  .scroll::-webkit-scrollbar-track:horizontal {
+    border-bottom:8px solid rgba(0,0,0,.2);
+  }
+  .scroll::-webkit-scrollbar-thumb:horizontal {
+    border-bottom:8px solid rgba(255,255,255,.2);
+  }
+  .scroll::-webkit-scrollbar-corner,
+    .scroll::-webkit-resizer {background:inherit;
+    border-right:8px solid rgba(255,255,255,.2); //optional
+    border-bottom:8px solid rgba(255,255,255,.2); //optional
+  }*/
+
   .mb-panel-topics {
     background: #fff;
     padding-left: 20px !important;
-    padding-right: 20px !important;
+    padding-right: 5px !important;
     overflow-y: auto;
   }
 

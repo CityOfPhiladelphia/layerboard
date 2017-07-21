@@ -1,20 +1,20 @@
 <template>
   <div style="display: inline">
     <div class="year-selector-container"
-         v-show="activeBasemap.startsWith('imagery')"
+         v-show="activeBasemapLeft.startsWith('historic')"
     >
       <ul>
-        <li v-for="imageryYear in imageryYears"
-            :class="{ active: activeBasemap === 'imagery' + imageryYear }"
-            @click="handleImageryYearClick"
+        <li v-for="historicYear in historicYears"
+            :class="{ active: activeBasemapLeft === 'historic' + historicYear }"
+            @click="handleHistoricYearClickLeft"
         >
-          {{ imageryYear }}
+          {{ historicYear }}
         </li>
       </ul>
     </div>
     <div class="leaflet-bar easy-button-container leaflet-control">
       <button class="easy-button-button leaflet-bar-part leaflet-interactive unnamed-state-active"
-              @click="handleImageryToggleButtonClick"
+              @click="handleHistoricToggleButtonClickLeft"
       >
         <span class="button-state state-unnamed-state unnamed-state-active">
           <img class="button-image" :src="toggleButtonImgSrc">
@@ -36,31 +36,24 @@
     // }),
     props: [
       'position',
-      'imageryYears'
+      'historicYears'
     ],
     computed: {
-      webMapLayers() {
-        this.$store.state.map.webMap.layers
-      },
-      map() {
-        this.$store.state.map.map
-      },
-      activeBasemap() {
-        const basemap = this.$store.state.map.basemap;
-        return basemap;
+      activeBasemapLeft() {
+        const basemapLeft = this.$store.state.map.basemapLeft;
+        return basemapLeft;
       },
       toggleButtonImgSrc() {
-        const basemap = this.activeBasemap;
-        const basemapConfig = this.configForBasemap(basemap);
-        const basemapType = basemapConfig.type;
+        const basemapLeft = this.activeBasemapLeft;
+        const basemapLeftConfig = this.configForBasemap(basemapLeft);
+        const basemapLeftType = basemapLeftConfig.type;
         let src;
 
-        if (basemapType === 'imagery') {
+        if (basemapLeftType === 'historic') {
           src = "../../src/assets/basemap_small.png"
         }
-        //else if (basemapType === 'featuremap') {
         else {
-          src = "../../src/assets/imagery_small.png"
+          src = "../../src/assets/historic_small.png"
         }
 
         return src;
@@ -71,34 +64,33 @@
         return this.$config.map.basemaps[key];
       },
       // return a list of imagery basemap years in descending order
-      handleImageryToggleButtonClick(e) {
-        console.log('handleImageryToggleButtonClick from BasemapControl fired')
-        const prevBasemap = this.activeBasemap;
-        const prevBasemapConfig = this.configForBasemap(prevBasemap);
-        const prevBasemapType = prevBasemapConfig.type;
-        let nextBasemap;
+      handleHistoricToggleButtonClickLeft(e) {
+        console.log('handleHistoricToggleButtonClick from HistoricmapControlLeft fired')
+        const prevBasemapLeft = this.activeBasemapLeft;
+        const prevBasemapLeftConfig = this.configForBasemap(prevBasemapLeft);
+        const prevBasemapLeftType = prevBasemapLeftConfig.type;
+        let nextBasemapLeft;
 
         // feature map => imagery
-        // if (prevBasemapType === 'featuremap') {
-        if (prevBasemapType !== 'imagery') {
-          const years = this.imageryYears;
-          nextBasemap = 'imagery' + years[0];
+        if (prevBasemapLeftType !== 'historic') {
+          const years = this.historicYears;
+          nextBasemapLeft = 'historic' + years[0];
         }
         // imagery => feature map
         else {
           // const activeTopic = this.$store.state.activeTopic;
           // const activeTopicConfig = this.$config.topics.filter(topic => topic.key === activeTopic)[0];
           // nextBasemap = activeTopicConfig.basemap;
-          nextBasemap = 'pwd';
+          nextBasemapLeft = 'pwd';
         }
-        console.log('nextBasemap', nextBasemap);
-        this.$store.commit('setBasemap', nextBasemap);
+
+        this.$store.commit('setBasemapLeft', nextBasemapLeft);
       },
 
-      handleImageryYearClick(e) {
+      handleHistoricYearClickLeft(e) {
         const year = e.target.innerText;
-        const nextBasemap = 'imagery' + year;
-        this.$store.commit('setBasemap', nextBasemap);
+        const nextBasemapLeft = 'historic' + year;
+        this.$store.commit('setBasemapLeft', nextBasemapLeft);
       },
     })
   };
