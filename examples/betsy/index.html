@@ -5,23 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Betsy | Mapboard</title>
+    <title>Betsy | Phila.gov</title>
     <link rel='icon' type='image/x-icon' href="//cityofphiladelphia.github.io/patterns/images/favicon.ico">
     <meta name="description" content="">
 
     <!-- CSS -->
-    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
-    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css"> -->
-
-    <!-- <link rel="stylesheet" href="//unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.css"> -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <!--pattern stylesheet includes foundation css -->
     <link rel="stylesheet" href="//cityofphiladelphia.github.io/patterns/dist/1.4.1/css/patterns.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css">
-    <!-- <link rel="stylesheet" href="//unpkg.com/Leaflet.vector-markers@0.0.6/dist/leaflet-vector-markers.css"> -->
+    <link rel="stylesheet" href="//unpkg.com/Leaflet.vector-markers@0.0.6/dist/leaflet-vector-markers.css">
+    <link rel="stylesheet" href="./styles.css">
     <link rel="canonical" href="">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="main.css">
+
   </head>
 
   <body>
@@ -36,7 +32,7 @@
             <div class="page-title-container">
               <a href="#/">
                 <h1 class="page-title">Betsy</h1>
-                <h2 class="page-subtitle">Mapboard example</h2>
+                <h2 class="page-subtitle">Phila Map and Data Portal</h2>
               </a>
             </div>
             <!-- This is the search box from Atlas -->
@@ -52,7 +48,7 @@
       <div id="mapboard"></div>
 
       <!-- Begin Footer -->
-      <footer data-swiftype-index='false' class="site-footer">
+      <!-- <footer data-swiftype-index='false' class="site-footer">
         <section class="fat">
           <div class="row">
             <div class="large-8 columns">
@@ -94,11 +90,9 @@
             </nav>
           </div>
         </div>
-      </footer>
+      </footer> -->
       <!-- End Footer -->
     </div><!-- end of application div -->
-
-
 
     <!-- JS: Patterns -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
@@ -121,7 +115,8 @@
     <!-- Load Heatmap Feature Layer from CDN -->
     <script src="https://cdn.jsdelivr.net/leaflet.esri.heatmap-feature-layer/2.0.0-beta.1/esri-leaflet-heatmap-feature-layer.js"></script>
     <!-- Load Esri Leaflet Renderers from CDN -->
-    <script src="http://cdn.jsdelivr.net/leaflet.esri.renderers/2.0.2/esri-leaflet-renderers.js"></script>
+    <!-- <script src="http://cdn.jsdelivr.net/leaflet.esri.renderers/2.0.2/esri-leaflet-renderers.js"></script> -->
+    <script src="https://unpkg.com/esri-leaflet-renderers@2.0.6"></script>
     <!-- Load Vector Icon from GitHub -->
     <script src="https://muxlab.github.io/Leaflet.VectorIcon/L.VectorIcon.js"></script>
     <!-- Load Leaflet Omnivore -->
@@ -143,11 +138,13 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="../../dist/build.js"></script>
+    <script src="../../src/util/esri-leaflet-legend-compat-src.js"></script>
     <script src="../../src/util/md5.min.js"></script>
     <script src="../../src/util/proj4.js"></script>
     <script src="../../src/util/leaflet.rotatedMarker.js"></script>
     <script src="../../src/util/svg-icon.js"></script>
     <script src="../../src/util/triangleIcon.js"></script>
+    <!-- <script src="../../src/util/leaflet-side-by-side.min.js"></script> -->
     <!-- <script src="//code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script> -->
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <!-- <script src="../../src/util/opacitySlider.js"></script> -->

@@ -14,7 +14,7 @@
   import bindEvents from './util/bind-events';
   // const webmapId = '980cd5736a12448697429dccd0f30669'; // Default WebMap ID
   // const webmapId = 'f60e4fa0c01f408882a07ee50e8910b9'; // Default WebMap ID
-  const EsriWebMap = L.esri.webMap;
+  // const EsriWebMap = L.esri.webMap;
 
   export default {
     props: [
@@ -46,6 +46,10 @@
 
       map.setView(this.center,
                   this.zoom);
+
+      this.$nextTick(() => {
+        map.attributionControl.setPrefix('<a target="_blank" href="//www.phila.gov/it/aboutus/units/Pages/GISServicesGroup.aspx">City of Philadelphia | GIS Services Group</a>');
+      })
 
       // signal children to mount
       for (let child of this.$children) {

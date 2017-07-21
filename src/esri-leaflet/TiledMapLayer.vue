@@ -5,6 +5,7 @@
 
   export default {
     props: [
+      'name',
       'url',
       'minZoom',
       'maxZoom',
@@ -20,6 +21,10 @@
         leafletElement.addTo(map);
         map.attributionControl.removeAttribution('overwrite');
       }
+      let mapPackage = {}
+      mapPackage[this.$props.name] = leafletElement;
+      // const name = this.$props.name
+      this.$store.commit('setBasemapLayers', mapPackage);
     },
     destroyed() {
       this.$leafletElement._map.removeLayer(this.$leafletElement);

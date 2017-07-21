@@ -1,12 +1,12 @@
 <template>
   <div style="display: inline">
     <div class="year-selector-container"
-         v-show="activeBasemap.startsWith('historic')"
+         v-show="activeBasemapLeft.startsWith('historic')"
     >
       <ul>
         <li v-for="historicYear in historicYears"
-            :class="{ active: activeBasemap === 'historic' + historicYear }"
-            @click="handleHistoricYearClick"
+            :class="{ active: activeBasemapLeft === 'historic' + historicYear }"
+            @click="handleHistoricYearClickLeft"
         >
           {{ historicYear }}
         </li>
@@ -14,7 +14,7 @@
     </div>
     <div class="leaflet-bar easy-button-container leaflet-control">
       <button class="easy-button-button leaflet-bar-part leaflet-interactive unnamed-state-active"
-              @click="handleHistoricToggleButtonClick"
+              @click="handleHistoricToggleButtonClickLeft"
       >
         <span class="button-state state-unnamed-state unnamed-state-active">
           <img class="button-image" :src="toggleButtonImgSrc">
@@ -39,20 +39,19 @@
       'historicYears'
     ],
     computed: {
-      activeBasemap() {
-        const basemap = this.$store.state.map.basemap;
-        return basemap;
+      activeBasemapLeft() {
+        const basemapLeft = this.$store.state.map.basemapLeft;
+        return basemapLeft;
       },
       toggleButtonImgSrc() {
-        const basemap = this.activeBasemap;
-        const basemapConfig = this.configForBasemap(basemap);
-        const basemapType = basemapConfig.type;
+        const basemapLeft = this.activeBasemapLeft;
+        const basemapLeftConfig = this.configForBasemap(basemapLeft);
+        const basemapLeftType = basemapLeftConfig.type;
         let src;
 
-        if (basemapType === 'historic') {
+        if (basemapLeftType === 'historic') {
           src = "../../src/assets/basemap_small.png"
         }
-        //else if (basemapType === 'featuremap') {
         else {
           src = "../../src/assets/historic_small.png"
         }
@@ -65,34 +64,33 @@
         return this.$config.map.basemaps[key];
       },
       // return a list of imagery basemap years in descending order
-      handleHistoricToggleButtonClick(e) {
-        console.log('handleHistoricToggleButtonClick from HistoricmapControl fired')
-        const prevBasemap = this.activeBasemap;
-        const prevBasemapConfig = this.configForBasemap(prevBasemap);
-        const prevBasemapType = prevBasemapConfig.type;
-        let nextBasemap;
+      handleHistoricToggleButtonClickLeft(e) {
+        console.log('handleHistoricToggleButtonClick from HistoricmapControlLeft fired')
+        const prevBasemapLeft = this.activeBasemapLeft;
+        const prevBasemapLeftConfig = this.configForBasemap(prevBasemapLeft);
+        const prevBasemapLeftType = prevBasemapLeftConfig.type;
+        let nextBasemapLeft;
 
         // feature map => imagery
-        // if (prevBasemapType === 'featuremap') {
-        if (prevBasemapType !== 'historic') {
+        if (prevBasemapLeftType !== 'historic') {
           const years = this.historicYears;
-          nextBasemap = 'historic' + years[0];
+          nextBasemapLeft = 'historic' + years[0];
         }
         // imagery => feature map
         else {
           // const activeTopic = this.$store.state.activeTopic;
           // const activeTopicConfig = this.$config.topics.filter(topic => topic.key === activeTopic)[0];
           // nextBasemap = activeTopicConfig.basemap;
-          nextBasemap = 'pwd';
+          nextBasemapLeft = 'pwd';
         }
 
-        this.$store.commit('setBasemap', nextBasemap);
+        this.$store.commit('setBasemapLeft', nextBasemapLeft);
       },
 
-      handleHistoricYearClick(e) {
+      handleHistoricYearClickLeft(e) {
         const year = e.target.innerText;
-        const nextBasemap = 'historic' + year;
-        this.$store.commit('setBasemap', nextBasemap);
+        const nextBasemapLeft = 'historic' + year;
+        this.$store.commit('setBasemapLeft', nextBasemapLeft);
       },
     })
   };

@@ -49,12 +49,19 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
     map: {
       center: config.map.center,
       zoom: config.map.zoom,
+      scale: null,
       map: null,
       bounds: null,
       basemap: defaultTopic.basemap,
+      basemapLeft: 'imagery2016',
+      basemapLayers: {},
+      // basemap: 'imagery2016',
       circleMarkers: [],
       webMap: null,
       webMapActiveLayers: [],
+      webMapRestData: null,
+      webMapLayersAndRest: [],
+      sideBySideActive: false,
       // features: {
       //   markers: [
       //     // {
@@ -157,6 +164,12 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       setWebMapActiveLayers(state, payload) {
         state.map.webMapActiveLayers = payload;
       },
+      setWebMapRestData(state, payload) {
+        state.map.webMapRestData = payload;
+      },
+      setWebMapLayersAndRest(state, payload) {
+        state.map.webMapLayersAndRest = payload;
+      },
       setMapBounds(state, payload) {
         state.map.bounds = payload.bounds
       },
@@ -165,6 +178,9 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       },
       setMapZoom(state, payload) {
         state.map.zoom = payload
+      },
+      setMapScale(state, payload) {
+        state.map.scale = payload
       },
       setDorParcels(state, payload) {
         state.dorParcels = payload;
@@ -223,6 +239,25 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       setPictometryZoom(state, payload) {
         state.pictometry.zoom = payload;
       },
+      setSideBySideActive(state, payload) {
+        state.map.sideBySideActive = payload;
+      },
+      setBasemapLeft(state, payload) {
+        state.map.basemapLeft = payload;
+      },
+      setBasemapLayers(state, payload) {
+        console.log('setBasemapLayers is running, payload:', payload);
+        const key = Object.keys(payload);
+        const value = Object.values(payload);
+        console.log(key);
+        if (state.map.basemapLayers[key]){
+          console.log('already has key');
+        } else {
+          console.log('doesnt have key');
+          state.map.basemapLayers[key] = value[0];
+        }
+        // state.map.basemapLayers.push(payload);
+      }
       // setCircleMarkers(state, payload) {
       //   state.map.circleMarkers.push(payload);
       // }

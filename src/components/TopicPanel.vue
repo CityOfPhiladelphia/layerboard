@@ -2,13 +2,17 @@
   <div class="large-6 columns mb-panel mb-panel-topics">
     <div class="row">
       <div class="mb-search-control-container">
-        <form @submit.prevent="handleFilterFormX">
+        <form @submit.prevent="handleFilterFormX"
+              @keydown="preventEnter"
+        >
             <input class="mb-search-control-input"
                    placeholder="Search for layers"
                    id="theInput"
                    @keyup="handleFilterFormKeyup"
             />
-            <button class="mb-search-control-button">
+            <button class="mb-search-control-button"
+                    v-if="this.$store.state.topics.inputLayerFilter != ''"
+            >
               <i class="fa fa-times fa-lg"></i>
             </button>
         </form>
@@ -93,16 +97,46 @@
         // this.$store.commit('setInputLayerFilter', input);
         e.target[0].value = ''
         this.$store.commit('setInputLayerFilter', '');
+      },
+      preventEnter(e) {
+        if(e.keyCode === 13) {
+          e.preventDefault();
+        }
       }
     },
   };
 </script>
 
-<style>
+<style scoped>
+
+  /*.scroll {overflow:auto;}
+  .scroll::-webkit-scrollbar {
+    width:16px;
+    height:16px;
+    background:inherit;
+  }
+  .scroll::-webkit-scrollbar-track:vertical {
+    border-right:8px solid rgba(0,0,0,.2);
+  }
+  .scroll::-webkit-scrollbar-thumb:vertical {
+    border-right:8px solid rgba(255,255,255,.2);
+  }
+  .scroll::-webkit-scrollbar-track:horizontal {
+    border-bottom:8px solid rgba(0,0,0,.2);
+  }
+  .scroll::-webkit-scrollbar-thumb:horizontal {
+    border-bottom:8px solid rgba(255,255,255,.2);
+  }
+  .scroll::-webkit-scrollbar-corner,
+    .scroll::-webkit-resizer {background:inherit;
+    border-right:8px solid rgba(255,255,255,.2); //optional
+    border-bottom:8px solid rgba(255,255,255,.2); //optional
+  }*/
+
   .mb-panel-topics {
     background: #fff;
     padding-left: 20px !important;
-    padding-right: 20px !important;
+    padding-right: 5px !important;
     overflow-y: auto;
   }
 
@@ -144,43 +178,4 @@
     width: 300px;
   }
 
-  /*.mb-map-with-widget {
-    height: 50%;
-  }
-
-  .widget-slot {
-    display: inline-block;
-    float: left;
-  }*/
-
-  /*display: inline;*/
-  /*.mb-map-loading-mask {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    background: rgba(0, 0 ,0 , 0.25);
-    z-index: 1000;
-    text-align: center;
-    vertical-align: middle;
-  }
-
-  .mb-map-loading-mask-inner {
-    position: absolute;
-    top: 40%;
-    left: 40%;
-  }*/
-
-  /*TODO use patterns*/
-  /*.address-header {
-    color: #666;
-    border-left: 5px solid #58c04d;
-    margin-left: 10px;
-    padding-left: 15px;
-    margin-bottom: 25px;
-  }
-
-  .address-header-line-1 {
-    margin-bottom: 0;
-  }*/
 </style>

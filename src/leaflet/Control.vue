@@ -42,6 +42,7 @@ isn't there?
         });
       },
       parentMounted(parent, props) {
+        console.log('control parentMounted is running')
         const leafletElement = this.createLeafletElement(L);
         this.$leafletElement = leafletElement;
         const map = parent.$leafletElement;

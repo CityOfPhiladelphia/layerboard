@@ -7,8 +7,9 @@
           @l-moveend="handleMapMove"
           zoom-control-position="bottomright"
           :min-zoom="this.$config.map.minZoom"
-          :max-zoom="this.$config.map.maxZoom"
+          :max-zoom="25"
     >
+    <!-- :max-zoom="this.$config.map.maxZoom" -->
     <!-- :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }" -->
       <!-- loading mask -->
       <div v-show="isGeocoding" class="mb-map-loading-mask">
@@ -20,33 +21,46 @@
 
       <!-- webmap -->
       <esri-web-map>
-        <!-- <esri-web-map-layer v-for="(layer, key) in (webMap || {}).layers || []" -->
-        <esri-web-map-layer v-for="(layer, key) in (webMap || {}).layers || []"
-                            v-if="webMapActiveLayers.includes(layer.title)"
+        <esri-web-map-layer v-for="(layer, key) in this.wmLayers"
+                            v-if="shouldShowFeatureLayer(layer)"
                             :key="key"
                             :id="layer.title"
                             :layer="layer.layer"
+                            :layerDefinition="layer.rest.layerDefinition"
         />
       </esri-web-map>
 
 
       <!-- basemaps -->
-      <!-- <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
+      <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                          v-if="activeBasemap === key"
                          :key="key"
+                         :name="key"
                          :url="basemap.url"
                          :max-zoom="basemap.maxZoom"
+                         :zIndex="basemap.zIndex"
+                         :attribution="basemap.attribution"
+      />
+
+      <!-- <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
+                         v-if="shouldShowLeftMap(key)"
+                         :key="key"
+                         :name="key"
+                         :url="basemap.url"
+                         :max-zoom="basemap.maxZoom"
+                         :zIndex="basemap.zIndex"
                          :attribution="basemap.attribution"
       /> -->
 
       <!-- basemap labels and parcels outlines -->
-      <!-- <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
+      <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
                          v-if="activeTiles.includes(key)"
                          :key="key"
+                         :name="key"
                          :url="tiledLayer.url"
                          :zIndex="tiledLayer.zIndex"
                          :attribution="tiledLayer.attribution"
-      /> -->
+      />
 
       <!-- <esri-dynamic-map-layer v-for="(dynamicLayer, key) in this.$config.map.dynamicMapLayers"
                           v-if="activeDynamicMaps.includes(key)"
@@ -94,12 +108,12 @@
       />
 
       <!-- geojson features -->
-      <geojson v-for="geojsonFeature in geojsonFeatures"
+      <!-- <geojson v-for="geojsonFeature in geojsonFeatures"
                :geojson="geojsonFeature.geojson"
                :color="geojsonFeature.color"
                :weight="2"
                :key="geojsonFeature.key"
-       />
+       /> -->
        <!-- :overlay="geojsonFeature.overlayFeature" -->
 
        <!-- TODO give these a real key -->
@@ -126,8 +140,16 @@
        /> -->
 
       <!-- CONTROLS: -->
+      <!-- <legend-control :position="'topright'"
+      /> -->
       <!-- basemap control -->
       <!-- <div v-once>
+        <side-by-side-button :position="'topright'"
+                             v-once
+        />
+      </div> -->
+
+      <div v-once>
         <basemap-control v-if="hasImageryBasemaps"
                          v-once
                          :position="'topright'"
@@ -141,9 +163,30 @@
                          :position="'topright'"
                          :historic-years="historicYears"
         />
+      </div>
+
+      <!-- <div>
+        <basemap-control-left :position="'topleft'"
+                              :imagery-years="imageryYears"
+                              v-show="this.sideBySideActive"
+        />
+      </div>
+
+      <div>
+        <historicmap-control-left :position="'topleft'"
+                                  :historic-years="historicYears"
+                                  v-show="this.sideBySideActive"
+        />
       </div> -->
 
-      <div v-once>
+      <!-- <div v-once>
+        <side-by-side v-once
+        />
+      </div> -->
+
+
+
+      <!-- <div v-once>
         <pictometry-button v-if="this.$config.pictometry.enabled"
                            v-once
                            :position="'topright'"
@@ -160,7 +203,7 @@
                            :imgSrc="'../../src/assets/cyclomedia.png'"
                            @click="handleCyclomediaButtonClick"
         />
-      </div>
+      </div> -->
 
       <!-- search control -->
       <!-- custom components seem to have to be wrapped like this to work
@@ -182,7 +225,7 @@
         </control>
       </div>
 
-      <cyclomedia-recording-circle v-for="recording in cyclomediaRecordings"
+      <!-- <cyclomedia-recording-circle v-for="recording in cyclomediaRecordings"
                                    v-if="cyclomediaActive"
                                    :key="recording.imageId"
                                    :imageId="recording.imageId"
@@ -191,7 +234,7 @@
                                    :color="'#3388ff'"
                                    :weight="1"
                                    @l-click="handleCyclomediaRecordingClick"
-      />
+      /> -->
     </map_>
     <slot class='widget-slot' name="cycloWidget" />
     <slot class='widget-slot' name="pictWidget" />
@@ -211,7 +254,7 @@
   import Control from '../../leaflet/Control';
   import EsriWebMap from '../../esri-leaflet/WebMap';
   import EsriWebMapLayer from '../../esri-leaflet/WebMapLayer';
-  // import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
+  import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
   // import EsriDynamicMapLayer from '../../esri-leaflet/DynamicMapLayer';
   // import EsriFeatureLayer from '../../esri-leaflet/FeatureLayer';
   import Geojson from '../../leaflet/Geojson';
@@ -222,10 +265,14 @@
   import SvgMarker from '../SvgMarker';
   import BasemapControl from '../BasemapControl';
   import HistoricmapControl from '../HistoricmapControl';
+  // import BasemapControlLeft from '../BasemapControlLeft';
+  // import HistoricmapControlLeft from '../HistoricmapControlLeft';
   import CyclomediaButton from '../../cyclomedia/Button';
   import PictometryButton from '../../pictometry/Button';
   import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
+  import LegendControl from '../../esri-leaflet/Legend.vue';
+  // import SideBySideButton from '../../components/SideBySideButton.vue';
 
   export default {
     mixins: [
@@ -240,7 +287,7 @@
       Control,
       EsriWebMap,
       EsriWebMapLayer,
-      // EsriTiledMapLayer,
+      EsriTiledMapLayer,
       // EsriDynamicMapLayer,
       // EsriFeatureLayer,
       Geojson,
@@ -251,13 +298,29 @@
       SvgMarker,
       BasemapControl,
       HistoricmapControl,
+      // BasemapControlLeft,
+      // HistoricmapControlLeft,
       PictometryButton,
       CyclomediaButton,
-      CyclomediaRecordingCircle
+      CyclomediaRecordingCircle,
+      LegendControl,
+      // SideBySideButton,
     },
     computed: {
+      sideBySideActive() {
+        return this.$store.state.map.sideBySideActive;
+      },
+      scale() {
+        return this.$store.state.map.scale;
+      },
       webMap() {
         return this.$store.state.map.webMap;
+      },
+      restLayers(){
+        return this.$store.state.map.webMapRestData.operationalLayers;
+      },
+      wmLayers() {
+        return this.$store.state.map.webMapLayersAndRest;
       },
       webMapActiveLayers() {
         return this.$store.state.map.webMapActiveLayers;
@@ -267,6 +330,9 @@
       },
       activeTiles() {
         return this.$config.map.basemaps[this.activeBasemap].tiledLayers;
+      },
+      activeBasemapLeft() {
+        return this.$store.state.map.basemapLeft;
       },
       activeDynamicMaps() {
         if (!this.activeTopicConfig || !this.activeTopicConfig.dynamicMapLayers) {
@@ -309,7 +375,8 @@
         return this.historicBasemaps.map(x => x.year);
       },
       identifyFeature() {
-        return (this.activeTopicConfig || {}).identifyFeature;
+        // return (this.activeTopicConfig || {}).identifyFeature;
+        return 'address-marker';
       },
       activeTopicConfig() {
         const key = this.$store.state.activeTopic;
@@ -375,8 +442,22 @@
       }
     },
     methods: {
-      shouldShowFeatureLayer(key, minZoom) {
-        if (this.activeFeatureLayers.includes(key) && this.$store.state.map.zoom >= minZoom) {
+      shouldShowLeftMap(key) {
+        return this.activeBasemapLeft === key && this.sideBySideActive
+      },
+      shouldShowFeatureLayer(layer) {
+        if (layer.rest.layerDefinition) {
+          if (layer.rest.layerDefinition.minScale) {
+            // console.log('minZoom for', layer.title, 'is', layer.rest.layerDefinition.minScale, typeof layer.rest.layerDefinition.minScale, 'and current scale is', this.scale, typeof this.scale);
+            if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title)) {
+              // console.log('checkLayer used layerDefinition and is returning true for', layer.title);
+              return true;
+            }
+          } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title)) {
+            return true;
+          }
+        } else if (this.webMapActiveLayers.includes(layer.title)) {
+          // console.log('checkLayer is returning true for', layer.title);
           return true;
         } else {
           return false;
@@ -405,7 +486,34 @@
         this.$store.commit('setMapCenter', center);
         const zoom = this.$store.state.map.map.getZoom();
         this.$store.commit('setMapZoom', zoom);
+        const scale = this.getScale(zoom);
+        this.$store.commit('setMapScale', scale);
         this.updateCyclomediaRecordings();
+      },
+      getScale(zoom) {
+        const scales = {
+          20: 1128.497220,
+          19: 2256.994440,
+          18: 4513.988880,
+          17: 9027.977761,
+          16: 18055.955520,
+          15: 36111.911040,
+          14: 72223.822090,
+          13: 144447.644200,
+          12: 288895.288400,
+          11: 577790.576700,
+          10: 1155581.153000,
+          9: 2311162.307000,
+          8: 4622324.614000,
+          7: 9244649.227000,
+          6: 18489298.450000,
+          5: 36978596.910000,
+          4: 73957193.820000,
+          3: 147914387.600000,
+          2: 295828775.300000,
+          1: 591657550.500000,
+        }
+        return scales[zoom];
       },
       handleSearchFormSubmit(e) {
         const input = e.target[0].value;
