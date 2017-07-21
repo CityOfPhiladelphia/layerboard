@@ -209,7 +209,7 @@
       <!-- custom components seem to have to be wrapped like this to work
            with v-once
       -->
-      <!-- <div v-once>
+      <div v-once>
         <control position="topleft">
           <div class="mb-search-control-container">
             <form @submit.prevent="handleSearchFormSubmit">
@@ -223,7 +223,7 @@
             </form>
           </div>
         </control>
-      </div> -->
+      </div>
 
       <!-- <cyclomedia-recording-circle v-for="recording in cyclomediaRecordings"
                                    v-if="cyclomediaActive"
@@ -265,14 +265,14 @@
   import SvgMarker from '../SvgMarker';
   import BasemapControl from '../BasemapControl';
   import HistoricmapControl from '../HistoricmapControl';
-  import BasemapControlLeft from '../BasemapControlLeft';
-  import HistoricmapControlLeft from '../HistoricmapControlLeft';
+  // import BasemapControlLeft from '../BasemapControlLeft';
+  // import HistoricmapControlLeft from '../HistoricmapControlLeft';
   import CyclomediaButton from '../../cyclomedia/Button';
   import PictometryButton from '../../pictometry/Button';
   import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
   import LegendControl from '../../esri-leaflet/Legend.vue';
-  import SideBySideButton from '../../components/SideBySideButton.vue';
+  // import SideBySideButton from '../../components/SideBySideButton.vue';
 
   export default {
     mixins: [
@@ -298,13 +298,13 @@
       SvgMarker,
       BasemapControl,
       HistoricmapControl,
-      BasemapControlLeft,
-      HistoricmapControlLeft,
+      // BasemapControlLeft,
+      // HistoricmapControlLeft,
       PictometryButton,
       CyclomediaButton,
       CyclomediaRecordingCircle,
       LegendControl,
-      SideBySideButton,
+      // SideBySideButton,
     },
     computed: {
       sideBySideActive() {
@@ -375,7 +375,8 @@
         return this.historicBasemaps.map(x => x.year);
       },
       identifyFeature() {
-        return (this.activeTopicConfig || {}).identifyFeature;
+        // return (this.activeTopicConfig || {}).identifyFeature;
+        return 'address-marker';
       },
       activeTopicConfig() {
         const key = this.$store.state.activeTopic;
