@@ -4,10 +4,10 @@
       <label :for="'checkbox-'+layer"
              :class="{ disabled: shouldBeDisabled }"
       >
-        <input :id="topicKey+'_'+layer"
+        <input :id="layer"
                type="checkbox"
                :disabled="shouldBeDisabled"
-               :checked="webMapActiveLayers.includes(topicKey+'_'+layer)"
+               :checked="webMapActiveLayers.includes(layer)"
                @click=checkboxToggle
         >
         {{ layer }}
@@ -27,7 +27,6 @@
   export default {
     props: ['layer',
             'index',
-            'topicKey',
             'shouldBeDisabled'
     ],
     computed: {
@@ -38,13 +37,12 @@
         return this.$store.state.bennyEndpoints;
       },
       fullLayer() {
-        return this.topicKey+'_'+this.layer;
+        return this.layer;
       },
       url() {
         return this.topicLayerUrls[this.fullLayer];
       },
       bennyId() {
-        // const fullLayer = topicKey+'_'+layer;
         // const url = this.topicLayerUrls[fullLayer];
         // console.log('url', url);
         const id = this.bennyEndpoints[this.url];

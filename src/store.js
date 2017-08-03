@@ -41,7 +41,7 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
     },
     // anything related to topics
     topics: {
-      topicLayerMap: {},
+      // topicLayerMap: {},
       topicLayerUrls: {},
       inputLayerFilter: '',
     },
@@ -146,9 +146,9 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
         const key = payload.key;
         state.sources[key].targets = {};
       },
-      setTopicLayerMap(state, payload) {
-        state.topics.topicLayerMap = payload;
-      },
+      // setTopicLayerMap(state, payload) {
+      //   state.topics.topicLayerMap = payload;
+      // },
       setTopicLayerUrls(state, payload) {
         state.topics.topicLayerUrls = payload;
       },
