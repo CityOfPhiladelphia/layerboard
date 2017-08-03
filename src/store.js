@@ -5,7 +5,7 @@ import Vuex from 'vuex';
 // Vue.use(Vuex);
 
 function createStore(config, bennyEndpoints, bennyRepresentation) {
-  const defaultTopic = config.topics[0];
+  // const defaultTopic = config.topics[0];
 
   // create initial state for sources. data key => {}
   const sourceKeys = Object.keys(config.dataSources || {});
@@ -52,8 +52,8 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       scale: null,
       map: null,
       bounds: null,
-      basemap: defaultTopic.basemap,
-      basemapLeft: 'imagery2016',
+      basemap: 'pwd',
+      basemapLeft: 'imagery2017',
       basemapLayers: {},
       // basemap: 'imagery2016',
       circleMarkers: [],
