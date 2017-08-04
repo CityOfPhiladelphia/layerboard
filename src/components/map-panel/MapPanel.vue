@@ -24,8 +24,8 @@
         <esri-web-map-layer v-for="(layer, key) in this.wmLayers"
                             v-if="shouldShowFeatureLayer(layer)"
                             :key="key"
-                            :id="layer.title"
                             :layer="layer.layer"
+                            :layerName="layer.title"
                             :layerDefinition="layer.rest.layerDefinition"
         />
       </esri-web-map>
@@ -313,12 +313,9 @@
       scale() {
         return this.$store.state.map.scale;
       },
-      webMap() {
-        return this.$store.state.map.webMap;
-      },
-      restLayers(){
-        return this.$store.state.map.webMapRestData.operationalLayers;
-      },
+      // webMap() {
+      //   return this.$store.state.map.webMap;
+      // },
       wmLayers() {
         return this.$store.state.map.webMapLayersAndRest;
       },

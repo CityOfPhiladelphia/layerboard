@@ -1,8 +1,9 @@
 <script>
   export default {
     props: [
-      'id',
       'layer',
+      'layerName',
+      // minScale, maxScale, and drawingInfo are stored in layerDefinition
       'layerDefinition'
     ],
     computed: {
@@ -26,8 +27,6 @@
     },
     methods: {
       retrieveLeafletElement() {
-        console.log('WebMapLayer.vue retrieveLeafletElement', this.id, this.layer);
-        console.log(this.layer);
         return this.layer;
       },
       parentMounted(parent) {

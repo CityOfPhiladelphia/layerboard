@@ -11,7 +11,7 @@
                    @keyup="handleFilterFormKeyup"
             />
             <button class="mb-search-control-button"
-                    v-if="this.$store.state.topics.inputLayerFilter != ''"
+                    v-if="this.$store.state.layers.inputLayerFilter != ''"
             >
               <i class="fa fa-times fa-lg"></i>
             </button>
@@ -22,10 +22,9 @@
         <form action="#/">
           <fieldset class="options">
             <ul class="no-bullet">
-              <checkbox v-for="(layer, index) in this.wmLayers"
-                        :layer="layer.title"
-                        :shouldBeDisabled="shouldBeDisabled(layer)"
-                        :index=index
+              <checkbox v-for="(layer, index) in this.currentWmLayers"
+                        :layerName="layer.title"
+                        :layerDefinition="layer.rest.layerDefinition"
                         :key=index
               >
               </checkbox>
@@ -52,50 +51,24 @@
       scale() {
         return this.$store.state.map.scale;
       },
-      wmLayers() {
+      currentWmLayers() {
         const layers = this.$store.state.map.webMapLayersAndRest;
-        return layers;
+        let currentLayers = [];
+        for (let layer of layers) {
+          if (layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) || this.webMapActiveLayers.includes(layer.title)) {
+            currentLayers.push(layer)
+          }
+        }
+        return currentLayers;
       },
       webMapActiveLayers() {
         return this.$store.state.map.webMapActiveLayers;
       },
       inputLayerFilter() {
-        return this.$store.state.topics.inputLayerFilter;
+        return this.$store.state.layers.inputLayerFilter;
       },
-
-
-      // dataSources() {
-      //   return this.topic.dataSources || [];
-      // },
-      // hasData() {
-      //   return this.dataSources.every(dataSource => {
-      //     const targetsFn = this.$config.dataSources[dataSource].targets
-      //     if (targetsFn) {
-      //       const targetsMap = this.$store.state.sources[dataSource].targets;
-      //       const targets = Object.values(targetsMap);
-      //       return targets.every(target => target.status !== 'waiting');
-      //     } else {
-      //       return this.$store.state.sources[dataSource].data;
-      //     }
-      //   });
-      // },
     },
     methods: {
-      shouldBeDisabled(layer) {
-        // console.log('shouldBeDisabled is running', layer);
-        if (layer.rest.layerDefinition) {
-          if (layer.rest.layerDefinition.minScale) {
-            // console.log('minScale for', layer.title, 'is', layer.rest.layerDefinition.minScale, 'and current scale is', this.scale);
-            if (this.scale > layer.rest.layerDefinition.minScale) {
-              // console.log('checkLayer used layerDefinition and is returning true for', layer.title);
-              return true;
-            }
-          }
-        } else {
-          return false;
-        }
-      },
-
       handleFilterFormKeyup(e) {
         console.log('keyup', e.target.value);
         const input = e.target.value;

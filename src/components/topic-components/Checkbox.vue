@@ -1,16 +1,16 @@
 <template>
   <div>
     <li>
-      <label :for="'checkbox-'+layer"
+      <label :for="'checkbox-'+layerName"
              :class="{ disabled: shouldBeDisabled }"
       >
-        <input :id="layer"
+        <input :id="layerName"
                type="checkbox"
                :disabled="shouldBeDisabled"
-               :checked="webMapActiveLayers.includes(layer)"
+               :checked="webMapActiveLayers.includes(layerName)"
                @click=checkboxToggle
         >
-        {{ layer }}
+        {{ layerName }}
         <a :href="'http://metadata.phila.gov/#home/representationdetails/' + this.bennyId"
            target="_blank"
            v-if="bennyId"
@@ -25,28 +25,37 @@
   import TopicComponent from './TopicComponent';
 
   export default {
-    props: ['layer',
-            'index',
-            'shouldBeDisabled'
+    props: ['layerName',
+            // minScale, maxScale, and drawingInfo are stored in layerDefinition
+            'layerDefinition'
     ],
     computed: {
-      topicLayerUrls() {
-        return this.$store.state.topics.topicLayerUrls;
+      scale() {
+        return this.$store.state.map.scale;
+      },
+      shouldBeDisabled() {
+        const def = this.$props.layerDefinition
+        if (def) {
+          if (def.minScale) {
+            if (this.scale > def.minScale) {
+              return true;
+            }
+          }
+        } else {
+          return false;
+        }
+      },
+      layerUrls() {
+        return this.$store.state.layers.layerUrls;
       },
       bennyEndpoints() {
         return this.$store.state.bennyEndpoints;
       },
-      fullLayer() {
-        return this.layer;
-      },
       url() {
-        return this.topicLayerUrls[this.fullLayer];
+        return this.layerUrls[this.$props.layerName];
       },
       bennyId() {
-        // const url = this.topicLayerUrls[fullLayer];
-        // console.log('url', url);
         const id = this.bennyEndpoints[this.url];
-        // console.log('id', id);
         return id;
       },
       webMapActiveLayers() {
