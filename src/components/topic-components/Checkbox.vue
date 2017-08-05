@@ -6,6 +6,7 @@
       >
         <input :id="layerName"
                type="checkbox"
+               :layerid="layerId"
                :disabled="shouldBeDisabled"
                :checked="webMapActiveLayers.includes(layerName)"
                @click=checkboxToggle
@@ -17,6 +18,20 @@
         >(metadata)
         </a>
       </label>
+      <div v-if="webMapActiveLayers.includes(layerName)"
+           class="sliderDiv"
+           data-app="true"
+      >
+        <v-layout row wrap>
+          <v-flex xs6>
+              <v-slider v-model="opa"
+                        class="ml-3 mr-3 pr-3 pt-0"
+                        :id="layerName"
+              >
+              </v-slider>
+          </v-flex>
+        </v-layout>
+      </div>
     </li>
   </div>
 </template>
@@ -26,9 +41,26 @@
 
   export default {
     props: ['layerName',
+            'layerId',
             // minScale, maxScale, and drawingInfo are stored in layerDefinition
-            'layerDefinition'
+            'layerDefinition',
+            'opacity'
     ],
+    data() {
+      return {
+        opa: this.$props.opacity * 100
+      }
+    },
+    watch: {
+      opa(nextOpacity) {
+        const payload = {
+                          layerName: this.$props.layerName,
+                          opa: nextOpacity/100
+                        }
+        // console.log('OPACITY CHANGED', payload);
+        this.$store.commit('setWebMapLayersOpacity', payload);
+      }
+    },
     computed: {
       scale() {
         return this.$store.state.map.scale;
@@ -64,7 +96,7 @@
     },
     methods: {
       checkboxToggle(e) {
-        console.log('checkboxToggle', e.target.id, e.target.checked);
+        console.log('checkboxToggle', e.target, e.target.id, e.target.checked);
         const activeLayers = this.webMapActiveLayers;
         if (e.target.checked) {
           activeLayers.push(e.target.id);
@@ -81,7 +113,17 @@
 </script>
 
 <style scoped>
+
   .disabled {
     color: #d3d3d3;
   }
+
+  .sliderDiv {
+    height: 60px;
+  }
+
+  .flex {
+    margin-bottom: 16px;
+  }
+
 </style>

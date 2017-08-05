@@ -24,7 +24,9 @@
             <ul class="no-bullet">
               <checkbox v-for="(layer, index) in this.currentWmLayers"
                         :layerName="layer.title"
+                        :layerId="layer.id"
                         :layerDefinition="layer.rest.layerDefinition"
+                        :opacity="layer.opacity"
                         :key=index
               >
               </checkbox>

@@ -11,6 +11,14 @@
   const webmapId = 'f60e4fa0c01f408882a07ee50e8910b9'; // Default WebMap ID
   const EsriWebMap = L.esri.webMap;
   export default {
+    // mounted() {
+    //   // signal children to mount
+    //   for (let child of this.$children) {
+    //     // REVIEW it seems weird to pass children their own props. trying to
+    //     // remember why this was necessary... binding issue?
+    //     child.parentMounted(this, child.$props);
+    //   }
+    // },
     methods: {
       parentMounted(parent) {
         const self = this;
@@ -29,14 +37,18 @@
               // create webMapLayersAndRest
               let webMapLayersAndRest = []
               for (let [index, layer] of webMap.layers.splice(2).entries()) {
+                const id = generateUniqueId();
                 const layerObj = {
                   'title': layer.title.split('_')[1],
                   'layer': layer.layer,
                   // 'index': index,
-                  'id': generateUniqueId(),
+                  'id': id,
                   'rest': restData.operationalLayers[index],
+                  'opacity': restData.operationalLayers[index].opacity,
+                  'type': restData.operationalLayers[index].layerType,
+                  'type2': layer.type
                 }
-                webMapLayersAndRest.push(layerObj)
+                webMapLayersAndRest.push(layerObj);
               }
               self.$store.commit('setWebMapLayersAndRest', webMapLayersAndRest);
 

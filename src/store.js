@@ -93,6 +93,15 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       setWebMapLayersAndRest(state, payload) {
         state.map.webMapLayersAndRest = payload;
       },
+      setWebMapLayersOpacity(state, payload) {
+        // console.log('SETWEBMAPLAYERSOPACITY IS RUNNING', payload);
+        // let opa = state.map.webMapLayersAndRest.filter(layer => layer.layerName === payload.layerName)[0].opacity
+        // console.log('OPACITY BEFORE', state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].opacity);
+        state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].opacity = payload.opa;
+        // console.log('OPACITY AFTER', state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].opacity);
+        //   return currentLayer[0];
+        // console.log('SETWEBMAPLAYERSOPACITY FINISHED RUNNING');
+      },
       setMapScale(state, payload) {
         state.map.scale = payload
       },
@@ -103,14 +112,14 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
         state.map.basemapLeft = payload;
       },
       setBasemapLayers(state, payload) {
-        console.log('setBasemapLayers is running, payload:', payload);
+        // console.log('setBasemapLayers is running, payload:', payload);
         const key = Object.keys(payload);
         const value = Object.values(payload);
-        console.log(key);
+        // console.log(key);
         if (state.map.basemapLayers[key]){
-          console.log('already has key');
+          // console.log('already has key');
         } else {
-          console.log('doesnt have key');
+          // console.log('doesnt have key');
           state.map.basemapLayers[key] = value[0];
         }
       },

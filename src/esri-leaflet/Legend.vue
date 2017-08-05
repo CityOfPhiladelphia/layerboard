@@ -1,56 +1,41 @@
 <script>
   import L from 'leaflet';
   import Control from '../leaflet/Control';
-  // import LegendControl from '../../src/util/legend.js';
-  // console.log(LegendControl);
-  console.log(L.esri);
 
-  // const EsriLeafletLegend = L.esri.legendControl;
-  // console.log(EsriLeafletLegend);
-
-  // REVIEW is there a better way to extend a vue component?
   const {props, methods} = Control;
 
   export default {
-    // TODO figure how to extend props. sometimes it's an obj, sometimes an array.
-    // props: Object.assign(props, {
-    // }),
-    // props: [
-    //   'position',
-    //   'imageryYears'
-    // ],
+    props: [
+      'position',
+      'wmActiveLayers'
+    ],
     render(h) {
       return;
     },
     computed: {
-      mounted() {
-        const leafletElement = this.$leafletElement = this.createLeafletElement();
-        const map = this.$store.state.map.map;
-        const wmLayers = this.$store.state.map.webMapLayersAndRest;
-
-        // REVIEW kind of hacky/not reactive?
-        if (map) {
-          map.addControl(this.$leafletElement);
-          // leafletElement.addTo(map);
-          // map.attributionControl.removeAttribution('overwrite');
-        }
-      },
-      destroyed() {
-        // this.$leafletElement._map.removeLayer(this.$leafletElement);
-      },
+      currentWmLayers() {
+        return this.$store.state.map.webMapLayersAndRest.filter(layer => this.$props.wmActiveLayers.includes(layer.title));
+      }
+    },
+    mounted() {
+      const leafletElement = this.$leafletElement = this.createLeafletElement();
+      const map = this.$store.state.map.map;
+      if (map) {
+        map.addControl(this.$leafletElement);
+      }
+    },
+    destroyed() {
+      this.$leafletElement._map.removeControl(this.$leafletElement);
     },
     methods: {
       createLeafletElement() {
-        // const legend = new EsriLeafletLegend(wmLayers[0].layer);
-        const legend = L.esri.legendControl(wmLayers[0].layer);
-        console.log(legend);
+        console.log('CREATING LEGEND FOR', this.currentWmLayers[0].title);
+        const legend = L.esri.legendControl(this.currentWmLayers[0].layer);
         return legend;
       },
       parentMounted(parent) {
-        console.log('Legend.vue parentMounted is running', this.$leafletElement);
         const map = parent.$leafletElement;
         map.addControl(this.$leafletElement);
-        // this.$leafletElement.addTo(map);
       },
     },
   };

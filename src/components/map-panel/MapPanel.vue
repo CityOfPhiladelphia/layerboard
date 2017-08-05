@@ -27,6 +27,8 @@
                             :layer="layer.layer"
                             :layerName="layer.title"
                             :layerDefinition="layer.rest.layerDefinition"
+                            :opacity="layer.opacity"
+                            :type="layer.type2"
         />
       </esri-web-map>
 
@@ -140,14 +142,18 @@
        /> -->
 
       <!-- CONTROLS: -->
-      <!-- <legend-control :position="'topright'"
-      /> -->
+
       <!-- basemap control -->
       <!-- <div v-once>
         <side-by-side-button :position="'topright'"
                              v-once
         />
       </div> -->
+
+      <!-- <legend-control v-if="this.webMapActiveLayers.length > 0"
+                      :position="'topright'"
+                      :wmActiveLayers="this.webMapActiveLayers"
+      /> -->
 
       <div v-once>
         <basemap-control v-if="hasImageryBasemaps"
@@ -259,7 +265,7 @@
   // import EsriFeatureLayer from '../../esri-leaflet/FeatureLayer';
   import Geojson from '../../leaflet/Geojson';
   import CircleMarker from '../../leaflet/CircleMarker';
-  import OpacitySlider from '../../leaflet/OpacitySlider';
+  // import OpacitySlider from '../../leaflet/OpacitySlider';
   import VectorMarker from '../VectorMarker';
   import PngMarker from '../PngMarker';
   import SvgMarker from '../SvgMarker';
@@ -292,7 +298,7 @@
       // EsriFeatureLayer,
       Geojson,
       CircleMarker,
-      OpacitySlider,
+      // OpacitySlider,
       VectorMarker,
       PngMarker,
       SvgMarker,
@@ -468,7 +474,7 @@
         if (e.originalEvent.keyCode === 13) {
           return;
         }
-        this.$store.commit('setLastSearchMethod', 'reverseGeocode')
+        this.$store.commit('setLastSearchMethod', 'reverseGeocode');
 
         // METHOD 1: intersect map click latlng with parcel layers
         this.getDorParcelsByLatLng(e.latlng);
@@ -549,6 +555,7 @@
   }
 
   .mb-search-control-input {
+    background-color: white;
     border: 0;
     height: 48px !important;
     line-height: 48px;
