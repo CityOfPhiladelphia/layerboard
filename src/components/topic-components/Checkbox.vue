@@ -33,14 +33,26 @@
         </v-layout>
       </div>
     </li>
+    <legend-box v-if="webMapActiveLayers.includes(layerName)"
+                :layer="layer"
+                :layerName="layerName"
+                :layerId="layerId"
+                :layerDefinition="layerDefinition"
+    >
+    </legend-box>
   </div>
 </template>
 
 <script>
   import TopicComponent from './TopicComponent';
+  import LegendBox from './LegendBox';
 
   export default {
-    props: ['layerName',
+    components: {
+      LegendBox
+    },
+    props: ['layer',
+            'layerName',
             'layerId',
             // minScale, maxScale, and drawingInfo are stored in layerDefinition
             'layerDefinition',

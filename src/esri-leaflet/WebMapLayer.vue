@@ -20,7 +20,7 @@
     },
     mounted() {
       const leafletElement = this.$leafletElement = this.retrieveLeafletElement();
-      console.log('THE LAYER:', this.$leafletElement);
+      // console.log('THE LAYER:', this.$leafletElement);
       const map = this.$store.state.map.map;
       if (map) {
         leafletElement.addTo(map);

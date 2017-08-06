@@ -154,7 +154,8 @@ EsriLeaflet.Legend.include({
       console.log('this._service exists');
       console.log(this);
       //console.log(cb);
-      return this._service.request(this.path, this.params, cb, this);
+      // return this._service.request(this.path, this.params, cb, this);
+      return this._service.request('', this.params, cb, this);
     } else {
       console.log('this._service does not exist');
       return this._request('request', this.path, this.params, cb, this);

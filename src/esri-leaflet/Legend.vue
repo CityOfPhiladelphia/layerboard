@@ -41,9 +41,35 @@
   };
 </script>
 
-<style scoped>
-  .year-selector-container {
-    /*border: 1px solid #222;*/
+<style>
+  .leaflet-legend-control {
+      background: white;
+      padding: 1em;
+      max-height: 300px;
+      overflow: auto;
+      font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+  }
+
+  .leaflet-legend-control ul {
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+  }
+
+  .leaflet-legend-control ul li img {
+      display: inline-block;
+      margin-right: 5px;
+  }
+
+  .leaflet-legend-control ul li span {
+      vertical-align: top;
+      line-height: 22px;
+  }
+
+  .leaflet-legend-control ul ul {
+      margin-left: 15px;
+  }
+  /*.year-selector-container {
     display: inline-block;
     margin-right: 20px;
   }
@@ -73,7 +99,6 @@
     width: 26px;
     height: 26px;
     line-height: 26px;
-    /*display: block;*/
     text-align: center;
     text-decoration: none;
     color: black;
@@ -83,7 +108,6 @@
     background-position: 50% 50%;
     background-repeat: no-repeat;
     overflow: hidden;
-    /*display: block;*/
   }
 
   .leaflet-bar button:hover {
@@ -125,17 +149,10 @@
     width: 30px;
     height: 30px;
     opacity: 0%;
-    /*padding: 0px;
-    margin: 0px;*/
-    /*background: white;*/
-    /*background: rgba(255,255,255,1);*/
-    /* box-shadow: 0 0 15px rgba(0,0,0,0.2); */
-    /*display: inline-block;*/
-    /*float: right;*/
   }
 
   .button-image {
     vertical-align: top;
 
-  }
+  }*/
 </style>

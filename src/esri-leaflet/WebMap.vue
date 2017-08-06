@@ -28,30 +28,14 @@
           dataType: 'json',
           url: "https://www.arcgis.com/sharing/rest/content/items/"+ webmapId +"/data",
           success(restData) {
-            const webMap = this.$webMap = new EsriWebMap(webmapId, { map: map });
+            const webMap = this.$webMap = L.esri.webMap(webmapId, { map: map });
+            // console.log('WEBMAP:', webMap)
+            // const webMap = this.$webMap = new EsriWebMap(webmapId, { map: map });
+
+            self.$store.commit('setWebMap', webMap);
 
             webMap.on('load', function() {
               const ignore = ["CityBasemap", "CityBasemap_Labels"];
-
-
-              // create webMapLayersAndRest
-              let webMapLayersAndRest = []
-              for (let [index, layer] of webMap.layers.splice(2).entries()) {
-                const id = generateUniqueId();
-                const layerObj = {
-                  'title': layer.title.split('_')[1],
-                  'layer': layer.layer,
-                  // 'index': index,
-                  'id': id,
-                  'rest': restData.operationalLayers[index],
-                  'opacity': restData.operationalLayers[index].opacity,
-                  'type': restData.operationalLayers[index].layerType,
-                  'type2': layer.type
-                }
-                webMapLayersAndRest.push(layerObj);
-              }
-              self.$store.commit('setWebMapLayersAndRest', webMapLayersAndRest);
-
 
               // create layerUrls - object mapping layerName to url
               let layerUrls = {};
@@ -73,6 +57,25 @@
                 }
               }
               self.$store.commit('setLayerUrls', layerUrls);
+
+              // create webMapLayersAndRest
+              let webMapLayersAndRest = []
+              for (let [index, layer] of webMap.layers.splice(2).entries()) {
+                // console.log(index, layer);
+                const id = generateUniqueId();
+                const layerObj = {
+                  'title': layer.title.split('_')[1],
+                  'layer': layer.layer,
+                  // 'index': index,
+                  'id': id,
+                  'rest': restData.operationalLayers[index],
+                  'opacity': restData.operationalLayers[index].opacity,
+                  'type': restData.operationalLayers[index].layerType,
+                  'type2': layer.type
+                }
+                webMapLayersAndRest.push(layerObj);
+              }
+              self.$store.commit('setWebMapLayersAndRest', webMapLayersAndRest);
 
             }); // end of webmap onload
           }

@@ -48,6 +48,7 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       basemapLeft: 'imagery2017',
       basemapLayers: {},
       circleMarkers: [],
+      webMap: null,
       webMapActiveLayers: [],
       webMapLayersAndRest: [],
       sideBySideActive: false,
@@ -86,6 +87,9 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       },
       setMap(state, payload) {
         state.map.map = payload.map;
+      },
+      setWebMap(state, payload) {
+        state.map.webMap = payload;
       },
       setWebMapActiveLayers(state, payload) {
         state.map.webMapActiveLayers = payload;

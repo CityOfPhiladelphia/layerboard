@@ -12,12 +12,12 @@
     <!-- :max-zoom="this.$config.map.maxZoom" -->
     <!-- :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }" -->
       <!-- loading mask -->
-      <div v-show="isGeocoding" class="mb-map-loading-mask">
+      <!-- <div v-show="isGeocoding" class="mb-map-loading-mask">
         <div class="mb-map-loading-mask-inner">
           <i class="fa fa-spinner fa-4x spin"></i>
           <h1>Finding address...</h1>
         </div>
-      </div>
+      </div> -->
 
       <!-- webmap -->
       <esri-web-map>
@@ -84,15 +84,6 @@
       /> -->
 
 
-      <!-- address marker -->
-      <!-- REVIEW why does this need a key? it's not a list... -->
-      <!-- <vector-marker v-if="identifyFeature === 'address-marker' && geocodeGeom"
-                    :latlng="[...geocodeGeom.coordinates].reverse()"
-                    :key="streetAddress"
-      /> -->
-
-      <!-- NEW METHOD: try rendering markers generically based on marker type -->
-      <!-- vector markers -->
       <vector-marker v-for="(marker, index) in markers"
                     :latlng="marker.latlng"
                     :key="marker.key"
@@ -109,51 +100,6 @@
                     :orientation="this.$store.state.cyclomedia.viewer.props.orientation"
       />
 
-      <!-- geojson features -->
-      <!-- <geojson v-for="geojsonFeature in geojsonFeatures"
-               :geojson="geojsonFeature.geojson"
-               :color="geojsonFeature.color"
-               :weight="2"
-               :key="geojsonFeature.key"
-       /> -->
-       <!-- :overlay="geojsonFeature.overlayFeature" -->
-
-       <!-- TODO give these a real key -->
-      <!-- <circle-marker v-for="circleMarker in circleMarkers"
-                     @l-click="handleCircleMarkerClick"
-                     @l-mouseover="handleCircleMarkerMouseover"
-                     @l-mouseout="handleCircleMarkerMouseout"
-                     :latlng="circleMarker.latlng"
-                     :radius="circleMarker.radius"
-                     :fillColor="circleMarker.fillColor"
-                   	 :color="circleMarker.color"
-                   	 :weight="circleMarker.weight"
-                   	 :opacity="circleMarker.opacity"
-                   	 :fillOpacity="circleMarker.fillOpacity"
-                     :key="Math.random()"
-                     :data="{featureId: circleMarker.featureId}"
-      /> -->
-
-       <!-- <vector-marker v-for="marker in threeOneOneMarkers"
-                      v-if="activeTopicConfig.key === 'threeOneOne'"
-                      :latlng="[marker.geometry.coordinates[1], marker.geometry.coordinates[0]]"
-                      :key="marker.id"
-                      :markerColor="'#b2ffb2'"
-       /> -->
-
-      <!-- CONTROLS: -->
-
-      <!-- basemap control -->
-      <!-- <div v-once>
-        <side-by-side-button :position="'topright'"
-                             v-once
-        />
-      </div> -->
-
-      <!-- <legend-control v-if="this.webMapActiveLayers.length > 0"
-                      :position="'topright'"
-                      :wmActiveLayers="this.webMapActiveLayers"
-      /> -->
 
       <div v-once>
         <basemap-control v-if="hasImageryBasemaps"
@@ -190,26 +136,10 @@
         />
       </div> -->
 
-
-
-      <!-- <div v-once>
-        <pictometry-button v-if="this.$config.pictometry.enabled"
-                           v-once
-                           :position="'topright'"
-                           :link="'pictometry'"
-                           :imgSrc="'../../src/assets/pictometry.png'"
-        />
-      </div>
-
-      <div v-once>
-        <cyclomedia-button v-if="this.$config.cyclomedia.enabled"
-                           v-once
-                           :position="'topright'"
-                           :link="'cyclomedia'"
-                           :imgSrc="'../../src/assets/cyclomedia.png'"
-                           @click="handleCyclomediaButtonClick"
-        />
-      </div> -->
+      <legend-control v-if="this.webMapActiveLayers.length > 0"
+        :position="'topright'"
+        :wmActiveLayers="this.webMapActiveLayers"
+      />
 
       <!-- search control -->
       <!-- custom components seem to have to be wrapped like this to work
@@ -230,20 +160,7 @@
           </div>
         </control>
       </div>
-
-      <!-- <cyclomedia-recording-circle v-for="recording in cyclomediaRecordings"
-                                   v-if="cyclomediaActive"
-                                   :key="recording.imageId"
-                                   :imageId="recording.imageId"
-                                   :latlng="[recording.lat, recording.lng]"
-                                   :size="1.2"
-                                   :color="'#3388ff'"
-                                   :weight="1"
-                                   @l-click="handleCyclomediaRecordingClick"
-      /> -->
     </map_>
-    <slot class='widget-slot' name="cycloWidget" />
-    <slot class='widget-slot' name="pictWidget" />
   </div>
 </template>
 
@@ -319,9 +236,9 @@
       scale() {
         return this.$store.state.map.scale;
       },
-      // webMap() {
-      //   return this.$store.state.map.webMap;
-      // },
+      webMap() {
+        return this.$store.state.map.webMap;
+      },
       wmLayers() {
         return this.$store.state.map.webMapLayersAndRest;
       },

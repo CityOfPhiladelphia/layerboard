@@ -22,11 +22,12 @@
         <form action="#/">
           <fieldset class="options">
             <ul class="no-bullet">
-              <checkbox v-for="(layer, index) in this.currentWmLayers"
-                        :layerName="layer.title"
-                        :layerId="layer.id"
-                        :layerDefinition="layer.rest.layerDefinition"
-                        :opacity="layer.opacity"
+              <checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
+                        :layer="currentWmLayer.layer"
+                        :layerName="currentWmLayer.title"
+                        :layerId="currentWmLayer.id"
+                        :layerDefinition="currentWmLayer.rest.layerDefinition"
+                        :opacity="currentWmLayer.opacity"
                         :key=index
               >
               </checkbox>
