@@ -136,10 +136,10 @@
         />
       </div> -->
 
-      <legend-control v-if="this.webMapActiveLayers.length > 0"
+      <!-- <legend-control v-if="this.webMapActiveLayers.length > 0"
         :position="'topright'"
         :wmActiveLayers="this.webMapActiveLayers"
-      />
+      /> -->
 
       <!-- search control -->
       <!-- custom components seem to have to be wrapped like this to work

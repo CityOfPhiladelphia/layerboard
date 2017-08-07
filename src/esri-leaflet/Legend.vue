@@ -31,6 +31,7 @@
       createLeafletElement() {
         console.log('CREATING LEGEND FOR', this.currentWmLayers[0].title);
         const legend = L.esri.legendControl(this.currentWmLayers[0].layer);
+        console.log(legend);
         return legend;
       },
       parentMounted(parent) {

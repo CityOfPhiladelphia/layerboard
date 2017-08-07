@@ -18,6 +18,14 @@
         >(metadata)
         </a>
       </label>
+      <legend-box v-if="webMapActiveLayers.includes(layerName)"
+        :layer="layer"
+        :layerName="layerName"
+        :layerId="layerId"
+        :layerDefinition="layerDefinition"
+        :legendHtml="legendHtml"
+        >
+      </legend-box>
       <div v-if="webMapActiveLayers.includes(layerName)"
            class="sliderDiv"
            data-app="true"
@@ -33,13 +41,6 @@
         </v-layout>
       </div>
     </li>
-    <legend-box v-if="webMapActiveLayers.includes(layerName)"
-                :layer="layer"
-                :layerName="layerName"
-                :layerId="layerId"
-                :layerDefinition="layerDefinition"
-    >
-    </legend-box>
   </div>
 </template>
 
@@ -56,7 +57,8 @@
             'layerId',
             // minScale, maxScale, and drawingInfo are stored in layerDefinition
             'layerDefinition',
-            'opacity'
+            'opacity',
+            'legendHtml'
     ],
     data() {
       return {

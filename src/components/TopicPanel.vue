@@ -28,6 +28,7 @@
                         :layerId="currentWmLayer.id"
                         :layerDefinition="currentWmLayer.rest.layerDefinition"
                         :opacity="currentWmLayer.opacity"
+                        :legendHtml="currentWmLayer.legendHtml"
                         :key=index
               >
               </checkbox>

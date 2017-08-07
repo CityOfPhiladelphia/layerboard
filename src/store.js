@@ -39,6 +39,7 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       layerUrls: {},
       inputLayerFilter: '',
     },
+    // legends: {},
     map: {
       center: config.map.center,
       zoom: config.map.zoom,
@@ -106,6 +107,16 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
         //   return currentLayer[0];
         // console.log('SETWEBMAPLAYERSOPACITY FINISHED RUNNING');
       },
+
+      setLegend(state, payload) {
+        console.log('SETLEGEND', payload.layerName, payload.legendHtml);
+        // const wm = state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName);
+        // console.log('legend wm', wm);
+        // wm.legendHtml = payload.legendHtml;
+        state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].legendHtml = payload.legendHtml;
+      },
+
+
       setMapScale(state, payload) {
         state.map.scale = payload
       },
