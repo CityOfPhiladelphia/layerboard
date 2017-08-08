@@ -5,7 +5,6 @@ import Vuex from 'vuex';
 // Vue.use(Vuex);
 
 function createStore(config, bennyEndpoints, bennyRepresentation) {
-  const defaultTopic = config.topics[0];
 
   // create initial state for sources. data key => {}
   const sourceKeys = Object.keys(config.dataSources || {});
@@ -32,48 +31,28 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
 
   const initialState = {
     bennyEndpoints,
-    // bennyRepresentation,
-    activeTopics: [],
-    // the ais feature
     geocode: {
       status: null,
       data: null
     },
-    // anything related to topics
-    topics: {
-      topicLayerMap: {},
-      topicLayerUrls: {},
+    layers: {
+      layerUrls: {},
       inputLayerFilter: '',
     },
-    // the leaflet map object
+    // legends: {},
     map: {
       center: config.map.center,
       zoom: config.map.zoom,
       scale: null,
       map: null,
-      bounds: null,
-      basemap: defaultTopic.basemap,
-      basemapLeft: 'imagery2016',
+      basemap: 'pwd',
+      basemapLeft: 'imagery2017',
       basemapLayers: {},
-      // basemap: 'imagery2016',
       circleMarkers: [],
       webMap: null,
       webMapActiveLayers: [],
-      webMapRestData: null,
       webMapLayersAndRest: [],
       sideBySideActive: false,
-      // features: {
-      //   markers: [
-      //     // {
-      //     //   geometry: '',
-      //     //   // optional - mainly for symbology
-      //     //   options: {}
-      //     // }
-      //   ],
-      //   polygons: [
-      //
-      //   ]
-      // }
     },
     dorParcels: [],
     pwdParcel: null,
@@ -85,7 +64,6 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       locFromApp: null,
       locFromViewer: null,
     },
-    // we need this to know whether or not to force an update on the first show
     pictometry: {
       ipa: null,
       active: false,
@@ -102,9 +80,95 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
     state: initialState,
     getters: {},
     mutations: {
-      setActiveTopics(state, payload) {
-        state.activeTopics = payload;
+      setLayerUrls(state, payload) {
+        state.layers.layerUrls = payload;
       },
+      setInputLayerFilter(state, payload) {
+        state.layers.inputLayerFilter = payload;
+      },
+      setMap(state, payload) {
+        state.map.map = payload.map;
+      },
+      setWebMap(state, payload) {
+        state.map.webMap = payload;
+      },
+      setWebMapActiveLayers(state, payload) {
+        state.map.webMapActiveLayers = payload;
+      },
+      setWebMapLayersAndRest(state, payload) {
+        state.map.webMapLayersAndRest = payload;
+      },
+      setWebMapLayersOpacity(state, payload) {
+        // console.log('SETWEBMAPLAYERSOPACITY IS RUNNING', payload);
+        // let opa = state.map.webMapLayersAndRest.filter(layer => layer.layerName === payload.layerName)[0].opacity
+        // console.log('OPACITY BEFORE', state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].opacity);
+        state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].opacity = payload.opa;
+        // console.log('OPACITY AFTER', state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].opacity);
+        //   return currentLayer[0];
+        // console.log('SETWEBMAPLAYERSOPACITY FINISHED RUNNING');
+      },
+
+      setLegend(state, payload) {
+        state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].legendHtml = payload.legendHtml;
+      },
+
+
+      setMapScale(state, payload) {
+        state.map.scale = payload
+      },
+      setBasemap(state, payload) {
+        state.map.basemap = payload;
+      },
+      setBasemapLeft(state, payload) {
+        state.map.basemapLeft = payload;
+      },
+      setBasemapLayers(state, payload) {
+        // console.log('setBasemapLayers is running, payload:', payload);
+        const key = Object.keys(payload);
+        const value = Object.values(payload);
+        // console.log(key);
+        if (state.map.basemapLayers[key]){
+          // console.log('already has key');
+        } else {
+          // console.log('doesnt have key');
+          state.map.basemapLayers[key] = value[0];
+        }
+      },
+      setActiveFeature(state, payload) {
+        state.activeFeature = payload;
+      },
+      setLastSearchMethod(state, payload) {
+        state.lastSearchMethod = payload;
+      },
+      setSideBySideActive(state, payload) {
+        state.map.sideBySideActive = payload;
+      },
+
+
+
+      setMapCenter(state, payload) {
+        state.map.center = payload;
+      },
+      setMapZoom(state, payload) {
+        state.map.zoom = payload
+      },
+      setDorParcels(state, payload) {
+        state.dorParcels = payload;
+      },
+      setPwdParcel(state, payload) {
+        state.pwdParcel = payload;
+      },
+      setGeocodeStatus(state, payload) {
+        state.geocode.status = payload;
+      },
+      setGeocodeData(state, payload) {
+        state.geocode.data = payload;
+      },
+
+
+
+
+
       setSourceStatus(state, payload) {
         const key = payload.key;
         const status = payload.status;
@@ -146,62 +210,28 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
         const key = payload.key;
         state.sources[key].targets = {};
       },
-      setTopicLayerMap(state, payload) {
-        state.topics.topicLayerMap = payload;
-      },
-      setTopicLayerUrls(state, payload) {
-        state.topics.topicLayerUrls = payload;
-      },
-      setInputLayerFilter(state, payload) {
-        state.topics.inputLayerFilter = payload;
-      },
-      setMap(state, payload) {
-        state.map.map = payload.map;
-      },
-      setWebMap(state, payload) {
-        state.map.webMap = payload;
-      },
-      setWebMapActiveLayers(state, payload) {
-        state.map.webMapActiveLayers = payload;
-      },
-      setWebMapRestData(state, payload) {
-        state.map.webMapRestData = payload;
-      },
-      setWebMapLayersAndRest(state, payload) {
-        state.map.webMapLayersAndRest = payload;
-      },
-      setMapBounds(state, payload) {
-        state.map.bounds = payload.bounds
-      },
-      setMapCenter(state, payload) {
-        state.map.center = payload;
-      },
-      setMapZoom(state, payload) {
-        state.map.zoom = payload
-      },
-      setMapScale(state, payload) {
-        state.map.scale = payload
-      },
-      setDorParcels(state, payload) {
-        state.dorParcels = payload;
-      },
-      setPwdParcel(state, payload) {
-        state.pwdParcel = payload;
-      },
-      setGeocodeStatus(state, payload) {
-        state.geocode.status = payload;
-      },
-      setGeocodeData(state, payload) {
-        state.geocode.data = payload;
-      },
-      setBasemap(state, payload) {
-        state.map.basemap = payload;
-      },
+
+
+
+
+
       setPictometryActive(state, payload) {
         if (!config.pictometry.enabled) {
           return;
         }
         state.pictometry.active = payload;
+      },
+      setPictometryIpa(state, payload) {
+        state.pictometry.ipa = payload;
+      },
+      setPictometryShapeIds(state, payload) {
+        state.pictometry.shapeIds = payload;
+      },
+      setPictometryPngMarkerIds(state, payload) {
+        state.pictometry.pngMarkerIds = payload;
+      },
+      setPictometryZoom(state, payload) {
+        state.pictometry.zoom = payload;
       },
       setCyclomediaActive(state, payload) {
         if (!config.cyclomedia.enabled) {
@@ -221,46 +251,6 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       setCyclomediaLocFromViewer(state, payload) {
         state.cyclomedia.locFromViewer = payload;
       },
-      setActiveFeature(state, payload) {
-        state.activeFeature = payload;
-      },
-      setLastSearchMethod(state, payload) {
-        state.lastSearchMethod = payload;
-      },
-      setPictometryIpa(state, payload) {
-        state.pictometry.ipa = payload;
-      },
-      setPictometryShapeIds(state, payload) {
-        state.pictometry.shapeIds = payload;
-      },
-      setPictometryPngMarkerIds(state, payload) {
-        state.pictometry.pngMarkerIds = payload;
-      },
-      setPictometryZoom(state, payload) {
-        state.pictometry.zoom = payload;
-      },
-      setSideBySideActive(state, payload) {
-        state.map.sideBySideActive = payload;
-      },
-      setBasemapLeft(state, payload) {
-        state.map.basemapLeft = payload;
-      },
-      setBasemapLayers(state, payload) {
-        console.log('setBasemapLayers is running, payload:', payload);
-        const key = Object.keys(payload);
-        const value = Object.values(payload);
-        console.log(key);
-        if (state.map.basemapLayers[key]){
-          console.log('already has key');
-        } else {
-          console.log('doesnt have key');
-          state.map.basemapLayers[key] = value[0];
-        }
-        // state.map.basemapLayers.push(payload);
-      }
-      // setCircleMarkers(state, payload) {
-      //   state.map.circleMarkers.push(payload);
-      // }
     }
   });
 }

@@ -11,83 +11,73 @@
                    @keyup="handleFilterFormKeyup"
             />
             <button class="mb-search-control-button"
-                    v-if="this.$store.state.topics.inputLayerFilter != ''"
+                    v-if="this.$store.state.layers.inputLayerFilter != ''"
             >
               <i class="fa fa-times fa-lg"></i>
             </button>
         </form>
       </div>
 
-      <topic v-for="(topic, key) in currentTopicLayerMap"
-             :topicLayerMap = currentTopicLayerMap
-             :topicKey="key"
-             :key="key"
-      />
+      <div class="topic-body">
+        <form action="#/">
+          <fieldset class="options">
+            <ul class="no-bullet">
+              <checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
+                        :layer="currentWmLayer.layer"
+                        :layerName="currentWmLayer.title"
+                        :layerId="currentWmLayer.id"
+                        :layerDefinition="currentWmLayer.rest.layerDefinition"
+                        :opacity="currentWmLayer.opacity"
+                        :legendHtml="currentWmLayer.legendHtml"
+                        :key=index
+              >
+              </checkbox>
+            </ul>
+          </fieldset>
+        </form>
+      </div>
+      <!-- error -->
+      <!-- <div class="topic-body" v-show="shouldShowError">
+        Could not locate records for that address.
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-  import Topic from './Topic';
+  import Checkbox from './topic-components/Checkbox';
 
   export default {
     components: {
-      Topic
+      Checkbox
     },
     computed: {
-      currentTopicLayerMap() {
-        const topicLayerMap = this.$store.state.topics.topicLayerMap;
-        const inputFilter = this.$store.state.topics.inputLayerFilter;
-        const webMapActiveLayers = this.$store.state.map.webMapActiveLayers;
-
-        let currentTopicLayerMap = {}
-        for (let topic of Object.keys(topicLayerMap)) {
-          let currentLayers = []
-          for (let layer of topicLayerMap[topic]) {
-            // console.log(topic+'_'+layer);
-            // console.log(webMapActiveLayers.includes(topic+'_'+layer));
-            if (layer.toLowerCase().includes(inputFilter.toLowerCase()) || webMapActiveLayers.includes(topic+'_'+layer)) {
-              currentLayers.push(layer)
-            } // end of if
-          } // end of inner loop
-          // console.log(topic, currentLayers.length)
-          if (currentLayers.length > 0) {
-            // console.log(currentLayers.length);
-            currentTopicLayerMap[topic] = currentLayers
-          }
-        } // end of outer loop
-        // console.log(currentTopicLayerMap);
-        return currentTopicLayerMap
+      scale() {
+        return this.$store.state.map.scale;
       },
-
-      // topicsFiltered() {
-      //   const inputLayerFilter = this.$store.state.topics.inputLayerFilter;
-      //   return this.topics.filter()
-      //   // get input text
-      //   // filter topics
-      // },
-
-      // ais() {
-      //   return this.$store.state.geocode.data;
-      // },
-      // address() {
-      //   const ais = this.ais;
-      //   if (!ais) return null;
-      //   return ais.properties.street_address;
-      // },
-      // zipCode() {
-      //   const ais = this.ais;
-      //   if (!ais) return null;
-      //   const zipCode = ais.properties.zip_code;
-      //   const zip4 = ais.properties.zip_4
-      //   return zipCode + '-' + zip4;
-      // },
+      currentWmLayers() {
+        const layers = this.$store.state.map.webMapLayersAndRest;
+        let currentLayers = [];
+        for (let layer of layers) {
+          if (layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) || this.webMapActiveLayers.includes(layer.title)) {
+            currentLayers.push(layer)
+          }
+        }
+        return currentLayers;
+      },
+      webMapActiveLayers() {
+        return this.$store.state.map.webMapActiveLayers;
+      },
+      inputLayerFilter() {
+        return this.$store.state.layers.inputLayerFilter;
+      },
     },
     methods: {
       handleFilterFormKeyup(e) {
+        console.log('keyup', e.target.value);
         const input = e.target.value;
         // if (input.length >= 3) {
-          this.$store.commit('setInputLayerFilter', input);
+        this.$store.commit('setInputLayerFilter', input);
         // } else {
           // this.$store.commit('setInputLayerFilter', null);
         // }
@@ -108,6 +98,43 @@
 </script>
 
 <style scoped>
+  /*REVIEW these aren't prefixed `mb-`because they're scoped, but it feels
+  inconsistent?*/
+  ul {
+    padding: 0;
+  }
+
+  .topic-header {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    display: block;
+    font-size: 18px;
+    font-weight: normal;
+    height: 40px;
+    line-height: 20px;
+    padding: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    margin-bottom: 8px;
+  }
+
+  .topic-header:hover {
+    background: #fff;
+    color: inherit;
+  }
+
+  .topic-header-icon {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .topic-body {
+    padding-left: 10px;
+    /*margin-bottom: 20px;*/
+  }
+
+  .loading {
+    float: right;
+  }
 
   /*.scroll {overflow:auto;}
   .scroll::-webkit-scrollbar {

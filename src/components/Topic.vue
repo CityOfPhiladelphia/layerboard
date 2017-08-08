@@ -1,6 +1,6 @@
 <template>
   <div v-if="shouldShowTopic">
-    <a href="#"
+    <!-- <a href="#"
        class="topic-header"
        @click="setActiveTopics"
        v-if="shouldShowHeader"
@@ -9,10 +9,11 @@
         <i class="fa fa-spinner fa-lg spin"></i>
       </span>
       {{ topic.key }}
-    </a>
+    </a> -->
 
     <!-- success -->
-    <div class="topic-body" v-if="shouldShowBody">
+    <!-- <div class="topic-body" v-if="shouldShowBody"> -->
+    <div class="topic-body">
       <form action="#/">
         <fieldset class="options">
           <ul class="no-bullet">

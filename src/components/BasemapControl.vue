@@ -39,9 +39,9 @@
       'imageryYears'
     ],
     computed: {
-      webMapLayers() {
-        this.$store.state.map.webMap.layers
-      },
+      // webMapLayers() {
+      //   this.$store.state.map.webMap.layers
+      // },
       map() {
         this.$store.state.map.map
       },
