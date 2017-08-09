@@ -42,25 +42,22 @@
         this.$leafletElement.addTo(map);
       },
       changeOpacity(nextOpacity) {
-        // console.log('WEBMAPLAYER.VUE changeOpacity is running', nextOpacity, this.$leafletElement);
-        // if (this.$props.layerDefinition) {
-        //   const _layers = this.$props.layer._layers
-        //   for (let key of Object.keys(_layers)){
-        //     console.log(_layers[key]);
-        //     if (key === '205') {
-        //       console.log('on', key)
-        //       _layers[key].options.drawingInfo.transparency = nextOpacity
-        //     }
-        //   }
-        //   console.log(_layers);
-        // } else {
+        console.log('LEAFLET ELEMENT:', this.$leafletElement);
         if (this.$props.type != 'FL') {
           this.$leafletElement.setOpacity(nextOpacity);
         } else {
           this.$leafletElement.eachFeature(function(layer){
-            layer.setStyle({
-              opacity: nextOpacity
-            })
+            console.log('LAYER', layer);
+            if (layer._icon) {
+              const style = layer._icon.attributes.style.nodeValue;
+              const styleSlice = style.slice(0, style.indexOf('; opacity'));
+              const styleConcat = styleSlice.concat('; opacity:', nextOpacity, '; fill-opacity:', nextOpacity, ';');
+              layer._icon.attributes.style.nodeValue = styleConcat;
+            } else if (layer._path) {
+              layer.setStyle({
+                fillOpacity: nextOpacity
+              })
+            }
           })
         }
       }
