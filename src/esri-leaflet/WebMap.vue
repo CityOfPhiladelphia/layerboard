@@ -31,13 +31,8 @@
           //   outFields:'*'
           // },
           success(restData) {
-            // console.log(restData);
-            // const jsonData = JSON.parse(restData);
-            // console.log('JSONDATA', jsonData);
             const webMap = this.$webMap = L.esri.webMap(webmapId, { map: map });
-            // console.log('WEBMAP:', webMap)
-            // const webMap = this.$webMap = new EsriWebMap(webmapId, { map: map });
-
+            console.log('WEBMAP', webMap);
             self.$store.commit('setWebMap', webMap);
 
             webMap.on('load', function() {
@@ -67,12 +62,10 @@
               // create webMapLayersAndRest
               let webMapLayersAndRest = []
               for (let [index, layer] of webMap.layers.splice(2).entries()) {
-                // console.log('IN WEBMAP.VUE LAYER', index, layer);
                 const id = generateUniqueId();
                 const layerObj = {
                   'title': layer.title.split('_')[1],
                   'layer': layer.layer,
-                  // 'index': index,
                   'id': id,
                   'serviceItemId': restData.operationalLayers[index].itemId,
                   'rest': restData.operationalLayers[index],
@@ -80,27 +73,10 @@
                   'type': restData.operationalLayers[index].layerType,
                   'type2': layer.type,
                   'legendHtml': null
-                  // 'legend': L.esri.legendControl(layer.layer, { layerName: layer.title.split('_')[1],
-                  //                                               layerId: id,
-                  //                                               store: self.$store
-                  //                                             })
                 }
                 webMapLayersAndRest.push(layerObj);
               }
               self.$store.commit('setWebMapLayersAndRest', webMapLayersAndRest);
-
-              // console.log('IN WEBMAP.VUE BEFORE 3RD LOOP', webMapLayersAndRest);
-              // for (let layer of webMapLayersAndRest) {
-              //   console.log('IN LOOP', layer.title);
-              //   const opts = {
-              //     layerName: layer.title,
-              //     layerServiceItemId: layer.serviceItemId,
-              //     store: self.$store
-              //   }
-              //   L.esri.legendControl(layer.layer, opts);
-              // }
-              // console.log('IN WEBMAP.VUE AFTER 3RD LOOP')
-
             }); // end of webmap onload
           }
         });

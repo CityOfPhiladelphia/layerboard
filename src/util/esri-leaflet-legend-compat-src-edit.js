@@ -30,7 +30,7 @@ var store;
 
 EsriLeaflet.Util.reduce = function(values, initial, fn, cb, context) {
   var curr = initial;
-  console.log('4 running EsriLeaflet.Util.reduce, curr is:', curr)
+  console.log('4 running EsriLeaflet.Util.reduce, values is:', values, 'curr is:', curr)
   function next(index) {
     var sync = true;
     for (var i = index; i < values.length; i++) {
@@ -329,7 +329,9 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _renderFill: function(ctx, symbol, callback) {
-    var size = EsriLeaflet.Tasks.Legend.SymbolRenderer.DEFAULT_SIZE;
+    console.log('EsriLeaflet.Legend.SymbolRenderer _renderFill is running, EsriLeaflet:', EsriLeaflet);
+    // var size = EsriLeaflet.Tasks.Legend.SymbolRenderer.DEFAULT_SIZE;
+    var size = EsriLeaflet.Legend.SymbolRenderer.DEFAULT_SIZE;
     var lineWidth = symbol.outline ? symbol.outline.width : 1;
     var lineOffset = Math.max(5, lineWidth * 3);
     switch (symbol.style) {
@@ -667,6 +669,9 @@ EsriLeaflet.LegendControl = L.Control.extend({
     L.Control.prototype.initialize.call(this, options);
 
     if (this._layers.length) {
+      // var initial = {
+      //   layers: []
+      // }
       console.log('3 running EsriLeaflet.LegendControl (former _load function), this is:', this);
       L.esri.Util.reduce( // goes to line ~33
           this._layers
