@@ -1,5 +1,7 @@
 const GATEKEEPER_KEY = '35ae5b7bf8f0ff2613134935ce6b4c1e';
 
+BASE_CONFIG_URL = '//raw.githubusercontent.com/ajrothwell/citymaps-base-config/develop/config.js';
+
 // const ZONING_CODE_MAP = {
 //   'RSD-1': 'Residential Single Family Detached-1',
 //   'RSD-2': 'Residential Single Family Detached-2',
@@ -116,7 +118,7 @@ Mapboard.default({
     left: 0,
     right: 0,
   },
-  baseConfig: '//raw.githubusercontent.com/ajrothwell/betsy-base-config/develop/config.js',
+  baseConfig: BASE_CONFIG_URL,
   // baseConfig: '//rawgit.com/rbrtmrtn/mapboard-base-config/9605e5dca32277b1b877e8965d2156631b0b7443/config.js',
   // dataSources: {
   //   // nearby: {
