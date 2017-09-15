@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Citymaps | Phila.gov</title>
+    <link rel='icon' type='image/x-icon' href="//cityofphiladelphia.github.io/patterns/images/favicon.ico">
+    <meta name="description" content="">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--pattern stylesheet includes foundation css -->
+    <link rel="stylesheet" href="//unpkg.com/vuetify/dist/vuetify.min.css">
+    <!-- <link rel="stylesheet" href="//cityofphiladelphia.github.io/patterns/dist/1.4.1/css/patterns.css"> -->
+    <link rel="stylesheet" href="//cityofphiladelphia.github.io/patterns/dist/1.3.0/css/patterns.css">
+    <!-- <link rel="stylesheet" href="jquery-ui-1.10.3.custom.min.css" /> -->
+    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css"> -->
+    <link rel="stylesheet" href="//unpkg.com/leaflet@1.1.0/dist/leaflet.css">
+    <!-- <link rel="stylesheet" href="//unpkg.com/Leaflet.vector-markers@0.0.6/dist/leaflet-vector-markers.css"> -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/main.css">
+    <!-- <link rel="canonical" href=""> -->
+
+  </head>
+
+  <body>
+    <div class="full" id="application">
+      <v-app>
+        <!-- Begin header -->
+        <header data-swiftype-index='false' class="site-header app">
+          <div class="row">
+            <div class="small-24 columns">
+              <a href="http://alpha.phila.gov/" class="logo">
+                <img data-interchange="[//cityofphiladelphia.github.io/patterns/images/city-of-philadelphia-mobile.png, small], [//cityofphiladelphia.github.io/patterns/images/city-of-philadelphia-white.png, medium]" src="//cityofphiladelphia.github.io/patterns/images/city-of-philadelphia-white.png" alt="City of Philadelphia">
+              </a>
+              <div class="page-title-container">
+                <a href="#/">
+                  <h1 class="page-title">Citymaps</h1>
+                  <h2 class="page-subtitle">Phila Map and Data Portal</h2>
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+        <!-- Mapboard -->
+        <div id="mapboard"></div>
+      </v-app>
+    </div><!-- end of application div -->
+    <!-- JS: Patterns -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <!-- <script src="jquery-ui-1.10.3.custom.min.js"></script> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/6.1.2/foundation.min.js"></script>
+    <!-- <script src="//cityofphiladelphia.github.io/patterns/dist/1.4.1/js/patterns.min.js"></script> -->
+    <script src="//cityofphiladelphia.github.io/patterns/dist/1.3.0/js/patterns.min.js"></script>
+    <script src="//cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.min.js"></script> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+    <!-- JS: Mapboard -->
+    <script src="//unpkg.com/vue@2.4.2"></script>
+    <script src="//unpkg.com/vue-router@2.5.3"></script>
+    <script src="//unpkg.com/vue-resource@1.3.1/dist/vue-resource.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script> -->
+    <script src="//unpkg.com/leaflet@1.1.0/dist/leaflet.js"></script>
+    <!-- <script src="//unpkg.com/esri-leaflet@2.0.7"></script> -->
+    <script src="//unpkg.com/esri-leaflet@2.1.0/dist/esri-leaflet.js"></script>
+    <script src="//unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js"></script>
+    <!-- <script src="//unpkg.com/Leaflet.vector-markers@0.0.6"></script> -->
+
+    <!-- Load Leaflet Label from GitHub -->
+    <script src="https://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
+    <!-- Load Leaflet Heat from CDN -->
+    <script src="https://cdn.rawgit.com/Leaflet/Leaflet.heat/gh-pages/dist/leaflet-heat.js"></script>
+    <!-- Load Heatmap Feature Layer from CDN -->
+    <script src="https://cdn.jsdelivr.net/leaflet.esri.heatmap-feature-layer/2.0.0-beta.1/esri-leaflet-heatmap-feature-layer.js"></script>
+    <!-- Load Esri Leaflet Renderers from CDN -->
+    <!-- <script src="http://cdn.jsdelivr.net/leaflet.esri.renderers/2.0.2/esri-leaflet-renderers.js"></script> -->
+    <script src="https://unpkg.com/esri-leaflet-renderers@2.0.6"></script>
+    <!-- Load Vector Icon from GitHub -->
+    <script src="https://muxlab.github.io/Leaflet.VectorIcon/L.VectorIcon.js"></script>
+    <!-- Load Leaflet Omnivore -->
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+    <!-- Load L.esri.WebMap -->
+    <script src="https://cdn.jsdelivr.net/leaflet.esri.webmap/0.4.0/esri-leaflet-webmap.js"></script>
+
+    <!-- JS: Cyclomedia -->
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.0/react-dom.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.17.1/ol.js"></script>
+    <script type="text/javascript" src="https://streetsmart.cyclomedia.com/api/v16.1/Aperture.js"></script>
+    <script type="text/javascript" src="https://streetsmart.cyclomedia.com/api/v16.1/StreetSmartApi.js"></script> -->
+
+    <!-- JS: Local -->
+    <script src="//unpkg.com/vuetify/dist/vuetify.min.js"></script>
+    <script src="dist/build.js"></script>
+    <script src="src/util/esri-leaflet-legend-compat-src-edit.js"></script>
+    <!-- <script src="../../src/util/md5.min.js"></script>
+    <script src="../../src/util/proj4.js"></script>
+    <script src="../../src/util/leaflet.rotatedMarker.js"></script>
+    <script src="../../src/util/svg-icon.js"></script>
+    <script src="../../src/util/triangleIcon.js"></script> -->
+    <!-- <script src="../../src/util/leaflet-side-by-side.min.js"></script> -->
+    <!-- <script src="//code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script> -->
+    <!-- <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> -->
+    <script src="main.js"></script>
+  </body>
+</html>
