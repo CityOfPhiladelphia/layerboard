@@ -1,46 +1,69 @@
 <template>
-  <div class="large-6 columns mb-panel mb-panel-topics">
-    <div class="row">
-      <div class="mb-search-control-container">
-        <form @submit.prevent="handleFilterFormX"
-              @keydown="preventEnter"
-        >
-            <input class="mb-search-control-input"
-                   placeholder="Search for layers"
-                   id="theInput"
-                   @keyup="handleFilterFormKeyup"
-            />
-            <button class="mb-search-control-button"
-                    v-if="this.$store.state.layers.inputLayerFilter != ''"
-            >
-              <i class="fa fa-times fa-lg"></i>
-            </button>
-        </form>
-      </div>
-
-      <div class="topic-body">
-        <form action="#/">
-          <fieldset class="options">
-            <ul class="no-bullet">
-              <checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
-                        :layer="currentWmLayer.layer"
-                        :layerName="currentWmLayer.title"
-                        :layerId="currentWmLayer.id"
-                        :layerDefinition="currentWmLayer.rest.layerDefinition"
-                        :opacity="currentWmLayer.opacity"
-                        :legendHtml="currentWmLayer.legendHtml"
-                        :key=index
+  <div id="topic-panel"
+       class="mb-panel mb-panel-topics"
+  >
+    <v-layout column>
+      <!-- <v-flex xs12> -->
+        <div class="mb-search-control-container">
+          <form @submit.prevent="handleFilterFormX"
+                @keydown="preventEnter"
+          >
+              <input class="mb-search-control-input"
+                     placeholder="Search for layers"
+                     id="theInput"
+                     @keyup="handleFilterFormKeyup"
+              />
+              <button class="mb-search-control-button"
+                      v-if="this.$store.state.layers.inputLayerFilter != ''"
               >
-              </checkbox>
-            </ul>
-          </fieldset>
-        </form>
-      </div>
-      <!-- error -->
-      <!-- <div class="topic-body" v-show="shouldShowError">
-        Could not locate records for that address.
-      </div> -->
-    </div>
+                <i class="fa fa-times fa-lg"></i>
+              </button>
+          </form>
+        </div>
+      <!-- </v-flex xs12> -->
+    <!-- </v-layout row wrap>
+
+
+    <v-layout row wrap> -->
+      <!-- <v-flex xs12> -->
+        <div class="topic-body">
+          <form action="#/">
+            <fieldset class="options">
+              <ul class="no-bullet">
+                <checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
+                          :layer="currentWmLayer.layer"
+                          :layerName="currentWmLayer.title"
+                          :layerId="currentWmLayer.id"
+                          :layerDefinition="currentWmLayer.rest.layerDefinition"
+                          :opacity="currentWmLayer.opacity"
+                          :legend="currentWmLayer.legend"
+                          :key=index
+                >
+                </checkbox>
+              </ul>
+            </fieldset>
+          </form>
+        </div>
+
+
+        <!-- <div class="topic-body">
+          <v-list class="no-bullet">
+            <v-checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
+                      :layer="currentWmLayer.layer"
+                      :layerName="currentWmLayer.title"
+                      :layerId="currentWmLayer.id"
+                      :layerDefinition="currentWmLayer.rest.layerDefinition"
+                      :opacity="currentWmLayer.opacity"
+                      :legendHtml="currentWmLayer.legendHtml"
+                      :key=index
+            >
+          </v-checkbox>
+        </v-list>
+        </div> -->
+
+
+      <!-- </v-flex> -->
+    </v-layout>
   </div>
 </template>
 
@@ -98,69 +121,18 @@
 </script>
 
 <style scoped>
-  /*REVIEW these aren't prefixed `mb-`because they're scoped, but it feels
-  inconsistent?*/
+
   ul {
     padding: 0;
-  }
-
-  .topic-header {
-    background: #f5f5f5;
-    border: 1px solid #ddd;
-    display: block;
-    font-size: 18px;
-    font-weight: normal;
-    height: 40px;
-    line-height: 20px;
-    padding: 10px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    margin-bottom: 8px;
-  }
-
-  .topic-header:hover {
-    background: #fff;
-    color: inherit;
-  }
-
-  .topic-header-icon {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .topic-body {
-    padding-left: 10px;
-    /*margin-bottom: 20px;*/
   }
 
   .loading {
     float: right;
   }
 
-  /*.scroll {overflow:auto;}
-  .scroll::-webkit-scrollbar {
-    width:16px;
-    height:16px;
-    background:inherit;
-  }
-  .scroll::-webkit-scrollbar-track:vertical {
-    border-right:8px solid rgba(0,0,0,.2);
-  }
-  .scroll::-webkit-scrollbar-thumb:vertical {
-    border-right:8px solid rgba(255,255,255,.2);
-  }
-  .scroll::-webkit-scrollbar-track:horizontal {
-    border-bottom:8px solid rgba(0,0,0,.2);
-  }
-  .scroll::-webkit-scrollbar-thumb:horizontal {
-    border-bottom:8px solid rgba(255,255,255,.2);
-  }
-  .scroll::-webkit-scrollbar-corner,
-    .scroll::-webkit-resizer {background:inherit;
-    border-right:8px solid rgba(255,255,255,.2); //optional
-    border-bottom:8px solid rgba(255,255,255,.2); //optional
-  }*/
-
   .mb-panel-topics {
+    height: 100%;
+    position: relative;
     background: #fff;
     padding-left: 20px !important;
     padding-right: 5px !important;

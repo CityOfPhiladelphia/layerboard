@@ -72,7 +72,7 @@
                   'opacity': restData.operationalLayers[index].opacity,
                   'type': restData.operationalLayers[index].layerType,
                   'type2': layer.type,
-                  'legendHtml': null
+                  'legend': null
                 }
                 webMapLayersAndRest.push(layerObj);
               }
