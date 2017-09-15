@@ -114,7 +114,7 @@ Mapboard.default({
     // height: '100%'
     position: 'absolute',
     bottom: 0,
-    top: '87px',
+    top: '78px',
     left: 0,
     right: 0,
   },
