@@ -8,7 +8,8 @@
   import L from 'leaflet';
   import generateUniqueId from '../util/uniqueId';
 
-  const webmapId = 'f60e4fa0c01f408882a07ee50e8910b9'; // Default WebMap ID
+  // const webmapId = 'f60e4fa0c01f408882a07ee50e8910b9'; // Default WebMap ID
+  const webmapId = '4c3ed877199c402895b7fa45ce6409b6'; // Default WebMap ID
   const EsriWebMap = L.esri.webMap;
   export default {
     // mounted() {
