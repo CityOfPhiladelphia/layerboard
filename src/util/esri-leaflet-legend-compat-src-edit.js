@@ -697,31 +697,37 @@ EsriLeaflet.LegendControl = L.Control.extend({
 
   _onLoad: function(error, legend) {
     console.log('LAST running EsriLeaflet.LegendControl _onLoad, legend is:', legend);
-    if (!error) {
-      var layersHtml = '';
-      for (var i = 0, len = legend.layers.length; i < len; i++) {
-        var layer = legend.layers[i];
-        var legendsHtml = '';
-        for (var j = 0, jj = layer.legend.length; j < jj; j++) {
-          var layerLegend = JSON.parse(JSON.stringify(layer.legend[j]));
-          this._validateLegendLabel(layerLegend);
-          legendsHtml += L.Util.template(this.options.listRowTemplate, layerLegend);
-        }
-        layersHtml += L.Util.template(this.options.layerTemplate, {
-          layerName: layer.layerName,
-          legends: legendsHtml
-        });
-      }
-      var legendHtml = L.Util.template(this.options.listTemplate, {
-        layers: layersHtml
-      });
-      var legendObject = {
-        'layerName': layerName,
-        'layerServiceItemId': layerId,
-        'legendHtml': legendHtml
-      }
-      store.commit('setLegend', legendObject);
+    var legendObject = {
+      'layerName': layerName,
+      'layerServiceItemId': layerId,
+      'legend': legend
     }
+    store.commit('setLegend', legendObject);
+    // if (!error) {
+    //   var layersHtml = '';
+    //   for (var i = 0, len = legend.layers.length; i < len; i++) {
+    //     var layer = legend.layers[i];
+    //     var legendsHtml = '';
+    //     for (var j = 0, jj = layer.legend.length; j < jj; j++) {
+    //       var layerLegend = JSON.parse(JSON.stringify(layer.legend[j]));
+    //       this._validateLegendLabel(layerLegend);
+    //       legendsHtml += L.Util.template(this.options.listRowTemplate, layerLegend);
+    //     }
+    //     layersHtml += L.Util.template(this.options.layerTemplate, {
+    //       layerName: layer.layerName,
+    //       legends: legendsHtml
+    //     });
+    //   }
+    //   var legendHtml = L.Util.template(this.options.listTemplate, {
+    //     layers: layersHtml
+    //   });
+    //   var legendObject = {
+    //     'layerName': layerName,
+    //     'layerServiceItemId': layerId,
+    //     'legendHtml': legendHtml
+    //   }
+    //   store.commit('setLegend', legendObject);
+    // }
   },
 
   _validateLegendLabel: function(layerLegend) {

@@ -1,5 +1,8 @@
 <template>
-  <div id="map-container" class="large-18 columns mb-panel mb-panel-map">
+  <div id="map-panel"
+       class="large-18 columns mb-panel mb-panel-map"
+  >
+  <!-- class="large-18 columns mb-panel mb-panel-map" -->
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
           :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
@@ -101,7 +104,28 @@
       />
 
 
+      <control-corner :vSide="'top'"
+                      :hSide="'almostright'"
+      >
+      </control-corner>
+
       <div v-once>
+        <basemap-toggle-control v-if="shouldShowImageryToggle"
+                         v-once
+                         :position="'topright'"
+        />
+      </div>
+
+      <div v-once>
+        <!-- v-once -->
+        <basemap-select-control
+                       :position="'topalmostright'"
+        />
+        <!-- :imagery-years="imageryYears"
+        :historic-years="historicYears" -->
+      </div>
+
+      <!-- <div v-once>
         <basemap-control v-if="hasImageryBasemaps"
                          v-once
                          :position="'topright'"
@@ -115,7 +139,7 @@
                          :position="'topright'"
                          :historic-years="historicYears"
         />
-      </div>
+      </div> -->
 
       <!-- <div>
         <basemap-control-left :position="'topleft'"
@@ -186,8 +210,10 @@
   import VectorMarker from '../VectorMarker';
   import PngMarker from '../PngMarker';
   import SvgMarker from '../SvgMarker';
-  import BasemapControl from '../BasemapControl';
-  import HistoricmapControl from '../HistoricmapControl';
+  import BasemapToggleControl from '../BasemapToggleControl.vue';
+  import BasemapSelectControl from '../BasemapSelectControl.vue';
+  // import BasemapControl from '../BasemapControl';
+  // import HistoricmapControl from '../HistoricmapControl';
   // import BasemapControlLeft from '../BasemapControlLeft';
   // import HistoricmapControlLeft from '../HistoricmapControlLeft';
   import CyclomediaButton from '../../cyclomedia/Button';
@@ -195,6 +221,7 @@
   import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
   import LegendControl from '../../esri-leaflet/Legend.vue';
+  import ControlCorner from '../../leaflet/ControlCorner.vue';
   // import SideBySideButton from '../../components/SideBySideButton.vue';
 
   export default {
@@ -219,20 +246,23 @@
       VectorMarker,
       PngMarker,
       SvgMarker,
-      BasemapControl,
-      HistoricmapControl,
+      BasemapToggleControl,
+      BasemapSelectControl,
+      // BasemapControl,
+      // HistoricmapControl,
       // BasemapControlLeft,
       // HistoricmapControlLeft,
       PictometryButton,
       CyclomediaButton,
       CyclomediaRecordingCircle,
       LegendControl,
+      ControlCorner,
       // SideBySideButton,
     },
     computed: {
-      sideBySideActive() {
-        return this.$store.state.map.sideBySideActive;
-      },
+      // sideBySideActive() {
+      //   return this.$store.state.map.sideBySideActive;
+      // },
       scale() {
         return this.$store.state.map.scale;
       },
@@ -246,13 +276,20 @@
         return this.$store.state.map.webMapActiveLayers;
       },
       activeBasemap() {
-        return this.$store.state.map.basemap;
+        const shouldShowImagery = this.$store.state.map.shouldShowImagery;
+        if (shouldShowImagery) {
+          return this.$store.state.map.imagery;
+        }
+        const defaultBasemap = this.$config.map.defaultBasemap;
+        const basemap = this.$store.state.map.basemap || defaultBasemap;
+        return basemap;
       },
       activeTiles() {
-        return this.$config.map.basemaps[this.activeBasemap].tiledLayers;
-      },
-      activeBasemapLeft() {
-        return this.$store.state.map.basemapLeft;
+        if (this.$config.map.basemaps[this.activeBasemap]) {
+          return this.$config.map.basemaps[this.activeBasemap].tiledLayers;
+        } else {
+          return [];
+        }
       },
       activeDynamicMaps() {
         if (!this.activeTopicConfig || !this.activeTopicConfig.dynamicMapLayers) {
@@ -279,6 +316,9 @@
       },
       hasImageryBasemaps() {
         return this.imageryBasemaps.length > 0;
+      },
+      shouldShowImageryToggle() {
+        return this.hasImageryBasemaps && this.$config.map.imagery.enabled;
       },
       imageryYears() {
         // pluck year from basemap objects
@@ -353,6 +393,8 @@
         this.$config.cyclomedia.password,
         4326
       );
+
+      console.log('MAPPANEL CREATED', this);
     },
     watch: {
       picOrCycloActive(value) {
@@ -362,9 +404,9 @@
       }
     },
     methods: {
-      shouldShowLeftMap(key) {
-        return this.activeBasemapLeft === key && this.sideBySideActive
-      },
+      // shouldShowLeftMap(key) {
+      //   return this.activeBasemapLeft === key && this.sideBySideActive
+      // },
       shouldShowFeatureLayer(layer) {
         if (layer.rest.layerDefinition) {
           if (layer.rest.layerDefinition.minScale) {
@@ -406,35 +448,14 @@
         this.$store.commit('setMapCenter', center);
         const zoom = this.$store.state.map.map.getZoom();
         this.$store.commit('setMapZoom', zoom);
-        const scale = this.getScale(zoom);
+        // const scale = this.getScale(zoom);
+        const scale = this.$config.map.scales[zoom];
         this.$store.commit('setMapScale', scale);
         this.updateCyclomediaRecordings();
       },
-      getScale(zoom) {
-        const scales = {
-          20: 1128.497220,
-          19: 2256.994440,
-          18: 4513.988880,
-          17: 9027.977761,
-          16: 18055.955520,
-          15: 36111.911040,
-          14: 72223.822090,
-          13: 144447.644200,
-          12: 288895.288400,
-          11: 577790.576700,
-          10: 1155581.153000,
-          9: 2311162.307000,
-          8: 4622324.614000,
-          7: 9244649.227000,
-          6: 18489298.450000,
-          5: 36978596.910000,
-          4: 73957193.820000,
-          3: 147914387.600000,
-          2: 295828775.300000,
-          1: 591657550.500000,
-        }
-        return scales[zoom];
-      },
+      // getScale(zoom) {
+      //   return this.$config.map.scales[zoom];
+      // },
       handleSearchFormSubmit(e) {
         const input = e.target[0].value;
         this.$store.commit('setLastSearchMethod', 'geocode');

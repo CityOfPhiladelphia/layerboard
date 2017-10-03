@@ -19,12 +19,18 @@
       // REVIEW kind of hacky/not reactive?
       if (map) {
         leafletElement.addTo(map);
+        // console.log('map tiled layer', map);
+        // this.$nextTick(() => {
+        console.log('map', map);
+        // map.attributionControl.removeAttribution('overwrite');
         map.attributionControl.removeAttribution('overwrite');
+        map.attributionControl.removeAttribution('<span class="esri-attributions" style="line-height:14px; vertical-align: -3px; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; display:inline-block; max-width:1385px;"></span>');
+        // })
       }
-      let mapPackage = {}
-      mapPackage[this.$props.name] = leafletElement;
-      // const name = this.$props.name
-      this.$store.commit('setBasemapLayers', mapPackage);
+      // let mapPackage = {}
+      // mapPackage[this.$props.name] = leafletElement;
+      // // const name = this.$props.name
+      // this.$store.commit('setBasemapLayers', mapPackage);
     },
     destroyed() {
       this.$leafletElement._map.removeLayer(this.$leafletElement);
@@ -44,6 +50,8 @@
       parentMounted(parent) {
         const map = parent.$leafletElement;
         this.$leafletElement.addTo(map);
+        map.attributionControl.removeAttribution('overwrite');
+        map.attributionControl.removeAttribution('<span class="esri-attributions" style="line-height:14px; vertical-align: -3px; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; display:inline-block; max-width:1385px;"></span>');
       }
     }
   };

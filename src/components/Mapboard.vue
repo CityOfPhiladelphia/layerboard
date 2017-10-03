@@ -1,4 +1,11 @@
 <template>
+  <!-- <div id="mainDiv">
+    <v-layout>
+      <v-flex xs3>
+        <topic-panel>
+        </topic-panel>
+      </v-flex>
+      <v-flex xs9> -->
   <div class="mb-root row collapse"
        :style="this.$config.rootStyle"
   >
@@ -40,6 +47,8 @@
       </pictometry-widget>
       <!-- :center="this.$store.state.map.map.center" -->
     </map-panel>
+      <!-- </v-flex>
+    </v-layout> -->
   </div>
 </template>
 
