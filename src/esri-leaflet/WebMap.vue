@@ -8,9 +8,8 @@
   import L from 'leaflet';
   import generateUniqueId from '../util/uniqueId';
 
-  // const webmapId = 'f60e4fa0c01f408882a07ee50e8910b9'; // Default WebMap ID
-  const webmapId = '4c3ed877199c402895b7fa45ce6409b6'; // Default WebMap ID
   const EsriWebMap = L.esri.webMap;
+
   export default {
     // mounted() {
     //   // signal children to mount
@@ -20,6 +19,12 @@
     //     child.parentMounted(this, child.$props);
     //   }
     // },
+    computed: {
+      webmapId() {
+        console.log('config', this.$config);
+        return this.$config.webmapId;
+      }
+    },
     methods: {
       parentMounted(parent) {
         const self = this;
@@ -27,12 +32,13 @@
 
         $.ajax({
           dataType: 'json',
-          url: "https://www.arcgis.com/sharing/rest/content/items/"+ webmapId +"/data",
+          url: "https://www.arcgis.com/sharing/rest/content/items/"+ this.webmapId +"/data",
+          webmapId: this.webmapId,
           // data: {
           //   outFields:'*'
           // },
           success(restData) {
-            const webMap = this.$webMap = L.esri.webMap(webmapId, { map: map });
+            const webMap = this.$webMap = L.esri.webMap(this.webmapId, { map: map });
             console.log('WEBMAP', webMap);
             self.$store.commit('setWebMap', webMap);
 
