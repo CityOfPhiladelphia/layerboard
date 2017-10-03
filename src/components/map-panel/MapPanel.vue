@@ -104,7 +104,28 @@
       />
 
 
+      <control-corner :vSide="'top'"
+                      :hSide="'almostright'"
+      >
+      </control-corner>
+
       <div v-once>
+        <basemap-toggle-control v-if="shouldShowImageryToggle"
+                         v-once
+                         :position="'topright'"
+        />
+      </div>
+
+      <div v-once>
+        <!-- v-once -->
+        <basemap-select-control
+                       :position="'topalmostright'"
+        />
+        <!-- :imagery-years="imageryYears"
+        :historic-years="historicYears" -->
+      </div>
+
+      <!-- <div v-once>
         <basemap-control v-if="hasImageryBasemaps"
                          v-once
                          :position="'topright'"
@@ -118,7 +139,7 @@
                          :position="'topright'"
                          :historic-years="historicYears"
         />
-      </div>
+      </div> -->
 
       <!-- <div>
         <basemap-control-left :position="'topleft'"
@@ -189,8 +210,10 @@
   import VectorMarker from '../VectorMarker';
   import PngMarker from '../PngMarker';
   import SvgMarker from '../SvgMarker';
-  import BasemapControl from '../BasemapControl';
-  import HistoricmapControl from '../HistoricmapControl';
+  import BasemapToggleControl from '../BasemapToggleControl.vue';
+  import BasemapSelectControl from '../BasemapSelectControl.vue';
+  // import BasemapControl from '../BasemapControl';
+  // import HistoricmapControl from '../HistoricmapControl';
   // import BasemapControlLeft from '../BasemapControlLeft';
   // import HistoricmapControlLeft from '../HistoricmapControlLeft';
   import CyclomediaButton from '../../cyclomedia/Button';
@@ -198,6 +221,7 @@
   import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
   import LegendControl from '../../esri-leaflet/Legend.vue';
+  import ControlCorner from '../../leaflet/ControlCorner.vue';
   // import SideBySideButton from '../../components/SideBySideButton.vue';
 
   export default {
@@ -222,20 +246,23 @@
       VectorMarker,
       PngMarker,
       SvgMarker,
-      BasemapControl,
-      HistoricmapControl,
+      BasemapToggleControl,
+      BasemapSelectControl,
+      // BasemapControl,
+      // HistoricmapControl,
       // BasemapControlLeft,
       // HistoricmapControlLeft,
       PictometryButton,
       CyclomediaButton,
       CyclomediaRecordingCircle,
       LegendControl,
+      ControlCorner,
       // SideBySideButton,
     },
     computed: {
-      sideBySideActive() {
-        return this.$store.state.map.sideBySideActive;
-      },
+      // sideBySideActive() {
+      //   return this.$store.state.map.sideBySideActive;
+      // },
       scale() {
         return this.$store.state.map.scale;
       },
@@ -249,13 +276,20 @@
         return this.$store.state.map.webMapActiveLayers;
       },
       activeBasemap() {
-        return this.$store.state.map.basemap;
+        const shouldShowImagery = this.$store.state.map.shouldShowImagery;
+        if (shouldShowImagery) {
+          return this.$store.state.map.imagery;
+        }
+        const defaultBasemap = this.$config.map.defaultBasemap;
+        const basemap = this.$store.state.map.basemap || defaultBasemap;
+        return basemap;
       },
       activeTiles() {
-        return this.$config.map.basemaps[this.activeBasemap].tiledLayers;
-      },
-      activeBasemapLeft() {
-        return this.$store.state.map.basemapLeft;
+        if (this.$config.map.basemaps[this.activeBasemap]) {
+          return this.$config.map.basemaps[this.activeBasemap].tiledLayers;
+        } else {
+          return [];
+        }
       },
       activeDynamicMaps() {
         if (!this.activeTopicConfig || !this.activeTopicConfig.dynamicMapLayers) {
@@ -282,6 +316,9 @@
       },
       hasImageryBasemaps() {
         return this.imageryBasemaps.length > 0;
+      },
+      shouldShowImageryToggle() {
+        return this.hasImageryBasemaps && this.$config.map.imagery.enabled;
       },
       imageryYears() {
         // pluck year from basemap objects
@@ -367,9 +404,9 @@
       }
     },
     methods: {
-      shouldShowLeftMap(key) {
-        return this.activeBasemapLeft === key && this.sideBySideActive
-      },
+      // shouldShowLeftMap(key) {
+      //   return this.activeBasemapLeft === key && this.sideBySideActive
+      // },
       shouldShowFeatureLayer(layer) {
         if (layer.rest.layerDefinition) {
           if (layer.rest.layerDefinition.minScale) {

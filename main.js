@@ -119,6 +119,17 @@ Mapboard.default({
     left: 0,
     right: 0,
   },
+  map: {
+    // possibly should move to base config
+    defaultBasemap: 'pwd',
+    defaultIdentifyFeature: 'address-marker',
+    imagery: {
+      enabled: true
+    },
+    historicBasemaps: {
+      enabled: true
+    },
+  },
   baseConfig: BASE_CONFIG_URL,
   webmapId: WEBMAP_ID,
   // baseConfig: '//rawgit.com/rbrtmrtn/mapboard-base-config/9605e5dca32277b1b877e8965d2156631b0b7443/config.js',

@@ -46,13 +46,15 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       scale: null,
       map: null,
       basemap: 'pwd',
-      basemapLeft: 'imagery2017',
+      imagery: 'imagery2017',
+      shouldShowImagery: false,
+      // basemapLeft: 'imagery2017',
       basemapLayers: {},
       circleMarkers: [],
       webMap: null,
       webMapActiveLayers: [],
       webMapLayersAndRest: [],
-      sideBySideActive: false,
+      // sideBySideActive: false,
     },
     dorParcels: [],
     pwdParcel: null,
@@ -119,30 +121,36 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       setBasemap(state, payload) {
         state.map.basemap = payload;
       },
-      setBasemapLeft(state, payload) {
-        state.map.basemapLeft = payload;
+      setImagery(state, payload) {
+        state.map.imagery = payload;
       },
-      setBasemapLayers(state, payload) {
-        // console.log('setBasemapLayers is running, payload:', payload);
-        const key = Object.keys(payload);
-        const value = Object.values(payload);
-        // console.log(key);
-        if (state.map.basemapLayers[key]){
-          // console.log('already has key');
-        } else {
-          // console.log('doesnt have key');
-          state.map.basemapLayers[key] = value[0];
-        }
+      setShouldShowImagery(state, payload) {
+        state.map.shouldShowImagery = payload;
       },
+      // setBasemapLeft(state, payload) {
+      //   state.map.basemapLeft = payload;
+      // },
+      // setBasemapLayers(state, payload) {
+      //   // console.log('setBasemapLayers is running, payload:', payload);
+      //   const key = Object.keys(payload);
+      //   const value = Object.values(payload);
+      //   // console.log(key);
+      //   if (state.map.basemapLayers[key]){
+      //     // console.log('already has key');
+      //   } else {
+      //     // console.log('doesnt have key');
+      //     state.map.basemapLayers[key] = value[0];
+      //   }
+      // },
       setActiveFeature(state, payload) {
         state.activeFeature = payload;
       },
       setLastSearchMethod(state, payload) {
         state.lastSearchMethod = payload;
       },
-      setSideBySideActive(state, payload) {
-        state.map.sideBySideActive = payload;
-      },
+      // setSideBySideActive(state, payload) {
+      //   state.map.sideBySideActive = payload;
+      // },
 
 
 

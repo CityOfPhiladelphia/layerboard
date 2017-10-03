@@ -63,7 +63,7 @@
       },
       createLegend(scale) {
         const legend = this.$props.legend;
-        console.log('METHOD createLegend running', scale, legend);
+        // console.log('METHOD createLegend running', scale, legend);
         let layersHtml = '';
         if (legend.layers.length === 1) {
           const layer = legend.layers[0];
@@ -78,10 +78,10 @@
           });
         } else {
           for (let layer of legend.layers) {
-            console.log('max:', layer.maxScale, 'scale:', scale, 'min:', layer.minScale);
+            // console.log('max:', layer.maxScale, 'scale:', scale, 'min:', layer.minScale);
             let legendsHtml = '';
             if (parseFloat(scale) > parseFloat(layer.maxScale) && parseFloat(scale) < parseFloat(layer.minScale)) {
-              console.log('correct!', layer.layerId);
+              // console.log('correct!', layer.layerId);
               for (let layerLegend of layer.legend) {
                 const layerLegendJSON = JSON.parse(JSON.stringify(layerLegend));
                 legendsHtml += L.Util.template(this.options.listRowTemplate, layerLegendJSON);

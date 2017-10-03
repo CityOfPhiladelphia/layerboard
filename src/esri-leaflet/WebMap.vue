@@ -12,12 +12,12 @@
 
   export default {
     // mounted() {
-    //   // signal children to mount
-    //   for (let child of this.$children) {
-    //     // REVIEW it seems weird to pass children their own props. trying to
-    //     // remember why this was necessary... binding issue?
-    //     child.parentMounted(this, child.$props);
-    //   }
+      // signal children to mount
+      // for (let child of this.$children) {
+      //   // REVIEW it seems weird to pass children their own props. trying to
+      //   // remember why this was necessary... binding issue?
+      //   child.parentMounted(this, child.$props);
+      // }
     // },
     computed: {
       webmapId() {
@@ -39,10 +39,14 @@
           // },
           success(restData) {
             const webMap = this.$webMap = L.esri.webMap(this.webmapId, { map: map });
+
             console.log('WEBMAP', webMap);
+            // webMap.layers[1].layer.service.options.maxZoom = 22;
             self.$store.commit('setWebMap', webMap);
 
             webMap.on('load', function() {
+              map.attributionControl.setPrefix('<a target="_blank" href="//www.phila.gov/it/aboutus/units/Pages/GISServicesGroup.aspx">City of Philadelphia | CityGeo</a>');
+
               const ignore = ["CityBasemap", "CityBasemap_Labels"];
 
               // create layerUrls - object mapping layerName to url
@@ -84,9 +88,25 @@
                 webMapLayersAndRest.push(layerObj);
               }
               self.$store.commit('setWebMapLayersAndRest', webMapLayersAndRest);
+              // self.method2(webMap);
             }); // end of webmap onload
           }
-        });
+        })//.then(function() {
+          // console.log('testing', map);
+          // map.attributionControl.removeAttribution('<span class="esri-attributions" style="line-height:14px; vertical-align: -3px; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; display:inline-block; max-width:1385px;"></span>');
+          // map.attributionControl.setPrefix('test');
+        // })
+      },
+      method2(webMap) {
+        console.log('method2 is running');
+        console.log('webmap.layers', webMap.layers);
+        console.log('layers[0]', webMap.layers[0]);
+        console.log('layer', webMap.layers[0].layer);
+        console.log('service', webMap.layers[0].layer.service);
+        console.log('maxZoom', webMap.layers[0].layer.service.options.maxZoom);
+        // webMap.layers[0].layer.service.options.maxZoom = 22;
+        console.log('maxZoom', webMap.layers[0].layer.service.options.maxZoom);
+
       },
     }
   };
