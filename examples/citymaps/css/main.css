@@ -56,13 +56,13 @@ header.site-header > .row:last-of-type {
     bottom: 0;
 }
 
-#topic-panel {
+/*#topic-panel {
     background: #fff;
     padding-left: 12px;
     padding-right: 12px;
     height: 100%;
     overflow: auto;
-}
+}*/
 
 /*#topic-panel-header {*/
 /*    height: 70px;*/
@@ -289,4 +289,12 @@ table {
   background-color: whitesmoke;
   border-bottom-left-radius: 8px;
   padding: 0px 0px 0px 10px;
+}
+
+.full {
+  overflow-y: hidden;
+}
+
+body, html {
+  overflow: hidden;
 }

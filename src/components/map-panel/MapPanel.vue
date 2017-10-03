@@ -1,6 +1,6 @@
 <template>
   <div id="map-panel"
-       class="mb-panel mb-panel-map"
+       class="large-18 columns mb-panel mb-panel-map"
   >
   <!-- class="large-18 columns mb-panel mb-panel-map" -->
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
