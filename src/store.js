@@ -109,7 +109,7 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       },
 
       setLegend(state, payload) {
-        state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].legendHtml = payload.legendHtml;
+        state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].legend = payload.legend;
       },
 
 

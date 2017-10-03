@@ -1,5 +1,8 @@
 <template>
-  <div id="map-container" class="large-18 columns mb-panel mb-panel-map">
+  <div id="map-panel"
+       class="large-18 columns mb-panel mb-panel-map"
+  >
+  <!-- class="large-18 columns mb-panel mb-panel-map" -->
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
           :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
@@ -353,6 +356,8 @@
         this.$config.cyclomedia.password,
         4326
       );
+
+      console.log('MAPPANEL CREATED', this);
     },
     watch: {
       picOrCycloActive(value) {
@@ -406,35 +411,14 @@
         this.$store.commit('setMapCenter', center);
         const zoom = this.$store.state.map.map.getZoom();
         this.$store.commit('setMapZoom', zoom);
-        const scale = this.getScale(zoom);
+        // const scale = this.getScale(zoom);
+        const scale = this.$config.map.scales[zoom];
         this.$store.commit('setMapScale', scale);
         this.updateCyclomediaRecordings();
       },
-      getScale(zoom) {
-        const scales = {
-          20: 1128.497220,
-          19: 2256.994440,
-          18: 4513.988880,
-          17: 9027.977761,
-          16: 18055.955520,
-          15: 36111.911040,
-          14: 72223.822090,
-          13: 144447.644200,
-          12: 288895.288400,
-          11: 577790.576700,
-          10: 1155581.153000,
-          9: 2311162.307000,
-          8: 4622324.614000,
-          7: 9244649.227000,
-          6: 18489298.450000,
-          5: 36978596.910000,
-          4: 73957193.820000,
-          3: 147914387.600000,
-          2: 295828775.300000,
-          1: 591657550.500000,
-        }
-        return scales[zoom];
-      },
+      // getScale(zoom) {
+      //   return this.$config.map.scales[zoom];
+      // },
       handleSearchFormSubmit(e) {
         const input = e.target[0].value;
         this.$store.commit('setLastSearchMethod', 'geocode');

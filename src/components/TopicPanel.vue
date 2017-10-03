@@ -1,6 +1,8 @@
 <template>
   <div class="large-6 columns mb-panel mb-panel-topics">
     <div class="row">
+    <!-- <v-layout column> -->
+      <!-- <v-flex xs12> -->
       <div class="mb-search-control-container">
         <form @submit.prevent="handleFilterFormX"
               @keydown="preventEnter"
@@ -17,7 +19,12 @@
             </button>
         </form>
       </div>
+      <!-- </v-flex xs12> -->
+    <!-- </v-layout row wrap>
 
+
+    <v-layout row wrap> -->
+      <!-- <v-flex xs12> -->
       <div class="topic-body">
         <form action="#/">
           <fieldset class="options">
@@ -28,18 +35,34 @@
                         :layerId="currentWmLayer.id"
                         :layerDefinition="currentWmLayer.rest.layerDefinition"
                         :opacity="currentWmLayer.opacity"
-                        :legendHtml="currentWmLayer.legendHtml"
-                        :key=index
+                        :legend="currentWmLayer.legend"
+                        :key="index"
               >
               </checkbox>
             </ul>
           </fieldset>
         </form>
       </div>
-      <!-- error -->
-      <!-- <div class="topic-body" v-show="shouldShowError">
-        Could not locate records for that address.
-      </div> -->
+
+
+        <!-- <div class="topic-body">
+          <v-list class="no-bullet">
+            <v-checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
+                      :layer="currentWmLayer.layer"
+                      :layerName="currentWmLayer.title"
+                      :layerId="currentWmLayer.id"
+                      :layerDefinition="currentWmLayer.rest.layerDefinition"
+                      :opacity="currentWmLayer.opacity"
+                      :legendHtml="currentWmLayer.legendHtml"
+                      :key=index
+            >
+          </v-checkbox>
+        </v-list>
+        </div> -->
+
+
+      <!-- </v-flex> -->
+    <!-- </v-layout> -->
     </div>
   </div>
 </template>
@@ -98,8 +121,7 @@
 </script>
 
 <style scoped>
-  /*REVIEW these aren't prefixed `mb-`because they're scoped, but it feels
-  inconsistent?*/
+
   ul {
     padding: 0;
   }
@@ -116,26 +138,21 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     margin-bottom: 8px;
   }
-
   .topic-header:hover {
     background: #fff;
     color: inherit;
   }
-
   .topic-header-icon {
     padding-left: 10px;
     padding-right: 10px;
   }
-
   .topic-body {
     padding-left: 10px;
     /*margin-bottom: 20px;*/
   }
-
   .loading {
     float: right;
   }
-
   /*.scroll {overflow:auto;}
   .scroll::-webkit-scrollbar {
     width:16px;
@@ -161,6 +178,8 @@
   }*/
 
   .mb-panel-topics {
+    /*height: 100%;
+    position: relative;*/
     background: #fff;
     padding-left: 20px !important;
     padding-right: 5px !important;

@@ -23,7 +23,8 @@
         :layerName="layerName"
         :layerId="layerId"
         :layerDefinition="layerDefinition"
-        :legendHtml="legendHtml"
+        :legend="legend"
+        :scales="this.$config.map.scales"
         >
       </legend-box>
       <div v-if="webMapActiveLayers.includes(layerName)"
@@ -58,7 +59,7 @@
             // minScale, maxScale, and drawingInfo are stored in layerDefinition
             'layerDefinition',
             'opacity',
-            'legendHtml'
+            'legend'
     ],
     data() {
       return {

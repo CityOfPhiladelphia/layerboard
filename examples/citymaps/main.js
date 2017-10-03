@@ -1,7 +1,7 @@
-BASE_CONFIG_URL = '//raw.githubusercontent.com/ajrothwell/citymaps-base-config/develop/config.js';
+var BASE_CONFIG_URL = '//raw.githubusercontent.com/ajrothwell/citymaps-base-config/develop/config.js';
 const GATEKEEPER_KEY = 'ec8681f792812d7e3ff15e9094bfd4ad';
-// const WEBMAP_ID = 'f60e4fa0c01f408882a07ee50e8910b9';
 const WEBMAP_ID = '4c3ed877199c402895b7fa45ce6409b6';
+
 
 // const ZONING_CODE_MAP = {
 //   'RSD-1': 'Residential Single Family Detached-1',
@@ -115,7 +115,7 @@ Mapboard.default({
     // height: '100%'
     position: 'absolute',
     bottom: 0,
-    top: '87px',
+    top: '78px',
     left: 0,
     right: 0,
   },
