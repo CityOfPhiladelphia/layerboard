@@ -41,6 +41,10 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
     },
     // legends: {},
     map: {
+      location: {
+        lat: null,
+        lng: null
+      },
       center: config.map.center,
       zoom: config.map.zoom,
       scale: null,
@@ -82,6 +86,10 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
     state: initialState,
     getters: {},
     mutations: {
+      setLocation(state, payload) {
+        state.map.location.lat = payload.lat;
+        state.map.location.lng = payload.lng;
+      },
       setLayerUrls(state, payload) {
         state.layers.layerUrls = payload;
       },

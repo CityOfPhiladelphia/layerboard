@@ -184,13 +184,35 @@
           </div>
         </control>
       </div>
+
+
+      <circle-marker v-if="this.$store.state.map.location.lat != null"
+                     :latlng="this.locationMarker.latlng"
+                     :radius="this.locationMarker.radius"
+                     :fillColor="this.locationMarker.fillColor"
+                     :color="this.locationMarker.color"
+                     :weight="this.locationMarker.weight"
+                     :opacity="this.locationMarker.opacity"
+                     :fillOpacity="this.locationMarker.fillOpacity"
+                     :key="Math.random()"
+      />
+      <!-- @l-mouseover="handleCircleMarkerMouseover"
+      @l-mouseout="handleCircleMarkerMouseout" -->
+      <!-- v-for="circleMarker in circleMarkers" -->
+      <!-- :data="{
+        featureId: circleMarker.featureId,
+        tableId: circleMarker.tableId
+      }" -->
+
+
+
     </map_>
   </div>
 </template>
 
 <script>
   // mixins
-  import dataMixin from './data-mixin';
+  // import dataMixin from './data-mixin';
   import markersMixin from './markers-mixin';
   import geocodeMixin from './geocode-mixin';
   import cyclomediaMixin from '../../cyclomedia/map-panel-mixin';
@@ -226,7 +248,7 @@
 
   export default {
     mixins: [
-      dataMixin,
+      // dataMixin,
       markersMixin,
       geocodeMixin,
       cyclomediaMixin,
@@ -259,7 +281,18 @@
       ControlCorner,
       // SideBySideButton,
     },
+    mounted() {
+      console.log('mounted - running geofind');
+      this.geofind();
+    },
     computed: {
+      geolocation() {
+        // console.log('navigator', navigator);
+        return navigator.geolocation;
+      },
+      // test2() {
+      //   return this.test.getCurrentPosition();
+      // },
       // sideBySideActive() {
       //   return this.$store.state.map.sideBySideActive;
       // },
@@ -363,6 +396,7 @@
         return this.$store.state.geocode.data;
       },
       geocodeGeom() {
+        // return this.geocodeResult.geometry;
         return (this.geocodeResult || {}).geometry;;
       },
       streetAddress() {
