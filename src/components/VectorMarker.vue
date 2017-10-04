@@ -27,6 +27,7 @@
       const map = this.$store.state.map.map;
       // REVIEW kind of hacky/not reactive?
       if (map) {
+        console.log('vectorMarker mounted is running', leafletElement)
         leafletElement.addTo(map);
       }
     },
@@ -44,6 +45,7 @@
     },
     methods: {
       createLeafletElement() {
+        console.log('createLeafletElement icon');
         const icon = L.VectorMarkers.icon({
           icon:  this.$props.icon || 'circle',
           markerColor: this.$props.markerColor || '#2176d2'
@@ -52,6 +54,7 @@
       },
       parentMounted(parent) {
         const map = parent.$leafletElement;
+        console.log('vectorMarker parentMounted is running', this.$leafletElement);
         this.$leafletElement.addTo(map);
       },
     }

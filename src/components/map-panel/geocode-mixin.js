@@ -15,94 +15,94 @@ export default {
         console.log('reverse geocode error')
       });
     },
-    getPwdParcelByLatLng(latlng) {
-      const url = this.$config.map.featureLayers.pwdParcels.url;
-      const parcelQuery = L.esri.query({ url });
-      parcelQuery.contains(latlng);
-      parcelQuery.run(this.didGetPwdParcel);
-    },
-    getPwdParcelById(id) {
-      const url = this.$config.map.featureLayers.pwdParcels.url;
-      const parcelQuery = L.esri.query({ url });
-      parcelQuery.where('PARCELID = ' + id);
-      parcelQuery.run(this.didGetPwdParcel);
-    },
-    didGetPwdParcel(error, featureCollection, response) {
-      // console.log('did get pwd parcel', featureCollection);
-
-      if (error) {
-        console.warn('did get pwd parcel error', error);
-        return;
-      }
-      if (!featureCollection) {
-        console.warn('did get pwd parcel, but no features');
-        return;
-      }
-      const features = featureCollection.features;
-      let feature;
-      if (features.length === 0) {
-        feature = null;
-      } else {
-        feature = features[0]
-        // this shouldn't happen
-        if (features.length > 1) {
-          console.debug('got more than one pwd parcel', features);
-        }
-      }
-      this.$store.commit('setPwdParcel', feature);
-
-      const shouldGeocode = (
-        this.activeParcelLayer === 'pwd' &&
-        feature &&
-        this.$store.state.lastSearchMethod === 'reverseGeocode'
-      );
-      // console.log('pwd shouldGeocode', shouldGeocode);
-      if (shouldGeocode) {
-        this.geocode(feature.properties.PARCELID);
-      } else {
-        this.fetchData();
-      }
-    },
-    getDorParcelsByLatLng(latlng) {
-      const url = this.$config.map.featureLayers.dorParcels.url;
-      const parcelQuery = L.esri.query({ url });
-      parcelQuery.contains(latlng);
-      parcelQuery.run(this.didGetDorParcels);
-    },
-    getDorParcelsById(id) {
-      const url = this.$config.map.featureLayers.dorParcels.url;
-      const parcelQuery = L.esri.query({ url });
-      parcelQuery.where("MAPREG = '" + id + "'")
-      parcelQuery.run(this.didGetDorParcels);
-    },
-    didGetDorParcels(error, featureCollection, response) {
-      // console.log('did get dor parcels', featureCollection);
-
-      if (error) {
-        console.warn('did get dor parcels error', error);
-        return;
-      }
-      if (!featureCollection) {
-        console.warn('did get dor parcels, but no features');
-        return;
-      }
-      const features = featureCollection.features;
-      this.$store.commit('setDorParcels', featureCollection.features);
-
-      const shouldGeocode = (
-        this.activeParcelLayer === 'dor' &&
-        //features.length < 1 &&
-        // features.length < 1 &&
-        this.$store.state.lastSearchMethod === 'reverseGeocode'
-      );
-      // console.log('dor shouldGeocode', shouldGeocode);
-      if (shouldGeocode) {
-        // TODO sort by mapreg, status
-        this.geocode(features[0].properties.MAPREG);
-      } else {
-        this.fetchData();
-      }
-    },
+    // getPwdParcelByLatLng(latlng) {
+    //   const url = this.$config.map.featureLayers.pwdParcels.url;
+    //   const parcelQuery = L.esri.query({ url });
+    //   parcelQuery.contains(latlng);
+    //   parcelQuery.run(this.didGetPwdParcel);
+    // },
+    // getPwdParcelById(id) {
+    //   const url = this.$config.map.featureLayers.pwdParcels.url;
+    //   const parcelQuery = L.esri.query({ url });
+    //   parcelQuery.where('PARCELID = ' + id);
+    //   parcelQuery.run(this.didGetPwdParcel);
+    // },
+    // didGetPwdParcel(error, featureCollection, response) {
+    //   // console.log('did get pwd parcel', featureCollection);
+    //
+    //   if (error) {
+    //     console.warn('did get pwd parcel error', error);
+    //     return;
+    //   }
+    //   if (!featureCollection) {
+    //     console.warn('did get pwd parcel, but no features');
+    //     return;
+    //   }
+    //   const features = featureCollection.features;
+    //   let feature;
+    //   if (features.length === 0) {
+    //     feature = null;
+    //   } else {
+    //     feature = features[0]
+    //     // this shouldn't happen
+    //     if (features.length > 1) {
+    //       console.debug('got more than one pwd parcel', features);
+    //     }
+    //   }
+    //   this.$store.commit('setPwdParcel', feature);
+    //
+    //   const shouldGeocode = (
+    //     this.activeParcelLayer === 'pwd' &&
+    //     feature &&
+    //     this.$store.state.lastSearchMethod === 'reverseGeocode'
+    //   );
+    //   // console.log('pwd shouldGeocode', shouldGeocode);
+    //   if (shouldGeocode) {
+    //     this.geocode(feature.properties.PARCELID);
+    //   } else {
+    //     // this.fetchData();
+    //   }
+    // },
+    // getDorParcelsByLatLng(latlng) {
+    //   const url = this.$config.map.featureLayers.dorParcels.url;
+    //   const parcelQuery = L.esri.query({ url });
+    //   parcelQuery.contains(latlng);
+    //   parcelQuery.run(this.didGetDorParcels);
+    // },
+    // getDorParcelsById(id) {
+    //   const url = this.$config.map.featureLayers.dorParcels.url;
+    //   const parcelQuery = L.esri.query({ url });
+    //   parcelQuery.where("MAPREG = '" + id + "'")
+    //   parcelQuery.run(this.didGetDorParcels);
+    // },
+    // didGetDorParcels(error, featureCollection, response) {
+    //   // console.log('did get dor parcels', featureCollection);
+    //
+    //   if (error) {
+    //     console.warn('did get dor parcels error', error);
+    //     return;
+    //   }
+    //   if (!featureCollection) {
+    //     console.warn('did get dor parcels, but no features');
+    //     return;
+    //   }
+    //   const features = featureCollection.features;
+    //   this.$store.commit('setDorParcels', featureCollection.features);
+    //
+    //   const shouldGeocode = (
+    //     this.activeParcelLayer === 'dor' &&
+    //     //features.length < 1 &&
+    //     // features.length < 1 &&
+    //     this.$store.state.lastSearchMethod === 'reverseGeocode'
+    //   );
+    //   // console.log('dor shouldGeocode', shouldGeocode);
+    //   if (shouldGeocode) {
+    //     // TODO sort by mapreg, status
+    //     this.geocode(features[0].properties.MAPREG);
+    //   } else {
+    //     // this.fetchData();
+    //   }
+    // },
     geocode(input) {
       // console.log('geocode', input);
 
@@ -145,18 +145,18 @@ export default {
       // if this is the result of a search (from the search box), get
       // parcels
       const lastSearchMethod = this.$store.state.lastSearchMethod;
-      if (lastSearchMethod === 'geocode') {
-        const dorParcelId = feature.properties.dor_parcel_id;
-        const pwdParcelId = feature.properties.pwd_parcel_id;
-        this.getDorParcelsById(dorParcelId);
-        this.getPwdParcelById(pwdParcelId);
-      }
+      // if (lastSearchMethod === 'geocode') {
+      //   const dorParcelId = feature.properties.dor_parcel_id;
+      //   const pwdParcelId = feature.properties.pwd_parcel_id;
+      //   this.getDorParcelsById(dorParcelId);
+      //   this.getPwdParcelById(pwdParcelId);
+      // }
 
       // clear out address-specific state
-      this.resetData();
+      // this.resetData();
 
       // fetch data from ready sources
-      this.fetchData();
+      // this.fetchData();
 
       // pan and center map
       // TODO ideally the map should fit its bounds to the combined extent
