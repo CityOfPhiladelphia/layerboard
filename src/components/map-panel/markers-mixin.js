@@ -152,6 +152,7 @@ export default {
     //   this.geolocation.getCurrentPosition(this.geofindSuccess, this.geofindError);
     // },
     geofind() {
+      console.log('geofind is running');
       this.geolocation.watchPosition(this.geofindSuccess, this.geofindError);
     },
     geofindSuccess(position) {
