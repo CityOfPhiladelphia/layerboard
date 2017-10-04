@@ -118,6 +118,7 @@ Mapboard.default({
     top: '78px',
     left: 0,
     right: 0,
+    overflow: 'auto',
   },
   map: {
     // possibly should move to base config
