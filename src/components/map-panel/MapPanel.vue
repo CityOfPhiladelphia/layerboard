@@ -428,7 +428,7 @@
         4326
       );
 
-      console.log('MAPPANEL CREATED', this, 'push at 11:18');
+      console.log('MAPPANEL CREATED', this, 'push at 12:26');
     },
     watch: {
       picOrCycloActive(value) {

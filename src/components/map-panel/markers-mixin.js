@@ -159,7 +159,7 @@ export default {
     // },
     geofind() {
       console.log('geofind is running');
-      this.geolocation.watchPosition(this.geofindSuccess, this.geofindError);
+      this.geolocation.watchPosition(this.geofindSuccess, this.geofindError, {enableHighAccuracy: true, timeout: 1000, maximumAge: 0, distanceFilter: 5});
     },
     geofindSuccess(position) {
       alert('geofindSuccess is running, position:', position);
