@@ -282,7 +282,7 @@
       // SideBySideButton,
     },
     mounted() {
-      console.log('mounted - running geofind');
+      alert('MapPanel mounted is running - calling geofind');
       this.geofind();
     },
     computed: {
