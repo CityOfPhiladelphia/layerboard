@@ -1,8 +1,14 @@
 export default {
   watch: {
-    activeFeature(nextActiveFeature) {
-      //console.log('watch', nextActiveFeature);
-      //console.log(this.circleMarkers);
+    locationMarker(nextLocationMarker) {
+      console.log('watch', nextLocationMarker);
+      alert('watch locationMarker changed:', nextLocationMarker.latlngArray);
+      // this.$leafletElement._map.removeLayer(this.$leafletElement);
+      // const leafletElement = this.$leafletElement = this.createLeafletElement();
+      // const map = this.$store.state.map.map;
+      // if (map) {
+      //   leafletElement.addTo(map);
+      // }
     }
   },
   computed: {

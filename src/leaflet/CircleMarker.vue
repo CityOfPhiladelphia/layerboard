@@ -20,7 +20,7 @@
     // },
     watch: {
       latlng(nextLatlng) {
-        console.log('watch', nextLatlng);
+        alert('watch circleMarker nextLatlng:', nextLatlng);
         this.$leafletElement._map.removeLayer(this.$leafletElement);
         const leafletElement = this.$leafletElement = this.createLeafletElement();
         const map = this.$store.state.map.map;
