@@ -18,13 +18,20 @@
     //     return this.$store.state.activeFeature;
     //   }
     // },
-    // watch: {
-    //   activeFeature(nextActiveFeature) {
-    //     console.log('watch', nextActiveFeature);
-    //     this.bringCircleMarkerToFront();
-    //     //console.log(this.circleMarkers);
-    //   }
-    // },
+    watch: {
+      latlng(nextLatlng) {
+        console.log('watch', nextLatlng);
+        this.$leafletElement._map.removeLayer(this.$leafletElement);
+        const leafletElement = this.$leafletElement = this.createLeafletElement();
+        const map = this.$store.state.map.map;
+        if (map) {
+          leafletElement.addTo(map);
+        }
+
+        // this.bringCircleMarkerToFront();
+        //console.log(this.circleMarkers);
+      }
+    },
     mounted() {
       const leafletElement = this.$leafletElement = this.createLeafletElement();
       const map = this.$store.state.map.map;
