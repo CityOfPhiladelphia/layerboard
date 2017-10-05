@@ -282,7 +282,7 @@
       // SideBySideButton,
     },
     mounted() {
-      alert('MapPanel mounted is running - calling geofind');
+      // alert('MapPanel mounted is running - calling geofind');
       this.geofind();
     },
     computed: {
@@ -428,7 +428,7 @@
         4326
       );
 
-      console.log('MAPPANEL CREATED', this, 'push at 12:26');
+      console.log('MAPPANEL CREATED', this, 'push at 12:32');
     },
     watch: {
       picOrCycloActive(value) {

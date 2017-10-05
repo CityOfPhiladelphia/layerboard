@@ -2,7 +2,7 @@ export default {
   watch: {
     locationMarker(nextLocationMarker) {
       console.log('watch', nextLocationMarker);
-      alert('watch markers-mixin computed locationMarker changed:', nextLocationMarker.latlngArray);
+      // alert('watch markers-mixin computed locationMarker changed:', nextLocationMarker.latlngArray);
       // this.$leafletElement._map.removeLayer(this.$leafletElement);
       // const leafletElement = this.$leafletElement = this.createLeafletElement();
       // const map = this.$store.state.map.map;
@@ -162,7 +162,7 @@ export default {
       this.geolocation.watchPosition(this.geofindSuccess, this.geofindError, {enableHighAccuracy: true, timeout: 1000, maximumAge: 0, distanceFilter: 5});
     },
     geofindSuccess(position) {
-      alert('geofindSuccess is running, position:', position);
+      // alert('geofindSuccess is running, position:', position);
       const payload = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
