@@ -31,29 +31,27 @@ export default {
     },
     leafletMarkers() {
       const markers = [];
-
       markers.push.apply(markers, this.markers);
       markers.push.apply(markers, this.geojsonFeatures);
-
       return markers;
     },
   },
-  methods: {
-    geofind() {
-      console.log('geofind is running');
-      this.geolocation.watchPosition(this.geofindSuccess, this.geofindError, {enableHighAccuracy: true, timeout: 1000, maximumAge: 0, distanceFilter: 5});
-    },
-    geofindSuccess(position) {
-      // alert('geofindSuccess is running, position:', position);
-      const payload = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }
-      this.$store.commit('setLocation', payload);
-      console.log('latitude', payload.lat, 'longitude', payload.lng);
-    },
-    geofindError() {
-      console.log('GeofindError')
-    }
-  }
+  // methods: {
+  //   geofind() {
+  //     console.log('geofind is running');
+  //     this.geolocation.watchPosition(this.geofindSuccess, this.geofindError, {enableHighAccuracy: true, timeout: 1000, maximumAge: 0, distanceFilter: 5});
+  //   },
+  //   geofindSuccess(position) {
+  //     // alert('geofindSuccess is running, position:', position);
+  //     const payload = {
+  //       lat: position.coords.latitude,
+  //       lng: position.coords.longitude
+  //     }
+  //     this.$store.commit('setLocation', payload);
+  //     console.log('latitude', payload.lat, 'longitude', payload.lng);
+  //   },
+  //   geofindError() {
+  //     console.log('GeofindError')
+  //   }
+  // }
 };

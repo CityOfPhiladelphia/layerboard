@@ -15,6 +15,9 @@ Mapboard.default({
     right: 0,
     overflow: 'auto',
   },
+  geolocation: {
+    enabled: true
+  },
   map: {
     // possibly should move to base config
     defaultBasemap: 'pwd',

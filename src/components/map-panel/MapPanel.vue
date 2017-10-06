@@ -84,6 +84,7 @@
 
       <div v-once>
         <location-control v-once
+                          v-if="this.geolocationEnabled"
                           :position="'bottomright'"
         />
       </div>
@@ -179,13 +180,9 @@
       LegendControl,
       ControlCorner,
     },
-    mounted() {
-      // alert('MapPanel mounted is running - calling geofind');
-      // this.geofind();
-    },
     computed: {
-      geolocation() {
-        return navigator.geolocation;
+      geolocationEnabled() {
+        return this.$config.geolocation.enabled;
       },
       scale() {
         return this.$store.state.map.scale;
