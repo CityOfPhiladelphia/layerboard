@@ -6,7 +6,7 @@
 
 <script>
   import L from 'leaflet';
-  import generateUniqueId from '../util/uniqueId';
+  import generateUniqueId from '../util/unique-id';
 
   const EsriWebMap = L.esri.webMap;
 

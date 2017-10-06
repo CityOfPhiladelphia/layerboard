@@ -6,29 +6,6 @@ import Vuex from 'vuex';
 
 function createStore(config, bennyEndpoints, bennyRepresentation) {
 
-  // create initial state for sources. data key => {}
-  const sourceKeys = Object.keys(config.dataSources || {});
-  const sources = sourceKeys.reduce((o, key) => {
-    let val;
-    // if the source has targets, just set it to be an empty object
-    if (config.dataSources[key].targets) {
-      val = {
-        targets: {}
-      };
-    } else {
-      val = {
-       // we have to define these here, because vue can't observe properties that
-       // are added later.
-       status: null,
-       data: null
-     };
-    }
-
-    o[key] = val;
-
-    return o;
-  }, {});
-
   const initialState = {
     bennyEndpoints,
     geocode: {
@@ -39,7 +16,6 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       layerUrls: {},
       inputLayerFilter: '',
     },
-    // legends: {},
     map: {
       location: {
         lat: null,
@@ -52,17 +28,12 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       basemap: 'pwd',
       imagery: 'imagery2017',
       shouldShowImagery: false,
-      // basemapLeft: 'imagery2017',
       basemapLayers: {},
-      circleMarkers: [],
       webMap: null,
       webMapActiveLayers: [],
       webMapLayersAndRest: [],
-      // sideBySideActive: false,
+      watchPositionOn: false,
     },
-    dorParcels: [],
-    pwdParcel: null,
-    sources,
     cyclomedia: {
       active: false,
       viewer: null,
@@ -77,7 +48,6 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       pngMarkerIds: [],
       zoom: null,
     },
-    activeFeature: null,
     lastSearchMethod: null
   };
 
@@ -89,6 +59,9 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       setLocation(state, payload) {
         state.map.location.lat = payload.lat;
         state.map.location.lng = payload.lng;
+      },
+      setWatchPositionOn(state, payload) {
+        state.map.watchPositionOn = payload;
       },
       setLayerUrls(state, payload) {
         state.layers.layerUrls = payload;
@@ -135,31 +108,9 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       setShouldShowImagery(state, payload) {
         state.map.shouldShowImagery = payload;
       },
-      // setBasemapLeft(state, payload) {
-      //   state.map.basemapLeft = payload;
-      // },
-      // setBasemapLayers(state, payload) {
-      //   // console.log('setBasemapLayers is running, payload:', payload);
-      //   const key = Object.keys(payload);
-      //   const value = Object.values(payload);
-      //   // console.log(key);
-      //   if (state.map.basemapLayers[key]){
-      //     // console.log('already has key');
-      //   } else {
-      //     // console.log('doesnt have key');
-      //     state.map.basemapLayers[key] = value[0];
-      //   }
-      // },
-      setActiveFeature(state, payload) {
-        state.activeFeature = payload;
-      },
       setLastSearchMethod(state, payload) {
         state.lastSearchMethod = payload;
       },
-      // setSideBySideActive(state, payload) {
-      //   state.map.sideBySideActive = payload;
-      // },
-
 
 
       setMapCenter(state, payload) {
@@ -168,66 +119,12 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
       setMapZoom(state, payload) {
         state.map.zoom = payload
       },
-      setDorParcels(state, payload) {
-        state.dorParcels = payload;
-      },
-      setPwdParcel(state, payload) {
-        state.pwdParcel = payload;
-      },
       setGeocodeStatus(state, payload) {
         state.geocode.status = payload;
       },
       setGeocodeData(state, payload) {
         state.geocode.data = payload;
       },
-
-
-
-
-
-      setSourceStatus(state, payload) {
-        const key = payload.key;
-        const status = payload.status;
-
-        // if a target id was passed in, set the status for that target
-        const targetId = payload.targetId;
-
-        if (targetId) {
-          state.sources[key].targets[targetId].status = status;
-        } else {
-          state.sources[key].status = status;
-        }
-      },
-      setSourceData(state, payload) {
-        const key = payload.key;
-        const data = payload.data;
-
-        // if a target id was passed in, set the data object for that target
-        const targetId = payload.targetId;
-
-        if (targetId) {
-          state.sources[key].targets[targetId].data = data;
-        } else {
-          state.sources[key].data = data;
-        }
-      },
-      // this sets empty targets for a data source
-      createEmptySourceTargets(state, payload) {
-        const {key, targetIds} = payload;
-        state.sources[key].targets = targetIds.reduce((acc, targetId) => {
-          acc[targetId] = {
-            status: null,
-            data: null
-          };
-          return acc;
-        }, {});
-      },
-      clearSourceTargets(state, payload) {
-        const key = payload.key;
-        state.sources[key].targets = {};
-      },
-
-
 
 
 

@@ -10,17 +10,8 @@
           @l-moveend="handleMapMove"
           zoom-control-position="bottomright"
           :min-zoom="this.$config.map.minZoom"
-          :max-zoom="25"
+          :max-zoom="22"
     >
-    <!-- :max-zoom="this.$config.map.maxZoom" -->
-    <!-- :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }" -->
-      <!-- loading mask -->
-      <!-- <div v-show="isGeocoding" class="mb-map-loading-mask">
-        <div class="mb-map-loading-mask-inner">
-          <i class="fa fa-spinner fa-4x spin"></i>
-          <h1>Finding address...</h1>
-        </div>
-      </div> -->
 
       <!-- webmap -->
       <esri-web-map>
@@ -35,7 +26,6 @@
         />
       </esri-web-map>
 
-
       <!-- basemaps -->
       <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                          v-if="activeBasemap === key"
@@ -47,16 +37,6 @@
                          :attribution="basemap.attribution"
       />
 
-      <!-- <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
-                         v-if="shouldShowLeftMap(key)"
-                         :key="key"
-                         :name="key"
-                         :url="basemap.url"
-                         :max-zoom="basemap.maxZoom"
-                         :zIndex="basemap.zIndex"
-                         :attribution="basemap.attribution"
-      /> -->
-
       <!-- basemap labels and parcels outlines -->
       <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
                          v-if="activeTiles.includes(key)"
@@ -66,26 +46,6 @@
                          :zIndex="tiledLayer.zIndex"
                          :attribution="tiledLayer.attribution"
       />
-
-      <!-- <esri-dynamic-map-layer v-for="(dynamicLayer, key) in this.$config.map.dynamicMapLayers"
-                          v-if="activeDynamicMaps.includes(key)"
-                         :key="key"
-                         :url="dynamicLayer.url"
-                         :attribution="dynamicLayer.attribution"
-                         :opacity="dynamicLayer.opacity"
-      /> -->
-
-      <!-- <esri-feature-layer v-for="(featureLayer, key) in this.$config.map.featureLayers"
-                          v-if="shouldShowFeatureLayer(key, featureLayer.minZoom)"
-                          :key="key"
-                          :layerName="key"
-                          :url="featureLayer.url"
-                          :color="featureLayer.color"
-                          :fillColor="featureLayer.color"
-                          :fillOpacity="featureLayer.fillOpacity"
-                          :weight="featureLayer.weight"
-      /> -->
-
 
       <vector-marker v-for="(marker, index) in markers"
                     :latlng="marker.latlng"
@@ -111,59 +71,23 @@
 
       <div v-once>
         <basemap-toggle-control v-if="shouldShowImageryToggle"
-                         v-once
-                         :position="'topright'"
+                                v-once
+                                :position="'topright'"
         />
       </div>
 
       <div v-once>
-        <!-- v-once -->
         <basemap-select-control
                        :position="'topalmostright'"
         />
-        <!-- :imagery-years="imageryYears"
-        :historic-years="historicYears" -->
-      </div>
-
-      <!-- <div v-once>
-        <basemap-control v-if="hasImageryBasemaps"
-                         v-once
-                         :position="'topright'"
-                         :imagery-years="imageryYears"
-        />
       </div>
 
       <div v-once>
-        <historicmap-control v-if="hasHistoricBasemaps"
-                         v-once
-                         :position="'topright'"
-                         :historic-years="historicYears"
-        />
-      </div> -->
-
-      <!-- <div>
-        <basemap-control-left :position="'topleft'"
-                              :imagery-years="imageryYears"
-                              v-show="this.sideBySideActive"
+        <location-control v-once
+                          v-if="this.geolocationEnabled"
+                          :position="'bottomright'"
         />
       </div>
-
-      <div>
-        <historicmap-control-left :position="'topleft'"
-                                  :historic-years="historicYears"
-                                  v-show="this.sideBySideActive"
-        />
-      </div> -->
-
-      <!-- <div v-once>
-        <side-by-side v-once
-        />
-      </div> -->
-
-      <!-- <legend-control v-if="this.webMapActiveLayers.length > 0"
-        :position="'topright'"
-        :wmActiveLayers="this.webMapActiveLayers"
-      /> -->
 
       <!-- search control -->
       <!-- custom components seem to have to be wrapped like this to work
@@ -185,7 +109,7 @@
         </control>
       </div>
 
-
+      <!-- location marker -->
       <circle-marker v-if="this.$store.state.map.location.lat != null"
                      :latlng="this.locationMarker.latlng"
                      :radius="this.locationMarker.radius"
@@ -196,15 +120,6 @@
                      :fillOpacity="this.locationMarker.fillOpacity"
                      :key="Math.random()"
       />
-      <!-- @l-mouseover="handleCircleMarkerMouseover"
-      @l-mouseout="handleCircleMarkerMouseout" -->
-      <!-- v-for="circleMarker in circleMarkers" -->
-      <!-- :data="{
-        featureId: circleMarker.featureId,
-        tableId: circleMarker.tableId
-      }" -->
-
-
 
     </map_>
   </div>
@@ -212,7 +127,6 @@
 
 <script>
   // mixins
-  // import dataMixin from './data-mixin';
   import markersMixin from './markers-mixin';
   import geocodeMixin from './geocode-mixin';
   import cyclomediaMixin from '../../cyclomedia/map-panel-mixin';
@@ -224,31 +138,23 @@
   import EsriWebMap from '../../esri-leaflet/WebMap';
   import EsriWebMapLayer from '../../esri-leaflet/WebMapLayer';
   import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
-  // import EsriDynamicMapLayer from '../../esri-leaflet/DynamicMapLayer';
-  // import EsriFeatureLayer from '../../esri-leaflet/FeatureLayer';
   import Geojson from '../../leaflet/Geojson';
   import CircleMarker from '../../leaflet/CircleMarker';
-  // import OpacitySlider from '../../leaflet/OpacitySlider';
   import VectorMarker from '../VectorMarker';
   import PngMarker from '../PngMarker';
   import SvgMarker from '../SvgMarker';
   import BasemapToggleControl from '../BasemapToggleControl.vue';
   import BasemapSelectControl from '../BasemapSelectControl.vue';
-  // import BasemapControl from '../BasemapControl';
-  // import HistoricmapControl from '../HistoricmapControl';
-  // import BasemapControlLeft from '../BasemapControlLeft';
-  // import HistoricmapControlLeft from '../HistoricmapControlLeft';
+  import LocationControl from '../LocationControl.vue';
   import CyclomediaButton from '../../cyclomedia/Button';
   import PictometryButton from '../../pictometry/Button';
   import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
   import LegendControl from '../../esri-leaflet/Legend.vue';
   import ControlCorner from '../../leaflet/ControlCorner.vue';
-  // import SideBySideButton from '../../components/SideBySideButton.vue';
 
   export default {
     mixins: [
-      // dataMixin,
       markersMixin,
       geocodeMixin,
       cyclomediaMixin,
@@ -260,42 +166,24 @@
       EsriWebMap,
       EsriWebMapLayer,
       EsriTiledMapLayer,
-      // EsriDynamicMapLayer,
-      // EsriFeatureLayer,
       Geojson,
       CircleMarker,
-      // OpacitySlider,
       VectorMarker,
       PngMarker,
       SvgMarker,
       BasemapToggleControl,
       BasemapSelectControl,
-      // BasemapControl,
-      // HistoricmapControl,
-      // BasemapControlLeft,
-      // HistoricmapControlLeft,
+      LocationControl,
       PictometryButton,
       CyclomediaButton,
       CyclomediaRecordingCircle,
       LegendControl,
       ControlCorner,
-      // SideBySideButton,
-    },
-    mounted() {
-      console.log('mounted - running geofind');
-      this.geofind();
     },
     computed: {
-      geolocation() {
-        // console.log('navigator', navigator);
-        return navigator.geolocation;
+      geolocationEnabled() {
+        return this.$config.geolocation.enabled;
       },
-      // test2() {
-      //   return this.test.getCurrentPosition();
-      // },
-      // sideBySideActive() {
-      //   return this.$store.state.map.sideBySideActive;
-      // },
       scale() {
         return this.$store.state.map.scale;
       },
@@ -324,34 +212,17 @@
           return [];
         }
       },
-      activeDynamicMaps() {
-        if (!this.activeTopicConfig || !this.activeTopicConfig.dynamicMapLayers) {
-          return [];
-        } else {
-          return this.activeTopicConfig.dynamicMapLayers;
-        }
-      },
-      activeFeatureLayers() {
-        if (!this.activeTopicConfig || !this.activeTopicConfig.featureLayers) {
-          return [];
-        } else {
-          return this.activeTopicConfig.featureLayers;
-        }
-      },
-      activeFeature() {
-        return this.$store.state.activeFeature;
-      },
       basemaps() {
         return Object.values(this.$config.map.basemaps);
+      },
+      shouldShowImageryToggle() {
+        return this.hasImageryBasemaps && this.$config.map.imagery.enabled;
       },
       imageryBasemaps() {
         return this.basemaps.filter(basemap => basemap.type === 'imagery');
       },
       hasImageryBasemaps() {
         return this.imageryBasemaps.length > 0;
-      },
-      shouldShowImageryToggle() {
-        return this.hasImageryBasemaps && this.$config.map.imagery.enabled;
       },
       imageryYears() {
         // pluck year from basemap objects
@@ -364,33 +235,7 @@
         return this.historicBasemaps.length > 0;
       },
       historicYears() {
-        // pluck year from basemap objects
         return this.historicBasemaps.map(x => x.year);
-      },
-      identifyFeature() {
-        // return (this.activeTopicConfig || {}).identifyFeature;
-        return 'address-marker';
-      },
-      activeTopicConfig() {
-        const key = this.$store.state.activeTopic;
-
-        // if no active topic, return null
-        if (!key) {
-          return null;
-        }
-
-        return this.$config.topics.filter((topic) => {
-          return topic.key === key;
-        })[0];
-      },
-      // activeParcelLayer() {
-      //   return this.activeTopicConfig.parcels;
-      // },
-      dorParcels() {
-        return this.$store.state.dorParcels;
-      },
-      pwdParcel() {
-        return this.$store.state.pwdParcel;
       },
       geocodeResult() {
         return this.$store.state.geocode.data;
@@ -399,18 +244,12 @@
         // return this.geocodeResult.geometry;
         return (this.geocodeResult || {}).geometry;;
       },
-      streetAddress() {
-        return this.geocodeResult.properties.street_address;
-      },
       picOrCycloActive() {
         if (this.cyclomediaActive || this.pictometryActive) {
           return true;
         } else {
           return false;
         }
-      },
-      mapBounds() {
-        // TODO calculate map bounds based on leaflet markers above
       },
     },
     created() {
@@ -428,7 +267,7 @@
         4326
       );
 
-      console.log('MAPPANEL CREATED', this);
+      console.log('MAPPANEL CREATED', this, 'push at 12:32');
     },
     watch: {
       picOrCycloActive(value) {
@@ -438,9 +277,6 @@
       }
     },
     methods: {
-      // shouldShowLeftMap(key) {
-      //   return this.activeBasemapLeft === key && this.sideBySideActive
-      // },
       shouldShowFeatureLayer(layer) {
         if (layer.rest.layerDefinition) {
           if (layer.rest.layerDefinition.minScale) {
@@ -470,8 +306,8 @@
         this.$store.commit('setLastSearchMethod', 'reverseGeocode');
 
         // METHOD 1: intersect map click latlng with parcel layers
-        this.getDorParcelsByLatLng(e.latlng);
-        this.getPwdParcelByLatLng(e.latlng);
+        // this.getDorParcelsByLatLng(e.latlng);
+        // this.getPwdParcelByLatLng(e.latlng);
 
         // METHOD 2: reverse geocode via AIS
         // this.getReverseGeocode(e.latlng);
@@ -479,23 +315,23 @@
       handleMapMove(e) {
         // update state
         const center = this.$store.state.map.map.getCenter();
+        // console.log('center', center);
         this.$store.commit('setMapCenter', center);
         const zoom = this.$store.state.map.map.getZoom();
+        // console.log('zoom', zoom);
         this.$store.commit('setMapZoom', zoom);
         // const scale = this.getScale(zoom);
         const scale = this.$config.map.scales[zoom];
         this.$store.commit('setMapScale', scale);
         this.updateCyclomediaRecordings();
       },
-      // getScale(zoom) {
-      //   return this.$config.map.scales[zoom];
-      // },
       handleSearchFormSubmit(e) {
+        // this.$controller.handleSearchFormSubmit(e);
         const input = e.target[0].value;
         this.$store.commit('setLastSearchMethod', 'geocode');
-        this.$store.commit('setPwdParcel', null);
-        this.$store.commit('setDorParcels', []);
-
+        // // this.$store.commit('setPwdParcel', null);
+        // // this.$store.commit('setDorParcels', []);
+        //
         this.geocode(input);
       }
     }, // end of methods
