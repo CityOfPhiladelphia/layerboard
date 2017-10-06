@@ -42,12 +42,12 @@
         this.$leafletElement.addTo(map);
       },
       changeOpacity(nextOpacity) {
-        console.log('LEAFLET ELEMENT:', this.$leafletElement);
+        // console.log('LEAFLET ELEMENT:', this.$leafletElement);
         if (this.$props.type != 'FL') {
           this.$leafletElement.setOpacity(nextOpacity);
         } else {
           this.$leafletElement.eachFeature(function(layer){
-            console.log('LAYER', layer);
+            // console.log('LAYER', layer);
             if (layer._icon) {
               const style = layer._icon.attributes.style.nodeValue;
               const styleSlice = style.slice(0, style.indexOf('; opacity'));

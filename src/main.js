@@ -4,12 +4,17 @@ import configMixin from './util/config-mixin';
 import eventBusMixin from './util/event-bus-mixin';
 import Mapboard from './components/Mapboard';
 import mergeDeep from './util/merge-deep';
+import controllerMixin from './controller';
+import generateUniqueId from './util/unique-id';
 
 export default (clientConfig) => {
   const baseConfigUrl = clientConfig.baseConfig;
 
   // create a global event bus used to proxy events to the mapboard host
-  Vue.use(eventBusMixin);
+  // Vue.use(eventBusMixin);
+  // create a global event bus used to proxy events to the mapboard host
+  const eventBus = new Vue();
+  Vue.prototype.$eventBus = eventBus;
 
   // get base config
   return $.ajax({
@@ -53,6 +58,9 @@ export default (clientConfig) => {
 
           // create store
           const store = createStore(config, bennyEndpoints)//, bennyRepresentation);
+
+          // mix in controller
+          Vue.use(controllerMixin, { config, store, eventBus });
 
           // mount main vue
           const vm = new Vue({

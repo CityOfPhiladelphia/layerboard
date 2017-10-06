@@ -25,6 +25,7 @@
       }
     },
     mounted() {
+      // console.log('circleMarker mounted is running');
       const leafletElement = this.$leafletElement = this.createLeafletElement();
       const map = this.$store.state.map.map;
       if (map) {
@@ -47,7 +48,7 @@
           latlng,
           ...options
         } = props;
-        console.log('latlng', latlng, 'circlemarker', new CircleMarker(latlng, options));
+        // console.log('latlng', latlng, 'circlemarker', new CircleMarker(latlng, options));
         const newCircleMarker = new CircleMarker(latlng, options);
         return newCircleMarker;
       },

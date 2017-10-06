@@ -1,16 +1,4 @@
 export default {
-  // watch: {
-  //   locationMarker(nextLocationMarker) {
-  //     console.log('watch', nextLocationMarker);
-  //     // alert('watch markers-mixin computed locationMarker changed:', nextLocationMarker.latlngArray);
-  //     // this.$leafletElement._map.removeLayer(this.$leafletElement);
-  //     // const leafletElement = this.$leafletElement = this.createLeafletElement();
-  //     // const map = this.$store.state.map.map;
-  //     // if (map) {
-  //     //   leafletElement.addTo(map);
-  //     // }
-  //   }
-  // },
   computed: {
     // returns map markers as simple object with a geometry property, key,
     // and optional properties for symbology
@@ -28,8 +16,6 @@ export default {
 
       return markers;
     },
-    // returns all geojson features to be rendered on the map along with
-    // necessary props.
     locationMarker() {
       const latlngArray = [this.$store.state.map.location.lat, this.$store.state.map.location.lng]
       const marker = {
