@@ -11,12 +11,13 @@
                :checked="webMapActiveLayers.includes(layerName)"
                @click=checkboxToggle
         >
-        {{ layerName }}
         <a :href="'http://metadata.phila.gov/#home/representationdetails/' + this.bennyId"
            target="_blank"
            v-if="bennyId"
-        >(metadata)
+        >
+          <span><i class="fa fa-info-circle"></i></span>
         </a>
+        {{ layerName }}
       </label>
       <legend-box v-if="webMapActiveLayers.includes(layerName)"
         :layer="layer"
@@ -102,8 +103,12 @@
         return this.layerUrls[this.$props.layerName];
       },
       bennyId() {
-        const id = this.bennyEndpoints[this.url];
-        return id;
+        if (Object.keys(this.bennyEndpoints).length > 0) {
+          const id = this.bennyEndpoints[this.url];
+          return id;
+        } else {
+          return ' ';
+        }
       },
       webMapActiveLayers() {
         return this.$store.state.map.webMapActiveLayers;
@@ -139,6 +144,14 @@
 
   .flex {
     margin-bottom: 16px;
+  }
+
+  .metadata-link {
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    /*border: solid;
+    border-width: 1px;*/
   }
 
 </style>

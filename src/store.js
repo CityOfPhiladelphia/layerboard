@@ -4,10 +4,11 @@ import Vuex from 'vuex';
 // when you load vuex from a script tag this seems to happen automatically
 // Vue.use(Vuex);
 
-function createStore(config, bennyEndpoints, bennyRepresentation) {
+// function createStore(config, bennyEndpoints, bennyRepresentation) {
+function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
 
   const initialState = {
-    bennyEndpoints,
+    bennyEndpoints: {},
     geocode: {
       status: null,
       data: null
@@ -56,6 +57,9 @@ function createStore(config, bennyEndpoints, bennyRepresentation) {
     state: initialState,
     getters: {},
     mutations: {
+      setBennyEndpoints(state, payload) {
+        state.bennyEndpoints = payload;
+      },
       setLocation(state, payload) {
         state.map.location.lat = payload.lat;
         state.map.location.lng = payload.lng;
