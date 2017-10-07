@@ -71,6 +71,38 @@
       ViewCone,
       PngMarker
     },
+    mounted() {
+      const store = this.$store;
+      $.ajax({
+        dataType: 'json',
+        url: "https://api.knackhq.com/v1/objects/object_4/records/export?type=json",
+        headers: {
+          'X-Knack-Application-Id': '550c60d00711ffe12e9efc64',
+          'X-Knack-REST-API-Key': '7bce4520-28dc-11e5-9f0a-4d758115b820'
+        },
+        success(dataOut) {
+          const records = dataOut.records;
+          const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
+          let bennyEndpoints = {};
+          for (let record of recordsFiltered) {
+            const url = record.field_25.split('"')[1];
+            let url2;
+            if (url) {
+              url2 = url.split('query')[0].replace('https://', '').replace('http://', '').replace(/\/$/, "").toLowerCase();
+            } else {
+              url2 = null;
+            }
+            if (record.field_13_raw.length > 0) {
+              bennyEndpoints[url2] = record.field_13_raw[0].id;
+            } else {
+              bennyEndpoints[url2] = '';
+            }
+          }
+          // console.log('mapboard mounted, bennyEndpoints:', bennyEndpoints);
+          store.commit('setBennyEndpoints', bennyEndpoints);
+        }
+      });
+    },
     computed: {
       cyclomediaActive() {
         return this.$store.state.cyclomedia.active
