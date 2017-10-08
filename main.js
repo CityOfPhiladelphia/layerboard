@@ -29,6 +29,12 @@ Mapboard.default({
       enabled: true
     },
   },
+  cyclomedia: {
+    enabled: false
+  },
+  pictometry: {
+    enabled: false
+  },
   baseConfig: BASE_CONFIG_URL,
   webmapId: WEBMAP_ID,
 });
