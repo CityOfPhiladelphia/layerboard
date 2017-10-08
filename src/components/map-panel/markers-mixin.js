@@ -4,16 +4,14 @@ export default {
     // and optional properties for symbology
     markers() {
       const markers = [];
-
       // geocoded address marker
       const geocodeGeom = this.geocodeGeom;
-      if (this.identifyFeature === 'address-marker' && geocodeGeom) {
+      if (geocodeGeom) {
         const latlng = [...geocodeGeom.coordinates].reverse();
         const key = this.geocodeResult.properties.street_address;
         const addressMarker = {latlng, key};
         markers.push(addressMarker);
       }
-
       return markers;
     },
     locationMarker() {
@@ -29,29 +27,11 @@ export default {
       }
       return marker;
     },
-    leafletMarkers() {
-      const markers = [];
-      markers.push.apply(markers, this.markers);
-      markers.push.apply(markers, this.geojsonFeatures);
-      return markers;
-    },
+    // leafletMarkers() {
+    //   const markers = [];
+    //   markers.push.apply(markers, this.markers);
+    //   markers.push.apply(markers, this.geojsonFeatures);
+    //   return markers;
+    // },
   },
-  // methods: {
-  //   geofind() {
-  //     console.log('geofind is running');
-  //     this.geolocation.watchPosition(this.geofindSuccess, this.geofindError, {enableHighAccuracy: true, timeout: 1000, maximumAge: 0, distanceFilter: 5});
-  //   },
-  //   geofindSuccess(position) {
-  //     // alert('geofindSuccess is running, position:', position);
-  //     const payload = {
-  //       lat: position.coords.latitude,
-  //       lng: position.coords.longitude
-  //     }
-  //     this.$store.commit('setLocation', payload);
-  //     console.log('latitude', payload.lat, 'longitude', payload.lng);
-  //   },
-  //   geofindError() {
-  //     console.log('GeofindError')
-  //   }
-  // }
 };

@@ -15,7 +15,7 @@
 
       <!-- webmap -->
       <esri-web-map>
-        <esri-web-map-layer v-for="(layer, key) in this.wmLayers"
+        <esri-web-map-layer v-for="(layer, key) in this.$store.state.map.webMapLayersAndRest"
                             v-if="shouldShowFeatureLayer(layer)"
                             :key="key"
                             :layer="layer.layer"
@@ -187,12 +187,6 @@
       scale() {
         return this.$store.state.map.scale;
       },
-      webMap() {
-        return this.$store.state.map.webMap;
-      },
-      wmLayers() {
-        return this.$store.state.map.webMapLayersAndRest;
-      },
       webMapActiveLayers() {
         return this.$store.state.map.webMapActiveLayers;
       },
@@ -241,7 +235,6 @@
         return this.$store.state.geocode.data;
       },
       geocodeGeom() {
-        // return this.geocodeResult.geometry;
         return (this.geocodeResult || {}).geometry;;
       },
       picOrCycloActive() {
@@ -303,10 +296,10 @@
 
         // TODO figure out why form submits via enter key are generating a map
         // click event and remove this
-        if (e.originalEvent.keyCode === 13) {
-          return;
-        }
-        this.$store.commit('setLastSearchMethod', 'reverseGeocode');
+        // if (e.originalEvent.keyCode === 13) {
+        //   return;
+        // }
+        // this.$store.commit('setLastSearchMethod', 'reverseGeocode');
 
         // METHOD 1: intersect map click latlng with parcel layers
         // this.getDorParcelsByLatLng(e.latlng);
@@ -316,25 +309,25 @@
         // this.getReverseGeocode(e.latlng);
       },
       handleMapMove(e) {
-        // update state
-        const center = this.$store.state.map.map.getCenter();
-        // console.log('center', center);
+        const map = this.$store.state.map.map;
+
+        const center = map.getCenter();
         this.$store.commit('setMapCenter', center);
-        const zoom = this.$store.state.map.map.getZoom();
-        // console.log('zoom', zoom);
+        const zoom = map.getZoom();
         this.$store.commit('setMapZoom', zoom);
-        // const scale = this.getScale(zoom);
         const scale = this.$config.map.scales[zoom];
         this.$store.commit('setMapScale', scale);
-        this.updateCyclomediaRecordings();
+
+        const cyclomediaConfig = this.$config.cyclomedia || {};
+        if (cyclomediaConfig.enabled) {
+          // update cyclo recordings
+          this.updateCyclomediaRecordings();
+        }
       },
       handleSearchFormSubmit(e) {
         // this.$controller.handleSearchFormSubmit(e);
         const input = e.target[0].value;
-        this.$store.commit('setLastSearchMethod', 'geocode');
-        // // this.$store.commit('setPwdParcel', null);
-        // // this.$store.commit('setDorParcels', []);
-        //
+        // this.$store.commit('setLastSearchMethod', 'geocode');
         this.geocode(input);
       }
     }, // end of methods
