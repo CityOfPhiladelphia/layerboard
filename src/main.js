@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Vue from 'vue';
 import createStore from './store';
 import configMixin from './util/config-mixin';
@@ -18,44 +19,39 @@ export default (clientConfig) => {
   Vue.prototype.$eventBus = eventBus;
 
   // get base config
-  return $.ajax({
-    url: baseConfigUrl,
-    success(data) {
-      // console.log('data', data);
+  return axios.get(baseConfigUrl).then(response => {
+    const data = response.data;
+    const baseConfig = eval(data);
+    // console.log('baseConfig', baseConfig);
 
-      const baseConfig = eval(data);
-      console.log('baseConfig', baseConfig);
+    // deep merge base config and client config
+    //const config = mergeDeep(clientConfig, baseConfig);
+    const config = mergeDeep(baseConfig, clientConfig);
 
-      // deep merge base config and client config
-      //const config = mergeDeep(clientConfig, baseConfig);
-      const config = mergeDeep(baseConfig, clientConfig);
+    // make config accessible from each component via this.$config
+    Vue.use(configMixin, config);
 
-      // make config accessible from each component via this.$config
-      Vue.use(configMixin, config);
+    // create store
+    const store = createStore(config);
 
-      // create store
-      const store = createStore(config);
+    // mix in controller
+    Vue.use(controllerMixin, { config, store, eventBus });
 
-      // mix in controller
-      Vue.use(controllerMixin, { config, store, eventBus });
+    // mount main vue
+    const vm = new Vue({
+      el: config.el || '#mapboard',
+      render: (h) => h(Mapboard),
+      store
+    });
 
-      // mount main vue
-      const vm = new Vue({
-        el: config.el || '#mapboard',
-        render: (h) => h(Mapboard),
-        store
-      });
-
-      // bind mapboard events to host app
-      const events = config.events || {};
-      for (let eventName of Object.keys(events)) {
-        const callback = events[eventName];
-        vm.$eventBus.$on(eventName, callback);
-      }
-
-    },
-    error(err) {
-      console.error('Error loading base config:', err);
+    // bind mapboard events to host app
+    const events = config.events || {};
+    for (let eventName of Object.keys(events)) {
+      const callback = events[eventName];
+      vm.$eventBus.$on(eventName, callback);
     }
+
+  }, response => {
+    console.error('AXIOS ERROR loading base config');
   });
 };
