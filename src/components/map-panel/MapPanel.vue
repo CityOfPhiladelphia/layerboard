@@ -6,12 +6,12 @@
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
           :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
-          @l-click="handleMapClick"
           @l-moveend="handleMapMove"
           zoom-control-position="bottomright"
           :min-zoom="this.$config.map.minZoom"
           :max-zoom="22"
     >
+    <!-- @l-click="handleMapClick" -->
 
       <!-- webmap -->
       <esri-web-map>
@@ -138,7 +138,7 @@
   import EsriWebMap from '../../esri-leaflet/WebMap';
   import EsriWebMapLayer from '../../esri-leaflet/WebMapLayer';
   import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
-  import Geojson from '../../leaflet/Geojson';
+  // import Geojson from '../../leaflet/Geojson';
   import CircleMarker from '../../leaflet/CircleMarker';
   import VectorMarker from '../VectorMarker';
   import PngMarker from '../PngMarker';
@@ -150,7 +150,7 @@
   import PictometryButton from '../../pictometry/Button';
   import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
-  import LegendControl from '../../esri-leaflet/Legend.vue';
+  // import LegendControl from '../../esri-leaflet/Legend.vue';
   import ControlCorner from '../../leaflet/ControlCorner.vue';
 
   export default {
@@ -166,7 +166,7 @@
       EsriWebMap,
       EsriWebMapLayer,
       EsriTiledMapLayer,
-      Geojson,
+      // Geojson,
       CircleMarker,
       VectorMarker,
       PngMarker,
@@ -177,7 +177,7 @@
       PictometryButton,
       CyclomediaButton,
       CyclomediaRecordingCircle,
-      LegendControl,
+      // LegendControl,
       ControlCorner,
     },
     computed: {
@@ -291,23 +291,8 @@
           return false;
         }
       },
-      handleMapClick(e) {
-        // console.log('handle map click');
-
-        // TODO figure out why form submits via enter key are generating a map
-        // click event and remove this
-        // if (e.originalEvent.keyCode === 13) {
-        //   return;
-        // }
-        // this.$store.commit('setLastSearchMethod', 'reverseGeocode');
-
-        // METHOD 1: intersect map click latlng with parcel layers
-        // this.getDorParcelsByLatLng(e.latlng);
-        // this.getPwdParcelByLatLng(e.latlng);
-
-        // METHOD 2: reverse geocode via AIS
-        // this.getReverseGeocode(e.latlng);
-      },
+      // handleMapClick(e) {
+      // },
       handleMapMove(e) {
         const map = this.$store.state.map.map;
 
