@@ -55,6 +55,7 @@
               layer._icon.attributes.style.nodeValue = styleConcat;
             } else if (layer._path) {
               layer.setStyle({
+                opacity: nextOpacity,
                 fillOpacity: nextOpacity
               })
             }
