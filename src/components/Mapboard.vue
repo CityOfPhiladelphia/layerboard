@@ -77,7 +77,7 @@
       const store = this.$store;
       const knackUrl = "https://api.knackhq.com/v1/objects/object_4/records/export?type=json";
       const params = {
-        dataType: 'json'
+        // dataType: 'json'
       }
       const headers = {
         'X-Knack-Application-Id': '550c60d00711ffe12e9efc64',
@@ -86,9 +86,17 @@
       axios.get(knackUrl, { params, headers }).then(response => {
         const dataOut = response.data;
         const records = dataOut.records;
-        const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
+        const recordsFiltered = records;
+        // const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
+        // console.log(recordsFiltered);
         let bennyEndpoints = {};
+        // let bennyEndpoints2 = {};
+        let bennyEndpoints3 = []
         for (let record of recordsFiltered) {
+          // bennyEndpoints2[record.id] = record.field_25;\
+          if (record.id) {
+            bennyEndpoints3.push(record.id);
+          }
           const url = record.field_25.split('"')[1];
           let url2;
           if (url) {
@@ -103,6 +111,8 @@
           }
         }
         store.commit('setBennyEndpoints', bennyEndpoints);
+        // store.commit('setBennyEndpoints2', bennyEndpoints2);
+        store.commit('setBennyEndpoints3', bennyEndpoints3);
       }, response => {
         console.log('AXIOS ERROR Mapboard.vue');
       });

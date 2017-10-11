@@ -41,6 +41,7 @@
         this.createLegend(nextScale);
       },
       legend() {
+        console.log('watch legend fired');
         this.createLegend(this.scale);
       }
     },
@@ -54,22 +55,32 @@
     },
     methods: {
       initialize() {
+        let drawingInfo;
+        if (this.$props.layerDefinition) {
+          drawingInfo = this.$props.layerDefinition.drawingInfo;
+        }
         const opts = {
           layerName: this.$props.layerName,
           layerId: this.$props.layerId,
-          store: this.$store
+          store: this.$store,
+          drawingInfo
         }
+        console.log('LegendBox initialize is running:', this.$props.layer, opts);
         const legend = L.esri.legendControl(this.$props.layer, opts);
       },
       createLegend(scale) {
         const legend = this.$props.legend;
-        // console.log('METHOD createLegend running', scale, legend);
+        console.log('METHOD createLegend running', scale, legend);
         let layersHtml = '';
         if (legend.layers.length === 1) {
           const layer = legend.layers[0];
           let legendsHtml = '';
           for (let layerLegend of layer.legend) {
             const layerLegendJSON = JSON.parse(JSON.stringify(layerLegend));
+            // console.log('layerLegendJSON', layerLegendJSON);
+            if (!layerLegendJSON.label) {
+              layerLegendJSON.label = '';
+            }
             legendsHtml += L.Util.template(this.options.listRowTemplate, layerLegendJSON);
           }
           layersHtml += L.Util.template(this.options.layerTemplate, {

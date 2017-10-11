@@ -9,6 +9,8 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
 
   const initialState = {
     bennyEndpoints: {},
+    bennyEndpoints2: {},
+    bennyEndpoints3: [],
     geocode: {
       status: null,
       data: null
@@ -59,6 +61,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     mutations: {
       setBennyEndpoints(state, payload) {
         state.bennyEndpoints = payload;
+      },
+      setBennyEndpoints2(state, payload) {
+        state.bennyEndpoints2 = payload;
+      },
+      setBennyEndpoints3(state, payload) {
+        state.bennyEndpoints3 = payload;
       },
       setLocation(state, payload) {
         state.map.location.lat = payload.lat;
@@ -112,9 +120,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setShouldShowImagery(state, payload) {
         state.map.shouldShowImagery = payload;
       },
-      setLastSearchMethod(state, payload) {
-        state.lastSearchMethod = payload;
-      },
+      // setLastSearchMethod(state, payload) {
+      //   state.lastSearchMethod = payload;
+      // },
 
 
       setMapCenter(state, payload) {

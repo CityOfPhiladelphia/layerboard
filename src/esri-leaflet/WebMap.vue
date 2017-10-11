@@ -33,7 +33,7 @@
           const restData = response.data;
           const webMap = this.$webMap = L.esri.webMap(this.webmapId, { map: map });
 
-          console.log('WEBMAP', webMap);
+          console.log('WEBMAP', webMap, 'restData', restData);
           self.$store.commit('setWebMap', webMap);
 
           webMap.on('load', function() {
