@@ -7,6 +7,7 @@
       </v-flex>
       <v-flex xs9> -->
   <div class="mb-root row collapse"
+       id="mb-root"
        :style="this.$config.rootStyle"
   >
     <topic-panel>
