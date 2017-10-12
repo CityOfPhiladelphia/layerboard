@@ -2,7 +2,7 @@
 var layerName;
 var layerId;
 var store;
-var symbolChange = false;
+// var symbolChange = false;
 
 (function (factory) {
   //define an AMD module that relies on 'leaflet'
@@ -111,7 +111,7 @@ EsriLeaflet.Legend.include({
         console.log('10 in run, response.drawingInfo:', response.drawingInfo, 'response:', response, 'this:', this);
         if (this.options.drawingInfo) {
           console.log('10.1 using orig drawing info');
-          symbolChange = true;
+          // symbolChange = true;
           this._symbolsToLegends([this.options], function(err, result) {
             callback.call(context, err, {
               layers: result
@@ -304,14 +304,15 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
     var imageData = symbol.imageData;
 
     let newSymbol;
-    if (symbolChange === true) {
-      // symbol.size = 11;
+    // if (symbolChange === true) {
       newSymbol = Object.assign({}, symbol);
-      newSymbol.size = 12
-      this._setSize(canvas, 11);
-    } else {
-      this._setSize(canvas, symbol);
-    }
+      console.log('14.1 - symbol size:', symbol.size)
+      newSymbol.size = symbol.size + 4;
+      console.log('14.2 - newSymbol size:', newSymbol.size)
+      this._setSize(canvas, newSymbol);
+    // } else {
+    //   this._setSize(canvas, symbol);
+    // }
 
     function done(error, imageData) {
       if (error) {
@@ -334,11 +335,11 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
     switch (symbol.type) {
       case 'esriSMS':
         console.log('14 after esriSMS, ctx:', ctx, 'symbol', symbol)
-        if (symbolChange === true) {
+        // if (symbolChange === true) {
           this._renderMarker(ctx, newSymbol, done);
-        } else {
-          this._renderMarker(ctx, symbol, done);
-        }
+        // } else {
+        //   this._renderMarker(ctx, symbol, done);
+        // }
         break;
       case 'esriSLS':
         this._renderLine(ctx, symbol, done);
@@ -550,17 +551,17 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
 
   _setSize: function(ctx, symbol) {
     if (symbol.size) {
-      ctx.width = ctx.height = symbol.size;
+      ctx.width = ctx.height = symbol.size + 4;
     } else if (symbol.type === 'esriSLS' ||
       symbol.type === 'esriSFS') {
       ctx.width = ctx.height = EsriLeaflet.Legend.SymbolRenderer.DEFAULT_SIZE;
-    } else if (symbolChange) {
-      console.log('14 after - using symbolChange to 15');
-      symbol.size = 15;
-      ctx.width = ctx.height = 15;
+    // } else if (symbolChange) {
+    //   console.log('14 after - using symbolChange, symbol.size:', symbol.size);
+    //   // symbol.size = 15;
+    //   ctx.width = ctx.height = symbol.size + 3;
     } else {
-      ctx.width = symbol.width;
-      ctx.height = symbol.height;
+      ctx.width = symbol.width + 4;
+      ctx.height = symbol.height + 4;
     }
   },
 
@@ -705,6 +706,7 @@ EsriLeaflet.LegendControl = L.Control.extend({
 
   initialize: function(layers, options) {
     console.log('2 running EsriLeaflet.LegendControl initialize, layers:', layers, 'options', options);
+    // symbolChange = false;
     this._layers = L.Util.isArray(layers) ? layers : [layers];
     L.Control.prototype.initialize.call(this, options);
 

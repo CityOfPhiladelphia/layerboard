@@ -43,21 +43,41 @@
       },
       changeOpacity(nextOpacity) {
         // console.log('LEAFLET ELEMENT:', this.$leafletElement);
-        if (this.$props.type != 'FL') {
-          this.$leafletElement.setOpacity(nextOpacity);
+        let element;
+        if (!this.$leafletElement.legend) {
+          element = this.$leafletElement._layers[Object.keys(this.$leafletElement._layers)[0]];
         } else {
-          this.$leafletElement.eachFeature(function(layer){
+          element = this.$leafletElement;
+        }
+        if (this.$props.type != 'FL') {
+          element.setOpacity(nextOpacity);
+        } else {
+          element.eachFeature(function(layer){
             // console.log('LAYER', layer);
             if (layer._icon) {
               const style = layer._icon.attributes.style.nodeValue;
+              // console.log('layer._icon - style', style);
               const styleSlice = style.slice(0, style.indexOf('; opacity'));
               const styleConcat = styleSlice.concat('; opacity:', nextOpacity, '; fill-opacity:', nextOpacity, ';');
               layer._icon.attributes.style.nodeValue = styleConcat;
             } else if (layer._path) {
-              layer.setStyle({
-                opacity: nextOpacity,
-                fillOpacity: nextOpacity
-              })
+              // console.log('layer', layer);
+              if (layer.options.fillOpacity === 0) {
+                layer.setStyle({
+                  opacity: nextOpacity,
+                  // fillOpacity: nextOpacity
+                })
+              } else if (layer.options.opacity === 0) {
+                layer.setStyle({
+                  // opacity: nextOpacity,
+                  fillOpacity: nextOpacity
+                })
+              } else {
+                layer.setStyle({
+                  opacity: nextOpacity,
+                  fillOpacity: nextOpacity
+                })
+              }
             }
           })
         }

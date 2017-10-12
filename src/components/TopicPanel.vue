@@ -9,7 +9,7 @@
                 @keydown="preventEnter"
           >
               <input class="mb-search-control-input"
-                     placeholder="Search for layers"
+                     placeholder="Filter datasets"
                      id="theInput"
                      @keyup="handleFilterFormKeyup"
               />
@@ -29,8 +29,8 @@
       <!-- <v-flex xs12> -->
       <div class="topics-container"
            id="topics-container"
-           :style="styleObject"
       >
+      <!-- :style="styleObject" -->
         <form action="#/">
           <fieldset class="options">
             <ul class="no-bullet">
@@ -41,7 +41,7 @@
                         :layerDefinition="currentWmLayer.rest.layerDefinition"
                         :opacity="currentWmLayer.opacity"
                         :legend="currentWmLayer.legend"
-                        :key="index"
+                        :key="currentWmLayer.id"
               >
               </checkbox>
             </ul>
@@ -79,21 +79,21 @@
     components: {
       Checkbox
     },
-    data() {
-      const data = {
-        styleObject: {
-          'position': 'relative',
-          // 'top': '100px',
-          'overflow-y': 'auto',
-          'height': '100px'
-        }
-      };
-      return data;
-    },
-    mounted() {
-      window.addEventListener('resize', this.handleWindowResize);
-      this.handleWindowResize();
-    },
+    // data() {
+    //   const data = {
+    //     styleObject: {
+    //       'position': 'relative',
+    //       // 'top': '100px',
+    //       'overflow-y': 'auto',
+    //       'height': '100px'
+    //     }
+    //   };
+    //   return data;
+    // },
+    // mounted() {
+    //   window.addEventListener('resize', this.handleWindowResize);
+    //   this.handleWindowResize();
+    // },
     beforeDestroy() {
       window.removeEventListener('resize', this.handleWindowResize);
     },
@@ -105,22 +105,23 @@
         const layers = this.$store.state.map.webMapLayersAndRest;
         let currentLayers = [];
         for (let layer of layers) {
-          if (layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) || this.webMapActiveLayers.includes(layer.title)) {
+          if (layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) || this.$store.state.map.webMapActiveLayers.includes(layer.title)) {
             currentLayers.push(layer)
           }
         }
         return currentLayers;
       },
-      webMapActiveLayers() {
-        return this.$store.state.map.webMapActiveLayers;
-      },
+      // webMapActiveLayers() {
+      //   console.log('topic panel webMapActiveLayers is recalculating');
+      //   return this.$store.state.map.webMapActiveLayers;
+      // },
       inputLayerFilter() {
         return this.$store.state.layers.inputLayerFilter;
       },
     },
     methods: {
       handleFilterFormKeyup(e) {
-        console.log('keyup', e.target.value);
+        // console.log('keyup', e.target.value);
         const input = e.target.value;
         // if (input.length >= 3) {
         this.$store.commit('setInputLayerFilter', input);
@@ -139,16 +140,15 @@
           e.preventDefault();
         }
       },
-      handleWindowResize() {
-        console.log('handleWindowResize is running');
-        const rootElement = document.getElementById('mb-root');
-        console.log('rootElement', rootElement);
-        const rootStyle = window.getComputedStyle(rootElement);
-        const rootHeight = rootStyle.getPropertyValue('height');
-        const rootHeightNum = parseInt(rootHeight.replace('px', ''));
-        const topicsHeight = rootHeightNum - 70;
-        this.styleObject.height = topicsHeight.toString() + 'px';
-      }
+      // handleWindowResize() {
+      //   // console.log('handleWindowResize is running');
+      //   const rootElement = document.getElementById('mb-root');
+      //   const rootStyle = window.getComputedStyle(rootElement);
+      //   const rootHeight = rootStyle.getPropertyValue('height');
+      //   const rootHeightNum = parseInt(rootHeight.replace('px', ''));
+      //   const topicsHeight = rootHeightNum - 70;
+      //   this.styleObject.height = topicsHeight.toString() + 'px';
+      // }
     },
   };
 </script>

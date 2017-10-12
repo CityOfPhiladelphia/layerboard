@@ -9,8 +9,16 @@
                :layerid="layerId"
                :disabled="shouldBeDisabled"
                :checked="webMapActiveLayers.includes(layerName)"
-               @click=checkboxToggle
+               @click="checkboxToggle"
         >
+        <!-- <ul class="dropdown menu" data-dropdown-menu>
+          <li>
+            <a href="#"><span><i class="fa fa-ellipsis-v"></i></span></a>
+            <ul class="menu" style="background: red">
+              <li><a href="#">Item 1A</a></li>
+            </ul>
+          </li>
+        </ul> -->
         <a :href="'http://metadata.phila.gov/#home/representationdetails/' + this.bennyId"
            target="_blank"
            v-if="bennyId"
@@ -19,16 +27,23 @@
         </a>
         {{ layerName }}
       </label>
-      <legend-box v-if="webMapActiveLayers.includes(layerName)"
-        :layer="layer"
-        :layerName="layerName"
-        :layerId="layerId"
-        :layerDefinition="layerDefinition"
-        :legend="legend"
-        :scales="this.$config.map.scales"
+      <legend-box v-if="this.$store.state.map.webMapActiveLayers.includes(layerName)"
+                  :layer="layer"
+                  :layerName="layerName"
+                  :layerId="layerId"
+                  :layerDefinition="layerDefinition"
+                  :legend="legend"
+                  :scales="this.$config.map.scales"
         >
       </legend-box>
-      <div v-if="webMapActiveLayers.includes(layerName)"
+      <slider v-if="this.$store.state.map.webMapActiveLayers.includes(layerName)"
+              :layer="layer"
+              :layerName="layerName"
+              :layerId="layerId"
+              :opacity="opacity"
+      >
+      </slider>
+      <!-- <div v-if="this.$store.state.map.webMapActiveLayers.includes(layerName)"
            class="sliderDiv"
            data-app="true"
       >
@@ -37,11 +52,24 @@
               <v-slider v-model="opa"
                         class="ml-3 mr-3 pr-3 pt-0"
                         :id="layerName"
+                        min=1
               >
               </v-slider>
           </v-flex>
-        </v-layout>
-      </div>
+        </v-layout> -->
+        <!-- Want to download this dataset? -->
+        <!-- <select v-if="this.$store.state.map.webMapActiveLayers.includes(layerName)"
+                class="download-select"
+        >
+          <option>GeoJSON</option>
+          <option>CSV</option>
+          <option>KML</option>
+        </select>
+        <button class="button" v-if="this.$store.state.map.webMapActiveLayers.includes(layerName)"
+        >
+          Download
+        </button> -->
+      <!-- </div> -->
     </li>
   </div>
 </template>
@@ -49,10 +77,12 @@
 <script>
   import TopicComponent from './TopicComponent';
   import LegendBox from './LegendBox';
+  import Slider from './Slider';
 
   export default {
     components: {
-      LegendBox
+      LegendBox,
+      Slider
     },
     props: ['layer',
             'layerName',
@@ -77,6 +107,10 @@
         this.$store.commit('setWebMapLayersOpacity', payload);
       }
     },
+    // mounted() {
+    //   // REVIEW globals. also is this still needed?
+    //   $(document).foundation();
+    // },
     computed: {
       scale() {
         return this.$store.state.map.scale;
@@ -105,6 +139,7 @@
       bennyId() {
         if (Object.keys(this.bennyEndpoints).length > 0) {
           const id = this.bennyEndpoints[this.url];
+          // const id = this.bennyEndpoints[this.url]['Metadata'];
           return id;
         } else {
           return ' ';
@@ -152,6 +187,10 @@
     width: 10px;
     /*border: solid;
     border-width: 1px;*/
+  }
+
+  .download-select {
+    width: 200px;
   }
 
 </style>
