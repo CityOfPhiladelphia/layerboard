@@ -7,11 +7,22 @@
       </v-flex>
       <v-flex xs9> -->
   <div class="mb-root row collapse"
-       :style="this.$config.rootStyle"
+       id="mb-root"
   >
-    <topic-panel>
-    </topic-panel>
-    <map-panel>
+  <!-- :style="this.$config.rootStyle" -->
+    <button class="small-24 button datasets-button"
+            @click="toggleTopics"
+    >
+      <!-- <i class="fa fa-bars fa-inverse" aria-hidden="true"></i> -->
+      See Datasets
+    </button>
+
+    <topic-panel v-if="shouldShowTopics"
+                 :style="styleObject"
+    />
+
+    <map-panel :style="styleObject"
+    >
       <cyclomedia-widget v-if="this.$config.cyclomedia.enabled"
                          slot="cycloWidget"
                          v-show="cyclomediaActive"
@@ -53,6 +64,7 @@
 </template>
 
 <script>
+  import axios from 'axios';
   import TopicPanel from './TopicPanel';
   import MapPanel from './map-panel/MapPanel';
   import CyclomediaWidget from '../cyclomedia/Widget';
@@ -71,36 +83,96 @@
       ViewCone,
       PngMarker
     },
+    data() {
+      const data = {
+        styleObject: {
+          // 'position': 'relative',
+          // 'top': '100px',
+          'overflow-y': 'auto',
+          // 'height': '100px'
+        }
+      };
+      return data;
+    },
     mounted() {
+      window.addEventListener('resize', this.handleWindowResize);
+      this.handleWindowResize();
       const store = this.$store;
-      $.ajax({
-        dataType: 'json',
-        url: "https://api.knackhq.com/v1/objects/object_4/records/export?type=json",
-        headers: {
-          'X-Knack-Application-Id': '550c60d00711ffe12e9efc64',
-          'X-Knack-REST-API-Key': '7bce4520-28dc-11e5-9f0a-4d758115b820'
-        },
-        success(dataOut) {
-          const records = dataOut.records;
-          const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
-          let bennyEndpoints = {};
-          for (let record of recordsFiltered) {
-            const url = record.field_25.split('"')[1];
-            let url2;
-            if (url) {
-              url2 = url.split('query')[0].replace('https://', '').replace('http://', '').replace(/\/$/, "").toLowerCase();
-            } else {
-              url2 = null;
-            }
+      const knackUrl = "https://api.knackhq.com/v1/objects/object_4/records/export?type=json";
+      const params = {
+        // dataType: 'json'
+      }
+      const headers = {
+        'X-Knack-Application-Id': '550c60d00711ffe12e9efc64',
+        'X-Knack-REST-API-Key': '7bce4520-28dc-11e5-9f0a-4d758115b820'
+      }
+      axios.get(knackUrl, { params, headers }).then(response => {
+        const dataOut = response.data;
+        const records = dataOut.records;
+        // const recordsFiltered = records;
+        const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
+        console.log(recordsFiltered);
+        // let bennyEndpoints2 = {};
+        // let bennyEndpoints3 = []
+        // const knackUrl2 = "https://api.knackhq.com/v1/objects/object_3/records/export?type=json";
+        // const params = {
+        //   // dataType: 'json'
+        // }
+        // const headers = {
+        //   'X-Knack-Application-Id': '550c60d00711ffe12e9efc64',
+        //   'X-Knack-REST-API-Key': '7bce4520-28dc-11e5-9f0a-4d758115b820'
+        // }
+        // axios.get(knackUrl2, { params, headers }).then(response2 => {
+        //   const dataOut2 = response2.data;
+        //   const records2 = dataOut2.records;
+        //   console.log('records2', records2);
+
+        let bennyEndpoints = {};
+
+        for (let record of recordsFiltered) {
+
+
+          // bennyEndpoints2[record.id] = record.field_25;\
+          // if (record.id) {
+          //   bennyEndpoints3.push(record.id);
+          // }
+          const url = record.field_25.split('"')[1];
+          let url2;
+          if (url) {
+            url2 = url.split('query')[0].replace('https://', '').replace('http://', '').replace(/\/$/, "").toLowerCase();
+          } else {
+            url2 = null;
+          }
+          // if (record.field_12.length > 0) {
             if (record.field_13_raw.length > 0) {
-              bennyEndpoints[url2] = record.field_13_raw[0].id;
+              // if (bennyEndpoints[url2]) {
+                // console.log('already there', url2, record.field_12, record.field_13_raw[0]);
+                bennyEndpoints[url2] = record.field_13_raw[0].id;
+                // bennyEndpoints[url2][record.field_12] = record.field_13_raw[0].id;
+              // } else {
+              //   // console.log('not there yet', url2, record.field12, record.field_13_raw[0])
+              //   bennyEndpoints[url2] = {}
+              //   bennyEndpoints[url2][record.field_12] = record.field_13_raw[0].id;
+              // }
             } else {
-              bennyEndpoints[url2] = '';
+              // if (bennyEndpoints[url2]) {
+                bennyEndpoints[url2] = '';
+                // bennyEndpoints[url2][record.field_12] = '';
+              // } else {
+              //   bennyEndpoints[url2] = {}
+              //   bennyEndpoints[url2][record.field_12] = '';
+              // }
             }
           }
-          // console.log('mapboard mounted, bennyEndpoints:', bennyEndpoints);
-          store.commit('setBennyEndpoints', bennyEndpoints);
-        }
+        // }
+        store.commit('setBennyEndpoints', bennyEndpoints);
+        // store.commit('setBennyEndpoints2', bennyEndpoints2);
+        // store.commit('setBennyEndpoints3', bennyEndpoints3);
+        // }, response => {
+        //   console.log('AXIOS ERROR Mapboard.vue');
+        // });
+      }, response => {
+        console.log('AXIOS ERROR Mapboard.vue');
       });
     },
     computed: {
@@ -124,11 +196,54 @@
       },
       geocodeData() {
         return this.$store.state.geocode.data
+      },
+      windowWidth() {
+        return this.$store.state.windowSize.width;
+      },
+      windowHeight() {
+        return this.$store.state.windowSize.height;
+      },
+      shouldShowTopics() {
+        const windowWidth = this.windowWidth;
+        const notMobile = windowWidth >= 768;
+        const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
+        return notMobile || didToggleTopicsOn;
       }
     },
     watch: {
       pictometryShowAddressMarker(nextValue) {
         console.log('watch pictometryShowAddressMarker', nextValue);
+      }
+    },
+    methods: {
+      // for mobile only
+      toggleTopics() {
+        const prevVal = this.$store.state.didToggleTopicsOn;
+        this.$store.commit('setDidToggleTopicsOn', !prevVal);
+      },
+
+      handleWindowResize() {
+        const rootElement = document.getElementById('mb-root');
+        const rootStyle = window.getComputedStyle(rootElement);
+        const rootHeight = rootStyle.getPropertyValue('height');
+        const rootHeightNum = parseInt(rootHeight.replace('px', ''));
+        const rootWidth = rootStyle.getPropertyValue('width');
+        const rootWidthNum = parseInt(rootWidth.replace('px', ''));
+        const obj = {
+          height: rootHeightNum,
+          width: rootWidthNum
+        }
+        // console.log('handleWindowResize is running, obj:', obj);
+
+        let boardHeight;
+        if (!this.shouldShowTopics) {
+          boardHeight = rootHeightNum - 34;
+        } else {
+          boardHeight = rootHeightNum
+        }
+        this.styleObject.height = boardHeight.toString() + 'px';
+
+        this.$store.commit('setWindowSize', obj) //= topicsHeight.toString() + 'px';
       }
     }
   };
@@ -159,8 +274,33 @@
 
   .mb-root {
     /*height: 800px;*/
-    /*position: absolute;
-    bottom: 0;*/
+    position: absolute;
+    bottom: 0;
+    top: 78px;
+    left: 0;
+    right: 0;
+    overflow: auto;
+  }
+
+  .datasets-button {
+    display: none;
+    margin: 0;
+  }
+
+  /*small devices only*/
+  @media screen and (max-width: 39.9375em) {
+    /*TODO map is flowing off screen*/
+    .mb-map-panel {
+      top: 112.4063px;
+    }
+
+    /*.mb-panel-topics {
+      display: none;
+    }*/
+
+    .datasets-button {
+      display: block;
+    }
   }
 
   .mb-panel {

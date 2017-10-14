@@ -4,20 +4,22 @@
     <!-- <v-layout column> -->
       <!-- <v-flex xs12> -->
       <div class="mb-search-control-container">
-        <form @submit.prevent="handleFilterFormX"
-              @keydown="preventEnter"
-        >
-            <input class="mb-search-control-input"
-                   placeholder="Search for layers"
-                   id="theInput"
-                   @keyup="handleFilterFormKeyup"
-            />
-            <button class="mb-search-control-button"
-                    v-if="this.$store.state.layers.inputLayerFilter != ''"
-            >
-              <i class="fa fa-times fa-lg"></i>
-            </button>
-        </form>
+        <!-- <div class="control-spacer"> -->
+          <form @submit.prevent="handleFilterFormX"
+                @keydown="preventEnter"
+          >
+              <input class="mb-search-control-input"
+                     placeholder="Filter datasets"
+                     id="theInput"
+                     @keyup="handleFilterFormKeyup"
+              />
+              <button class="mb-search-control-button"
+                      v-if="this.$store.state.layers.inputLayerFilter != ''"
+              >
+                <i class="fa fa-times fa-lg"></i>
+              </button>
+          </form>
+        <!-- </div> -->
       </div>
       <!-- </v-flex xs12> -->
     <!-- </v-layout row wrap>
@@ -25,7 +27,10 @@
 
     <v-layout row wrap> -->
       <!-- <v-flex xs12> -->
-      <div class="topic-body">
+      <div class="topics-container"
+           id="topics-container"
+      >
+      <!-- :style="styleObject" -->
         <form action="#/">
           <fieldset class="options">
             <ul class="no-bullet">
@@ -36,7 +41,7 @@
                         :layerDefinition="currentWmLayer.rest.layerDefinition"
                         :opacity="currentWmLayer.opacity"
                         :legend="currentWmLayer.legend"
-                        :key="index"
+                        :key="currentWmLayer.id"
               >
               </checkbox>
             </ul>
@@ -74,6 +79,24 @@
     components: {
       Checkbox
     },
+    // data() {
+    //   const data = {
+    //     styleObject: {
+    //       'position': 'relative',
+    //       // 'top': '100px',
+    //       'overflow-y': 'auto',
+    //       'height': '100px'
+    //     }
+    //   };
+    //   return data;
+    // },
+    // mounted() {
+    //   window.addEventListener('resize', this.handleWindowResize);
+    //   this.handleWindowResize();
+    // },
+    beforeDestroy() {
+      window.removeEventListener('resize', this.handleWindowResize);
+    },
     computed: {
       scale() {
         return this.$store.state.map.scale;
@@ -82,22 +105,23 @@
         const layers = this.$store.state.map.webMapLayersAndRest;
         let currentLayers = [];
         for (let layer of layers) {
-          if (layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) || this.webMapActiveLayers.includes(layer.title)) {
+          if (layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) || this.$store.state.map.webMapActiveLayers.includes(layer.title)) {
             currentLayers.push(layer)
           }
         }
         return currentLayers;
       },
-      webMapActiveLayers() {
-        return this.$store.state.map.webMapActiveLayers;
-      },
+      // webMapActiveLayers() {
+      //   console.log('topic panel webMapActiveLayers is recalculating');
+      //   return this.$store.state.map.webMapActiveLayers;
+      // },
       inputLayerFilter() {
         return this.$store.state.layers.inputLayerFilter;
       },
     },
     methods: {
       handleFilterFormKeyup(e) {
-        console.log('keyup', e.target.value);
+        // console.log('keyup', e.target.value);
         const input = e.target.value;
         // if (input.length >= 3) {
         this.$store.commit('setInputLayerFilter', input);
@@ -115,7 +139,16 @@
         if(e.keyCode === 13) {
           e.preventDefault();
         }
-      }
+      },
+      // handleWindowResize() {
+      //   // console.log('handleWindowResize is running');
+      //   const rootElement = document.getElementById('mb-root');
+      //   const rootStyle = window.getComputedStyle(rootElement);
+      //   const rootHeight = rootStyle.getPropertyValue('height');
+      //   const rootHeightNum = parseInt(rootHeight.replace('px', ''));
+      //   const topicsHeight = rootHeightNum - 70;
+      //   this.styleObject.height = topicsHeight.toString() + 'px';
+      // }
     },
   };
 </script>
@@ -126,7 +159,7 @@
     padding: 0;
   }
 
-  .topic-header {
+  /*.topic-header {
     background: #f5f5f5;
     border: 1px solid #ddd;
     display: block;
@@ -148,8 +181,8 @@
   }
   .topic-body {
     padding-left: 10px;
-    /*margin-bottom: 20px;*/
-  }
+    /*margin-bottom: 20px;
+  }*/
   .loading {
     float: right;
   }
@@ -178,24 +211,19 @@
   }*/
 
   .mb-panel-topics {
-    /*height: 100%;
-    position: relative;*/
     background: #fff;
     padding-left: 20px !important;
     padding-right: 5px !important;
-    overflow-y: auto;
+    /*overflow-y: auto;*/
   }
 
-  /*this allows the loading mask to fill the div*/
-  /*.mb-panel-map {
-    position: relative;
-  }*/
-
-  /*@media (max-width: 1024px) {
-    .mb-panel-map {
-      height: 600px;
-    }
-  }*/
+  .control-spacer {
+    position: absolute;
+    /*left: -5px;*/
+    height: 50px;
+    width: 20%;
+    background-color: white;
+  }
 
   .mb-search-control-container {
     height: 48px;

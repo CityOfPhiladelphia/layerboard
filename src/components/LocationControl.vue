@@ -18,6 +18,11 @@
     props: [
       'position'
     ],
+    data() {
+      return {
+        locationOn: false
+      }
+    },
     methods: Object.assign(methods, {
 
       handleLocationButtonClick(e) {
@@ -38,7 +43,10 @@
         }
         this.$store.commit('setLocation', payload);
         // console.log('latitude', payload.lat, 'longitude', payload.lng);
-        this.moveToPosition();
+        if (!this.locationOn) {
+          this.moveToPosition();
+          this.locationOn = true;
+        }
       },
       moveToPosition() {
         // console.log('moveToPosition is running');

@@ -9,6 +9,8 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
 
   const initialState = {
     bennyEndpoints: {},
+    // bennyEndpoints2: {},
+    // bennyEndpoints3: [],
     geocode: {
       status: null,
       data: null
@@ -49,7 +51,15 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       pngMarkerIds: [],
       zoom: null,
     },
-    lastSearchMethod: null
+    lastSearchMethod: null,
+    // this gets set to true on a mobile device when the user clicks the
+    // "See Datasets" button
+    didToggleTopicsOn: false,
+    windowSize: {
+      // TODO set based on current window size
+      height: 0,
+      width: 0,
+    },
   };
 
   // TODO standardize how payloads are passed around/handled
@@ -59,6 +69,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     mutations: {
       setBennyEndpoints(state, payload) {
         state.bennyEndpoints = payload;
+      },
+      setBennyEndpoints2(state, payload) {
+        state.bennyEndpoints2 = payload;
+      },
+      setBennyEndpoints3(state, payload) {
+        state.bennyEndpoints3 = payload;
       },
       setLocation(state, payload) {
         state.map.location.lat = payload.lat;
@@ -112,9 +128,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setShouldShowImagery(state, payload) {
         state.map.shouldShowImagery = payload;
       },
-      setLastSearchMethod(state, payload) {
-        state.lastSearchMethod = payload;
-      },
+      // setLastSearchMethod(state, payload) {
+      //   state.lastSearchMethod = payload;
+      // },
 
 
       setMapCenter(state, payload) {
@@ -168,6 +184,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setCyclomediaLocFromViewer(state, payload) {
         state.cyclomedia.locFromViewer = payload;
       },
+      setDidToggleTopicsOn(state, payload) {
+        state.didToggleTopicsOn = payload;
+      },
+      setWindowSize(state, payload) {
+        state.windowSize = payload;
+      }
     }
   });
 }

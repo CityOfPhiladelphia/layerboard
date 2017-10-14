@@ -2,6 +2,7 @@
 var layerName;
 var layerId;
 var store;
+// var symbolChange = false;
 
 (function (factory) {
   //define an AMD module that relies on 'leaflet'
@@ -66,8 +67,8 @@ EsriLeaflet.MapService.include({
 
 EsriLeaflet.FeatureLayerService.include({
   legend: function(callback, context) {
-    console.log('6 FeatureLayerService legend function is running, callback is:', this);
-    return new L.esri.Legend(this).run(callback, context);
+    console.log('6 FeatureLayerService legend function is running, callback is:', this, 'context is:', context);
+    return new L.esri.Legend(this).run(callback, context, this);
   }
 });
 
@@ -87,37 +88,54 @@ EsriLeaflet.Legend = EsriLeaflet.Task.extend({
 });
 
 EsriLeaflet.legend = function(params) {
+  // NEVER HAPPENS
   console.log('EsriLeaflet.legend function is running');
   return new EsriLeaflet.Legend(params);
 };
 
 EsriLeaflet.Legend.include({
   initialize: function(endpoint) {
-    console.log('7 EsriLeaflet.Legend.include running initialize');
+    console.log('7 EsriLeaflet.Legend.include running initialize, endpoint is:', endpoint);
     this._renderer = new EsriLeaflet.Legend.SymbolRenderer();
     EsriLeaflet.Task.prototype.initialize.call(this, endpoint);
   },
 
-  run: function(callback, context) {
-    console.log('8 EsriLeaflet.Legend.include running run');
+  run: function(callback, context, test) {
+    console.log('8 EsriLeaflet.Legend.include running run, callback is:', callback, 'context is:', context, 'test is:', test, 'this is:', this);
     function cb(error, response) {
+      console.log('9-10 this:', this, 'response:', response);
       if (error && error.code === 400) { // ArcGIS server >=10.0
         console.log('error is ' + error);
         this._collectLegendFromLayers(callback, context);
       } else if (response && response.drawingInfo) {
-        console.log('10 in run, response.drawingInfo:', response.drawingInfo);
-        this._symbolsToLegends([response], function(err, result) {
-          callback.call(context, err, {
-            layers: result
+        console.log('10 in run, response.drawingInfo:', response.drawingInfo, 'response:', response, 'this:', this);
+        if (this.options.drawingInfo) {
+          console.log('10.1 using orig drawing info');
+          // symbolChange = true;
+          this._symbolsToLegends([this.options], function(err, result) {
+            callback.call(context, err, {
+              layers: result
+            });
           });
-        });
+        } else {
+          console.log('10.2 using new drawing info');
+          this._symbolsToLegends([response], function(err, result) {
+            callback.call(context, err, {
+              layers: result
+            });
+          });
+        }
       } else {
         console.log(error);
         console.log(response);
         callback.call(context, error, response);
       }
     }
-
+    // if (this.options.drawingInfo) {
+    //   console.log('after 8 this', this)
+    //   // const response2 = { drawingInfo: this.options.drawingInfo}
+    //   cb('test error', this);
+    // } else
     if (this._service) {
       console.log('9 this._service exists', this);
       if (this.options.url.includes('MapServer')) {
@@ -132,6 +150,7 @@ EsriLeaflet.Legend.include({
   },
 
   _collectLegendFromLayers: function(callback, context) {
+    // NEVER HAPPENS
     console.log('running _collectLegendFromLayers');
     this._service.metadata(function(error, response) {
       if (error) {
@@ -158,6 +177,7 @@ EsriLeaflet.Legend.include({
   },
 
   _getLayersLegends: function(layerDefs, callback, context) {
+    // NEVER HAPPENS
     console.log('_getLayersLegends is running');
     var layerData = [];
     var self = this;
@@ -174,6 +194,7 @@ EsriLeaflet.Legend.include({
   },
 
   _getLayerLegend: function(layer, callback, context) {
+    // NEVER HAPPENS
     console.log('_getLayerLegend is running');
     this._service.request(layer.id, {
       f: 'json'
@@ -182,8 +203,9 @@ EsriLeaflet.Legend.include({
 
   _symbolsToLegends: function(layerData, callback, context) {
     var self = this;
+    console.log('pre-11 layerData:', layerData);
     EsriLeaflet.Util.reduce(layerData, [], function(curr, layer, cb) {
-      console.log('11 running _symbolsToLegends, layer.drawingInfo is:', layer.drawingInfo);
+      console.log('11 running _symbolsToLegends, curr is:', curr, 'layer is:', layer, 'cb is:', cb, 'layer.drawingInfo is:', layer.drawingInfo);
       self._drawingInfoToLegend(layer.drawingInfo, function(err, legend) {
         if (err) {
           return cb(err, null);
@@ -276,11 +298,21 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   render: function(symbol, callback, context) {
-    console.log('14 EsriLeaflet.Legend.SymbolRenderer render is running, symbol:', symbol);
+    console.log('14 EsriLeaflet.Legend.SymbolRenderer render is running, symbol:', symbol, 'context:', context);
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
     var imageData = symbol.imageData;
-    this._setSize(canvas, symbol);
+
+    let newSymbol;
+    // if (symbolChange === true) {
+      newSymbol = Object.assign({}, symbol);
+      console.log('14.1 - symbol size:', symbol.size)
+      newSymbol.size = symbol.size + 4;
+      console.log('14.2 - newSymbol size:', newSymbol.size)
+      this._setSize(canvas, newSymbol);
+    // } else {
+    //   this._setSize(canvas, symbol);
+    // }
 
     function done(error, imageData) {
       if (error) {
@@ -302,7 +334,12 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
 
     switch (symbol.type) {
       case 'esriSMS':
-        this._renderMarker(ctx, symbol, done);
+        console.log('14 after esriSMS, ctx:', ctx, 'symbol', symbol)
+        // if (symbolChange === true) {
+          this._renderMarker(ctx, newSymbol, done);
+        // } else {
+        //   this._renderMarker(ctx, symbol, done);
+        // }
         break;
       case 'esriSLS':
         this._renderLine(ctx, symbol, done);
@@ -514,13 +551,17 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
 
   _setSize: function(ctx, symbol) {
     if (symbol.size) {
-      ctx.width = ctx.height = symbol.size;
+      ctx.width = ctx.height = symbol.size + 4;
     } else if (symbol.type === 'esriSLS' ||
       symbol.type === 'esriSFS') {
       ctx.width = ctx.height = EsriLeaflet.Legend.SymbolRenderer.DEFAULT_SIZE;
+    // } else if (symbolChange) {
+    //   console.log('14 after - using symbolChange, symbol.size:', symbol.size);
+    //   // symbol.size = 15;
+    //   ctx.width = ctx.height = symbol.size + 3;
     } else {
-      ctx.width = symbol.width;
-      ctx.height = symbol.height;
+      ctx.width = symbol.width + 4;
+      ctx.height = symbol.height + 4;
     }
   },
 
@@ -664,7 +705,8 @@ EsriLeaflet.LegendControl = L.Control.extend({
   },
 
   initialize: function(layers, options) {
-    console.log('2 running EsriLeaflet.LegendControl initialize');
+    console.log('2 running EsriLeaflet.LegendControl initialize, layers:', layers, 'options', options);
+    // symbolChange = false;
     this._layers = L.Util.isArray(layers) ? layers : [layers];
     L.Control.prototype.initialize.call(this, options);
 
@@ -672,22 +714,33 @@ EsriLeaflet.LegendControl = L.Control.extend({
       // var initial = {
       //   layers: []
       // }
-      console.log('3 running EsriLeaflet.LegendControl (former _load function), this is:', this);
+      console.log('3 running EsriLeaflet.LegendControl (former _load function), this is:', this, 'options is:', options);
       L.esri.Util.reduce( // goes to line ~33
           this._layers
         , {layers: []}
         , function(curr, layer, cb) {
-            console.log('5 inside _load, curr is:', curr, 'layer is:', layer);
-            layer.legend(function(err, legend) {
-              console.log('layer.legend is running, legend:', legend);
-              if (err) {
-                console.log('in layer.legend, err happened:', err, 'curr:', curr);
-                return cb(err, curr);
-              }
-              curr.layers = curr.layers.concat(legend.layers);
-              console.log('17 curr.layers is:', curr.layers);
-              cb(null, curr);
-            });
+            console.log('5 inside _load, curr is:', curr, 'layer is:', layer, 'options is', options);
+            let layer2;
+            if (!layer.legend) {
+              console.log('layer._layers', Object.keys(layer._layers))
+              const _layersKeys = Object.keys(layer._layers);
+              layer2 = layer._layers[_layersKeys[0]];
+              console.log('layer2 is:', layer2);
+            } else {
+              layer2 = layer;
+            }
+            // if (layer.legend) {
+              layer2.legend(function(err, legend) {
+                console.log('layer.legend is running, legend:', legend, );
+                if (err) {
+                  console.log('in layer.legend, err happened:', err, 'curr:', curr);
+                  return cb(err, curr);
+                }
+                curr.layers = curr.layers.concat(legend.layers);
+                console.log('17 curr.layers is:', curr.layers);
+                cb(null, curr);
+              });
+            // }
         }
         , this._onLoad
         , this
@@ -748,6 +801,7 @@ EsriLeaflet.legendControl = function(layers, options) {
   layerName = options.layerName;
   layerId = options.layerId;
   store = options.store;
+  drawingInfo = options.drawingInfo;
   return new L.esri.LegendControl(layers, options);
 };
   return EsriLeaflet;

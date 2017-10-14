@@ -1,4 +1,4 @@
-var BASE_CONFIG_URL = 'https://raw.githubusercontent.com/ajrothwell/citymaps-base-config/develop/config.js';
+var BASE_CONFIG_URL = 'https://raw.githubusercontent.com/ajrothwell/openmaps-base-config/develop/config.js';
 const GATEKEEPER_KEY = 'ec8681f792812d7e3ff15e9094bfd4ad';
 const WEBMAP_ID = '4c3ed877199c402895b7fa45ce6409b6';
 
@@ -10,7 +10,8 @@ Mapboard.default({
     // height: '100%'
     position: 'absolute',
     bottom: 0,
-    top: '78px',
+    // top: '78px',
+    top: '120px',
     left: 0,
     right: 0,
     overflow: 'auto',
@@ -28,6 +29,12 @@ Mapboard.default({
     historicBasemaps: {
       enabled: true
     },
+  },
+  cyclomedia: {
+    enabled: false
+  },
+  pictometry: {
+    enabled: false
   },
   baseConfig: BASE_CONFIG_URL,
   webmapId: WEBMAP_ID,
