@@ -233,7 +233,7 @@
           height: rootHeightNum,
           width: rootWidthNum
         }
-        console.log('handleWindowResize is running, obj:', obj);
+        // console.log('handleWindowResize is running, obj:', obj);
 
         let boardHeight;
         if (!this.shouldShowTopics) {
