@@ -55,6 +55,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     // this gets set to true on a mobile device when the user clicks the
     // "See Datasets" button
     didToggleTopicsOn: false,
+    shouldShowTopics: true,
     windowSize: {
       // TODO set based on current window size
       height: 0,
@@ -186,6 +187,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setDidToggleTopicsOn(state, payload) {
         state.didToggleTopicsOn = payload;
+      },
+      setShouldShowTopics(state, payload) {
+        state.shouldShowTopics = payload;
       },
       setWindowSize(state, payload) {
         state.windowSize = payload;

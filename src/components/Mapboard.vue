@@ -17,47 +17,51 @@
       See Datasets
     </button>
 
-    <topic-panel v-if="shouldShowTopics"
-                 :style="styleObject"
-    />
-
-    <map-panel :style="styleObject"
-    >
-      <cyclomedia-widget v-if="this.$config.cyclomedia.enabled"
-                         slot="cycloWidget"
-                         v-show="cyclomediaActive"
+    <!-- <div class="below-button"
+         id="below-button"
+    > -->
+      <topic-panel v-if="shouldShowTopics"
+                   :style="styleObject"
       />
-      <pictometry-widget v-if="this.$config.pictometry.enabled"
-                         slot="pictWidget"
-                         v-show="pictometryActive"
-                         :apiKey="this.$config.pictometry.apiKey"
-                         :secretKey="this.$config.pictometry.secretKey"
+
+      <map-panel :style="styleObject"
       >
-        <png-marker v-if="this.pictometryShowAddressMarker"
-                :latlng="[this.geocodeData.geometry.coordinates[1], this.geocodeData.geometry.coordinates[0]]"
-                :icon="'markers.png'"
-                :height="60"
-                :width="40"
-                :offsetX="0"
-                :offsetY="0"
+        <cyclomedia-widget v-if="this.$config.cyclomedia.enabled"
+                           slot="cycloWidget"
+                           v-show="cyclomediaActive"
         />
-        <layer v-if="this.pictometryActive"
-        />
-        <png-marker v-if="this.cyclomediaActive && this.pictometryActive"
-                :latlng="[this.$store.state.cyclomedia.viewer.props.orientation.xyz[1], this.$store.state.cyclomedia.viewer.props.orientation.xyz[0]]"
-                :icon="'camera2.png'"
-                :height="20"
-                :width="30"
-                :offsetX="-2"
-                :offsetY="-2"
-        />
-        <!-- :icon="'../assets/camera.png'" -->
-        <view-cone v-if="this.cyclomediaActive && this.pictometryActive"
-                   :orientation="this.$store.state.cyclomedia.viewer.props.orientation"
-        />
-      </pictometry-widget>
-      <!-- :center="this.$store.state.map.map.center" -->
-    </map-panel>
+        <pictometry-widget v-if="this.$config.pictometry.enabled"
+                           slot="pictWidget"
+                           v-show="pictometryActive"
+                           :apiKey="this.$config.pictometry.apiKey"
+                           :secretKey="this.$config.pictometry.secretKey"
+        >
+          <png-marker v-if="this.pictometryShowAddressMarker"
+                  :latlng="[this.geocodeData.geometry.coordinates[1], this.geocodeData.geometry.coordinates[0]]"
+                  :icon="'markers.png'"
+                  :height="60"
+                  :width="40"
+                  :offsetX="0"
+                  :offsetY="0"
+          />
+          <layer v-if="this.pictometryActive"
+          />
+          <png-marker v-if="this.cyclomediaActive && this.pictometryActive"
+                  :latlng="[this.$store.state.cyclomedia.viewer.props.orientation.xyz[1], this.$store.state.cyclomedia.viewer.props.orientation.xyz[0]]"
+                  :icon="'camera2.png'"
+                  :height="20"
+                  :width="30"
+                  :offsetX="-2"
+                  :offsetY="-2"
+          />
+          <!-- :icon="'../assets/camera.png'" -->
+          <view-cone v-if="this.cyclomediaActive && this.pictometryActive"
+                     :orientation="this.$store.state.cyclomedia.viewer.props.orientation"
+          />
+        </pictometry-widget>
+        <!-- :center="this.$store.state.map.map.center" -->
+      </map-panel>
+    <!-- </div> -->
       <!-- </v-flex>
     </v-layout> -->
   </div>
@@ -89,14 +93,16 @@
           // 'position': 'relative',
           // 'top': '100px',
           'overflow-y': 'auto',
-          // 'height': '100px'
+          'height': '100%'
         }
       };
       return data;
     },
     mounted() {
       window.addEventListener('resize', this.handleWindowResize);
+      // this.$nextTick(() => {
       this.handleWindowResize();
+      // });
       const store = this.$store;
       const knackUrl = "https://api.knackhq.com/v1/objects/object_4/records/export?type=json";
       const params = {
@@ -203,16 +209,29 @@
       windowHeight() {
         return this.$store.state.windowSize.height;
       },
+      didToggleTopicsOn() {
+        return this.$store.state.didToggleTopicsOn;
+      },
       shouldShowTopics() {
-        const windowWidth = this.windowWidth;
-        const notMobile = windowWidth >= 768;
-        const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
-        return notMobile || didToggleTopicsOn;
+        return this.$store.state.shouldShowTopics;
+        // const windowWidth = this.windowWidth;
+        // const notMobile = windowWidth >= 768;
+        // const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
+        // return notMobile || didToggleTopicsOn;
       }
     },
     watch: {
       pictometryShowAddressMarker(nextValue) {
         console.log('watch pictometryShowAddressMarker', nextValue);
+      },
+      windowWidth(nextWidth) {
+        this.calculateShouldShowTopics();
+      },
+      didToggleTopicsOn(nextValue) {
+        this.calculateShouldShowTopics();
+      },
+      shouldShowTopics(nextValue) {
+        this.handleWindowResize();
       }
     },
     methods: {
@@ -220,6 +239,13 @@
       toggleTopics() {
         const prevVal = this.$store.state.didToggleTopicsOn;
         this.$store.commit('setDidToggleTopicsOn', !prevVal);
+      },
+      calculateShouldShowTopics() {
+        const windowWidth = this.windowWidth;
+        const notMobile = windowWidth >= 768;
+        const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
+        const shouldShowTopics = notMobile || didToggleTopicsOn;
+        this.$store.commit('setShouldShowTopics', shouldShowTopics);
       },
 
       handleWindowResize() {
@@ -233,16 +259,20 @@
           height: rootHeightNum,
           width: rootWidthNum
         }
-        // console.log('handleWindowResize is running, obj:', obj);
 
+        console.log('handleWindowResize is running, this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
         let boardHeight;
-        if (!this.shouldShowTopics) {
+        if (!this.$store.state.shouldShowTopics) {
           boardHeight = rootHeightNum - 34;
+          console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
         } else {
           boardHeight = rootHeightNum
+          console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
         }
+        // this.$nextTick(() => {
         this.styleObject.height = boardHeight.toString() + 'px';
-
+        // this.$store.state.map.map.invalidateSize();
+        // })
         this.$store.commit('setWindowSize', obj) //= topicsHeight.toString() + 'px';
       }
     }
