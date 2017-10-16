@@ -6,16 +6,16 @@ const WEBMAP_ID = '4c3ed877199c402895b7fa45ce6409b6';
 accounting.settings.currency.precision = 0;
 
 Mapboard.default({
-  rootStyle: {
-    // height: '100%'
-    position: 'absolute',
-    bottom: 0,
-    // top: '78px',
-    top: '120px',
-    left: 0,
-    right: 0,
-    overflow: 'auto',
-  },
+  // rootStyle: {
+  //   // height: '100%'
+  //   position: 'absolute',
+  //   bottom: 0,
+  //   // top: '78px',
+  //   top: '120px',
+  //   left: 0,
+  //   right: 0,
+  //   overflow: 'auto',
+  // },
   geolocation: {
     enabled: true
   },
