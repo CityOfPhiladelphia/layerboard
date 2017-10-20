@@ -23,7 +23,11 @@
       // console.log('THE LAYER:', this.$leafletElement);
       const map = this.$store.state.map.map;
       if (map) {
+        // console.log('$$$$$$$$$$$$$$$$$$$webmapLayer mounted if map is running')
         leafletElement.addTo(map);
+        // this.$nextTick(() => {
+        //   this.changeOpacity(1);
+        // })
         // map.attributionControl.removeAttribution('overwrite');
         // this.changeDot();
       }
@@ -41,10 +45,13 @@
       parentMounted(parent) {
         const map = parent.$leafletElement;
         this.$leafletElement.addTo(map);
+        // this.$nextTick(() => {
+        //   this.changeOpacity(100);
+        // })
         // this.changeDot();
       },
       changeOpacity(nextOpacity) {
-        // console.log('LEAFLET ELEMENT:', this.$leafletElement);
+        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!webMapLayer changeOpacity is running, nextOpacity:', nextOpacity, 'LEAFLET ELEMENT:', this.$leafletElement);
         let element;
         // sometimes you have to dig into the leafletElement to get to the objects being shown
         // one way to know whether you have to do that is whether the leafletElement has a "legend" function
