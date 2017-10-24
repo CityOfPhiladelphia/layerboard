@@ -273,7 +273,7 @@
         this.styleObject.height = boardHeight.toString() + 'px';
         // this.$store.state.map.map.invalidateSize();
         // })
-        this.$store.commit('setWindowSize', obj) //= topicsHeight.toString() + 'px';
+        this.$store.commit('setWindowSize', obj); //= topicsHeight.toString() + 'px';
       }
     }
   };
