@@ -22,7 +22,7 @@
         console.log('WATCH GEO TYPE:', nextGeometryType);
         if (nextGeometryType === 'esriGeometryPoint') {
           console.log('GEOMETRY TYPE IS POINT!');
-          this.$leafletElement.on('click', this.clickHandler);
+          // this.$leafletElement.on('click', this.clickHandler);
         }
       }
     },
