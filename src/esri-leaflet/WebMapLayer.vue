@@ -22,7 +22,25 @@
         console.log('WATCH GEO TYPE:', nextGeometryType);
         if (nextGeometryType === 'esriGeometryPoint') {
           console.log('GEOMETRY TYPE IS POINT!');
-          this.$leafletElement.on('click', this.clickHandler);
+          if (this.$leafletElement.metadata) {
+            this.$leafletElement.on('click', this.clickHandler);
+          } else if (this.$leafletElement._layers[Object.keys(this.$leafletElement._layers)[0]].metadata) {
+            console.log('watch leafletelement._layers');
+            for (let layer of Object.keys(this.$leafletElement._layers)) {
+              console.log('OBJECT KEYS', Object.keys(this.$leafletElement._layers[layer]._layers));
+              for (let innerLayer of Object.keys(this.$leafletElement._layers[layer]._layers)) {
+                this.$leafletElement._layers[layer]._layers[innerLayer].options.bubblingMouseEvents = false;
+                console.log('!!!!THIS', this.$leafletElement._layers[layer]._layers[innerLayer]);
+              }
+              // this.$leafletElement.options.bubblingMouseEvents = false;
+              // this.$leafletElement._layers[layer].options.bubblingMouseEvents = false;
+              console.log('layer', layer, this.$leafletElement, 'this.$leafletElement._layers[layer]', this.$leafletElement._layers[layer]);
+              this.$leafletElement._layers[layer].on('click', this.clickHandler);// {
+                // console.log('e', e, 'this', this, 'layer', layer, 'this._layers', this._layers, 'this._layers[layer]', this._layers[layer]);
+              //   this.clickHandler();
+              // });
+            }
+          }
         }
       }
     },
@@ -33,9 +51,17 @@
     },
     created() {
       const leafletElement = this.$leafletElement = this.layer;
-      this.layer.metadata(function(error, metadata){
-        this.geometryType = metadata.geometryType
-      }, this);
+      if (this.layer.metadata) {
+        this.layer.metadata(function(error, metadata) {
+          console.log('metadata', metadata);
+          this.geometryType = metadata.geometryType
+        }, this);
+      } else if (this.layer._layers[Object.keys(this.layer._layers)[0]].metadata){
+        this.layer._layers[Object.keys(this.layer._layers)[0]].metadata(function(error, metadata) {
+          console.log('metadata', metadata);
+          this.geometryType = metadata.geometryType
+        }, this);
+      }
     },
     mounted() {
       console.log('THE LAYER:', this.$leafletElement, 'THE GEO TYPE:', this.geometryType);
@@ -43,10 +69,6 @@
       if (map) {
         this.$leafletElement.addTo(map);
       }
-      // if (this.geometryType === 'esriGeometryPoint') {
-      //   console.log('GEOMETRY TYPE IS POINT!');
-      //   this.$leafletElement.on('click', clickHandler);
-      // }
     },
     destroyed() {
       this.$leafletElement._map.removeLayer(this.$leafletElement);
@@ -55,39 +77,9 @@
       return;
     },
     methods: {
-      // calculateGeometryType() {
-      //   let geometry;
-      //   const firstLayer = this.$leafletElement._layers[Object.keys(this.$leafletElement._layers)[0]];
-      //   console.log('leafletElement._layers', this.$leafletElement._layers, Object.keys(this.$leafletElement._layers)[0], 'firstLayer', firstLayer);
-      //   if (firstLayer.feature) {
-      //     geometry = firstLayer.feature.geometry.type;
-      //   } else {
-      //     const firstLayerFirstLayer = firstLayer._layers[Object.keys(firstLayer._layers)[0]];
-      //     geometry = firstLayerFirstLayer.feature.geometry.type;
-      //   }
-      //   console.log('geometry', geometry);
-      //   // return geometry;
-      // },
-      // retrieveLeafletElement() {
-      //   // let geometry;
-      //   // const firstLayer = this.layer._layers[Object.keys(this.layer._layers)[0]];
-      //   // console.log('leafletElement._layers', this.layer._layers, Object.keys(this.layer._layers)[0], 'firstLayer', firstLayer);
-      //   // if (firstLayer.feature) {
-      //   //   geometry = firstLayer.feature.geometry.type;
-      //   // } else {
-      //   //   const firstLayerFirstLayer = firstLayer._layers[Object.keys(firstLayer._layers)[0]];
-      //   //   geometry = firstLayerFirstLayer.feature.geometry.type;
-      //   // }
-      //   // console.log('geometry', geometry);
-      //   return this.layer;
-      // },
       parentMounted(parent) {
         const map = parent.$leafletElement;
         this.$leafletElement.addTo(map);
-        // this.$nextTick(() => {
-        //   this.changeOpacity(100);
-        // })
-        // this.changeDot();
       },
       changeOpacity(nextOpacity) {
         // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!webMapLayer changeOpacity is running, nextOpacity:', nextOpacity, 'LEAFLET ELEMENT:', this.$leafletElement);
@@ -134,8 +126,13 @@
       }, // end of changeOpacity
       clickHandler(e) {
         const map = this.$store.state.map.map;
-        console.log('clickHandler in WebMapLayer is starting, e:', e);
-        var clickBounds = L.latLngBounds(e.latlng, e.latlng);
+        console.log('clickHandler in WebMapLayer is starting, e:', e, 'e.layer._latlng', e.layer._latlng);
+        var clickBounds;
+        if (this.$leafletElement.metadata) {
+          clickBounds = L.latLngBounds(e.latlng, e.latlng);
+        } else {
+          clickBounds = L.latLngBounds(e.layer._latlng, e.layer._latlng);
+        }
         var intersectingFeatures = [];
         console.log('map._layers', map._layers);
         var geometry;
@@ -146,7 +143,7 @@
               var feature = overlay._layers[f];
               if (feature.feature) {
                 geometry = feature.feature.geometry.type;
-                console.log('clickHandler GEOMETRY:', geometry);
+                console.log('clickHandler FEATURE:', feature, 'GEOMETRY:', geometry);
                 var bounds;
                 if (geometry === 'Polygon' || geometry === 'MultiPolygon') {
                   console.log('polygon or multipolygon');
@@ -173,9 +170,10 @@
                     }
                   }
                 } else if (geometry === 'Point') {
-                  console.log('Point');
                   bounds = L.latLngBounds(feature._latlng, feature._latlng);
+                  // console.log('Point, bounds:', bounds, 'clickBounds:', clickBounds);
                   if (bounds && clickBounds.intersects(bounds)) {
+                    console.log('Winner - feature:', feature, 'bounds:', bounds, 'clickBounds:', clickBounds);
                     intersectingFeatures.push(feature);
                   }
                 }

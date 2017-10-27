@@ -67,8 +67,8 @@
       },
       clickHandler(e) {
         const map = this.$leafletElement
-        console.log('clickHandler in Map is starting, e:', e);
         var clickBounds = L.latLngBounds(e.latlng, e.latlng);
+        console.log('clickHandler in Map is starting, e:', e, 'clickBounds:', clickBounds);
         var intersectingFeatures = [];
         console.log('map._layers', map._layers);
         var geometry;
