@@ -64,16 +64,29 @@
 
             // create webMapLayersAndRest
             let webMapLayersAndRest = []
+            const opLayers = restData.operationalLayers
             for (let [index, layer] of webMap.layers.splice(2).entries()) {
+              // console.log('layer.title', layer.title);
+              let curOpLayer;
+              for (let opLayer of opLayers) {
+                if (opLayer.title === layer.title) {
+                  curOpLayer = opLayer
+                }
+              }
               const id = generateUniqueId();
               const layerObj = {
                 'title': layer.title.split('_')[1],
                 'layer': layer.layer,
+                // 'geoType': layer,
                 'id': id,
-                'serviceItemId': restData.operationalLayers[index].itemId,
-                'rest': restData.operationalLayers[index],
-                'opacity': restData.operationalLayers[index].opacity,
-                'type': restData.operationalLayers[index].layerType,
+                'serviceItemId': curOpLayer.itemId,
+                'rest': curOpLayer,
+                'opacity': curOpLayer.opacity,
+                'type': curOpLayer.layerType,
+                // 'serviceItemId': restData.operationalLayers[index].itemId,
+                // 'rest': restData.operationalLayers[index],
+                // 'opacity': restData.operationalLayers[index].opacity,
+                // 'type': restData.operationalLayers[index].layerType,
                 'type2': layer.type,
                 'legend': null
               }
