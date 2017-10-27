@@ -334,11 +334,11 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
 
     switch (symbol.type) {
       case 'esriSMS':
-        console.log('14 after esriSMS, ctx:', ctx, 'symbol', symbol)
+        console.log('14 after esriSMS, ctx:', ctx, 'symbol', symbol, 'newSymbol', newSymbol)
         // if (symbolChange === true) {
           this._renderMarker(ctx, newSymbol, done);
         // } else {
-        //   this._renderMarker(ctx, symbol, done);
+          // this._renderMarker(ctx, symbol, done);
         // }
         break;
       case 'esriSLS':
@@ -454,8 +454,18 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
     ctx.beginPath();
 
     if (symbol.outline) {
-      ctx.strokeStyle = this._formatColor(symbol.outline.color);
+      symbol.outline.width = 0.0001;
+      console.log('IF SYMBOL.OUTLINE symbol', symbol);
+      if (symbol.outline.color) {
+        // console.log('has color');
+        ctx.strokeStyle = this._formatColor(symbol.outline.color);
+      // } else {
+      //   console.log('has no color');
+      //   // ctx.lineWidth = 0;
+      }
       ctx.lineWidth = symbol.outline.width;
+      // ctx.lineWidth = 0;
+      console.log('STROKESTYLE', ctx.strokeStyle, 'LINEWIDTH', ctx.lineWidth);
       xoffset += symbol.outline.width;
       yoffset += symbol.outline.width;
     }
@@ -464,6 +474,7 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
 
     switch (symbol.style) {
       case 'esriSMSCircle':
+        console.log('IN esriSMSCircle symbol:', symbol)
         ctx.fillStyle = this._formatColor(symbol.color);
         r = (size - 2 * xoffset) / 2;
         ctx.arc(r + xoffset, r + xoffset, r, 0, 2 * Math.PI, false);
