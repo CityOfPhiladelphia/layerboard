@@ -44,20 +44,87 @@
         child.parentMounted(this, child.$props);
       }
 
-
       // TODO warn if trying to bind an event that doesn't exist
       bindEvents(this, this.$leafletElement, this._events);
+
+      map.on('click', this.clickHandler);
     },
     methods: {
       createLeafletElement() {
         const { zoomControlPosition, ...options } = this.$props;
         const theMap = new Map(this.$refs.map, options);
         return theMap;
-
       },
       childDidMount(child) {
         child.addTo(this.$leafletElement);
       },
+      flipCoordsArray(anArray) {
+        var newArray = []
+        for (var i in anArray) {
+          newArray[i] = [anArray[i][1], anArray[i][0]]
+        }
+        return newArray
+      },
+      clickHandler(e) {
+        const map = this.$leafletElement
+        console.log('clickHandler in Map is starting, e:', e);
+        var clickBounds = L.latLngBounds(e.latlng, e.latlng);
+        var intersectingFeatures = [];
+        console.log('map._layers', map._layers);
+        var geometry;
+        for (var l in map._layers) {
+          var overlay = map._layers[l];
+          if (overlay._layers) {
+            for (var f in overlay._layers) {
+              var feature = overlay._layers[f];
+              if (feature.feature) {
+                geometry = feature.feature.geometry.type;
+                var bounds;
+                if (geometry === 'Polygon' || geometry === 'MultiPolygon') {
+                  console.log('polygon or multipolygon');
+                  if (feature.contains(e.latlng)) {
+                    var ids = []
+                    for (var i = 0; i < intersectingFeatures.length; i++) {
+                      ids[i] = intersectingFeatures[i].feature.id;
+                    }
+                    if (!ids.includes(feature.feature.id)) {
+                      intersectingFeatures.push(feature);
+                    }
+                  }
+                }
+                else if (geometry === 'LineString') {
+                  console.log('Line');
+                  bounds = feature.getBounds();
+                  if (bounds && clickBounds.intersects(bounds)) {
+                    var ids = []
+                    for (var i = 0; i < intersectingFeatures.length; i++) {
+                      ids[i] = intersectingFeatures[i].feature.id;
+                    }
+                    if (!ids.includes(feature.feature.id)) {
+                      intersectingFeatures.push(feature);
+                    }
+                  }
+                } else if (geometry === 'Point') {
+                  console.log('Point');
+                  bounds = L.latLngBounds(feature._latlng, feature._latlng);
+                  if (bounds && clickBounds.intersects(bounds)) {
+                    intersectingFeatures.push(feature);
+                  }
+                }
+              }
+            }
+          }
+        }
+        var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
+          console.log('o', o);
+          // return 'test'
+          return o.feature.id
+        }).join('<br/>');
+
+        map.openPopup(html, e.latlng, {
+          offset: L.point(0, -24)
+        });
+      }
     }
   };
 </script>

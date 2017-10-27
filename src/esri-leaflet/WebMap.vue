@@ -77,6 +77,7 @@
               const layerObj = {
                 'title': layer.title.split('_')[1],
                 'layer': layer.layer,
+                // 'geoType': layer,
                 'id': id,
                 'serviceItemId': curOpLayer.itemId,
                 'rest': curOpLayer,

@@ -24,6 +24,7 @@
                             :opacity="layer.opacity"
                             :type="layer.type2"
         />
+        <!-- :geometryType="calculateLayerGeometryType(layer)" -->
       </esri-web-map>
 
       <!-- basemaps -->
@@ -291,6 +292,21 @@
           return false;
         }
       },
+      // calculateLayerGeometryType(layer) {
+      //   layer.metadata(function(error, metadata){
+      //     return metadata;
+      //   });
+      // //   console.log('calculateLayerGeometryType layer', layer.layer._layers)
+      // //   const firstLayer = layer.layer._layers[Object.keys(layer.layer._layers)[0]];
+      // //   console.log(Object.keys(layer.layer._layers)[0], 'firstLayer', firstLayer);
+      // //   if (firstLayer.feature) {
+      // //     geometry = firstLayer.feature.geometry.type;
+      // //   } else {
+      // //     const firstLayerFirstLayer = firstLayer._layers[Object.keys(firstLayer._layers)[0]];
+      // //     geometry = firstLayerFirstLayer.feature.geometry.type;
+      // //   }
+      // //   return geometry;
+      // },
       // handleMapClick(e) {
       // },
       handleMapMove(e) {
