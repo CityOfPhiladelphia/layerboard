@@ -25,7 +25,14 @@
                             :type="layer.type2"
         />
         <!-- :geometryType="calculateLayerGeometryType(layer)" -->
+        <!-- <pop-up v-if="this.intersectingFeatures.length > 0"
+        > -->
+        <pop-up>
+          <pop-up-content></pop-up-content>
+        </pop-up>
       </esri-web-map>
+
+      <!-- <svg-shape v-if="this.selectedPopupLayer" /> -->
 
       <!-- basemaps -->
       <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
@@ -139,11 +146,13 @@
   import EsriWebMap from '../../esri-leaflet/WebMap';
   import EsriWebMapLayer from '../../esri-leaflet/WebMapLayer';
   import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
+  import EsriFeatureLayer from '../../esri-leaflet/FeatureLayer';
   // import Geojson from '../../leaflet/Geojson';
   import CircleMarker from '../../leaflet/CircleMarker';
   import VectorMarker from '../VectorMarker';
   import PngMarker from '../PngMarker';
   import SvgMarker from '../SvgMarker';
+  import SvgShape from '../SvgShape';
   import BasemapToggleControl from '../BasemapToggleControl.vue';
   import BasemapSelectControl from '../BasemapSelectControl.vue';
   import LocationControl from '../LocationControl.vue';
@@ -153,6 +162,8 @@
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
   // import LegendControl from '../../esri-leaflet/Legend.vue';
   import ControlCorner from '../../leaflet/ControlCorner.vue';
+  import PopUp from '../../leaflet/PopUp.vue';
+  import PopUpContent from '../../leaflet/PopUpContent.vue';
 
   export default {
     mixins: [
@@ -167,11 +178,13 @@
       EsriWebMap,
       EsriWebMapLayer,
       EsriTiledMapLayer,
+      EsriFeatureLayer,
       // Geojson,
       CircleMarker,
       VectorMarker,
       PngMarker,
       SvgMarker,
+      SvgShape,
       BasemapToggleControl,
       BasemapSelectControl,
       LocationControl,
@@ -180,8 +193,16 @@
       CyclomediaRecordingCircle,
       // LegendControl,
       ControlCorner,
+      PopUp,
+      PopUpContent,
     },
     computed: {
+      selectedPopupLayer() {
+        return this.$store.state.map.selectedPopupLayer;
+      },
+      intersectingFeatures() {
+        return this.$store.state.map.intersectingFeatures;
+      },
       geolocationEnabled() {
         return this.$config.geolocation.enabled;
       },

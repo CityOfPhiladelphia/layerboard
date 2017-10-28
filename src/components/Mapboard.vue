@@ -117,7 +117,7 @@
         const records = dataOut.records;
         // const recordsFiltered = records;
         const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
-        console.log(recordsFiltered);
+        // console.log(recordsFiltered);
         // let bennyEndpoints2 = {};
         // let bennyEndpoints3 = []
         // const knackUrl2 = "https://api.knackhq.com/v1/objects/object_3/records/export?type=json";
@@ -260,14 +260,14 @@
           width: rootWidthNum
         }
 
-        console.log('handleWindowResize is running, this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
+        // console.log('handleWindowResize is running, this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
         let boardHeight;
         if (!this.$store.state.shouldShowTopics) {
           boardHeight = rootHeightNum - 34;
-          console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
+          // console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
         } else {
           boardHeight = rootHeightNum
-          console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
+          // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
         }
         // this.$nextTick(() => {
         this.styleObject.height = boardHeight.toString() + 'px';

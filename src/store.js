@@ -36,6 +36,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       webMapActiveLayers: [],
       webMapLayersAndRest: [],
       watchPositionOn: false,
+      intersectingFeatures: [],
+      popupCoords: null,
+      selectedPopupLayer: null,
     },
     cyclomedia: {
       active: false,
@@ -68,6 +71,15 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     state: initialState,
     getters: {},
     mutations: {
+      setSelectedPopupLayer(state, payload) {
+        state.map.selectedPopupLayer = payload;
+      },
+      setIntersectingFeatures(state, payload) {
+        state.map.intersectingFeatures = payload;
+      },
+      setPopupCoords(state, payload) {
+        state.map.popupCoords = payload;
+      },
       setBennyEndpoints(state, payload) {
         state.bennyEndpoints = payload;
       },

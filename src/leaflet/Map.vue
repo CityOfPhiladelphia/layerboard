@@ -81,7 +81,7 @@
                 geometry = feature.feature.geometry.type;
                 var bounds;
                 if (geometry === 'Polygon' || geometry === 'MultiPolygon') {
-                  console.log('polygon or multipolygon');
+                  // console.log('polygon or multipolygon');
                   if (feature.contains(e.latlng)) {
                     var ids = []
                     for (var i = 0; i < intersectingFeatures.length; i++) {
@@ -93,7 +93,7 @@
                   }
                 }
                 else if (geometry === 'LineString') {
-                  console.log('Line');
+                  // console.log('Line');
                   bounds = feature.getBounds();
                   if (bounds && clickBounds.intersects(bounds)) {
                     var ids = []
@@ -105,7 +105,7 @@
                     }
                   }
                 } else if (geometry === 'Point') {
-                  console.log('Point');
+                  // console.log('Point');
                   bounds = L.latLngBounds(feature._latlng, feature._latlng);
                   if (bounds && clickBounds.intersects(bounds)) {
                     intersectingFeatures.push(feature);
@@ -115,15 +115,21 @@
             }
           }
         }
-        var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
-          console.log('o', o);
-          // return 'test'
-          return o.feature.id
-        }).join('<br/>');
-
-        map.openPopup(html, e.latlng, {
-          offset: L.point(0, -24)
-        });
+        this.$store.commit('setPopupCoords', e.latlng);
+        this.$store.commit('setIntersectingFeatures', []);
+        this.$store.commit('setIntersectingFeatures', intersectingFeatures);
+        // var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
+        // var html = intersectingFeatures.map(function(o) {
+        //   // console.log('o', o);
+        //   return o.feature.popupHtml
+        // }).join('<br/>');
+        //
+        // console.log('html', html);
+        // if (html != '') {
+        //   map.openPopup(html, e.latlng, {
+        //     // offset: L.point(0, -24)
+        //   });
+        // }
       }
     }
   };

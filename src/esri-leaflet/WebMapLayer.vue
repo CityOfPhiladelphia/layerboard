@@ -133,12 +133,7 @@
       clickHandler(e) {
         const map = this.$store.state.map.map;
         console.log('clickHandler in WebMapLayer is starting, e:', e, 'e.layer._latlng', e.layer._latlng);
-        var clickBounds;
-        // if (this.$leafletElement.metadata) {
-        //   clickBounds = L.latLngBounds(e.latlng, e.latlng);
-        // } else {
-        clickBounds = L.latLngBounds(e.layer._latlng, e.layer._latlng);
-        // }
+        var clickBounds = L.latLngBounds(e.layer._latlng, e.layer._latlng);
         var intersectingFeatures = [];
         console.log('map._layers', map._layers);
         var geometry;
@@ -149,10 +144,10 @@
               var feature = overlay._layers[f];
               if (feature.feature) {
                 geometry = feature.feature.geometry.type;
-                console.log('clickHandler FEATURE:', feature, 'GEOMETRY:', geometry);
+                // console.log('clickHandler FEATURE:', feature, 'GEOMETRY:', geometry);
                 var bounds;
                 if (geometry === 'Polygon' || geometry === 'MultiPolygon') {
-                  console.log('polygon or multipolygon');
+                  // console.log('polygon or multipolygon');
                   if (feature.contains(e.latlng)) {
                     var ids = []
                     for (var i = 0; i < intersectingFeatures.length; i++) {
@@ -164,7 +159,7 @@
                   }
                 }
                 else if (geometry === 'LineString') {
-                  console.log('Line');
+                  // console.log('Line');
                   bounds = feature.getBounds();
                   if (bounds && clickBounds.intersects(bounds)) {
                     var ids = []
@@ -177,9 +172,9 @@
                   }
                 } else if (geometry === 'Point') {
                   bounds = L.latLngBounds(feature._latlng, feature._latlng);
-                  console.log('Point, bounds:', bounds, 'clickBounds:', clickBounds);
+                  // console.log('Point, bounds:', bounds, 'clickBounds:', clickBounds);
                   if (bounds && clickBounds.intersects(bounds)) {
-                    console.log('Winner - feature:', feature, 'bounds:', bounds, 'clickBounds:', clickBounds);
+                    // console.log('Winner - feature:', feature, 'bounds:', bounds, 'clickBounds:', clickBounds);
                     var ids = []
                     for (var i = 0; i < intersectingFeatures.length; i++) {
                       ids[i] = intersectingFeatures[i].feature.id;
@@ -193,15 +188,18 @@
             }
           }
         }
-        var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
-          console.log('o', o);
-          // return 'test'
-          return o.feature.id
-        }).join('<br/>');
-
-        map.openPopup(html, e.latlng, {
-          offset: L.point(0, -24)
-        });
+        this.$store.commit('setPopupCoords', e.latlng);
+        this.$store.commit('setIntersectingFeatures', []);
+        this.$store.commit('setIntersectingFeatures', intersectingFeatures);
+        // var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
+        // var html = intersectingFeatures.map(function(o) {
+        //   console.log('o', o);
+        //   return o.feature.popupHtml;
+        // }).join('<br/>');
+        //
+        // map.openPopup(html, e.latlng, {
+        //   offset: L.point(0, -24)
+        // });
       }
     }
   };
