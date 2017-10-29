@@ -13,6 +13,27 @@
     <!-- :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }" -->
     <!-- @l-click="handleMapClick" -->
 
+    <!-- <polygon_ -->
+    <polygon_ v-if="this.selectedPopupLayerGeometryType === 'Polygon'"
+              :color="'red'"
+              :weight=1
+              :latlngs="this.selectedPopupLayerCoordinatesFlipped"
+    />
+    <polyline_ v-if="this.selectedPopupLayerGeometryType === 'LineString'"
+              :color="'red'"
+              :weight=5
+              :latlngs="this.selectedPopupLayerCoordinatesFlipped"
+    />
+    <circle-marker v-if="this.selectedPopupLayerGeometryType === 'Point'"
+                   :latlng="this.selectedPopupLayerCoordinatesFlipped"
+                   :radius="10"
+                   :fillColor="this.locationMarker.fillColor"
+                   :color="this.locationMarker.color"
+                   :weight="this.locationMarker.weight"
+                   :opacity="this.locationMarker.opacity"
+                   :fillOpacity="this.locationMarker.fillOpacity"
+                   :key="Math.random()"
+    />
       <!-- webmap -->
       <esri-web-map>
         <esri-web-map-layer v-for="(layer, key) in this.$store.state.map.webMapLayersAndRest"
@@ -24,15 +45,11 @@
                             :opacity="layer.opacity"
                             :type="layer.type2"
         />
-        <!-- :geometryType="calculateLayerGeometryType(layer)" -->
-        <!-- <pop-up v-if="this.intersectingFeatures.length > 0"
-        > -->
-        <pop-up>
-          <pop-up-content></pop-up-content>
-        </pop-up>
       </esri-web-map>
+      <pop-up v-if="this.shouldShowPopup">
+        <pop-up-content />
+      </pop-up>
 
-      <!-- <svg-shape v-if="this.selectedPopupLayer" /> -->
 
       <!-- basemaps -->
       <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
@@ -152,7 +169,7 @@
   import VectorMarker from '../VectorMarker';
   import PngMarker from '../PngMarker';
   import SvgMarker from '../SvgMarker';
-  import SvgShape from '../SvgShape';
+  // import SvgShape from '../SvgShape';
   import BasemapToggleControl from '../BasemapToggleControl.vue';
   import BasemapSelectControl from '../BasemapSelectControl.vue';
   import LocationControl from '../LocationControl.vue';
@@ -164,6 +181,8 @@
   import ControlCorner from '../../leaflet/ControlCorner.vue';
   import PopUp from '../../leaflet/PopUp.vue';
   import PopUpContent from '../../leaflet/PopUpContent.vue';
+  import Polygon_ from '../../leaflet/Polygon.vue';
+  import Polyline_ from '../../leaflet/Polyline.vue';
 
   export default {
     mixins: [
@@ -184,7 +203,7 @@
       VectorMarker,
       PngMarker,
       SvgMarker,
-      SvgShape,
+      // SvgShape,
       BasemapToggleControl,
       BasemapSelectControl,
       LocationControl,
@@ -195,10 +214,42 @@
       ControlCorner,
       PopUp,
       PopUpContent,
+      Polygon_,
+      Polyline_,
     },
     computed: {
+      shouldShowPopup() {
+        if (this.intersectingFeatures.length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      },
       selectedPopupLayer() {
         return this.$store.state.map.selectedPopupLayer;
+      },
+      selectedPopupLayerGeometryType() {
+        if (this.selectedPopupLayer) {
+          return this.selectedPopupLayer.feature.geometry.type;
+        } else {
+          return null;
+      }
+      },
+      selectedPopupLayerCoordinates() {
+        if (this.selectedPopupLayerGeometryType === "Point" || this.selectedPopupLayerGeometryType === "LineString") {
+          return this.selectedPopupLayer.feature.geometry.coordinates;
+        } else {
+          return this.selectedPopupLayer.feature.geometry.coordinates[0];
+        }
+      },
+      selectedPopupLayerCoordinatesFlipped() {
+        // console.log('coords:', this.flipCoordsArray(this.selectedPopupLayerCoordinates));
+        if (this.selectedPopupLayerGeometryType === "Point") {
+          return this.flipCoords(this.selectedPopupLayerCoordinates);
+        } else {
+          console.log('calling FlipCoordsArray on:', this.selectedPopupLayerCoordinates);
+          return this.flipCoordsArray(this.selectedPopupLayerCoordinates);
+        }
       },
       intersectingFeatures() {
         return this.$store.state.map.intersectingFeatures;
@@ -295,6 +346,18 @@
       }
     },
     methods: {
+      flipCoords(coords) {
+        console.log('flipCoords is running on:', coords);
+        return [coords[1], coords[0]];
+      },
+      flipCoordsArray(anArray) {
+        console.log('flipCoordsArray is running on:', anArray);
+        var newArray = []
+        for (var i in anArray) {
+          newArray[i] = [anArray[i][1], anArray[i][0]]
+        }
+        return newArray
+      },
       shouldShowFeatureLayer(layer) {
         if (layer.rest.layerDefinition) {
           if (layer.rest.layerDefinition.minScale) {

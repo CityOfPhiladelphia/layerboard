@@ -48,8 +48,12 @@
       }
     },
     mounted() {
-      // console.log('!!!!!!!!!!!!!!POPUPCONTENT MOUNTED!!!!!!!!!!!!1')
-      // this.$store.commit('setSelectedPopupLayer', this.intersectingFeatures[0]);
+      console.log('POPUPCONTENT MOUNTED')
+      this.$store.commit('setSelectedPopupLayer', this.intersectingFeatures[0]);
+    },
+    destroyed() {
+      console.log('PopupContent destroyed')
+      this.$store.commit('setSelectedPopupLayer', null);
     },
     watch: {
       popupHtmlArray(nextPopupHtmlArray) {

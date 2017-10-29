@@ -5,27 +5,24 @@
 </template>
 
 <script>
+  import L from 'leaflet';
   export default {
     mounted() {
-      console.log('pop-up mounted')
+      // console.log('popup mounted is running');
+      const leafletElement = this.$leafletElement = this.createLeafletElement();
+      // leafletElement.addTo(this._map);
+      leafletElement.on('remove', this.removePopup)
     },
     destroyed() {
-      console.log('pop-up destroyed')
+      console.log('pop-up destroyed is running')
+      this.$leafletElement.removeFrom(this._map);
     },
     watch: {
       intersectingFeatures(nextIntersectingFeatures) {
-        const html = nextIntersectingFeatures.map(function(o) {
-          console.log('o', o);
-          return o.feature.popupHtml;
-        }).join('<br/>');
-        if (html != '') {
-          this._map.openPopup(this.$children[0].$el, this.popupCoords, {
-            minWidth: 350,
-            // height: 300,
-            // minHeight: 300,
-            // maxHeight: 300,
-          })
-        }
+        console.log('Popup WATCH intersectingFeatures is firing');
+        const leafletElement = this.$leafletElement = this.createLeafletElement();
+        // leafletElement.addTo(this._map);
+        leafletElement.on('remove', this.removePopup)
       }
     },
     computed: {
@@ -37,6 +34,23 @@
       },
       popupCoords() {
         return this.$store.state.map.popupCoords;
+      }
+    },
+    methods: {
+      removePopup() {
+        // console.log('closed Popup, this:', this);
+        this.$store.commit('setIntersectingFeatures', []);
+      },
+      createLeafletElement() {
+        // console.log('Popup createLeafletElement is firing, coords:', this.popupCoords, 'content:', this.$children[0].$el);
+        const popup = L.popup({
+          minWidth: 350,
+          offset: L.point(0, -24)
+        }).setLatLng(this.popupCoords)
+          .setContent(this.$children[0].$el)
+          .openOn(this._map);
+
+        return popup;
       }
     }
   };

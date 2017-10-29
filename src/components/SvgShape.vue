@@ -8,8 +8,8 @@
   import DivIcon from 'leaflet';
   import SVGIcon from '../../src/util/svg-icon.js';
   import svgIcon from '../../src/util/svg-icon.js';
-  import TriangleIcon from '../../src/util/triangleIcon.js';
-  import triangleIcon from '../../src/util/triangleIcon.js';
+  // import TriangleIcon from '../../src/util/triangleIcon.js';
+  // import triangleIcon from '../../src/util/triangleIcon.js';
 
   export default {
     // props: [
@@ -42,22 +42,6 @@
       this.$leafletElement._map.removeLayer(this.$leafletElement);
     },
     computed: {
-      latlng() {
-        const xyz = this.$props.orientation.xyz;
-        return [xyz[1], xyz[0]];
-      },
-      rotationAngle() {
-        return this.$props.orientation.yaw * (180/3.14159265359);
-      },
-      coneCoords() {
-        const hFov = this.$props.orientation.hFov * (180/3.14159265359);
-        const scale = 50//options.scale;
-        const angle = hFov / 2.0;
-        const width = Math.sin(angle*Math.PI/180);
-        const length = Math.sqrt(1.0 - width * width);
-        const coneCoords = [width*scale, length*scale];
-        return coneCoords;
-      }
     },
     methods: {
       createLeafletElement() {

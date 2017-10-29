@@ -19,25 +19,25 @@
         this.changeOpacity(nextOpacity);
       },
       geometryType(nextGeometryType) {
-        console.log('WATCH GEO TYPE:', nextGeometryType);
+        // console.log('WATCH GEO TYPE:', nextGeometryType);
         if (nextGeometryType === 'esriGeometryPoint') {
-          console.log('GEOMETRY TYPE IS POINT!');
+          // console.log('GEOMETRY TYPE IS POINT!');
           if (this.$leafletElement.metadata) {
             this.$leafletElement.on('click', function(e) {
               L.DomEvent.stopPropagation(e);
             })
             this.$leafletElement.on('click', this.clickHandler);
           } else if (this.$leafletElement._layers[Object.keys(this.$leafletElement._layers)[0]].metadata) {
-            console.log('watch leafletelement._layers');
+            // console.log('watch leafletelement._layers');
             for (let layer of Object.keys(this.$leafletElement._layers)) {
-              console.log('OBJECT KEYS', Object.keys(this.$leafletElement._layers[layer]._layers));
+              // console.log('OBJECT KEYS', Object.keys(this.$leafletElement._layers[layer]._layers));
               for (let innerLayer of Object.keys(this.$leafletElement._layers[layer]._layers)) {
                 this.$leafletElement._layers[layer]._layers[innerLayer].options.bubblingMouseEvents = false;
-                console.log('!!!!THIS', this.$leafletElement._layers[layer]._layers[innerLayer]);
+                // console.log('!!!!THIS', this.$leafletElement._layers[layer]._layers[innerLayer]);
               }
               // this.$leafletElement.options.bubblingMouseEvents = false;
               // this.$leafletElement._layers[layer].options.bubblingMouseEvents = false;
-              console.log('layer', layer, this.$leafletElement, 'this.$leafletElement._layers[layer]', this.$leafletElement._layers[layer]);
+              // console.log('layer', layer, this.$leafletElement, 'this.$leafletElement._layers[layer]', this.$leafletElement._layers[layer]);
               this.$leafletElement._layers[layer].on('click', function(e) {
                 L.DomEvent.stopPropagation(e);
               })
@@ -132,14 +132,15 @@
       }, // end of changeOpacity
       clickHandler(e) {
         const map = this.$store.state.map.map;
-        console.log('clickHandler in WebMapLayer is starting, e:', e, 'e.layer._latlng', e.layer._latlng);
+        // console.log('clickHandler in WebMapLayer is starting, e:', e, 'e.layer._latlng', e.layer._latlng);
         var clickBounds = L.latLngBounds(e.layer._latlng, e.layer._latlng);
         var intersectingFeatures = [];
-        console.log('map._layers', map._layers);
+        // console.log('map._layers', map._layers);
         var geometry;
         for (var l in map._layers) {
           var overlay = map._layers[l];
           if (overlay._layers) {
+            // console.log('IF overlay._layers');
             for (var f in overlay._layers) {
               var feature = overlay._layers[f];
               if (feature.feature) {
@@ -184,12 +185,13 @@
                     }
                   }
                 }
+                // console.log('INTERSECTING FEATURES:', intersectingFeatures);
               }
             }
           }
         }
         this.$store.commit('setPopupCoords', e.latlng);
-        this.$store.commit('setIntersectingFeatures', []);
+        // this.$store.commit('setIntersectingFeatures', []);
         this.$store.commit('setIntersectingFeatures', intersectingFeatures);
         // var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
         // var html = intersectingFeatures.map(function(o) {
