@@ -16,12 +16,13 @@
     <!-- <polygon_ -->
     <polygon_ v-if="this.selectedPopupLayerGeometryType === 'Polygon'"
               :color="'red'"
-              :weight=1
+              :fill="false"
+              :weight="8"
               :latlngs="this.selectedPopupLayerCoordinatesFlipped"
     />
     <polyline_ v-if="this.selectedPopupLayerGeometryType === 'LineString'"
               :color="'red'"
-              :weight=5
+              :weight="5"
               :latlngs="this.selectedPopupLayerCoordinatesFlipped"
     />
     <circle-marker v-if="this.selectedPopupLayerGeometryType === 'Point'"

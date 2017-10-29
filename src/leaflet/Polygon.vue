@@ -5,7 +5,8 @@
     props: [
       'latlngs',
       'color',
-      'weight'
+      'weight',
+      'fill'
     ],
     mounted() {
       console.log('Polygon mounted is firing');
@@ -40,6 +41,7 @@
         return new Polygon(this.$props.latlngs, {
           color: this.$props.color,
           weight: this.$props.weight,
+          fill: this.$props.fill,
           'z-index': 9999,
         });
       },
