@@ -32,8 +32,14 @@
                    :weight="this.locationMarker.weight"
                    :opacity="this.locationMarker.opacity"
                    :fillOpacity="this.locationMarker.fillOpacity"
-                   :key="Math.random()"
     />
+    <!-- :key="Math.random()" -->
+
+    <!-- <vector-marker v-if="this.selectedPopupLayerGeometryType === 'Point'"
+                  :latlng="this.selectedPopupLayerCoordinatesFlipped"
+    /> -->
+    <!-- :key="marker.key" -->
+
       <!-- webmap -->
       <esri-web-map>
         <esri-web-map-layer v-for="(layer, key) in this.$store.state.map.webMapLayersAndRest"
