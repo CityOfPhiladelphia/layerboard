@@ -212,17 +212,19 @@ EsriLeaflet.Legend.include({
     EsriLeaflet.Util.reduce(layerData, [], function(curr, layer, cb) {
       console.log('11 running _symbolsToLegends, curr is:', curr, 'layer is:', layer, 'cb is:', cb, 'layer.drawingInfo is:', layer.drawingInfo);
       console.log('11.2 layer.drawingInfo.renderer.uniqueValueInfos:', layer.drawingInfo.renderer.uniqueValueInfos);
-      var newUniqueKeys = [];
-      var newUnique = [];
-      var valueInfos = layer.drawingInfo.renderer.uniqueValueInfos;
-      for (var i = 0; i < valueInfos.length; i++) {
-        if (!newUniqueKeys.includes(valueInfos[i].label)) {
-          newUniqueKeys.push(valueInfos[i].label);
-          newUnique.push(valueInfos[i]);
+      if (layer.drawingInfo.renderer.uniqueValueInfos) {
+        var newUniqueKeys = [];
+        var newUnique = [];
+        var valueInfos = layer.drawingInfo.renderer.uniqueValueInfos;
+        for (var i = 0; i < valueInfos.length; i++) {
+          if (!newUniqueKeys.includes(valueInfos[i].label)) {
+            newUniqueKeys.push(valueInfos[i].label);
+            newUnique.push(valueInfos[i]);
+          }
         }
+        console.log('11.3 newUnique:', newUnique);
+        layer.drawingInfo.renderer.uniqueValueInfos = newUnique;
       }
-      console.log('11.3 newUnique:', newUnique);
-      layer.drawingInfo.renderer.uniqueValueInfos = newUnique;
       self._drawingInfoToLegend(layer.drawingInfo, function(err, legend) {
         if (err) {
           return cb(err, null);
