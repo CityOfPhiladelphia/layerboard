@@ -35,14 +35,14 @@ EsriLeaflet.Util.reduce = function(values, initial, fn, cb, context) {
   // var legend = initial.layers[0].legend;
   function next(index) {
     var sync = true;
-    console.log('STARTING LOOP');
-    var labels = [];
+    // console.log('STARTING LOOP');
+    // var labels = [];
     for (var i = index; i < values.length; i++) {
-      console.log('INSIDE LOOP, i:', i);
+    //   console.log('INSIDE LOOP, i:', i);
       var done = false;
       fn(curr, values[i], function(err, val) {
-        labels.push(values[i].label);
-        console.log('15 before err in reduce, curr is:', curr, 'values[i]:', values[i], 'labels', labels);
+        // labels.push(values[i].label);
+        console.log('15 before err in reduce, curr is:', curr, 'values[i]:', values[i]);// 'labels', labels);
         if (err) {
           console.log('err occurred inside reduce:', err, 'val:', val);
           return cb.call(context, err, curr);
