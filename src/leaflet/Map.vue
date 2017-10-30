@@ -58,57 +58,41 @@
       childDidMount(child) {
         child.addTo(this.$leafletElement);
       },
-      flipCoordsArray(anArray) {
-        var newArray = []
-        for (var i in anArray) {
-          newArray[i] = [anArray[i][1], anArray[i][0]]
-        }
-        return newArray
-      },
+
+      // nearly the same function is in WebMapLayer.Vue
+      // this one is used when the click is NOT on a point
       clickHandler(e) {
         const map = this.$leafletElement
-        var clickBounds = L.latLngBounds(e.latlng, e.latlng);
-        console.log('clickHandler in Map is starting, e:', e, 'clickBounds:', clickBounds);
-        var intersectingFeatures = [];
-        console.log('map._layers', map._layers);
-        var geometry;
-        for (var l in map._layers) {
-          var overlay = map._layers[l];
+        const clickBounds = L.latLngBounds(e.latlng, e.latlng);
+        // console.log('clickHandler in Map is starting, e:', e, 'clickBounds:', clickBounds);
+        // console.log('map._layers', map._layers);
+        let intersectingFeatures = [];
+        let geometry;
+        for (let layer in map._layers) {
+          var overlay = map._layers[layer];
           if (overlay._layers) {
-            for (var f in overlay._layers) {
-              var feature = overlay._layers[f];
+            for (let oLayer in overlay._layers) {
+              const feature = overlay._layers[oLayer];
               if (feature.feature) {
                 geometry = feature.feature.geometry.type;
-                var bounds;
+                let bounds;
                 if (geometry === 'Polygon' || geometry === 'MultiPolygon') {
                   // console.log('polygon or multipolygon');
                   if (feature.contains(e.latlng)) {
-                    var ids = []
-                    for (var i = 0; i < intersectingFeatures.length; i++) {
-                      ids[i] = intersectingFeatures[i].feature.id;
-                    }
-                    if (!ids.includes(feature.feature.id)) {
-                      intersectingFeatures.push(feature);
-                    }
+                    this.checkForDuplicates(layer, feature, intersectingFeatures);
                   }
                 }
                 else if (geometry === 'LineString') {
                   // console.log('Line');
                   bounds = feature.getBounds();
                   if (bounds && clickBounds.intersects(bounds)) {
-                    var ids = []
-                    for (var i = 0; i < intersectingFeatures.length; i++) {
-                      ids[i] = intersectingFeatures[i].feature.id;
-                    }
-                    if (!ids.includes(feature.feature.id)) {
-                      intersectingFeatures.push(feature);
-                    }
+                    this.checkForDuplicates(layer, feature, intersectingFeatures);
                   }
                 } else if (geometry === 'Point') {
                   // console.log('Point');
                   bounds = L.latLngBounds(feature._latlng, feature._latlng);
                   if (bounds && clickBounds.intersects(bounds)) {
-                    intersectingFeatures.push(feature);
+                    this.checkForDuplicates(layer, feature, intersectingFeatures);
                   }
                 }
               }
@@ -116,20 +100,17 @@
           }
         }
         this.$store.commit('setPopupCoords', e.latlng);
-        this.$store.commit('setIntersectingFeatures', []);
         this.$store.commit('setIntersectingFeatures', intersectingFeatures);
-        // var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
-        // var html = intersectingFeatures.map(function(o) {
-        //   // console.log('o', o);
-        //   return o.feature.popupHtml
-        // }).join('<br/>');
-        //
-        // console.log('html', html);
-        // if (html != '') {
-        //   map.openPopup(html, e.latlng, {
-        //     // offset: L.point(0, -24)
-        //   });
-        // }
+      },
+      checkForDuplicates(layer, feature, intersectingFeatures) {
+        // console.log('checkForDuplicates is running');
+        let ids = []
+        for (let i = 0; i < intersectingFeatures.length; i++) {
+          ids[i] = layer + '_' + intersectingFeatures[i].feature.id;
+        }
+        if (!ids.includes(layer + '_' + feature.feature.id)) {
+          intersectingFeatures.push(feature);
+        }
       }
     }
   };

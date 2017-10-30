@@ -9,11 +9,11 @@
       'fill'
     ],
     mounted() {
-      console.log('Polygon mounted is firing');
+      // console.log('Polygon mounted is firing');
       const leafletElement = this.$leafletElement = this.createLeafletElement();
       const map = this.$store.state.map.map;
       if (map) {
-        console.log('Polygon adding to map, element:', leafletElement);
+        // console.log('Polygon adding to map, element:', leafletElement);
         leafletElement.addTo(map);
       }
     },
@@ -25,19 +25,19 @@
     },
     watch: {
       latlngs(nextLatLngs) {
-        console.log('polygon latlngs changed');
+        // console.log('polygon latlngs changed');
         this.$leafletElement._map.removeLayer(this.$leafletElement);
         const leafletElement = this.$leafletElement = this.createLeafletElement();
         const map = this.$store.state.map.map;
         if (map) {
-          console.log('on update, polygon adding to map, element:', leafletElement);
+          // console.log('on update, polygon adding to map, element:', leafletElement);
           leafletElement.addTo(map);
         }
       }
     },
     methods: {
       createLeafletElement() {
-        console.log('Polygon createLeafletElement is firing');
+        // console.log('Polygon createLeafletElement is firing');
         return new Polygon(this.$props.latlngs, {
           color: this.$props.color,
           weight: this.$props.weight,
@@ -46,7 +46,7 @@
         });
       },
       parentMounted(parent) {
-        console.log('Polygon parentMounted is firing, this.$leafletElement:', this.$leafletElement);
+        // console.log('Polygon parentMounted is firing, this.$leafletElement:', this.$leafletElement);
         const map = parent.$leafletElement;
         this.$leafletElement.addTo(map);
       },

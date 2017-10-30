@@ -7,11 +7,10 @@
       'layerDefinition',
       'opacity',
       'type',
-      // 'geometryType'
     ],
     data() {
       return {
-        'geometryType': 6
+        'geometryType': null
       }
     },
     watch: {
@@ -35,16 +34,12 @@
                 this.$leafletElement._layers[layer]._layers[innerLayer].options.bubblingMouseEvents = false;
                 // console.log('!!!!THIS', this.$leafletElement._layers[layer]._layers[innerLayer]);
               }
-              // this.$leafletElement.options.bubblingMouseEvents = false;
-              // this.$leafletElement._layers[layer].options.bubblingMouseEvents = false;
               // console.log('layer', layer, this.$leafletElement, 'this.$leafletElement._layers[layer]', this.$leafletElement._layers[layer]);
               this.$leafletElement._layers[layer].on('click', function(e) {
                 L.DomEvent.stopPropagation(e);
               })
               this.$leafletElement._layers[layer].on('click', this.clickHandler);// {
-                // console.log('e', e, 'this', this, 'layer', layer, 'this._layers', this._layers, 'this._layers[layer]', this._layers[layer]);
-              //   this.clickHandler();
-              // });
+              // console.log('e', e, 'this', this, 'layer', layer, 'this._layers', this._layers, 'this._layers[layer]', this._layers[layer]);
             }
           }
         }
@@ -59,18 +54,18 @@
       const leafletElement = this.$leafletElement = this.layer;
       if (this.layer.metadata) {
         this.layer.metadata(function(error, metadata) {
-          console.log('metadata', metadata);
+          // console.log('metadata', metadata);
           this.geometryType = metadata.geometryType
         }, this);
       } else if (this.layer._layers[Object.keys(this.layer._layers)[0]].metadata){
         this.layer._layers[Object.keys(this.layer._layers)[0]].metadata(function(error, metadata) {
-          console.log('metadata', metadata);
+          // console.log('metadata', metadata);
           this.geometryType = metadata.geometryType
         }, this);
       }
     },
     mounted() {
-      console.log('THE LAYER:', this.$leafletElement, 'THE GEO TYPE:', this.geometryType);
+      // console.log('THE LAYER:', this.$leafletElement, 'THE GEO TYPE:', this.geometryType);
       const map = this.$store.state.map.map;
       if (map) {
         this.$leafletElement.addTo(map);
@@ -88,7 +83,7 @@
         this.$leafletElement.addTo(map);
       },
       changeOpacity(nextOpacity) {
-        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!webMapLayer changeOpacity is running, nextOpacity:', nextOpacity, 'LEAFLET ELEMENT:', this.$leafletElement);
+        // console.log('webMapLayer changeOpacity is running, nextOpacity:', nextOpacity, 'LEAFLET ELEMENT:', this.$leafletElement);
         let element;
         // sometimes you have to dig into the leafletElement to get to the objects being shown
         // one way to know whether you have to do that is whether the leafletElement has a "legend" function
@@ -130,78 +125,63 @@
           }) // end of eachFeature
         } // end of else - it is a FL
       }, // end of changeOpacity
+
+      // nearly the same function is in Map.vue
+      // this one is used when the click is ON a point
       clickHandler(e) {
         const map = this.$store.state.map.map;
+        const clickBounds = L.latLngBounds(e.layer._latlng, e.layer._latlng);
         // console.log('clickHandler in WebMapLayer is starting, e:', e, 'e.layer._latlng', e.layer._latlng);
-        var clickBounds = L.latLngBounds(e.layer._latlng, e.layer._latlng);
-        var intersectingFeatures = [];
         // console.log('map._layers', map._layers);
-        var geometry;
-        for (var l in map._layers) {
-          var overlay = map._layers[l];
+        let intersectingFeatures = [];
+        let geometry;
+        for (let layer in map._layers) {
+          const overlay = map._layers[layer];
           if (overlay._layers) {
             // console.log('IF overlay._layers');
-            for (var f in overlay._layers) {
-              var feature = overlay._layers[f];
+            for (let oLayer in overlay._layers) {
+              const feature = overlay._layers[oLayer];
+
               if (feature.feature) {
                 geometry = feature.feature.geometry.type;
-                // console.log('clickHandler FEATURE:', feature, 'GEOMETRY:', geometry);
-                var bounds;
+                // console.log('clickHandler LAYER:', layer, 'FEATURE:', feature, 'GEOMETRY:', geometry);
+                let bounds;
                 if (geometry === 'Polygon' || geometry === 'MultiPolygon') {
                   // console.log('polygon or multipolygon');
                   if (feature.contains(e.latlng)) {
-                    var ids = []
-                    for (var i = 0; i < intersectingFeatures.length; i++) {
-                      ids[i] = intersectingFeatures[i].feature.id;
-                    }
-                    if (!ids.includes(feature.feature.id)) {
-                      intersectingFeatures.push(feature);
-                    }
+                    this.checkForDuplicates(layer, feature, intersectingFeatures);
                   }
                 }
                 else if (geometry === 'LineString') {
                   // console.log('Line');
                   bounds = feature.getBounds();
                   if (bounds && clickBounds.intersects(bounds)) {
-                    var ids = []
-                    for (var i = 0; i < intersectingFeatures.length; i++) {
-                      ids[i] = intersectingFeatures[i].feature.id;
-                    }
-                    if (!ids.includes(feature.feature.id)) {
-                      intersectingFeatures.push(feature);
-                    }
+                    this.checkForDuplicates(layer, feature, intersectingFeatures);
                   }
                 } else if (geometry === 'Point') {
                   bounds = L.latLngBounds(feature._latlng, feature._latlng);
                   // console.log('Point, bounds:', bounds, 'clickBounds:', clickBounds);
                   if (bounds && clickBounds.intersects(bounds)) {
                     // console.log('Winner - feature:', feature, 'bounds:', bounds, 'clickBounds:', clickBounds);
-                    var ids = []
-                    for (var i = 0; i < intersectingFeatures.length; i++) {
-                      ids[i] = intersectingFeatures[i].feature.id;
-                    }
-                    if (!ids.includes(feature.feature.id)) {
-                      intersectingFeatures.push(feature);
-                    }
+                    this.checkForDuplicates(layer, feature, intersectingFeatures);
                   }
                 }
-                // console.log('INTERSECTING FEATURES:', intersectingFeatures);
               }
             }
           }
         }
         this.$store.commit('setPopupCoords', e.latlng);
-        // this.$store.commit('setIntersectingFeatures', []);
         this.$store.commit('setIntersectingFeatures', intersectingFeatures);
-        // var html = "Found features: " + intersectingFeatures.length + "<br/>" + intersectingFeatures.map(function(o) {
-        // var html = intersectingFeatures.map(function(o) {
-        //   console.log('o', o);
-        //   return o.feature.popupHtml;
-        // }).join('<br/>');
-        //
-        // map.openPopup(html, e.latlng, {
-        //   offset: L.point(0, -24)
-        // });
+      },
+      checkForDuplicates(layer, feature, intersectingFeatures) {
+        // console.log('checkForDuplicates is running');
+        let ids = []
+        for (let i = 0; i < intersectingFeatures.length; i++) {
+          ids[i] = layer + '_' + intersectingFeatures[i].feature.id;
+        }
+        if (!ids.includes(layer + '_' + feature.feature.id)) {
+          intersectingFeatures.push(feature);
+        }
       }
     }
   };

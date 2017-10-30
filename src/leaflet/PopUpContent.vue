@@ -48,11 +48,11 @@
       }
     },
     mounted() {
-      console.log('POPUPCONTENT MOUNTED')
+      // console.log('POPUPCONTENT MOUNTED')
       this.$store.commit('setSelectedPopupLayer', this.intersectingFeatures[0]);
     },
     destroyed() {
-      console.log('PopupContent destroyed')
+      // console.log('PopupContent destroyed')
       this.$store.commit('setSelectedPopupLayer', null);
     },
     watch: {

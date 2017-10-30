@@ -31,13 +31,18 @@ var store;
 
 EsriLeaflet.Util.reduce = function(values, initial, fn, cb, context) {
   var curr = initial;
-  console.log('4 running EsriLeaflet.Util.reduce, values is:', values, 'curr is:', curr)
+  console.log('4 running EsriLeaflet.Util.reduce, values is:', values, 'curr is:', curr);
+  // var legend = initial.layers[0].legend;
   function next(index) {
     var sync = true;
+    console.log('STARTING LOOP');
+    var labels = [];
     for (var i = index; i < values.length; i++) {
+      console.log('INSIDE LOOP, i:', i);
       var done = false;
       fn(curr, values[i], function(err, val) {
-        console.log('15 before err in reduce, curr is:', curr, 'values[i]:', values[i]);
+        labels.push(values[i].label);
+        console.log('15 before err in reduce, curr is:', curr, 'values[i]:', values[i], 'labels', labels);
         if (err) {
           console.log('err occurred inside reduce:', err, 'val:', val);
           return cb.call(context, err, curr);
@@ -206,6 +211,18 @@ EsriLeaflet.Legend.include({
     console.log('pre-11 layerData:', layerData);
     EsriLeaflet.Util.reduce(layerData, [], function(curr, layer, cb) {
       console.log('11 running _symbolsToLegends, curr is:', curr, 'layer is:', layer, 'cb is:', cb, 'layer.drawingInfo is:', layer.drawingInfo);
+      console.log('11.2 layer.drawingInfo.renderer.uniqueValueInfos:', layer.drawingInfo.renderer.uniqueValueInfos);
+      var newUniqueKeys = [];
+      var newUnique = [];
+      var valueInfos = layer.drawingInfo.renderer.uniqueValueInfos;
+      for (var i = 0; i < valueInfos.length; i++) {
+        if (!newUniqueKeys.includes(valueInfos[i].label)) {
+          newUniqueKeys.push(valueInfos[i].label);
+          newUnique.push(valueInfos[i]);
+        }
+      }
+      console.log('11.3 newUnique:', newUnique);
+      layer.drawingInfo.renderer.uniqueValueInfos = newUnique;
       self._drawingInfoToLegend(layer.drawingInfo, function(err, legend) {
         if (err) {
           return cb(err, null);
@@ -730,7 +747,7 @@ EsriLeaflet.LegendControl = L.Control.extend({
           this._layers
         , {layers: []}
         , function(curr, layer, cb) {
-            console.log('5 inside _load, curr is:', curr, 'layer is:', layer, 'options is', options);
+            console.log('5 inside _load, curr is:', curr, 'layer is:', layer, 'options is', options);//, 'legend is', curr.layers[0].legend);
             let layer2;
             if (!layer.legend) {
               console.log('layer._layers', Object.keys(layer._layers))
