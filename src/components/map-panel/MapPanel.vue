@@ -15,24 +15,27 @@
 
     <!-- <polygon_ -->
     <polygon_ v-if="this.selectedPopupLayerGeometryType === 'Polygon'"
-              :color="'red'"
+              :color="'#00ffff'"
               :fill="false"
-              :weight="8"
-              :latlngs="this.selectedPopupLayerCoordinatesFlipped"
-    />
-    <polyline_ v-if="this.selectedPopupLayerGeometryType === 'LineString'"
-              :color="'red'"
               :weight="5"
               :latlngs="this.selectedPopupLayerCoordinatesFlipped"
+              :pane="'highlightOverlay'"
+    />
+    <polyline_ v-if="this.selectedPopupLayerGeometryType === 'LineString'"
+              :color="'#00ffff'"
+              :weight="4"
+              :latlngs="this.selectedPopupLayerCoordinatesFlipped"
+              :pane="'highlightOverlay'"
     />
     <circle-marker v-if="this.selectedPopupLayerGeometryType === 'Point'"
                    :latlng="this.selectedPopupLayerCoordinatesFlipped"
-                   :radius="10"
-                   :fillColor="this.locationMarker.fillColor"
-                   :color="this.locationMarker.color"
+                   :radius="7"
+                   :fillColor="'#00ffff'"
+                   :color="'#00ffff'"
                    :weight="this.locationMarker.weight"
                    :opacity="this.locationMarker.opacity"
                    :fillOpacity="this.locationMarker.fillOpacity"
+                   :pane="'highlightOverlay'"
     />
 
       <!-- webmap -->

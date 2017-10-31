@@ -5,7 +5,8 @@
     props: [
       'latlngs',
       'color',
-      'weight'
+      'weight',
+      'pane'
     ],
     mounted() {
       console.log('polyline mounted is firing');
@@ -40,6 +41,7 @@
         return new Polyline(this.$props.latlngs, {
           color: this.$props.color,
           weight: this.$props.weight,
+          pane: this.$props.pane,
           'z-index': 10000,
         });
       },

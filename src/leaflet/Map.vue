@@ -44,6 +44,7 @@
         child.parentMounted(this, child.$props);
       }
 
+
       // TODO warn if trying to bind an event that doesn't exist
       bindEvents(this, this.$leafletElement, this._events);
 

@@ -102,6 +102,7 @@
               return 0 //default return value (no sorting)
             })
             self.$store.commit('setWebMapLayersAndRest', webMapLayersAndRest);
+            map.createPane('highlightOverlay');
               // self.method2(webMap);
           }); // end of webmap onload
         }, response => {

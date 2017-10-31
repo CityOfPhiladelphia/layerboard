@@ -6,7 +6,8 @@
       'latlngs',
       'color',
       'weight',
-      'fill'
+      'fill',
+      'pane'
     ],
     mounted() {
       // console.log('Polygon mounted is firing');
@@ -42,6 +43,7 @@
           color: this.$props.color,
           weight: this.$props.weight,
           fill: this.$props.fill,
+          pane: this.$props.pane,
           'z-index': 9999,
         });
       },
