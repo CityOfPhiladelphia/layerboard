@@ -1,6 +1,6 @@
 <template>
   <div id="map-panel"
-       class="large-18 columns mb-panel mb-panel-map"
+       class="medium-12 large-16 columns mb-panel mb-panel-map"
   >
   <!-- class="large-18 columns mb-panel mb-panel-map" -->
     <map_ :center="this.$store.state.map.center"
@@ -429,16 +429,16 @@
     position: relative;
   }
 
-  @media (max-width: 1024px) {
+  /*@media (max-width: 1024px) {
     .mb-panel-map {
       height: 600px;
     }
-  }
+  }*/
 
   .mb-search-control-container {
     height: 48px;
     border-radius: 2px;
-    box-shadow:0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
+    /*box-shadow:0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);*/
   }
 
   .mb-search-control-button {
@@ -457,7 +457,7 @@
     padding-right: 15px;
     font-family: 'Montserrat', 'Tahoma', sans-serif;
     font-size: 16px;
-    width: 400px;
+    width: 350px;
   }
 
   .mb-map-with-widget {
@@ -485,5 +485,17 @@
     position: absolute;
     top: 40%;
     left: 40%;
+  }
+
+  @media screen and (max-width: 950px) {
+    .mb-search-control-input {
+      width: 250px;
+    }
+  }
+
+  @media screen and (max-width: 350px) {
+    .mb-search-control-input {
+      width: 200px;
+    }
   }
 </style>

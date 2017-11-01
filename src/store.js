@@ -59,6 +59,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     // "See Datasets" button
     didToggleTopicsOn: false,
     shouldShowTopics: true,
+    shouldShowMap: true,
     windowSize: {
       // TODO set based on current window size
       height: 0,
@@ -202,6 +203,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setShouldShowTopics(state, payload) {
         state.shouldShowTopics = payload;
+      },
+      setShouldShowMap(state, payload) {
+        state.shouldShowMap = payload;
       },
       setWindowSize(state, payload) {
         state.windowSize = payload;
