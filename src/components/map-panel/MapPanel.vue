@@ -488,15 +488,51 @@
     left: 40%;
   }
 
-  @media screen and (max-width: 950px) {
+  @media screen and (max-width: 1023px) {
     .mb-search-control-input {
       width: 250px;
     }
   }
 
-  @media screen and (max-width: 350px) {
+  @media screen and (max-width: 900px) {
     .mb-search-control-input {
       width: 200px;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    .mb-search-control-input {
+      width: 150px;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    .mb-search-control-input {
+      width: 100px;
+    }
+  }
+
+  @media screen and (max-width: 639px) {
+    .mb-search-control-input {
+      width: 250px;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    .mb-search-control-input {
+      width: 200px;
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .mb-search-control-input {
+      width: 150px;
+    }
+  }
+
+  @media screen and (max-width: 350px) {
+    .mb-search-control-input {
+      width: 100px;
     }
   }
 </style>
