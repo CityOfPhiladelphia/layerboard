@@ -44,7 +44,7 @@
       createLeafletElement() {
         // console.log('Popup createLeafletElement is firing, coords:', this.popupCoords, 'content:', this.$children[0].$el);
         const popup = L.popup({
-          minWidth: 350,
+          minWidth: 300,
           offset: L.point(0, -24)
         }).setLatLng(this.popupCoords)
           .setContent(this.$children[0].$el)

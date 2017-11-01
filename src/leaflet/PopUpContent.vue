@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div v-if="this.popupHtmlArray.length > 1">
+    <div v-if="this.popupHtmlArray.length > 1"
+         class="text-center"
+    >
       <ul class="pagination text-center">
         <li :class="this.previousIsDisabled">
           <span v-if="this.previousIsDisabled !== 'pagination-previous'">
@@ -100,3 +102,23 @@
     }
   };
 </script>
+
+<style>
+
+  .leaflet-popup-content {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .pagination {
+    margin-bottom: 0px;
+  }
+
+  .leaflet-popup-close-button {
+    font-size: 24px !important;
+    height: 24px !important;
+    line-height: 24px !important;
+    width: 24px !important;
+  }
+
+</style>
