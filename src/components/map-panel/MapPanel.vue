@@ -147,8 +147,9 @@
                      :weight="this.locationMarker.weight"
                      :opacity="this.locationMarker.opacity"
                      :fillOpacity="this.locationMarker.fillOpacity"
-                     :key="Math.random()"
+                     :pane="highlightOverlay"
       />
+      <!-- :key="Math.random()" -->
 
     </map_>
   </div>
