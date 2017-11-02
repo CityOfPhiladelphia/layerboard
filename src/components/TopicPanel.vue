@@ -1,36 +1,31 @@
 <template>
-  <div class="large-6 columns mb-panel mb-panel-topics">
+  <div class="medium-12 large-8 columns mb-panel mb-panel-topics"
+       id="mb-panel-topics"
+  >
     <div class="row">
-    <!-- <v-layout column> -->
-      <!-- <v-flex xs12> -->
-      <div class="mb-search-control-container">
-        <!-- <div class="control-spacer"> -->
-          <form @submit.prevent="handleFilterFormX"
-                @keydown="preventEnter"
-          >
-              <input class="mb-search-control-input"
-                     placeholder="Filter datasets"
-                     id="theInput"
-                     @keyup="handleFilterFormKeyup"
-              />
-              <button class="mb-search-control-button"
-                      v-if="this.$store.state.layers.inputLayerFilter != ''"
-              >
-                <i class="fa fa-times fa-lg"></i>
-              </button>
-          </form>
-        <!-- </div> -->
+      <div class="control-spacer">
+        <div class="mb-search-control-container">
+            <form @submit.prevent="handleFilterFormX"
+                  @keydown="preventEnter"
+            >
+                <input class="mb-search-control-input"
+                       placeholder="Filter datasets"
+                       id="theInput"
+                       @keyup="handleFilterFormKeyup"
+                />
+                <button class="mb-search-control-button"
+                        v-if="this.$store.state.layers.inputLayerFilter != ''"
+                >
+                  <i class="fa fa-times fa-lg"></i>
+                </button>
+            </form>
+        </div>
       </div>
-      <!-- </v-flex xs12> -->
-    <!-- </v-layout row wrap>
 
-
-    <v-layout row wrap> -->
-      <!-- <v-flex xs12> -->
       <div class="topics-container"
            id="topics-container"
+           :style="styleObject"
       >
-      <!-- :style="styleObject" -->
         <form action="#/">
           <fieldset class="options">
             <ul class="no-bullet">
@@ -65,9 +60,6 @@
         </v-list>
         </div> -->
 
-
-      <!-- </v-flex> -->
-    <!-- </v-layout> -->
     </div>
   </div>
 </template>
@@ -79,21 +71,21 @@
     components: {
       Checkbox
     },
-    // data() {
-    //   const data = {
-    //     styleObject: {
-    //       'position': 'relative',
-    //       // 'top': '100px',
-    //       'overflow-y': 'auto',
-    //       'height': '100px'
-    //     }
-    //   };
-    //   return data;
-    // },
-    // mounted() {
-    //   window.addEventListener('resize', this.handleWindowResize);
-    //   this.handleWindowResize();
-    // },
+    data() {
+      const data = {
+        styleObject: {
+          'position': 'relative',
+          'top': '10px',
+          'overflow-y': 'auto',
+          'height': '100px'
+        }
+      };
+      return data;
+    },
+    mounted() {
+      window.addEventListener('resize', this.handleWindowResize);
+      this.handleWindowResize();
+    },
     beforeDestroy() {
       window.removeEventListener('resize', this.handleWindowResize);
     },
@@ -140,15 +132,15 @@
           e.preventDefault();
         }
       },
-      // handleWindowResize() {
-      //   // console.log('handleWindowResize is running');
-      //   const rootElement = document.getElementById('mb-root');
-      //   const rootStyle = window.getComputedStyle(rootElement);
-      //   const rootHeight = rootStyle.getPropertyValue('height');
-      //   const rootHeightNum = parseInt(rootHeight.replace('px', ''));
-      //   const topicsHeight = rootHeightNum - 70;
-      //   this.styleObject.height = topicsHeight.toString() + 'px';
-      // }
+      handleWindowResize() {
+        const rootElement = document.getElementById('mb-panel-topics');
+        console.log('handleWindowResize is running, rootElement:', rootElement);
+        const rootStyle = window.getComputedStyle(rootElement);
+        const rootHeight = rootStyle.getPropertyValue('height');
+        const rootHeightNum = parseInt(rootHeight.replace('px', ''));
+        const topicsHeight = rootHeightNum - 70;
+        this.styleObject.height = topicsHeight.toString() + 'px';
+      }
     },
   };
 </script>
@@ -159,56 +151,9 @@
     padding: 0;
   }
 
-  /*.topic-header {
-    background: #f5f5f5;
-    border: 1px solid #ddd;
-    display: block;
-    font-size: 18px;
-    font-weight: normal;
-    height: 40px;
-    line-height: 20px;
-    padding: 10px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    margin-bottom: 8px;
-  }
-  .topic-header:hover {
-    background: #fff;
-    color: inherit;
-  }
-  .topic-header-icon {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-  .topic-body {
-    padding-left: 10px;
-    /*margin-bottom: 20px;
-  }*/
   .loading {
     float: right;
   }
-  /*.scroll {overflow:auto;}
-  .scroll::-webkit-scrollbar {
-    width:16px;
-    height:16px;
-    background:inherit;
-  }
-  .scroll::-webkit-scrollbar-track:vertical {
-    border-right:8px solid rgba(0,0,0,.2);
-  }
-  .scroll::-webkit-scrollbar-thumb:vertical {
-    border-right:8px solid rgba(255,255,255,.2);
-  }
-  .scroll::-webkit-scrollbar-track:horizontal {
-    border-bottom:8px solid rgba(0,0,0,.2);
-  }
-  .scroll::-webkit-scrollbar-thumb:horizontal {
-    border-bottom:8px solid rgba(255,255,255,.2);
-  }
-  .scroll::-webkit-scrollbar-corner,
-    .scroll::-webkit-resizer {background:inherit;
-    border-right:8px solid rgba(255,255,255,.2); //optional
-    border-bottom:8px solid rgba(255,255,255,.2); //optional
-  }*/
 
   .mb-panel-topics {
     background: #fff;
@@ -218,10 +163,11 @@
   }
 
   .control-spacer {
-    position: absolute;
+    /*position: absolute;*/
     /*left: -5px;*/
     height: 50px;
-    width: 20%;
+    width: inherit;
+    /*width: 20%;*/
     background-color: white;
   }
 
@@ -231,6 +177,7 @@
     box-shadow:0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
     margin-top: 10px;
     margin-bottom: 10px;
+    width: inherit;
   }
 
   .mb-search-control-button {
@@ -249,7 +196,8 @@
     padding-right: 15px;
     font-family: 'Montserrat', 'Tahoma', sans-serif;
     font-size: 16px;
-    width: 300px;
+    width: inherit;
+    /*width: 300px;*/
   }
 
 </style>

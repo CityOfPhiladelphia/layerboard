@@ -1,6 +1,6 @@
 <template>
   <div id="map-panel"
-       class="large-18 columns mb-panel mb-panel-map"
+       class="medium-12 large-16 columns mb-panel mb-panel-map"
   >
   <!-- class="large-18 columns mb-panel mb-panel-map" -->
     <map_ :center="this.$store.state.map.center"
@@ -13,6 +13,31 @@
     <!-- :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }" -->
     <!-- @l-click="handleMapClick" -->
 
+    <!-- <polygon_ -->
+    <polygon_ v-if="this.selectedPopupLayerGeometryType === 'Polygon'"
+              :color="'#00ffff'"
+              :fill="false"
+              :weight="5"
+              :latlngs="this.selectedPopupLayerCoordinatesFlipped"
+              :pane="'highlightOverlay'"
+    />
+    <polyline_ v-if="this.selectedPopupLayerGeometryType === 'LineString'"
+              :color="'#00ffff'"
+              :weight="4"
+              :latlngs="this.selectedPopupLayerCoordinatesFlipped"
+              :pane="'highlightOverlay'"
+    />
+    <circle-marker v-if="this.selectedPopupLayerGeometryType === 'Point'"
+                   :latlng="this.selectedPopupLayerCoordinatesFlipped"
+                   :radius="7"
+                   :fillColor="'#00ffff'"
+                   :color="'#00ffff'"
+                   :weight="this.locationMarker.weight"
+                   :opacity="this.locationMarker.opacity"
+                   :fillOpacity="this.locationMarker.fillOpacity"
+                   :pane="'highlightOverlay'"
+    />
+
       <!-- webmap -->
       <esri-web-map>
         <esri-web-map-layer v-for="(layer, key) in this.$store.state.map.webMapLayersAndRest"
@@ -24,8 +49,11 @@
                             :opacity="layer.opacity"
                             :type="layer.type2"
         />
-        <!-- :geometryType="calculateLayerGeometryType(layer)" -->
       </esri-web-map>
+      <pop-up v-if="this.shouldShowPopup">
+        <pop-up-content />
+      </pop-up>
+
 
       <!-- basemaps -->
       <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
@@ -119,8 +147,9 @@
                      :weight="this.locationMarker.weight"
                      :opacity="this.locationMarker.opacity"
                      :fillOpacity="this.locationMarker.fillOpacity"
-                     :key="Math.random()"
+                     :pane="'highlightOverlay'"
       />
+      <!-- :key="Math.random()" -->
 
     </map_>
   </div>
@@ -139,11 +168,13 @@
   import EsriWebMap from '../../esri-leaflet/WebMap';
   import EsriWebMapLayer from '../../esri-leaflet/WebMapLayer';
   import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
+  import EsriFeatureLayer from '../../esri-leaflet/FeatureLayer';
   // import Geojson from '../../leaflet/Geojson';
   import CircleMarker from '../../leaflet/CircleMarker';
   import VectorMarker from '../VectorMarker';
   import PngMarker from '../PngMarker';
   import SvgMarker from '../SvgMarker';
+  // import SvgShape from '../SvgShape';
   import BasemapToggleControl from '../BasemapToggleControl.vue';
   import BasemapSelectControl from '../BasemapSelectControl.vue';
   import LocationControl from '../LocationControl.vue';
@@ -153,6 +184,10 @@
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
   // import LegendControl from '../../esri-leaflet/Legend.vue';
   import ControlCorner from '../../leaflet/ControlCorner.vue';
+  import PopUp from '../../leaflet/PopUp.vue';
+  import PopUpContent from '../../leaflet/PopUpContent.vue';
+  import Polygon_ from '../../leaflet/Polygon.vue';
+  import Polyline_ from '../../leaflet/Polyline.vue';
 
   export default {
     mixins: [
@@ -167,11 +202,13 @@
       EsriWebMap,
       EsriWebMapLayer,
       EsriTiledMapLayer,
+      EsriFeatureLayer,
       // Geojson,
       CircleMarker,
       VectorMarker,
       PngMarker,
       SvgMarker,
+      // SvgShape,
       BasemapToggleControl,
       BasemapSelectControl,
       LocationControl,
@@ -180,8 +217,48 @@
       CyclomediaRecordingCircle,
       // LegendControl,
       ControlCorner,
+      PopUp,
+      PopUpContent,
+      Polygon_,
+      Polyline_,
     },
     computed: {
+      shouldShowPopup() {
+        if (this.intersectingFeatures.length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      selectedPopupLayer() {
+        return this.$store.state.map.selectedPopupLayer;
+      },
+      selectedPopupLayerGeometryType() {
+        if (this.selectedPopupLayer) {
+          return this.selectedPopupLayer.feature.geometry.type;
+        } else {
+          return null;
+      }
+      },
+      selectedPopupLayerCoordinates() {
+        if (this.selectedPopupLayerGeometryType === "Point" || this.selectedPopupLayerGeometryType === "LineString") {
+          return this.selectedPopupLayer.feature.geometry.coordinates;
+        } else {
+          return this.selectedPopupLayer.feature.geometry.coordinates[0];
+        }
+      },
+      selectedPopupLayerCoordinatesFlipped() {
+        // console.log('coords:', this.flipCoordsArray(this.selectedPopupLayerCoordinates));
+        if (this.selectedPopupLayerGeometryType === "Point") {
+          return this.flipCoords(this.selectedPopupLayerCoordinates);
+        } else {
+          console.log('calling FlipCoordsArray on:', this.selectedPopupLayerCoordinates);
+          return this.flipCoordsArray(this.selectedPopupLayerCoordinates);
+        }
+      },
+      intersectingFeatures() {
+        return this.$store.state.map.intersectingFeatures;
+      },
       geolocationEnabled() {
         return this.$config.geolocation.enabled;
       },
@@ -274,6 +351,18 @@
       }
     },
     methods: {
+      flipCoords(coords) {
+        console.log('flipCoords is running on:', coords);
+        return [coords[1], coords[0]];
+      },
+      flipCoordsArray(anArray) {
+        console.log('flipCoordsArray is running on:', anArray);
+        var newArray = []
+        for (var i in anArray) {
+          newArray[i] = [anArray[i][1], anArray[i][0]]
+        }
+        return newArray
+      },
       shouldShowFeatureLayer(layer) {
         if (layer.rest.layerDefinition) {
           if (layer.rest.layerDefinition.minScale) {
@@ -341,16 +430,16 @@
     position: relative;
   }
 
-  @media (max-width: 1024px) {
+  /*@media (max-width: 1024px) {
     .mb-panel-map {
       height: 600px;
     }
-  }
+  }*/
 
   .mb-search-control-container {
     height: 48px;
     border-radius: 2px;
-    box-shadow:0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
+    /*box-shadow:0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);*/
   }
 
   .mb-search-control-button {
@@ -369,7 +458,7 @@
     padding-right: 15px;
     font-family: 'Montserrat', 'Tahoma', sans-serif;
     font-size: 16px;
-    width: 400px;
+    width: 350px;
   }
 
   .mb-map-with-widget {
@@ -397,5 +486,53 @@
     position: absolute;
     top: 40%;
     left: 40%;
+  }
+
+  @media screen and (max-width: 1023px) {
+    .mb-search-control-input {
+      width: 250px;
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+    .mb-search-control-input {
+      width: 200px;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    .mb-search-control-input {
+      width: 150px;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    .mb-search-control-input {
+      width: 100px;
+    }
+  }
+
+  @media screen and (max-width: 639px) {
+    .mb-search-control-input {
+      width: 250px;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    .mb-search-control-input {
+      width: 200px;
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .mb-search-control-input {
+      width: 150px;
+    }
+  }
+
+  @media screen and (max-width: 350px) {
+    .mb-search-control-input {
+      width: 100px;
+    }
   }
 </style>

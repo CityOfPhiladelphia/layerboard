@@ -1,11 +1,4 @@
 <template>
-  <!-- <div id="mainDiv">
-    <v-layout>
-      <v-flex xs3>
-        <topic-panel>
-        </topic-panel>
-      </v-flex>
-      <v-flex xs9> -->
   <div class="mb-root row collapse"
        id="mb-root"
   >
@@ -14,7 +7,7 @@
             @click="toggleTopics"
     >
       <!-- <i class="fa fa-bars fa-inverse" aria-hidden="true"></i> -->
-      See Datasets
+      {{ this.buttonMessage }}
     </button>
 
     <!-- <div class="below-button"
@@ -24,7 +17,8 @@
                    :style="styleObject"
       />
 
-      <map-panel :style="styleObject"
+      <map-panel v-if="shouldShowMap"
+                 :style="styleObject"
       >
         <cyclomedia-widget v-if="this.$config.cyclomedia.enabled"
                            slot="cycloWidget"
@@ -54,16 +48,11 @@
                   :offsetX="-2"
                   :offsetY="-2"
           />
-          <!-- :icon="'../assets/camera.png'" -->
           <view-cone v-if="this.cyclomediaActive && this.pictometryActive"
                      :orientation="this.$store.state.cyclomedia.viewer.props.orientation"
           />
         </pictometry-widget>
-        <!-- :center="this.$store.state.map.map.center" -->
       </map-panel>
-    <!-- </div> -->
-      <!-- </v-flex>
-    </v-layout> -->
   </div>
 </template>
 
@@ -90,8 +79,6 @@
     data() {
       const data = {
         styleObject: {
-          // 'position': 'relative',
-          // 'top': '100px',
           'overflow-y': 'auto',
           'height': '100%'
         }
@@ -100,9 +87,8 @@
     },
     mounted() {
       window.addEventListener('resize', this.handleWindowResize);
-      // this.$nextTick(() => {
       this.handleWindowResize();
-      // });
+
       const store = this.$store;
       const knackUrl = "https://api.knackhq.com/v1/objects/object_4/records/export?type=json";
       const params = {
@@ -115,33 +101,11 @@
       axios.get(knackUrl, { params, headers }).then(response => {
         const dataOut = response.data;
         const records = dataOut.records;
-        // const recordsFiltered = records;
         const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
-        console.log(recordsFiltered);
-        // let bennyEndpoints2 = {};
-        // let bennyEndpoints3 = []
-        // const knackUrl2 = "https://api.knackhq.com/v1/objects/object_3/records/export?type=json";
-        // const params = {
-        //   // dataType: 'json'
-        // }
-        // const headers = {
-        //   'X-Knack-Application-Id': '550c60d00711ffe12e9efc64',
-        //   'X-Knack-REST-API-Key': '7bce4520-28dc-11e5-9f0a-4d758115b820'
-        // }
-        // axios.get(knackUrl2, { params, headers }).then(response2 => {
-        //   const dataOut2 = response2.data;
-        //   const records2 = dataOut2.records;
-        //   console.log('records2', records2);
 
         let bennyEndpoints = {};
 
         for (let record of recordsFiltered) {
-
-
-          // bennyEndpoints2[record.id] = record.field_25;\
-          // if (record.id) {
-          //   bennyEndpoints3.push(record.id);
-          // }
           const url = record.field_25.split('"')[1];
           let url2;
           if (url) {
@@ -149,34 +113,13 @@
           } else {
             url2 = null;
           }
-          // if (record.field_12.length > 0) {
-            if (record.field_13_raw.length > 0) {
-              // if (bennyEndpoints[url2]) {
-                // console.log('already there', url2, record.field_12, record.field_13_raw[0]);
-                bennyEndpoints[url2] = record.field_13_raw[0].id;
-                // bennyEndpoints[url2][record.field_12] = record.field_13_raw[0].id;
-              // } else {
-              //   // console.log('not there yet', url2, record.field12, record.field_13_raw[0])
-              //   bennyEndpoints[url2] = {}
-              //   bennyEndpoints[url2][record.field_12] = record.field_13_raw[0].id;
-              // }
-            } else {
-              // if (bennyEndpoints[url2]) {
-                bennyEndpoints[url2] = '';
-                // bennyEndpoints[url2][record.field_12] = '';
-              // } else {
-              //   bennyEndpoints[url2] = {}
-              //   bennyEndpoints[url2][record.field_12] = '';
-              // }
-            }
+          if (record.field_13_raw.length > 0) {
+              bennyEndpoints[url2] = record.field_13_raw[0].id;
+          } else {
+              bennyEndpoints[url2] = '';
           }
-        // }
+        }
         store.commit('setBennyEndpoints', bennyEndpoints);
-        // store.commit('setBennyEndpoints2', bennyEndpoints2);
-        // store.commit('setBennyEndpoints3', bennyEndpoints3);
-        // }, response => {
-        //   console.log('AXIOS ERROR Mapboard.vue');
-        // });
       }, response => {
         console.log('AXIOS ERROR Mapboard.vue');
       });
@@ -212,12 +155,18 @@
       didToggleTopicsOn() {
         return this.$store.state.didToggleTopicsOn;
       },
+      buttonMessage() {
+        if (this.didToggleTopicsOn) {
+          return 'See Map';
+        } else {
+          return 'See Datasets';
+        }
+      },
       shouldShowTopics() {
         return this.$store.state.shouldShowTopics;
-        // const windowWidth = this.windowWidth;
-        // const notMobile = windowWidth >= 768;
-        // const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
-        // return notMobile || didToggleTopicsOn;
+      },
+      shouldShowMap() {
+        return this.$store.state.shouldShowMap;
       }
     },
     watch: {
@@ -226,13 +175,18 @@
       },
       windowWidth(nextWidth) {
         this.calculateShouldShowTopics();
+        this.calculateShouldShowMap();
       },
       didToggleTopicsOn(nextValue) {
         this.calculateShouldShowTopics();
+        this.calculateShouldShowMap();
       },
       shouldShowTopics(nextValue) {
         this.handleWindowResize();
-      }
+      },
+      // shouldShowMap(nextValue) {
+      //   this.handleWindowResize();
+      // }
     },
     methods: {
       // for mobile only
@@ -242,12 +196,18 @@
       },
       calculateShouldShowTopics() {
         const windowWidth = this.windowWidth;
-        const notMobile = windowWidth >= 768;
+        const notMobile = windowWidth >= 640;
         const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
         const shouldShowTopics = notMobile || didToggleTopicsOn;
         this.$store.commit('setShouldShowTopics', shouldShowTopics);
       },
-
+      calculateShouldShowMap() {
+        const windowWidth = this.windowWidth;
+        const notMobile = windowWidth >= 640;
+        const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
+        const shouldShowMap = notMobile || !didToggleTopicsOn;
+        this.$store.commit('setShouldShowMap', shouldShowMap);
+      },
       handleWindowResize() {
         const rootElement = document.getElementById('mb-root');
         const rootStyle = window.getComputedStyle(rootElement);
@@ -260,20 +220,19 @@
           width: rootWidthNum
         }
 
-        console.log('handleWindowResize is running, this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
         let boardHeight;
-        if (!this.$store.state.shouldShowTopics) {
+        const windowWidth = rootWidthNum;
+        const notMobile = windowWidth >= 640;
+        console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
+        if (!notMobile) {
           boardHeight = rootHeightNum - 34;
           console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
         } else {
           boardHeight = rootHeightNum
           console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
         }
-        // this.$nextTick(() => {
         this.styleObject.height = boardHeight.toString() + 'px';
-        // this.$store.state.map.map.invalidateSize();
-        // })
-        this.$store.commit('setWindowSize', obj); //= topicsHeight.toString() + 'px';
+        this.$store.commit('setWindowSize', obj);
       }
     }
   };
@@ -288,22 +247,7 @@
     outline: none;
   }
 
-  @media (min-width: 1024px) {
-    .mb-root {
-      /*height: 100%;*/
-      /*height: 800px;*/
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .mb-root {
-      /*height: 100%;*/
-      /*height: 800px;*/
-    }
-  }
-
   .mb-root {
-    /*height: 800px;*/
     position: absolute;
     bottom: 0;
     top: 78px;
@@ -317,6 +261,14 @@
     margin: 0;
   }
 
+  .mb-panel {
+    height: 100%;
+  }
+
+  /*.mb-panel-topics-with-widget {
+    height: 50%;
+  }*/
+
   /*small devices only*/
   @media screen and (max-width: 39.9375em) {
     /*TODO map is flowing off screen*/
@@ -324,20 +276,29 @@
       top: 112.4063px;
     }
 
-    /*.mb-panel-topics {
-      display: none;
-    }*/
-
     .datasets-button {
       display: block;
     }
   }
 
-  .mb-panel {
-    height: 100%;
+  /* Medium and up */
+  @media screen and (min-width: 40em) {
+
   }
 
-  .mb-panel-topics-with-widget {
-    height: 50%;
+  /* Medium only */
+  @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+
   }
+
+  /* Large and up */
+  @media screen and (min-width: 64em) {
+
+  }
+
+  /* Large only */
+  @media screen and (min-width: 64em) and (max-width: 74.9375em) {
+
+  }
+
 </style>

@@ -11,7 +11,8 @@
       'weight',
       'opacity',
       'fillOpacity',
-      'data'
+      'data',
+      'pane'
     ],
     watch: {
       latlng(nextLatlng) {

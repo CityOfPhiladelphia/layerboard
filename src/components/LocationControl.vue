@@ -26,6 +26,7 @@
     methods: Object.assign(methods, {
 
       handleLocationButtonClick(e) {
+        // alert('handleLocationButtonClick is running');
         const watchPositionOn = this.$store.state.map.watchPositionOn;
         // console.log('watchPositionOn', watchPositionOn);
         if (!watchPositionOn) {

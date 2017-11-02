@@ -160,6 +160,7 @@
           if (index >= 0) {
             activeLayers.splice(index, 1);
           }
+          this.$store.commit('setIntersectingFeatures', []);
         }
         this.$store.commit('setWebMapActiveLayers', activeLayers);
       },

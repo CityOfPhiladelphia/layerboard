@@ -36,6 +36,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       webMapActiveLayers: [],
       webMapLayersAndRest: [],
       watchPositionOn: false,
+      intersectingFeatures: [],
+      popupCoords: null,
+      selectedPopupLayer: null,
     },
     cyclomedia: {
       active: false,
@@ -56,6 +59,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     // "See Datasets" button
     didToggleTopicsOn: false,
     shouldShowTopics: true,
+    shouldShowMap: true,
     windowSize: {
       // TODO set based on current window size
       height: 0,
@@ -68,6 +72,15 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     state: initialState,
     getters: {},
     mutations: {
+      setSelectedPopupLayer(state, payload) {
+        state.map.selectedPopupLayer = payload;
+      },
+      setIntersectingFeatures(state, payload) {
+        state.map.intersectingFeatures = payload;
+      },
+      setPopupCoords(state, payload) {
+        state.map.popupCoords = payload;
+      },
       setBennyEndpoints(state, payload) {
         state.bennyEndpoints = payload;
       },
@@ -190,6 +203,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setShouldShowTopics(state, payload) {
         state.shouldShowTopics = payload;
+      },
+      setShouldShowMap(state, payload) {
+        state.shouldShowMap = payload;
       },
       setWindowSize(state, payload) {
         state.windowSize = payload;
