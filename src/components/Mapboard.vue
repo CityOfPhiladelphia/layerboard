@@ -171,7 +171,7 @@
     },
     watch: {
       pictometryShowAddressMarker(nextValue) {
-        console.log('watch pictometryShowAddressMarker', nextValue);
+        // console.log('watch pictometryShowAddressMarker', nextValue);
       },
       windowWidth(nextWidth) {
         this.calculateShouldShowTopics();
@@ -215,23 +215,23 @@
         const rootHeightNum = parseInt(rootHeight.replace('px', ''));
         const rootWidth = rootStyle.getPropertyValue('width');
         const rootWidthNum = parseInt(rootWidth.replace('px', ''));
+        let boardHeight;
+        const windowWidth = rootWidthNum;
+        const notMobile = windowWidth >= 640;
+        // console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
+        if (!notMobile) {
+          boardHeight = rootHeightNum - 34;
+          // console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
+        } else {
+          boardHeight = rootHeightNum
+          // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
+        }
+        this.styleObject.height = boardHeight.toString() + 'px';
+
         const obj = {
           height: rootHeightNum,
           width: rootWidthNum
         }
-
-        let boardHeight;
-        const windowWidth = rootWidthNum;
-        const notMobile = windowWidth >= 640;
-        console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
-        if (!notMobile) {
-          boardHeight = rootHeightNum - 34;
-          console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-        } else {
-          boardHeight = rootHeightNum
-          console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-        }
-        this.styleObject.height = boardHeight.toString() + 'px';
         this.$store.commit('setWindowSize', obj);
       }
     }
