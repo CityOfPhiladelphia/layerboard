@@ -13,11 +13,11 @@
     <!-- <div class="below-button"
          id="below-button"
     > -->
-      <topic-panel v-if="shouldShowTopics"
+      <topic-panel v-show="shouldShowTopics"
                    :style="styleObject"
       />
 
-      <map-panel v-if="shouldShowMap"
+      <map-panel v-show="shouldShowMap"
                  :style="styleObject"
       >
         <cyclomedia-widget v-if="this.$config.cyclomedia.enabled"
