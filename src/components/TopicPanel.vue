@@ -165,7 +165,7 @@
           // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
         }
         // const topicsHeight = nextSize.height - 74;
-        console.log('handleWindowSizeChange is running, topicsHeight:', topicsHeight);
+        // console.log('handleWindowSizeChange is running, topicsHeight:', topicsHeight);
         this.styleObject.height = topicsHeight.toString() + 'px';
       }
     },

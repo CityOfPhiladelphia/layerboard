@@ -48,7 +48,7 @@
       // TODO warn if trying to bind an event that doesn't exist
       bindEvents(this, this.$leafletElement, this._events);
 
-      // map.on('click', this.clickHandler);
+      map.on('click', this.clickHandler);
     },
     methods: {
       createLeafletElement() {
