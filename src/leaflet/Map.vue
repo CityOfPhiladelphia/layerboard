@@ -50,6 +50,32 @@
 
       map.on('click', this.clickHandler);
     },
+    watch: {
+      // intersectingFeatures(nextIntersectingFeatures) {
+      //   console.log('map.vue watch intersectingFeatures', nextIntersectingFeatures);
+      // },
+      webMapDisplayedLayers(nextWebMapDisplayedLayers) {
+        let intersectingLayers = [];
+        for (let feature of this.intersectingFeatures) {
+          intersectingLayers.push(feature.feature.layerName);
+        }
+        console.log('map.vue watch nextWebMapDisplayedLayers:', nextWebMapDisplayedLayers, 'intersectingLayers:', intersectingLayers);
+        for (let layer of intersectingLayers) {
+          if (!nextWebMapDisplayedLayers.includes(layer)) {
+            this.$store.commit('setIntersectingFeatures', []);
+            return;
+          }
+        }
+      }
+    },
+    computed: {
+      webMapDisplayedLayers() {
+        return this.$store.state.map.webMapDisplayedLayers;
+      },
+      intersectingFeatures() {
+        return this.$store.state.map.intersectingFeatures;
+      }
+    },
     methods: {
       createLeafletElement() {
         const { zoomControlPosition, ...options } = this.$props;
@@ -71,9 +97,11 @@
         let geometry;
         for (let layer in map._layers) {
           var overlay = map._layers[layer];
+          // console.log('layer:', layer, 'overlay:', overlay);
           if (overlay._layers) {
             for (let oLayer in overlay._layers) {
               const feature = overlay._layers[oLayer];
+              // console.log('feature:', feature);
               if (feature.feature) {
                 geometry = feature.feature.geometry.type;
                 let bounds;

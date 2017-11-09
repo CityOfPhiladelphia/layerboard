@@ -252,7 +252,7 @@
         if (this.selectedPopupLayerGeometryType === "Point") {
           return this.flipCoords(this.selectedPopupLayerCoordinates);
         } else {
-          console.log('calling FlipCoordsArray on:', this.selectedPopupLayerCoordinates);
+          // console.log('calling FlipCoordsArray on:', this.selectedPopupLayerCoordinates);
           return this.flipCoordsArray(this.selectedPopupLayerCoordinates);
         }
       },
@@ -352,11 +352,11 @@
     },
     methods: {
       flipCoords(coords) {
-        console.log('flipCoords is running on:', coords);
+        // console.log('flipCoords is running on:', coords);
         return [coords[1], coords[0]];
       },
       flipCoordsArray(anArray) {
-        console.log('flipCoordsArray is running on:', anArray);
+        // console.log('flipCoordsArray is running on:', anArray);
         var newArray = []
         for (var i in anArray) {
           newArray[i] = [anArray[i][1], anArray[i][0]]

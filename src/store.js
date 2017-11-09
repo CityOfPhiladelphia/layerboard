@@ -34,6 +34,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       basemapLayers: {},
       webMap: null,
       webMapActiveLayers: [],
+      webMapDisplayedLayers: [],
       webMapLayersAndRest: [],
       watchPositionOn: false,
       intersectingFeatures: [],
@@ -111,6 +112,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setWebMapActiveLayers(state, payload) {
         state.map.webMapActiveLayers = payload;
+      },
+      setWebMapDisplayedLayers(state, payload) {
+        state.map.webMapDisplayedLayers = payload;
       },
       setWebMapLayersAndRest(state, payload) {
         state.map.webMapLayersAndRest = payload;
