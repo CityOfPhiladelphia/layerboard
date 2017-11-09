@@ -14,18 +14,27 @@
             Previous
           </a>
         </li>
-        <li v-for="(popup, index) in this.popupHtmlArray"
-            :class="isCurrent(index)"
+        <div class="inline-div"
+             v-if="this.popupHtmlArrayLength <= 9"
         >
-          <span v-if="isCurrent(index) === 'current'">
-            {{ index + 1 }}
-          </span>
-          <a @click="changePopup(index)"
-             v-if="isCurrent(index) !== 'current'"
+          <li v-for="(popup, index) in this.popupHtmlArray"
+              :class="isCurrent(index)"
           >
-            {{ index + 1 }}
-          </a>
-        </li>
+            <span v-if="isCurrent(index) === 'current'">
+              {{ index + 1 }}
+            </span>
+            <a @click="changePopup(index)"
+               v-if="isCurrent(index) !== 'current'"
+            >
+              {{ index + 1 }}
+            </a>
+          </li>
+        </div>
+        <div class="inline-div popup-div"
+             v-if="this.popupHtmlArrayLength >= 10"
+        >
+          {{ currentPopup + 1 }} of {{ this.popupHtmlArrayLength }}
+        </div>
         <li :class="this.nextIsDisabled">
           <span v-if="this.nextIsDisabled !== 'pagination-next'">
             Next
@@ -99,6 +108,9 @@
         }
         return htmlArray;
       },
+      popupHtmlArrayLength() {
+        return this.popupHtmlArray.length;
+      }
     }
   };
 </script>
@@ -119,6 +131,14 @@
     height: 24px !important;
     line-height: 24px !important;
     width: 24px !important;
+  }
+
+  .inline-div {
+    display: inline-block;
+  }
+
+  .popup-div {
+    font-size: 14px;
   }
 
 </style>
