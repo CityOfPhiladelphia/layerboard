@@ -105,6 +105,14 @@
                         }
         // console.log('OPACITY CHANGED', payload);
         this.$store.commit('setWebMapLayersOpacity', payload);
+      },
+      shouldBeDisabled(nextShouldBeDisabled) {
+        // console.log('watch shouldBeDisabled is firing:', this.$props.layerName, nextShouldBeDisabled);
+        if (this.webMapActiveLayers.includes(this.$props.layerName) && nextShouldBeDisabled === true) {
+          this.removeFromWebMapDisplayedLayers();
+        } else if (this.webMapActiveLayers.includes(this.$props.layerName) && nextShouldBeDisabled === false) {
+          this.addToWebMapDisplayedLayers();
+        }
       }
     },
     // mounted() {
@@ -121,6 +129,8 @@
           if (def.minScale) {
             if (this.scale > def.minScale) {
               return true;
+            } else {
+              return false;
             }
           }
         } else {
@@ -148,22 +158,47 @@
       webMapActiveLayers() {
         return this.$store.state.map.webMapActiveLayers;
       },
+      webMapDisplayedLayers() {
+        return this.$store.state.map.webMapDisplayedLayers;
+      }
     },
     methods: {
       checkboxToggle(e) {
         console.log('checkboxToggle', e.target, e.target.id, e.target.checked);
         const activeLayers = this.webMapActiveLayers;
+        const displayedLayers = this.webMapDisplayedLayers;
         if (e.target.checked) {
           activeLayers.push(e.target.id);
+          displayedLayers.push(e.target.id);
         } else {
-          const index = activeLayers.indexOf(e.target.id);
-          if (index >= 0) {
-            activeLayers.splice(index, 1);
+          const activeIndex = activeLayers.indexOf(e.target.id);
+          if (activeIndex >= 0) {
+            activeLayers.splice(activeIndex, 1);
           }
-          this.$store.commit('setIntersectingFeatures', []);
+          const displayedIndex = displayedLayers.indexOf(e.target.id);
+          if (displayedIndex >= 0) {
+            displayedLayers.splice(displayedIndex, 1);
+          }
+          // this.$store.commit('setIntersectingFeatures', []);
         }
         this.$store.commit('setWebMapActiveLayers', activeLayers);
+        this.$store.commit('setWebMapDisplayedLayers', displayedLayers);
       },
+      removeFromWebMapDisplayedLayers() {
+        const displayedLayers = this.webMapDisplayedLayers;
+        const index = displayedLayers.indexOf(this.$props.layerName);
+        // console.log('layer', this.$props.layerName, 'is active, but now should not be displayed, index:', index);
+        if (index >= 0) {
+          displayedLayers.splice(index, 1);
+        }
+        this.$store.commit('setWebMapDisplayedLayers', displayedLayers);
+      },
+      addToWebMapDisplayedLayers() {
+        // console.log('layer', this.$props.layerName, 'is active, and now should be displayed');
+        const displayedLayers = this.webMapDisplayedLayers;
+        displayedLayers.push(this.$props.layerName);
+        this.$store.commit('setWebMapDisplayedLayers', displayedLayers);
+      }
     }
   };
 </script>

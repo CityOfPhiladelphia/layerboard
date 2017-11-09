@@ -140,7 +140,8 @@
           if (overlay._layers) {
             // console.log('IF overlay._layers');
             for (let oLayer in overlay._layers) {
-              const feature = overlay._layers[oLayer];
+              let feature = overlay._layers[oLayer];
+              // feature.layerName = this.$props.layerName;
 
               if (feature.feature) {
                 geometry = feature.feature.geometry.type;
