@@ -628,7 +628,15 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _formatColor: function(color) {
-    return 'rgba(' + color.slice(0, 3).join(',') + ',' + color[3] / 255 + ')';
+    console.log('color:', color)
+    let answer;
+    if (color) {
+      answer = 'rgba(' + color.slice(0, 3).join(',') + ',' + color[3] / 255 + ')';
+    } else {
+      answer = 'rgba(0, 0, 0, 0)';
+    }
+    // return 'rgba(' + color.slice(0, 3).join(',') + ',' + color[3] / 255 + ')';
+    return answer;
   },
 
   _formatDashArray: function(symbol) {
