@@ -38,7 +38,7 @@
     },
     methods: {
       createLeafletElement() {
-        // console.log('Polygon createLeafletElement is firing');
+        // console.log('Polygon createLeafletElement is firing', this.$props.latlngs);
         return new Polygon(this.$props.latlngs, {
           color: this.$props.color,
           weight: this.$props.weight,
