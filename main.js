@@ -1,3 +1,5 @@
+console.log = console.info = console.debug = console.error = function () {};
+
 var BASE_CONFIG_URL = 'https://raw.githubusercontent.com/ajrothwell/openmaps-base-config/develop/config.js';
 const GATEKEEPER_KEY = 'ec8681f792812d7e3ff15e9094bfd4ad';
 const WEBMAP_ID = '4c3ed877199c402895b7fa45ce6409b6';
