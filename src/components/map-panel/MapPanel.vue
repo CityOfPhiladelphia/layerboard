@@ -14,7 +14,7 @@
     <!-- @l-click="handleMapClick" -->
 
     <!-- <polygon_ -->
-    <polygon_ v-if="this.selectedPopupLayerGeometryType === 'Polygon'"
+    <polygon_ v-if="this.selectedPopupLayerGeometryType === 'Polygon' || this.selectedPopupLayerGeometryType === 'MultiPolygon'"
               :color="'#00ffff'"
               :fill="false"
               :weight="5"
@@ -243,17 +243,21 @@
       selectedPopupLayerCoordinates() {
         if (this.selectedPopupLayerGeometryType === "Point" || this.selectedPopupLayerGeometryType === "LineString") {
           return this.selectedPopupLayer.feature.geometry.coordinates;
-        } else {
+        } else if (this.selectedPopupLayerGeometryType === "Polygon") {
           return this.selectedPopupLayer.feature.geometry.coordinates[0];
+        } else if (this.selectedPopupLayerGeometryType === "MultiPolygon") {
+          return this.selectedPopupLayer.feature.geometry.coordinates;
         }
       },
       selectedPopupLayerCoordinatesFlipped() {
         // console.log('coords:', this.flipCoordsArray(this.selectedPopupLayerCoordinates));
         if (this.selectedPopupLayerGeometryType === "Point") {
           return this.flipCoords(this.selectedPopupLayerCoordinates);
-        } else {
+        } else if (this.selectedPopupLayerGeometryType !== "MultiPolygon") {
           // console.log('calling FlipCoordsArray on:', this.selectedPopupLayerCoordinates);
           return this.flipCoordsArray(this.selectedPopupLayerCoordinates);
+        } else {
+          return this.flipCoordsMultiPolygon(this.selectedPopupLayerCoordinates);
         }
       },
       intersectingFeatures() {
@@ -341,7 +345,7 @@
         );
       }
 
-      console.log('MAPPANEL CREATED', this, 'push at 12:32');
+      // console.log('MAPPANEL CREATED', this, 'push at 12:32');
     },
     watch: {
       picOrCycloActive(value) {
@@ -357,11 +361,25 @@
       },
       flipCoordsArray(anArray) {
         // console.log('flipCoordsArray is running on:', anArray);
-        var newArray = []
-        for (var i in anArray) {
+        let newArray = []
+        for (let i in anArray) {
           newArray[i] = [anArray[i][1], anArray[i][0]]
         }
         return newArray
+      },
+      flipCoordsMultiPolygon(aMultiPolygon) {
+        // console.log('flipCoordsMultiPolygon is running on:', aMultiPolygon);
+        let newArrayArray = []
+        for (let i in aMultiPolygon) {
+          // console.log('aMultiPolygon[i]', aMultiPolygon[i]);
+          let newArray = []
+          for (let j in aMultiPolygon[i][0]) {
+            // console.log('aMultiPolygon[i][0][j]', aMultiPolygon[i][0][j]);
+            newArray[j] = [aMultiPolygon[i][0][j][1], aMultiPolygon[i][0][j][0]]
+          }
+        newArrayArray[i] = newArray
+        }
+        return newArrayArray
       },
       shouldShowFeatureLayer(layer) {
         if (layer.rest.layerDefinition) {

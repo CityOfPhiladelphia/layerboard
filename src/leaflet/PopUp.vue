@@ -14,12 +14,12 @@
       leafletElement.on('remove', this.removePopup)
     },
     destroyed() {
-      console.log('pop-up destroyed is running')
+      // console.log('pop-up destroyed is running')
       this.$leafletElement.removeFrom(this._map);
     },
     watch: {
       intersectingFeatures(nextIntersectingFeatures) {
-        console.log('Popup WATCH intersectingFeatures is firing');
+        // console.log('Popup WATCH intersectingFeatures is firing');
         const leafletElement = this.$leafletElement = this.createLeafletElement();
         // leafletElement.addTo(this._map);
         leafletElement.on('remove', this.removePopup)

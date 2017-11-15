@@ -175,7 +175,7 @@
         this.$store.commit('setIntersectingFeatures', intersectingFeatures);
       },
       checkForDuplicates(layer, feature, intersectingFeatures) {
-        // console.log('checkForDuplicates is running');
+        // console.log('checkForDuplicates is running, layer:', layer, 'feature:', feature);
         let ids = []
         for (let i = 0; i < intersectingFeatures.length; i++) {
           ids[i] = layer + '_' + intersectingFeatures[i].feature.id;

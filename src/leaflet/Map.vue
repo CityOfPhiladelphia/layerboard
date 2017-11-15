@@ -104,10 +104,12 @@
               // console.log('feature:', feature);
               if (feature.feature) {
                 geometry = feature.feature.geometry.type;
+                // console.log('clickHandler LAYER:', layer, 'FEATURE:', feature, 'GEOMETRY:', geometry);
                 let bounds;
                 if (geometry === 'Polygon' || geometry === 'MultiPolygon') {
                   // console.log('polygon or multipolygon');
                   if (feature.contains(e.latlng)) {
+                    // console.log('about to run checkForDuplicates')
                     this.checkForDuplicates(layer, feature, intersectingFeatures);
                   }
                 }
@@ -132,12 +134,14 @@
         this.$store.commit('setIntersectingFeatures', intersectingFeatures);
       },
       checkForDuplicates(layer, feature, intersectingFeatures) {
-        // console.log('checkForDuplicates is running');
+        // console.log('checkForDuplicates is running, layer:', layer, 'feature:', feature);
         let ids = []
         for (let i = 0; i < intersectingFeatures.length; i++) {
           ids[i] = layer + '_' + intersectingFeatures[i].feature.id;
         }
+        // console.log('layer:', layer, 'feature.feature.id:', feature.feature.id);
         if (!ids.includes(layer + '_' + feature.feature.id)) {
+          // console.log('checkForDuplicates going to push to intersectingFeatures:', layer, feature.feature.id);
           intersectingFeatures.push(feature);
         }
       }
