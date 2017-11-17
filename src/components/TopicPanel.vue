@@ -62,7 +62,7 @@
       >
         <form action="#/">
           <fieldset class="options">
-            <ul class="no-bullet">
+            <!-- <ul class="no-bullet"> -->
               <checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
                         :layer="currentWmLayer.layer"
                         :layerName="currentWmLayer.title"
@@ -73,7 +73,7 @@
                         :key="currentWmLayer.id"
               >
               </checkbox>
-            </ul>
+            <!-- </ul> -->
           </fieldset>
         </form>
       </div>
