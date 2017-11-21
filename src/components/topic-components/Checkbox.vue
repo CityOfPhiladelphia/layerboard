@@ -2,6 +2,12 @@
   <div>
     <div class="div-row">
     <!-- <li> -->
+      <a :href="'http://metadata.phila.gov/#home/representationdetails/' + this.bennyId"
+      target="_blank"
+      v-if="bennyId"
+      >
+        <span><i class="fa fa-info-circle fa-2x"></i></span>
+      </a>
       <input :id="'checkbox-'+layerName"
              type="checkbox"
              :layerid="layerId"
@@ -17,12 +23,6 @@
           </ul>
         </li>
       </ul> -->
-      <a :href="'http://metadata.phila.gov/#home/representationdetails/' + this.bennyId"
-         target="_blank"
-         v-if="bennyId"
-      >
-        <span><i class="fa fa-info-circle fa-lg"></i></span>
-      </a>
       <label :for="'checkbox-'+layerName"
              :class="{ disabled: shouldBeDisabled, 'label-text': true }"
       >
@@ -235,15 +235,16 @@
 
   .div-row {
     position: relative;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
   }
 
   input[type="checkbox"] {
-    width: 20px; /*Desired width*/
-    height: 20px; /*Desired height*/
+    width: 25px; /*Desired width*/
+    height: 25px; /*Desired height*/
     position: absolute;
     top: 50%;
     margin-top: -10px;
+    margin-left: 32px;
     cursor: pointer;
     /*line-height: 15px;*/
     /*margin: 0;*/
@@ -255,15 +256,15 @@
     position: absolute;
     top: 50%;
     margin-top: -11px;
-    margin-left: 25px;
+    /*margin-left: 25px;*/
   }
 
   .label-text {
+    /*position: absolute;*/
     display: inline-block;
-    /*position: absolute;
-    top: 50%;
-    margin-top: -10px;*/
-    padding-left: 47px;
+    /*top: 50%;*/
+    margin-top: 4px;
+    padding-left: 55px;
   }
 
 
