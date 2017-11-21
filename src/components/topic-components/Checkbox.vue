@@ -165,19 +165,30 @@
       }
     },
     methods: {
+      trim(s) {
+        return ( s || '' ).replace( /^\s+|\s+$/g, '' );
+      },
       checkboxToggle(e) {
         console.log('checkboxToggle', e.target, e.target.id, e.target.checked);
         const activeLayers = this.webMapActiveLayers;
         const displayedLayers = this.webMapDisplayedLayers;
+        // const splitArray = e.target.id.split('-').splice(0, 1);
+        const targetReplace = e.target.id.replace('checkbox-', '');
         if (e.target.checked) {
-          activeLayers.push(e.target.id.split('-')[1]);
-          displayedLayers.push(e.target.id.split('-')[1]);
+          console.log('target checked');
+          activeLayers.push(targetReplace);
+          displayedLayers.push(targetReplace);
+          // activeLayers.push(e.target.id.split('-')[1]);
+          // displayedLayers.push(e.target.id.split('-')[1]);
         } else {
-          const activeIndex = activeLayers.indexOf(e.target.id.split('-')[1]);
+          console.log('target not checked');
+          const activeIndex = activeLayers.indexOf(targetReplace);
+          // const activeIndex = activeLayers.indexOf(e.target.id.split('-')[1]);
           if (activeIndex >= 0) {
             activeLayers.splice(activeIndex, 1);
           }
-          const displayedIndex = displayedLayers.indexOf(e.target.id.split('-')[1]);
+          const displayedIndex = displayedLayers.indexOf(targetReplace);
+          // const displayedIndex = displayedLayers.indexOf(e.target.id.split('-')[1]);
           if (displayedIndex >= 0) {
             displayedLayers.splice(displayedIndex, 1);
           }
