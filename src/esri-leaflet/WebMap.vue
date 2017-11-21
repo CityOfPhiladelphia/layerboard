@@ -75,6 +75,7 @@
               }
               const id = generateUniqueId();
               const layerObj = {
+                'category': layer.title.split('_')[0],
                 'title': layer.title.split('_')[1],
                 'layer': layer.layer,
                 // 'geoType': layer,
@@ -101,7 +102,26 @@
                   return 1
               return 0 //default return value (no sorting)
             })
+
+            const categories = ['']
+            for (let layer of webMapLayersAndRest) {
+              if (!categories.includes(layer.category)) {
+                categories.push(layer.category);
+              }
+            }
+
+            categories.sort(function(a, b) {
+              const titleA = a.toLowerCase()
+              const titleB=b.toLowerCase()
+              if (titleA < titleB) //sort string ascending
+                  return -1
+              if (titleA > titleB)
+                  return 1
+              return 0 //default return value (no sorting)
+            })
+
             self.$store.commit('setWebMapLayersAndRest', webMapLayersAndRest);
+            self.$store.commit('setCategories', categories);
             map.createPane('highlightOverlay');
               // self.method2(webMap);
           }); // end of webmap onload

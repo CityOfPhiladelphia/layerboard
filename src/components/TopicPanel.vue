@@ -4,22 +4,56 @@
   >
     <div class="row">
       <div class="control-spacer">
-        <div class="mb-search-control-container">
+        <!-- <div class="mb-search-control-container"> -->
             <form @submit.prevent="handleFilterFormX"
                   @keydown="preventEnter"
             >
-                <input class="mb-search-control-input"
-                       placeholder="Filter datasets"
+            <!-- class="mb-search-control-input" -->
+              <div class="input-group text-filter">
+                <span class="input-group-label input-font">Filter By Text:</span>
+                <input
+                       type="text"
                        id="theInput"
                        @keyup="handleFilterFormKeyup"
                 />
-                <button class="mb-search-control-button"
-                        v-if="this.$store.state.layers.inputLayerFilter != ''"
+                <!-- placeholder="Filter datasets" -->
+                <div class="input-group-button"
+                     v-if="this.$store.state.layers.inputLayerFilter != ''"
                 >
-                  <i class="fa fa-times fa-lg"></i>
-                </button>
+
+                  <button class="mb-search-control-button">
+                  <!-- <input type="submit" class="button" value="X"> -->
+                  <!-- v-if="this.$store.state.layers.inputLayerFilter != ''" -->
+                    <i class="fa fa-times fa-lg"></i>
+                  </button>
+                </div>
+              </div>
             </form>
+        <div class="input-group">
+          <span class="input-group-label input-font">Filter By Category:</span>
+
+        <!-- <div> -->
+          <select @change="didSelectCategory">
+            <option v-for="category in this.categories"
+                    value="category"
+            >
+              {{ category }}
+            </option>
+          </select>
         </div>
+        <!-- <div class="small-10 large-9 column">
+          <label>Filter Category:</label>
+        </div>
+        <div class="small-14 large-15 column">
+          <select @change="didSelectCategory">
+            <option v-for="category in this.categories"
+                    value="category"
+            >
+              {{ category }}
+            </option>
+          </select>
+        </div> -->
+
       </div>
 
       <div class="topics-container"
@@ -28,7 +62,7 @@
       >
         <form action="#/">
           <fieldset class="options">
-            <ul class="no-bullet">
+            <!-- <ul class="no-bullet"> -->
               <checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
                         :layer="currentWmLayer.layer"
                         :layerName="currentWmLayer.title"
@@ -39,7 +73,7 @@
                         :key="currentWmLayer.id"
               >
               </checkbox>
-            </ul>
+            <!-- </ul> -->
           </fieldset>
         </form>
       </div>
@@ -90,6 +124,12 @@
     //   window.removeEventListener('resize', this.handleWindowResize);
     // },
     computed: {
+      categories() {
+        return this.$store.state.map.categories;
+      },
+      selectedCategory() {
+        return this.$store.state.map.selectedCategory;
+      },
       scale() {
         return this.$store.state.map.scale;
       },
@@ -97,7 +137,7 @@
         const layers = this.$store.state.map.webMapLayersAndRest;
         let currentLayers = [];
         for (let layer of layers) {
-          if (layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) || this.$store.state.map.webMapActiveLayers.includes(layer.title)) {
+          if (layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) && layer.category.includes(this.selectedCategory) || this.$store.state.map.webMapActiveLayers.includes(layer.title)) {
             currentLayers.push(layer)
           }
         }
@@ -135,6 +175,10 @@
         e.target[0].value = ''
         this.$store.commit('setInputLayerFilter', '');
       },
+      didSelectCategory(e) {
+        const selected = e.target.selectedIndex;
+        this.$store.commit('setSelectedCategory', this.categories[selected]);
+      },
       preventEnter(e) {
         if(e.keyCode === 13) {
           e.preventDefault();
@@ -158,10 +202,12 @@
         // console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
         let topicsHeight;
         if (!notMobile) {
-          topicsHeight = nextSize.height - 108;
+          topicsHeight = nextSize.height - 148;
+          // topicsHeight = nextSize.height - 108;
           // console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
         } else {
-          topicsHeight = nextSize.height - 74;
+          topicsHeight = nextSize.height - 114;
+          // topicsHeight = nextSize.height - 74;
           // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
         }
         // const topicsHeight = nextSize.height - 74;
@@ -192,7 +238,7 @@
   .control-spacer {
     /*position: absolute;*/
     /*left: -5px;*/
-    height: 50px;
+    height: 90px;
     width: inherit;
     /*width: 20%;*/
     background-color: white;
@@ -208,9 +254,9 @@
   }
 
   .mb-search-control-button {
-    width: 50px;
+    width: 40px;
     background: #ccc;
-    line-height: 48px;
+    line-height: 39px;
     float: right;
   }
 
@@ -225,6 +271,16 @@
     font-size: 16px;
     width: inherit;
     /*width: 300px;*/
+  }
+
+  .input-font {
+    font-family: 'Montserrat', 'Tahoma', sans-serif;
+    font-size: 16px;
+  }
+
+  .text-filter {
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
 </style>

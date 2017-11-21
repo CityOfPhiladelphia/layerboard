@@ -40,6 +40,8 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       intersectingFeatures: [],
       popupCoords: null,
       selectedPopupLayer: null,
+      categories: [],
+      selectedCategory: '',
     },
     cyclomedia: {
       active: false,
@@ -73,6 +75,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     state: initialState,
     getters: {},
     mutations: {
+      setCategories(state, payload) {
+        state.map.categories = payload;
+      },
+      setSelectedCategory(state, payload) {
+        state.map.selectedCategory = payload;
+      },
       setSelectedPopupLayer(state, payload) {
         state.map.selectedPopupLayer = payload;
       },
