@@ -65,14 +65,18 @@
             // create webMapLayersAndRest
             let webMapLayersAndRest = []
             const opLayers = restData.operationalLayers
-            for (let [index, layer] of webMap.layers.splice(2).entries()) {
+            // console.log('opLayers', opLayers);
+            // console.log('webMap layers', webMap.layers);
+            for (let [index, layer] of webMap.layers.splice(1).entries()) {
               // console.log('layer.title', layer.title);
               let curOpLayer;
               for (let opLayer of opLayers) {
+                // console.log('opLayer and webmap titles', opLayer.title, layer.title);
                 if (opLayer.title === layer.title) {
                   curOpLayer = opLayer
                 }
               }
+              // console.log(curOpLayer.title)
               const id = generateUniqueId();
               const layerObj = {
                 'category': layer.title.split('_')[0],
