@@ -134,6 +134,10 @@
       </div>
 
       <div v-once>
+        <measure-control :position="'bottomleft'" />
+      </div>
+
+      <div v-once>
         <location-control v-once
                           v-if="this.geolocationEnabled"
                           :position="'bottomright'"
@@ -216,6 +220,7 @@
   import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
   import SvgViewConeMarker from '../../cyclomedia/SvgViewConeMarker';
+  import MeasureControl from '../MeasureControl.vue';
   // import LegendControl from '../../esri-leaflet/Legend.vue';
   import ControlCorner from '../../leaflet/ControlCorner.vue';
   import PopUp from '../../leaflet/PopUp.vue';
@@ -249,6 +254,7 @@
       CyclomediaButton,
       CyclomediaRecordingCircle,
       SvgViewConeMarker,
+      MeasureControl,
       // LegendControl,
       ControlCorner,
       PopUp,
