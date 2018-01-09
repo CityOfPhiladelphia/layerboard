@@ -263,6 +263,9 @@
       Polyline_,
     },
     computed: {
+      isMobileOrTablet() {
+        return this.$store.state.isMobileOrTablet;
+      },
       cycloLatlng() {
         if (this.$store.state.cyclomedia.orientation.xyz !== null) {
           const xyz = this.$store.state.cyclomedia.orientation.xyz;

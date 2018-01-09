@@ -4,6 +4,7 @@
   >
   <!-- v-once -->
     <div id="inCycloDiv"
+         v-if="this.isMobileOrTablet === false"
          @click="this.popoutClicked"
          :style="{ right: popoutPosition }"
     >
@@ -28,6 +29,9 @@
       }
     },
     computed: {
+      isMobileOrTablet() {
+        return this.$store.state.isMobileOrTablet;
+      },
       cyclomediaActive() {
         return this.$store.state.cyclomedia.active;
       },
