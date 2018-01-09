@@ -12,11 +12,12 @@
   import triangleIcon from '../../src/util/triangleIcon.js';
 
   export default {
-    props: [
-      'orientation'
-    ],
+    // props: [
+    //   'orientation'
+    // ],
     render(h) {
-      const a = this.$props.orientation
+      // const a = this.$props.orientation
+      this.orientation;
       return;
     },
     mounted() {
@@ -43,14 +44,17 @@
     },
     computed: {
       latlng() {
-        const xyz = this.$props.orientation.xyz;
+        // const xyz = this.$props.orientation.xyz;
+        const xyz = this.orientation.xyz;
         return [xyz[1], xyz[0]];
       },
       rotationAngle() {
-        return this.$props.orientation.yaw * (180/3.14159265359);
+        // return this.$props.orientation.yaw * (180/3.14159265359);
+        return this.orientation.yaw * (180/3.14159265359);
       },
       coneCoords() {
-        const hFov = this.$props.orientation.hFov * (180/3.14159265359);
+        // const hFov = this.$props.orientation.hFov * (180/3.14159265359);
+        const hFov = this.orientation.hFov * (180/3.14159265359);
         const scale = 50//options.scale;
         const angle = hFov / 2.0;
         const width = Math.sin(angle*Math.PI/180);

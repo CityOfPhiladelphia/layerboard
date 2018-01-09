@@ -33,6 +33,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       shouldShowImagery: false,
       basemapLayers: {},
       webMap: null,
+      webMapUrlLayer: null,
       webMapActiveLayers: [],
       webMapDisplayedLayers: [],
       webMapLayersAndRest: [],
@@ -44,11 +45,15 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       selectedCategory: '',
     },
     cyclomedia: {
+      navBarOpen: false,
+      latLngFromMap: null,
+      orientation: {
+        yaw: null,
+        hFov: null,
+        xyz: null,
+      },
       active: false,
-      viewer: null,
       recordings: [],
-      locFromApp: null,
-      locFromViewer: null,
     },
     pictometry: {
       ipa: null,
@@ -56,6 +61,14 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       shapeIds: [],
       pngMarkerIds: [],
       zoom: null,
+      // this is the state of the main leaflet map. when these values change
+      // the pictometry widget should react. the reason these are duplicated
+      // here is to avoid an infinite loop in the Map component when the
+      // viewport changes.
+      map: {
+        center: config.map.center,
+        zoom: config.map.zoom
+      }
     },
     lastSearchMethod: null,
     // this gets set to true on a mobile device when the user clicks the
@@ -117,6 +130,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setWebMap(state, payload) {
         state.map.webMap = payload;
+      },
+      setWebMapUrlLayer(state, payload) {
+        state.map.webMapUrlLayer = payload;
       },
       setWebMapActiveLayers(state, payload) {
         state.map.webMapActiveLayers = payload;
@@ -189,6 +205,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setPictometryPngMarkerIds(state, payload) {
         state.pictometry.pngMarkerIds = payload;
       },
+      setPictometryMapCenter(state, payload) {
+        state.pictometry.map.center = payload;
+      },
+      setPictometryMapZoom(state, payload) {
+        state.pictometry.map.zoom = payload;
+      },
       setPictometryZoom(state, payload) {
         state.pictometry.zoom = payload;
       },
@@ -198,17 +220,26 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
         }
         state.cyclomedia.active = payload;
       },
-      setCyclomediaViewer(state, payload) {
-        state.cyclomedia.viewer = payload;
+      setCyclomediaYaw(state, payload) {
+        state.cyclomedia.orientation.yaw = payload
+      },
+      setCyclomediaHFov(state, payload) {
+        state.cyclomedia.orientation.hFov = payload
+      },
+      setCyclomediaXyz(state, payload) {
+        state.cyclomedia.orientation.xyz = payload
       },
       setCyclomediaRecordings(state, payload) {
         state.cyclomedia.recordings = payload;
       },
-      setCyclomediaLocFromApp(state, payload) {
-        state.cyclomedia.locFromApp = payload;
+      setCyclomediaLatLngFromMap(state, payload) {
+        state.cyclomedia.latLngFromMap = payload;
+        // const { lat, lng } = payload || {};
+        // state.cyclomedia.latLngFromMap[0] = lat;
+        // state.cyclomedia.latLngFromMap[1] = lng;
       },
-      setCyclomediaLocFromViewer(state, payload) {
-        state.cyclomedia.locFromViewer = payload;
+      setCyclomediaNavBarOpen(state, payload) {
+        state.cyclomedia.navBarOpen = payload;
       },
       setDidToggleTopicsOn(state, payload) {
         state.didToggleTopicsOn = payload;

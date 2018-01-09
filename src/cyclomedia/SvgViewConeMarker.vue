@@ -1,27 +1,26 @@
 <!--
-  wraps Leaflet.vector-markers as a vue component
-  https://github.com/hiasinho/Leaflet.vector-markers
+  wraps leaflet svg-icons as a vue component
+  https://github.com/iatkin/leaflet-svgicon
 -->
 
 <script>
   import L from 'leaflet';
+  // import DivIcon from 'leaflet';
+  import TriangleIcon from '../util/triangle-icon';
 
   export default {
     props: [
-      'icon',
       'latlng',
-      'rotationAngle'
+      'rotationAngle',
+      'hFov'
     ],
     render(h) {
-      // for some reason, the react prop that `this.orientation` depends on has
-      // to be evaluated once in order to receive updates.
       // this.orientation;
-
       return;
     },
     mounted() {
-      // console.log('pngMarker mounted fired, latlng is', this.latlng);
       const leafletElement = this.$leafletElement = this.createLeafletElement();
+      // console.log('WHO IT IS', leafletElement);
       const map = this.$store.state.map.map;
 
       // REVIEW kind of hacky/not reactive?
@@ -30,7 +29,7 @@
       }
     },
     destroyed() {
-      //console.log('pngMarker destroyed fired, latlng is', this.latlng);
+      // console.log('svgMarker destroyed fired, latlng is', this.latlng);
       this.$leafletElement._map.removeLayer(this.$leafletElement);
     },
     watch: {
@@ -57,15 +56,25 @@
         }
       }
     },
+    computed: {
+      coneCoords() {
+        const hFovDegrees = this.hFov * (180/3.14159265359);
+        const scale = 50//options.scale;
+        const angle = hFovDegrees / 2.0;
+        const width = Math.sin(angle * Math.PI / 180);
+        const length = Math.sqrt(1.0 - width * width);
+        const coneCoords = [width * scale, length * scale];
+
+        return coneCoords;
+      },
+    },
     methods: {
       createLeafletElement() {
-        const icon = L.icon({
-            iconUrl: this.icon,
-            iconSize: [26, 16],
-            iconAnchor: [11, 8],
-          })
-
-        // console.log('createLeafletElement is running, this.latlng:', this.latlng);
+        const coneCoords = this.coneCoords;
+        const icon = new TriangleIcon({
+          iconSize: L.point(this.coneCoords[0], this.coneCoords[1]),
+          iconAnchor: [this.coneCoords[0] / 2, this.coneCoords[1]],
+        });
         return L.marker(this.latlng, {
           icon: icon,
           rotationAngle: this.rotationAngle,
@@ -78,3 +87,13 @@
     }
   };
 </script>
+
+<style>
+  .svg-icon-noClick-svg {
+    pointer-events: none;
+  }
+
+  .svg-icon-noClick {
+    pointer-events: none;
+  }
+</style>
