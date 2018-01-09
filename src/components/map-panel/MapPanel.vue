@@ -3,7 +3,8 @@
        class="medium-12 large-16 columns mb-panel mb-panel-map"
   >
   <!-- class="large-18 columns mb-panel mb-panel-map" -->
-    <map_ :center="this.$store.state.map.center"
+    <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
+          :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
           @l-moveend="handleMapMove"
           zoom-control-position="bottomright"
@@ -84,13 +85,13 @@
       <!-- marker using a png and ablility to rotate it -->
       <png-marker v-if="this.cyclomediaActive"
                     :icon="'../../src/assets/camera.png'"
-                    :orientation="this.$store.state.cyclomedia.viewer.props.orientation"
       />
+      <!-- :orientation="this.$store.state.cyclomedia.viewer.props.orientation" -->
 
       <!-- marker using custom code extending icons - https://github.com/iatkin/leaflet-svgicon -->
       <svg-marker v-if="this.cyclomediaActive"
-                    :orientation="this.$store.state.cyclomedia.viewer.props.orientation"
       />
+      <!-- :orientation="this.$store.state.cyclomedia.viewer.props.orientation" -->
 
 
       <control-corner :vSide="'top'"
@@ -108,6 +109,25 @@
       <div v-once>
         <basemap-select-control
                        :position="'topalmostright'"
+        />
+      </div>
+
+      <div v-once>
+        <pictometry-button v-if="this.$config.pictometry.enabled"
+                           v-once
+                           :position="'topright'"
+                           :link="'pictometry'"
+                           :imgSrc="'../../src/assets/pictometry.png'"
+        />
+      </div>
+
+      <div v-once>
+        <cyclomedia-button v-if="this.$config.cyclomedia.enabled"
+                           v-once
+                           :position="'topright'"
+                           :link="'cyclomedia'"
+                           :imgSrc="'../../src/assets/cyclomedia.png'"
+                           @click="handleCyclomediaButtonClick"
         />
       </div>
 
@@ -152,6 +172,8 @@
       <!-- :key="Math.random()" -->
 
     </map_>
+    <slot class='widget-slot' name="cycloWidget" />
+    <slot class='widget-slot' name="pictWidget" />
   </div>
 </template>
 
@@ -416,22 +438,47 @@
       // },
       // handleMapClick(e) {
       // },
+      // handleMapMove(e) {
+      //   const map = this.$store.state.map.map;
+      //
+      //   const center = map.getCenter();
+      //   this.$store.commit('setMapCenter', center);
+      //   const zoom = map.getZoom();
+      //   this.$store.commit('setMapZoom', zoom);
+      //   const scale = this.$config.map.scales[zoom];
+      //   this.$store.commit('setMapScale', scale);
+      //
+      //   const cyclomediaConfig = this.$config.cyclomedia || {};
+      //   if (cyclomediaConfig.enabled) {
+      //     // update cyclo recordings
+      //     this.updateCyclomediaRecordings();
+      //   }
+      // },
+
       handleMapMove(e) {
         const map = this.$store.state.map.map;
 
-        const center = map.getCenter();
-        this.$store.commit('setMapCenter', center);
-        const zoom = map.getZoom();
-        this.$store.commit('setMapZoom', zoom);
-        const scale = this.$config.map.scales[zoom];
-        this.$store.commit('setMapScale', scale);
+        const pictometryConfig = this.$config.pictometry || {};
+
+        if (pictometryConfig.enabled) {
+          // update state for pictometry
+          const center = map.getCenter();
+          const { lat, lng } = center;
+          const coords = [lng, lat];
+          this.$store.commit('setPictometryMapCenter', coords);
+
+          const zoom = map.getZoom();
+          this.$store.commit('setPictometryMapZoom', zoom);
+        }
 
         const cyclomediaConfig = this.$config.cyclomedia || {};
+
         if (cyclomediaConfig.enabled) {
           // update cyclo recordings
           this.updateCyclomediaRecordings();
         }
       },
+
       handleSearchFormSubmit(e) {
         // this.$controller.handleSearchFormSubmit(e);
         const input = e.target[0].value;

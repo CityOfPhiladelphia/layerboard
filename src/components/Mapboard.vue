@@ -86,6 +86,7 @@
       return data;
     },
     mounted() {
+      console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
       window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize();
 

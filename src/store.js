@@ -33,6 +33,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       shouldShowImagery: false,
       basemapLayers: {},
       webMap: null,
+      webMapUrlLayer: null,
       webMapActiveLayers: [],
       webMapDisplayedLayers: [],
       webMapLayersAndRest: [],
@@ -56,6 +57,14 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       shapeIds: [],
       pngMarkerIds: [],
       zoom: null,
+      // this is the state of the main leaflet map. when these values change
+      // the pictometry widget should react. the reason these are duplicated
+      // here is to avoid an infinite loop in the Map component when the
+      // viewport changes.
+      map: {
+        center: config.map.center,
+        zoom: config.map.zoom
+      }
     },
     lastSearchMethod: null,
     // this gets set to true on a mobile device when the user clicks the
@@ -117,6 +126,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setWebMap(state, payload) {
         state.map.webMap = payload;
+      },
+      setWebMapUrlLayer(state, payload) {
+        state.map.webMapUrlLayer = payload;
       },
       setWebMapActiveLayers(state, payload) {
         state.map.webMapActiveLayers = payload;
@@ -188,6 +200,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setPictometryPngMarkerIds(state, payload) {
         state.pictometry.pngMarkerIds = payload;
+      },
+      setPictometryMapCenter(state, payload) {
+        state.pictometry.map.center = payload;
+      },
+      setPictometryMapZoom(state, payload) {
+        state.pictometry.map.zoom = payload;
       },
       setPictometryZoom(state, payload) {
         state.pictometry.zoom = payload;

@@ -3,8 +3,8 @@
     <div class="div-row">
     <!-- <li> -->
       <a :href="'http://metadata.phila.gov/#home/representationdetails/' + this.bennyId"
-      target="_blank"
-      v-if="bennyId"
+         target="_blank"
+         v-if="bennyId"
       >
         <span><i class="fa fa-info-circle fa-2x"></i></span>
       </a>
@@ -157,6 +157,9 @@
           return ' ';
         }
       },
+      webMapUrlLayer() {
+        return this.$store.state.map.webMapUrlLayer;
+      },
       webMapActiveLayers() {
         return this.$store.state.map.webMapActiveLayers;
       },
@@ -170,6 +173,7 @@
       },
       checkboxToggle(e) {
         console.log('checkboxToggle', e.target, e.target.id, e.target.checked);
+        const urlLayer = this.webMapUrlLayer;
         const activeLayers = this.webMapActiveLayers;
         const displayedLayers = this.webMapDisplayedLayers;
         // const splitArray = e.target.id.split('-').splice(0, 1);
@@ -180,6 +184,10 @@
           displayedLayers.push(targetReplace);
           // activeLayers.push(e.target.id.split('-')[1]);
           // displayedLayers.push(e.target.id.split('-')[1]);
+          if (activeLayers.length === 1) {
+            this.$store.commit('setWebMapUrlLayer', targetReplace);
+            this.$controller.handleCheckboxClick(targetReplace);
+          }
         } else {
           console.log('target not checked');
           const activeIndex = activeLayers.indexOf(targetReplace);
@@ -193,6 +201,10 @@
             displayedLayers.splice(displayedIndex, 1);
           }
           // this.$store.commit('setIntersectingFeatures', []);
+          if (urlLayer === targetReplace) {
+            this.$store.commit('setWebMapUrlLayer', null);
+            this.$controller.handleCheckboxUnClick(targetReplace);
+          }
         }
         this.$store.commit('setWebMapActiveLayers', activeLayers);
         this.$store.commit('setWebMapDisplayedLayers', displayedLayers);

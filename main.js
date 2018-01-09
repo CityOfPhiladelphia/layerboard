@@ -1,4 +1,4 @@
-console.log = console.info = console.debug = console.error = function () {};
+// console.log = console.info = console.debug = console.error = function () {};
 
 var BASE_CONFIG_URL = 'https://raw.githubusercontent.com/ajrothwell/openmaps-base-config/develop/config.js';
 const GATEKEEPER_KEY = 'ec8681f792812d7e3ff15e9094bfd4ad';
@@ -33,7 +33,7 @@ Mapboard.default({
     },
   },
   cyclomedia: {
-    enabled: false
+    enabled: true
   },
   pictometry: {
     enabled: false

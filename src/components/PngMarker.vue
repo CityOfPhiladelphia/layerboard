@@ -9,10 +9,10 @@
   export default {
     props: [
       'icon',
-      'orientation'
     ],
     render(h) {
-      const a = this.$props.orientation
+      // const a = this.$props.orientation
+      this.orientation;
       return;
     },
     mounted() {
@@ -40,11 +40,17 @@
     },
     computed: {
       latlng() {
-        const xyz = this.$props.orientation.xyz;
+        // const xyz = this.$props.orientation.xyz;
+        const xyz = this.orientation.xyz;
         return [xyz[1], xyz[0]];
       },
       rotationAngle() {
-        return this.$props.orientation.yaw * (180/3.14159265359);
+        // return this.$props.orientation.yaw * (180/3.14159265359);
+        return this.orientation.yaw * (180/3.14159265359);
+      },
+      orientation() {
+        // access the orientation prop of the cyclomedia react component
+        return this.$store.state.cyclomedia.viewer.props.orientation;
       }
     },
     methods: {
