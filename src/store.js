@@ -45,11 +45,15 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       selectedCategory: '',
     },
     cyclomedia: {
+      navBarOpen: false,
+      latLngFromMap: null,
+      orientation: {
+        yaw: null,
+        hFov: null,
+        xyz: null,
+      },
       active: false,
-      viewer: null,
       recordings: [],
-      locFromApp: null,
-      locFromViewer: null,
     },
     pictometry: {
       ipa: null,
@@ -216,17 +220,26 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
         }
         state.cyclomedia.active = payload;
       },
-      setCyclomediaViewer(state, payload) {
-        state.cyclomedia.viewer = payload;
+      setCyclomediaYaw(state, payload) {
+        state.cyclomedia.orientation.yaw = payload
+      },
+      setCyclomediaHFov(state, payload) {
+        state.cyclomedia.orientation.hFov = payload
+      },
+      setCyclomediaXyz(state, payload) {
+        state.cyclomedia.orientation.xyz = payload
       },
       setCyclomediaRecordings(state, payload) {
         state.cyclomedia.recordings = payload;
       },
-      setCyclomediaLocFromApp(state, payload) {
-        state.cyclomedia.locFromApp = payload;
+      setCyclomediaLatLngFromMap(state, payload) {
+        state.cyclomedia.latLngFromMap = payload;
+        // const { lat, lng } = payload || {};
+        // state.cyclomedia.latLngFromMap[0] = lat;
+        // state.cyclomedia.latLngFromMap[1] = lng;
       },
-      setCyclomediaLocFromViewer(state, payload) {
-        state.cyclomedia.locFromViewer = payload;
+      setCyclomediaNavBarOpen(state, payload) {
+        state.cyclomedia.navBarOpen = payload;
       },
       setDidToggleTopicsOn(state, payload) {
         state.didToggleTopicsOn = payload;

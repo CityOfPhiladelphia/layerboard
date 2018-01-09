@@ -84,15 +84,17 @@
 
       <!-- marker using a png and ablility to rotate it -->
       <png-marker v-if="this.cyclomediaActive"
-                    :icon="'../../src/assets/camera.png'"
+                  :icon="'../../src/assets/camera.png'"
+                  :latlng="cycloLatlng"
+                  :rotationAngle="cycloRotationAngle"
       />
-      <!-- :orientation="this.$store.state.cyclomedia.viewer.props.orientation" -->
 
       <!-- marker using custom code extending icons - https://github.com/iatkin/leaflet-svgicon -->
-      <svg-marker v-if="this.cyclomediaActive"
+      <svg-view-cone-marker v-if="this.cyclomediaActive"
+                            :latlng="cycloLatlng"
+                            :rotationAngle="cycloRotationAngle"
+                            :hFov="cycloHFov"
       />
-      <!-- :orientation="this.$store.state.cyclomedia.viewer.props.orientation" -->
-
 
       <control-corner :vSide="'top'"
                       :hSide="'almostright'"
@@ -171,6 +173,16 @@
       />
       <!-- :key="Math.random()" -->
 
+      <cyclomedia-recording-circle v-for="recording in cyclomediaRecordings"
+                                   v-if="cyclomediaActive"
+                                   :key="recording.imageId"
+                                   :imageId="recording.imageId"
+                                   :latlng="[recording.lat, recording.lng]"
+                                   :size="1.2"
+                                   :color="'#3388ff'"
+                                   :weight="1"
+                                   @l-click="handleCyclomediaRecordingClick"
+      />
     </map_>
     <slot class='widget-slot' name="cycloWidget" />
     <slot class='widget-slot' name="pictWidget" />
@@ -195,7 +207,6 @@
   import CircleMarker from '../../leaflet/CircleMarker';
   import VectorMarker from '../VectorMarker';
   import PngMarker from '../PngMarker';
-  import SvgMarker from '../SvgMarker';
   // import SvgShape from '../SvgShape';
   import BasemapToggleControl from '../BasemapToggleControl.vue';
   import BasemapSelectControl from '../BasemapSelectControl.vue';
@@ -204,6 +215,7 @@
   import PictometryButton from '../../pictometry/Button';
   import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
   import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
+  import SvgViewConeMarker from '../../cyclomedia/SvgViewConeMarker';
   // import LegendControl from '../../esri-leaflet/Legend.vue';
   import ControlCorner from '../../leaflet/ControlCorner.vue';
   import PopUp from '../../leaflet/PopUp.vue';
@@ -229,7 +241,6 @@
       CircleMarker,
       VectorMarker,
       PngMarker,
-      SvgMarker,
       // SvgShape,
       BasemapToggleControl,
       BasemapSelectControl,
@@ -237,6 +248,7 @@
       PictometryButton,
       CyclomediaButton,
       CyclomediaRecordingCircle,
+      SvgViewConeMarker,
       // LegendControl,
       ControlCorner,
       PopUp,
@@ -245,6 +257,21 @@
       Polyline_,
     },
     computed: {
+      cycloLatlng() {
+        if (this.$store.state.cyclomedia.orientation.xyz !== null) {
+          const xyz = this.$store.state.cyclomedia.orientation.xyz;
+          return [xyz[1], xyz[0]];
+        } else {
+          const center = this.$config.map.center;
+          return center;
+        }
+      },
+      cycloRotationAngle() {
+        return this.$store.state.cyclomedia.orientation.yaw * (180/3.14159265359);
+      },
+      cycloHFov() {
+        return this.$store.state.cyclomedia.orientation.hFov;
+      },
       shouldShowPopup() {
         if (this.intersectingFeatures.length > 0) {
           return true;

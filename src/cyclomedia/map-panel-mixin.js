@@ -14,8 +14,8 @@ export default {
     },
     handleCyclomediaRecordingClick(e) {
       const latlng = e.latlng;
-      const viewer = this.$store.state.cyclomedia.viewer;
-      viewer.openByCoordinate([latlng.lng, latlng.lat]);
+      console.log('handleCyclomediaRecordingClick is running, latlng:', latlng);
+      this.$store.commit('setCyclomediaLatLngFromMap', latlng);
     },
     updateCyclomediaRecordings() {
       const map = this.$store.state.map.map;

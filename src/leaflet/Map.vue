@@ -10,7 +10,11 @@
 </template>
 
 <script>
-  import { Map, LatLngBounds } from 'leaflet';
+  import {
+    Map,
+    LatLng,
+    LatLngBounds
+  } from 'leaflet';
   import bindEvents from './util/bind-events';
 
   export default {
@@ -30,8 +34,7 @@
       // put in state
       this.$store.commit('setMap', { map });
 
-      map.setView(this.center,
-                  this.zoom);
+      this.setMapView(this.center);
 
       this.$nextTick(() => {
         map.attributionControl.setPrefix('<a target="_blank" href="//www.phila.gov/it/aboutus/units/Pages/GISServicesGroup.aspx">City of Philadelphia | CityGeo</a>');
@@ -51,6 +54,14 @@
       map.on('click', this.clickHandler);
     },
     watch: {
+      center(nextCenter) {
+        this.setMapView(nextCenter);
+      },
+      zoom(nextZoom) {
+        if (!nextZoom) return;
+
+        this.$leafletElement.setZoom(nextZoom);
+      },
       // intersectingFeatures(nextIntersectingFeatures) {
       //   console.log('map.vue watch intersectingFeatures', nextIntersectingFeatures);
       // },
@@ -84,6 +95,17 @@
       },
       childDidMount(child) {
         child.addTo(this.$leafletElement);
+      },
+      setMapView(xy = [], zoom = this.zoom) {
+        if (xy.length === 0) return;
+        const [ lng, lat ] = xy;
+        const latLng = new LatLng(lat, lng);
+
+        // we used "setView" here because when you refreshed the app with an address in the url,
+        // "panTo" was getting stepped on by "setZoom" and it was not happening
+        this.$nextTick(() => {
+          this.$leafletElement.setView(latLng, zoom);
+        })
       },
 
       // nearly the same function is in WebMapLayer.Vue
