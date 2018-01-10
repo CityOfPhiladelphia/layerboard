@@ -6,6 +6,7 @@
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
           :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
+          @l-click="handleMapClick"
           @l-moveend="handleMapMove"
           zoom-control-position="bottomright"
           :min-zoom="this.$config.map.minZoom"
@@ -472,8 +473,9 @@
       // //   }
       // //   return geometry;
       // },
-      // handleMapClick(e) {
-      // },
+      handleMapClick(e) {
+        console.log('handle map click, e:', e);
+      },
       // handleMapMove(e) {
       //   const map = this.$store.state.map.map;
       //
@@ -542,7 +544,7 @@
   .mb-search-control-container {
     height: 48px;
     border-radius: 2px;
-    /*box-shadow:0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);*/
+    box-shadow:0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
   }
 
   .mb-search-control-button {
