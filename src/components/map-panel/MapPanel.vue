@@ -121,6 +121,7 @@
                            :position="'topright'"
                            :link="'pictometry'"
                            :imgSrc="'../../src/assets/pictometry.png'"
+                           @click="handleButtonClick"
         />
       </div>
 
@@ -130,18 +131,21 @@
                            :position="'topright'"
                            :link="'cyclomedia'"
                            :imgSrc="'../../src/assets/cyclomedia.png'"
-                           @click="handleCyclomediaButtonClick"
+                           @click="handleButtonClick"
         />
       </div>
 
       <div v-once>
-        <measure-control :position="'bottomleft'" />
+        <measure-control :position="'bottomleft'"
+                         @click="handleButtonClick"
+        />
       </div>
 
       <div v-once>
         <location-control v-once
                           v-if="this.geolocationEnabled"
                           :position="'bottomright'"
+                          @click="handleButtonClick"
         />
       </div>
 
@@ -154,6 +158,7 @@
           <div class="mb-search-control-container">
             <form @submit.prevent="handleSearchFormSubmit">
                 <input class="mb-search-control-input"
+                       id="addressSearch"
                        placeholder="Search the map"
                        :value="this.$config.defaultAddress"
                 />
@@ -473,8 +478,13 @@
       // //   }
       // //   return geometry;
       // },
-      handleMapClick(e) {
-        console.log('handle map click, e:', e);
+      handleMapClick() {
+        // console.log('handle map click, e:', e);
+        document.getElementById('addressSearch').blur()
+      },
+      handleButtonClick() {
+        console.log('handle button click is running');
+        document.getElementById('addressSearch').blur()
       },
       // handleMapMove(e) {
       //   const map = this.$store.state.map.map;
@@ -494,6 +504,7 @@
       // },
 
       handleMapMove(e) {
+        console.log('handleMapMove is running');
         const map = this.$store.state.map.map;
 
         const pictometryConfig = this.$config.pictometry || {};
@@ -521,6 +532,7 @@
 
       handleSearchFormSubmit(e) {
         // this.$controller.handleSearchFormSubmit(e);
+        document.getElementById('addressSearch').blur()
         const input = e.target[0].value;
         // this.$store.commit('setLastSearchMethod', 'geocode');
         this.geocode(input);
