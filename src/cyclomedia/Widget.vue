@@ -75,6 +75,11 @@
         console.log('watch latLngFromMap is firing, setNewLocation running with newCoords:', newCoords);
         this.setNewLocation([newCoords.lat, newCoords.lng]);
       },
+      cyclomediaActive(newActiveStatus) {
+        if (newActiveStatus === true) {
+          this.setNewLocation(this.latLngFromMap);
+        }
+      }
       // docWidthComp() {
       //   console.log('docWidth changed');
       // }
