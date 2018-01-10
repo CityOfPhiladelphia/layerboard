@@ -134,7 +134,7 @@
       //   // return width;
       // },
       setNewLocation(coords) {
-        console.log('!!!!!!!!!!!!!!!!!!!!setNewLocation is running using THESE coords', coords);
+        // console.log('!!!!!!!!!!!!!!!!!!!!setNewLocation is running using THESE coords', coords);
         const viewerType = StreetSmartApi.ViewerType.PANORAMA;
         // StreetSmartApi.open(center.lng + ',' + center.lat, {
         StreetSmartApi.open(coords[1] + ',' + coords[0], {
@@ -153,6 +153,9 @@
               }
               widget.sendOrientationToStore();
               window.panoramaViewer.toggleNavbarExpanded(widget.navBarOpen);
+              if (widget.isMobileOrTablet) {
+                StreetSmartApi.removeOverlay('surfaceCursorLayer');
+              }
 
               window.panoramaViewer.on('VIEW_CHANGE', function() {
                 if (window.panoramaViewer.props.orientation.yaw !== widget.$store.state.cyclomedia.orientation.yaw ||
