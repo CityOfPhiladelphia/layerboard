@@ -4,6 +4,7 @@
   >
   <!-- v-once -->
     <div id="inCycloDiv"
+         v-if="this.isMobileOrTablet === false"
          @click="this.popoutClicked"
          :style="{ right: popoutPosition }"
     >
@@ -28,6 +29,9 @@
       }
     },
     computed: {
+      isMobileOrTablet() {
+        return this.$store.state.isMobileOrTablet;
+      },
       cyclomediaActive() {
         return this.$store.state.cyclomedia.active;
       },
@@ -65,12 +69,19 @@
     watch: {
       locForCyclo(newCoords) {
         console.log('watch locForCyclo is firing, setNewLocation running with newCoords:', newCoords);
-        this.setNewLocation(newCoords);
+        if (newCoords) {
+          this.setNewLocation(newCoords);
+        }
       },
       latLngFromMap(newCoords) {
         console.log('watch latLngFromMap is firing, setNewLocation running with newCoords:', newCoords);
         this.setNewLocation([newCoords.lat, newCoords.lng]);
       },
+      cyclomediaActive(newActiveStatus) {
+        if (newActiveStatus === true) {
+          this.setNewLocation(this.latLngFromMap);
+        }
+      }
       // docWidthComp() {
       //   console.log('docWidth changed');
       // }
@@ -130,7 +141,7 @@
       //   // return width;
       // },
       setNewLocation(coords) {
-        console.log('!!!!!!!!!!!!!!!!!!!!setNewLocation is running using THESE coords', coords);
+        // console.log('!!!!!!!!!!!!!!!!!!!!setNewLocation is running using THESE coords', coords);
         const viewerType = StreetSmartApi.ViewerType.PANORAMA;
         // StreetSmartApi.open(center.lng + ',' + center.lat, {
         StreetSmartApi.open(coords[1] + ',' + coords[0], {
@@ -149,6 +160,9 @@
               }
               widget.sendOrientationToStore();
               window.panoramaViewer.toggleNavbarExpanded(widget.navBarOpen);
+              if (widget.isMobileOrTablet) {
+                StreetSmartApi.removeOverlay('surfaceCursorLayer');
+              }
 
               window.panoramaViewer.on('VIEW_CHANGE', function() {
                 if (window.panoramaViewer.props.orientation.yaw !== widget.$store.state.cyclomedia.orientation.yaw ||

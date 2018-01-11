@@ -6,6 +6,7 @@
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
           :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
+          @l-click="handleMapClick"
           @l-moveend="handleMapMove"
           zoom-control-position="bottomright"
           :min-zoom="this.$config.map.minZoom"
@@ -120,6 +121,7 @@
                            :position="'topright'"
                            :link="'pictometry'"
                            :imgSrc="'../../src/assets/pictometry.png'"
+                           @click="handleButtonClick"
         />
       </div>
 
@@ -129,7 +131,7 @@
                            :position="'topright'"
                            :link="'cyclomedia'"
                            :imgSrc="'../../src/assets/cyclomedia.png'"
-                           @click="handleCyclomediaButtonClick"
+                           @click="handleButtonClick"
         />
       </div>
 
@@ -141,6 +143,7 @@
         <location-control v-once
                           v-if="this.geolocationEnabled"
                           :position="'bottomright'"
+                          @click="handleButtonClick"
         />
       </div>
 
@@ -153,6 +156,7 @@
           <div class="mb-search-control-container">
             <form @submit.prevent="handleSearchFormSubmit">
                 <input class="mb-search-control-input"
+                       id="addressSearch"
                        placeholder="Search the map"
                        :value="this.$config.defaultAddress"
                 />
@@ -263,6 +267,9 @@
       Polyline_,
     },
     computed: {
+      isMobileOrTablet() {
+        return this.$store.state.isMobileOrTablet;
+      },
       cycloLatlng() {
         if (this.$store.state.cyclomedia.orientation.xyz !== null) {
           const xyz = this.$store.state.cyclomedia.orientation.xyz;
@@ -469,8 +476,14 @@
       // //   }
       // //   return geometry;
       // },
-      // handleMapClick(e) {
-      // },
+      handleMapClick() {
+        // console.log('handle map click, e:', e);
+        document.getElementById('addressSearch').blur()
+      },
+      handleButtonClick() {
+        console.log('handle button click is running');
+        document.getElementById('addressSearch').blur()
+      },
       // handleMapMove(e) {
       //   const map = this.$store.state.map.map;
       //
@@ -489,15 +502,17 @@
       // },
 
       handleMapMove(e) {
+        console.log('handleMapMove is running');
         const map = this.$store.state.map.map;
 
         const pictometryConfig = this.$config.pictometry || {};
 
+        const center = map.getCenter();
+        const { lat, lng } = center;
+        const coords = [lng, lat];
+
         if (pictometryConfig.enabled) {
           // update state for pictometry
-          const center = map.getCenter();
-          const { lat, lng } = center;
-          const coords = [lng, lat];
           this.$store.commit('setPictometryMapCenter', coords);
 
           const zoom = map.getZoom();
@@ -509,11 +524,13 @@
         if (cyclomediaConfig.enabled) {
           // update cyclo recordings
           this.updateCyclomediaRecordings();
+          this.$store.commit('setCyclomediaLatLngFromMap', [lat, lng]);
         }
       },
 
       handleSearchFormSubmit(e) {
         // this.$controller.handleSearchFormSubmit(e);
+        document.getElementById('addressSearch').blur()
         const input = e.target[0].value;
         // this.$store.commit('setLastSearchMethod', 'geocode');
         this.geocode(input);
@@ -537,7 +554,7 @@
   .mb-search-control-container {
     height: 48px;
     border-radius: 2px;
-    /*box-shadow:0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);*/
+    box-shadow:0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
   }
 
   .mb-search-control-button {

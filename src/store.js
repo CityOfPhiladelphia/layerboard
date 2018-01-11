@@ -8,6 +8,7 @@ import Vuex from 'vuex';
 function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
 
   const initialState = {
+    isMobileOrTablet: false,
     bennyEndpoints: {},
     // bennyEndpoints2: {},
     // bennyEndpoints3: [],
@@ -88,6 +89,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     state: initialState,
     getters: {},
     mutations: {
+      setIsMobileOrTablet(state, payload) {
+        state.isMobileOrTablet = payload;
+      },
       setCategories(state, payload) {
         state.map.categories = payload;
       },
