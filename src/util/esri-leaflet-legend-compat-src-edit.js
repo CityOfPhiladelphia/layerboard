@@ -769,7 +769,7 @@ EsriLeaflet.LegendControl = L.Control.extend({
             }
             // if (layer.legend) {
               layer2.legend(function(err, legend) {
-                console.log('layer.legend is running, legend:', legend, );
+                console.log('layer.legend is running, legend:', legend);
                 if (err) {
                   console.log('in layer.legend, err happened:', err, 'curr:', curr);
                   return cb(err, curr);

@@ -13,9 +13,6 @@
       return;
     },
     methods: {
-      test() {
-        console.log('test is running');
-      },
       createLeafletElement() {
         const MeasureTool = new L.Control.Measure({
   				position: this.$props.position,

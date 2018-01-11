@@ -136,9 +136,7 @@
       </div>
 
       <div v-once>
-        <measure-control :position="'bottomleft'"
-                         @click="handleButtonClick"
-        />
+        <measure-control :position="'bottomleft'" />
       </div>
 
       <div v-once>
