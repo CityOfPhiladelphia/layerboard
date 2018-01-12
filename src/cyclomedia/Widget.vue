@@ -181,17 +181,130 @@
     },
     methods: {
       getGeoJson(layer) {
-        // const layer2 = 'services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/WasteBaskets_Big_Belly/FeatureServer/0'
-        // const url = 'http://' + layer2;
+        const coords = [window.panoramaViewer.props.orientation.xyz[0], window.panoramaViewer.props.orientation.xyz[1]];
+        const params = {
+          // geometries: feature => '[' + feature.geometry.coordinates[0] + ', ' + feature.geometry.coordinates[1] + ']',
+          geometries: `[${coords.join(', ')}]`,
+          inSR: 2272,
+          outSR: 2272,
+          bufferSR: 2272,
+          distances: 100,
+          unionResults: true,
+          geodesic: false,
+          f: 'json',
+        };
+        // console.debug('esri nearby params', params);
+
+        // get buffer polygon
+        // const bufferUrl = geometryServerUrl.replace(/\/$/, '') + '/buffer';
+        const bufferUrl = 'https://gis.phila.gov/arcgis/rest/services/Geometry/GeometryServer/buffer';
+
+        axios.get(bufferUrl, { params }).then(response => {
+          const data = response.data;
+
+          // console.log('did get esri nearby buffer', data);
+
+          const geoms = data.geometries || [];
+          const geom = geoms[0] || {};
+          const rings = geom.rings || [];
+          const xyCoords = rings[0];
+
+          // check for xy coords
+          if (!xyCoords) {
+            // we can't do anything without coords, so bail out
+            // this.dataManager.didFetchData(dataSourceKey, 'error');
+            return;
+          }
+
+          // const latLngCoords = xyCoords.map(xyCoord => [...xyCoord].reverse());
+
+          // get nearby features using buffer
+          // const buffer = L.polygon(latLngCoords);
+          const buffer = L.polygon(xyCoords);
+          console.log('!!!!!!xyCoords:', xyCoords, 'buffer:', buffer);
+          const map = this.$store.state.map.map;
+          buffer.addTo(map);
+
+          const options = {}
+          const calculateDistance = false;
+          this.fetchBySpatialQuery(layer,
+                                   'within',
+                                   buffer,
+                                   options,
+                                   calculateDistance ? coords : null
+                                  );
+        }, response => {
+          console.log('did fetch esri nearby error', response);
+        });
+      },
+
+      fetchBySpatialQuery(layer, relationship, targetGeom, options = {}, calculateDistancePt) {
+        console.log('fetch esri spatial query', layer, this.layerUrls[layer], relationship, targetGeom);
         const url = 'https://' + this.layerUrls[layer];
-        console.log('getGeoJson is running, layer:', layer, 'url:', url);
-        const dataQuery = L.esri.query({ url });
-        dataQuery.where("1=1");
-        dataQuery.run((function(error, featureCollection, response) {
-          // console.log('parcelQuery ran, activeParcelLayer:', activeParcelLayer);
+
+        let query = L.esri.query({ url })[relationship](targetGeom);
+
+        // apply options by chaining esri leaflet option methods
+        const optionsKeys = Object.keys(options) || [];
+        query = optionsKeys.reduce((acc, optionsKey) => {
+          const optionsVal = options[optionsKey];
+          let optionsMethod;
+
+          try {
+            acc = acc[optionsKey](optionsVal);
+          } catch (e) {
+            throw new Error(`esri-leaflet query task does not support option:
+                             ${optionsKey}`);
+          }
+
+          return acc;
+        }, query);
+
+        query.run((function(error, featureCollection, response) {
+          console.log('did get esri spatial query', response, error);
+
           this.didGetData(error, featureCollection, response, layer);
         }).bind(this)
       )
+
+          // let features = (featureCollection || {}).features;
+          // const status = error ? 'error' : 'success';
+
+          // calculate distance
+          // if (calculateDistancePt) {
+          //   const from = turf.point(calculateDistancePt);
+          //
+          //   features = features.map(feature => {
+          //     // console.log('feat', feature);
+          //     const featureCoords = feature.geometry.coordinates;
+          //     const to = turf.point(featureCoords);
+          //     const dist = turf.distance(from, to, 'miles');
+          //
+          //     // TODO make distance units an option. for now, just hard code to ft.
+          //     const distFeet = parseInt(dist * 5280);
+          //
+          //     feature._distance = distFeet;
+          //
+          //     return feature;
+          //   })
+          // }
+
+          // this.dataManager.didFetchData(dataSourceKey, status, features);
+      //   });
+      // }
+
+        // const layer2 = 'services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/WasteBaskets_Big_Belly/FeatureServer/0'
+        // const url = 'http://' + layer2;
+      //   const url = 'https://' + this.layerUrls[layer];
+      //   console.log('getGeoJson is running, layer:', layer, 'url:', url);
+      //   const dataQuery = L.esri.query({ url });
+      //   dataQuery.where("1=1");
+      //   dataQuery.run((function(error, featureCollection, response) {
+      //     // console.log('parcelQuery ran, activeParcelLayer:', activeParcelLayer);
+      //     this.didGetData(error, featureCollection, response, layer);
+      //   }).bind(this)
+      // )
+
       },
       didGetData(error, featureCollection, response, layer) {
         console.log('didGetData is running, layer:', layer, 'featureCollection:', featureCollection, 'response:', response);
