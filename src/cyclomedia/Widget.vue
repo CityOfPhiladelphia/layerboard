@@ -183,7 +183,7 @@
       getGeoJson(layer) {
         // const layer2 = 'services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/WasteBaskets_Big_Belly/FeatureServer/0'
         // const url = 'http://' + layer2;
-        const url = 'http://' + this.layerUrls[layer];
+        const url = 'https://' + this.layerUrls[layer];
         console.log('getGeoJson is running, layer:', layer, 'url:', url);
         const dataQuery = L.esri.query({ url });
         dataQuery.where("1=1");
