@@ -44,6 +44,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       selectedPopupLayer: null,
       categories: [],
       selectedCategory: '',
+      // webMapGeoJson: {}
     },
     cyclomedia: {
       navBarOpen: false,
@@ -156,6 +157,13 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
         //   return currentLayer[0];
         // console.log('SETWEBMAPLAYERSOPACITY FINISHED RUNNING');
       },
+      // setWebMapGeoJson(state, payload) {
+      //   // const layerName = payload.layerName;
+      //   // const json = payload.json;
+      //   console.log('payload', payload);
+      //   // state.map.webMapGeoJson[payload[]] = payload[json];
+      //   state.map.webMapGeoJson = payload;
+      // },
 
       setLegend(state, payload) {
         state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].legend = payload.legend;
