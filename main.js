@@ -34,7 +34,8 @@ Mapboard.default({
     },
   },
   cyclomedia: {
-    enabled: true
+    enabled: true,
+    measurementAllowed: false
   },
   pictometry: {
     enabled: false

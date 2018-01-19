@@ -481,7 +481,7 @@
         document.getElementById('addressSearch').blur()
       },
       handleButtonClick() {
-        console.log('handle button click is running');
+        // console.log('handle button click is running');
         document.getElementById('addressSearch').blur()
       },
       // handleMapMove(e) {
@@ -502,7 +502,7 @@
       // },
 
       handleMapMove(e) {
-        console.log('handleMapMove is running');
+        // console.log('handleMapMove is running');
         const map = this.$store.state.map.map;
 
         const pictometryConfig = this.$config.pictometry || {};
