@@ -1,7 +1,5 @@
 <template>
-  <div class="mb-root row collapse"
-       id="mb-root"
-  >
+  <div class="cell medium-auto grid-x" id="mb-root">
   <!-- :style="this.$config.rootStyle" -->
     <button class="small-24 button datasets-button"
             @click="toggleTopics"
@@ -14,12 +12,12 @@
          id="below-button"
     > -->
       <topic-panel v-show="shouldShowTopics"
-                   :style="styleObject"
       />
+      <!-- :style="styleObject" -->
 
       <map-panel v-show="shouldShowMap"
-                 :style="styleObject"
       >
+      <!-- :style="styleObject" -->
         <cyclomedia-widget v-if="this.$config.cyclomedia.enabled"
                            slot="cycloWidget"
                            v-show="cyclomediaActive"
@@ -76,23 +74,23 @@
       ViewCone,
       PngMarker
     },
-    data() {
-      const data = {
-        styleObject: {
-          'overflow-y': 'auto',
-          'height': '100%'
-        }
-      };
-      return data;
-    },
+    // data() {
+    //   const data = {
+    //     styleObject: {
+    //       'overflow-y': 'auto',
+    //       'height': '100%'
+    //     }
+    //   };
+    //   return data;
+    // },
     created() {
       // check if mobile or tablet
       this.$store.commit('setIsMobileOrTablet', this.isMobileOrTablet());
     },
     mounted() {
       console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
-      window.addEventListener('resize', this.handleWindowResize);
-      this.handleWindowResize();
+      // window.addEventListener('resize', this.handleWindowResize);
+      // this.handleWindowResize();
 
       const store = this.$store;
       const knackUrl = "https://api.knackhq.com/v1/objects/object_4/records/export?type=json";
@@ -186,9 +184,9 @@
         this.calculateShouldShowTopics();
         this.calculateShouldShowMap();
       },
-      shouldShowTopics(nextValue) {
-        this.handleWindowResize();
-      },
+      // shouldShowTopics(nextValue) {
+      //   this.handleWindowResize();
+      // },
       // shouldShowMap(nextValue) {
       //   this.handleWindowResize();
       // }
@@ -223,32 +221,32 @@
         const shouldShowMap = notMobile || !didToggleTopicsOn;
         this.$store.commit('setShouldShowMap', shouldShowMap);
       },
-      handleWindowResize() {
-        const rootElement = document.getElementById('mb-root');
-        const rootStyle = window.getComputedStyle(rootElement);
-        const rootHeight = rootStyle.getPropertyValue('height');
-        const rootHeightNum = parseInt(rootHeight.replace('px', ''));
-        const rootWidth = rootStyle.getPropertyValue('width');
-        const rootWidthNum = parseInt(rootWidth.replace('px', ''));
-        let boardHeight;
-        const windowWidth = rootWidthNum;
-        const notMobile = windowWidth >= 640;
-        // console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
-        if (!notMobile) {
-          boardHeight = rootHeightNum - 34;
-          // console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-        } else {
-          boardHeight = rootHeightNum
-          // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-        }
-        this.styleObject.height = boardHeight.toString() + 'px';
-
-        const obj = {
-          height: rootHeightNum,
-          width: rootWidthNum
-        }
-        this.$store.commit('setWindowSize', obj);
-      }
+      // handleWindowResize() {
+      //   const rootElement = document.getElementById('mb-root');
+      //   const rootStyle = window.getComputedStyle(rootElement);
+      //   const rootHeight = rootStyle.getPropertyValue('height');
+      //   const rootHeightNum = parseInt(rootHeight.replace('px', ''));
+      //   const rootWidth = rootStyle.getPropertyValue('width');
+      //   const rootWidthNum = parseInt(rootWidth.replace('px', ''));
+      //   let boardHeight;
+      //   const windowWidth = rootWidthNum;
+      //   const notMobile = windowWidth >= 640;
+      //   // console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
+      //   if (!notMobile) {
+      //     boardHeight = rootHeightNum - 34;
+      //     // console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
+      //   } else {
+      //     boardHeight = rootHeightNum
+      //     // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
+      //   }
+      //   this.styleObject.height = boardHeight.toString() + 'px';
+      //
+      //   const obj = {
+      //     height: rootHeightNum,
+      //     width: rootWidthNum
+      //   }
+      //   this.$store.commit('setWindowSize', obj);
+      // }
     }
   };
 </script>
@@ -260,6 +258,12 @@
   textarea:focus,
   button:focus {
     outline: none;
+  }
+
+  /* standards applies padding to buttons, which causes some weirdness with
+  buttons on the map panel. override here. */
+  button {
+    padding: inherit;
   }
 
   .mb-root {

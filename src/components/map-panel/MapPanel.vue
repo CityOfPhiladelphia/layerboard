@@ -1,9 +1,10 @@
 <template>
-  <div id="map-panel"
-       class="medium-12 large-16 columns mb-panel mb-panel-map"
+  <div id="map-panel-container"
+       class="medium-16 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map"
   >
+  <!-- class="medium-12 large-16 columns mb-panel mb-panel-map" -->
   <!-- class="large-18 columns mb-panel mb-panel-map" -->
-    <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
+    <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active }"
           :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
           @l-click="handleMapClick"
@@ -558,22 +559,23 @@
   }
 
   .mb-search-control-button {
+    color: #fff;
     width: 50px;
-    background: #ccc;
+    background: #2176d2;
     line-height: 48px;
   }
 
   .mb-search-control-input {
-    background-color: white;
+    /* background-color: white; */
     border: 0;
-    height: 48px !important;
-    line-height: 48px;
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
+    /* height: 48px !important; */
+    /* line-height: 48px; */
+    padding: 15px;
+    /* padding-left: 15px; */
+    /* padding-right: 15px; */
     font-family: 'Montserrat', 'Tahoma', sans-serif;
     font-size: 16px;
-    width: 350px;
+    width: 275px;
   }
 
   .mb-map-with-widget {
