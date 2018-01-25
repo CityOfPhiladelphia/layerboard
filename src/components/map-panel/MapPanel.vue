@@ -1,10 +1,10 @@
 <template>
   <div id="map-panel-container"
-       class="medium-16 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map"
+       :class="mapPanelContainerClass"
   >
-  <!-- class="medium-12 large-16 columns mb-panel mb-panel-map" -->
-  <!-- class="large-18 columns mb-panel mb-panel-map" -->
+    <full-screen-map-toggle-tab v-once />
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active }"
+          id="map-tag"
           :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
           @l-click="handleMapClick"
@@ -219,6 +219,7 @@
   // import SvgShape from '../SvgShape';
   import BasemapToggleControl from '../BasemapToggleControl.vue';
   import BasemapSelectControl from '../BasemapSelectControl.vue';
+  import FullScreenMapToggleTab from '../FullScreenMapToggleTab.vue';
   import LocationControl from '../LocationControl.vue';
   import CyclomediaButton from '../../cyclomedia/Button';
   import PictometryButton from '../../pictometry/Button';
@@ -254,6 +255,7 @@
       // SvgShape,
       BasemapToggleControl,
       BasemapSelectControl,
+      FullScreenMapToggleTab,
       LocationControl,
       PictometryButton,
       CyclomediaButton,
@@ -270,6 +272,21 @@
     computed: {
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
+      },
+      fullScreenMapEnabled() {
+        return this.$store.state.fullScreenMapEnabled;
+      },
+      windowWidth() {
+        return this.$store.state.windowWidth;
+      },
+      mapPanelContainerClass() {
+        if (this.fullScreenMapEnabled) {
+          return 'medium-24 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map'
+        } else if (this.windowWidth >= 950) {
+          return 'medium-16 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map';
+        } else {
+          return 'medium-14 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map';
+        }
       },
       cycloLatlng() {
         if (this.$store.state.cyclomedia.orientation.xyz !== null) {
@@ -541,16 +558,27 @@
 </script>
 
 <style scoped>
+
+  /* .map-panel-container {
+    height: calc(100vh - 220px);
+  }
+
+  @media screen and (max-width: 40em) {
+    .map-panel-container {
+      height: calc(100vh - 256px);
+    }
+  } */
+
+/*this allows the loading mask to fill the div*/
   .mb-panel-map {
-    /*this allows the loading mask to fill the div*/
     position: relative;
   }
 
-  /*@media (max-width: 1024px) {
+  /* @media (max-width: 1024px) {
     .mb-panel-map {
       height: 600px;
     }
-  }*/
+  } */
 
   .mb-search-control-container {
     height: 48px;

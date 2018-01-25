@@ -1,7 +1,8 @@
 <template>
-  <div class="cell medium-8 small-order-2 medium-order-1"
-       id="topic-panel-container"
+  <div id="topic-panel-container"
+       :class="this.topicPanelContainerClass"
   >
+  <!-- class="cell medium-8 small-order-2 medium-order-1" -->
       <div class="cell">
         <div class="forms-header">
           <form @submit.prevent="handleFilterFormX"
@@ -97,6 +98,21 @@
     //   window.removeEventListener('resize', this.handleWindowResize);
     // },
     computed: {
+      windowWidth() {
+        return this.$store.state.windowWidth;
+      },
+      fullScreenMapEnabled() {
+        return this.$store.state.fullScreenMapEnabled;
+      },
+      topicPanelContainerClass() {
+        if (this.fullScreenMapEnabled) {
+          return 'cell medium-1 small-order-2 medium-order-1'
+        } else if (this.windowWidth >= 950) {
+          return 'cell medium-8 small-order-1 small-24 medium-order-2';
+        } else {
+          return 'cell medium-10 small-order-1 small-24 medium-order-2';
+        }
+      },
       categories() {
         return this.$store.state.map.categories;
       },
@@ -237,11 +253,17 @@
 
   .topics-container {
     padding: 20px;
+    overflow-y: scroll;
   }
 
-  @media screen and (min-width: 40em) {
+  .topics-container {
+    height: calc(100vh - 220px);
+  }
+
+  /* @media screen and (max-width: 40em) { */
+  @media screen and (max-width: 750px) {
     .topics-container {
-      height: calc(100vh - 220px);
+      height: calc(100vh - 256px);
     }
   }
 

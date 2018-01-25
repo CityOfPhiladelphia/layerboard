@@ -1,23 +1,16 @@
 <template>
   <div class="cell medium-auto grid-x" id="mb-root">
-  <!-- :style="this.$config.rootStyle" -->
     <button class="small-24 button datasets-button"
             @click="toggleTopics"
     >
-      <!-- <i class="fa fa-bars fa-inverse" aria-hidden="true"></i> -->
       {{ this.buttonMessage }}
     </button>
 
-    <!-- <div class="below-button"
-         id="below-button"
-    > -->
       <topic-panel v-show="shouldShowTopics"
       />
-      <!-- :style="styleObject" -->
 
       <map-panel v-show="shouldShowMap"
       >
-      <!-- :style="styleObject" -->
         <cyclomedia-widget v-if="this.$config.cyclomedia.enabled"
                            slot="cycloWidget"
                            v-show="cyclomediaActive"
@@ -89,8 +82,8 @@
     },
     mounted() {
       console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
-      // window.addEventListener('resize', this.handleWindowResize);
-      // this.handleWindowResize();
+      window.addEventListener('resize', this.handleWindowResize);
+      this.handleWindowResize();
 
       const store = this.$store;
       const knackUrl = "https://api.knackhq.com/v1/objects/object_4/records/export?type=json";
@@ -128,6 +121,9 @@
       });
     },
     computed: {
+      fullScreenMapEnabled() {
+        return this.$store.state.fullScreenMapEnabled;
+      },
       cyclomediaActive() {
         return this.$store.state.cyclomedia.active
       },
@@ -150,7 +146,7 @@
         return this.$store.state.geocode.data
       },
       windowWidth() {
-        return this.$store.state.windowSize.width;
+        return this.$store.state.windowWidth;
       },
       windowHeight() {
         return this.$store.state.windowSize.height;
@@ -180,16 +176,20 @@
         this.calculateShouldShowTopics();
         this.calculateShouldShowMap();
       },
+      fullScreenMapEnabled(nextValue) {
+        this.calculateShouldShowTopics();
+        this.calculateShouldShowMap();
+      },
       didToggleTopicsOn(nextValue) {
         this.calculateShouldShowTopics();
         this.calculateShouldShowMap();
       },
-      // shouldShowTopics(nextValue) {
-      //   this.handleWindowResize();
-      // },
-      // shouldShowMap(nextValue) {
-      //   this.handleWindowResize();
-      // }
+      shouldShowTopics(nextValue) {
+        this.handleWindowResize();
+      },
+      shouldShowMap(nextValue) {
+        this.handleWindowResize();
+      }
     },
     methods: {
       isMobileOrTablet() {
@@ -209,44 +209,47 @@
       },
       calculateShouldShowTopics() {
         const windowWidth = this.windowWidth;
-        const notMobile = windowWidth >= 640;
+        const smallScreen = windowWidth < 750;
         const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
-        const shouldShowTopics = notMobile || didToggleTopicsOn;
+        const fullScreenMapEnabled = this.$store.state.fullScreenMapEnabled;
+        console.log('calculateShouldShowTopics, smallScreen:', smallScreen, 'didToggleTopicsOn', didToggleTopicsOn, 'fullScreenMapEnabled', fullScreenMapEnabled);
+        const shouldShowTopics = !smallScreen && !fullScreenMapEnabled || smallScreen && didToggleTopicsOn;
         this.$store.commit('setShouldShowTopics', shouldShowTopics);
       },
       calculateShouldShowMap() {
         const windowWidth = this.windowWidth;
-        const notMobile = windowWidth >= 640;
+        const notMobile = windowWidth > 750;
         const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
         const shouldShowMap = notMobile || !didToggleTopicsOn;
         this.$store.commit('setShouldShowMap', shouldShowMap);
       },
-      // handleWindowResize() {
-      //   const rootElement = document.getElementById('mb-root');
-      //   const rootStyle = window.getComputedStyle(rootElement);
-      //   const rootHeight = rootStyle.getPropertyValue('height');
-      //   const rootHeightNum = parseInt(rootHeight.replace('px', ''));
-      //   const rootWidth = rootStyle.getPropertyValue('width');
-      //   const rootWidthNum = parseInt(rootWidth.replace('px', ''));
-      //   let boardHeight;
-      //   const windowWidth = rootWidthNum;
-      //   const notMobile = windowWidth >= 640;
-      //   // console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
-      //   if (!notMobile) {
-      //     boardHeight = rootHeightNum - 34;
-      //     // console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-      //   } else {
-      //     boardHeight = rootHeightNum
-      //     // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-      //   }
-      //   this.styleObject.height = boardHeight.toString() + 'px';
-      //
-      //   const obj = {
-      //     height: rootHeightNum,
-      //     width: rootWidthNum
-      //   }
-      //   this.$store.commit('setWindowSize', obj);
-      // }
+      handleWindowResize() {
+        const rootElement = document.getElementById('mb-root');
+        const rootStyle = window.getComputedStyle(rootElement);
+        // const rootHeight = rootStyle.getPropertyValue('height');
+        // const rootHeightNum = parseInt(rootHeight.replace('px', ''));
+        const rootHeightNum = 100;
+        const rootWidth = rootStyle.getPropertyValue('width');
+        const rootWidthNum = parseInt(rootWidth.replace('px', ''));
+        // let boardHeight;
+        const windowWidth = rootWidthNum;
+        const notMobile = windowWidth >= 640;
+        console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
+        // if (!notMobile) {
+        //   boardHeight = rootHeightNum - 34;
+        //   console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
+        // } else {
+        //   boardHeight = rootHeightNum
+        //   // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
+        // }
+        // this.styleObject.height = boardHeight.toString() + 'px';
+
+        // const obj = {
+        //   height: rootHeightNum,
+        //   width: rootWidthNum
+        // }
+        this.$store.commit('setWindowWidth', rootWidthNum);
+      }
     }
   };
 </script>
@@ -289,11 +292,12 @@
   }*/
 
   /*small devices only*/
-  @media screen and (max-width: 39.9375em) {
+  /* @media screen and (max-width: 39.9375em) { */
+  @media screen and (max-width: 750px) {
     /*TODO map is flowing off screen*/
-    .mb-map-panel {
+    /* .mb-panel-map {
       top: 112.4063px;
-    }
+    } */
 
     .datasets-button {
       display: block;

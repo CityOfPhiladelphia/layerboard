@@ -77,9 +77,16 @@
             return;
           }
         }
+      },
+      fullScreenMapEnabled() {
+        console.log('Map.vue fullScreenMapEnabled watch is firing');
+        this.$leafletElement.invalidateSize();
       }
     },
     computed: {
+      fullScreenMapEnabled() {
+        return this.$store.state.fullScreenMapEnabled;
+      },
       webMapDisplayedLayers() {
         return this.$store.state.map.webMapDisplayedLayers;
       },
@@ -173,8 +180,18 @@
 
 <style>
   .map-container {
-    height: 100%;
+    height: calc(100vh - 109px);
   }
+
+  /* @media screen and (max-width: 40em) { */
+  @media screen and (max-width: 750px) {
+    .map-container {
+      height: calc(100vh - 144px);
+    }
+  }
+  /* .map-container {
+    height: 100%;
+  } */
   .map {
     height: 100%;
   }

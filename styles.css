@@ -1,6 +1,13 @@
 /* header.site-header > .row:last-of-type {
     background: #2176d2;
 } */
+body {
+  overflow-y: hidden; 
+}
+
+.grid-y {
+  overflow-y: hidden;
+}
 
 .greeting > h2 {
   margin-bottom: 30px;
