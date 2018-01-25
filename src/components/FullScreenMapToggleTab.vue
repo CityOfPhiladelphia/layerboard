@@ -3,8 +3,8 @@
        class="toggle-tab"
        :style="{ top: buttonPosition }"
        @click="handleFullScreenMapToggleButtonClick"
-       v-if="!this.isMobileOrTablet"
   >
+  <!-- v-if="!this.isMobileOrTablet" -->
     <span class="align-span">
       <i :class='this.currentIcon'></i>
     </span>

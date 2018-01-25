@@ -290,10 +290,12 @@
   }
 
   .layer-name {
+    font-weight: normal;
     vertical-align: middle;
     display: inline-block;
     margin-left: 30px;
     margin-bottom: 6px;
+
   }
 
 

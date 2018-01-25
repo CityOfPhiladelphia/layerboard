@@ -2,7 +2,7 @@
     background: #2176d2;
 } */
 body {
-  overflow-y: hidden; 
+  overflow-y: hidden;
 }
 
 .grid-y {
@@ -39,12 +39,35 @@ body {
 }
 
 /*small*/
-@media screen and (max-width: 39.9375em) {
+@media screen and (max-width: 750px) {
 	.logo {
 		float: left;
 	}
 
+  #application .site-header .logo img {
+    max-width: 100px;
+    height: auto;
+  }
+
+  #application .site-header .page-title-container h1 {
+    font-size: 1.75rem;
+  }
+
+  .page-title
+
 	.page-title-container {
 		float: right;
 	}
+}
+
+#demo-badge {
+  /*text-transform: capitalize;*/
+  font-size: 14px;
+  vertical-align: top;
+  /*color: #eee;*/
+  margin-left: 4px;
+  line-height: 35px;
+  padding: 4px;
+  border-radius: 8px;
+  background: #f3c613;
 }
