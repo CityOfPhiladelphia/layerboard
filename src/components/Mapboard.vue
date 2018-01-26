@@ -294,34 +294,29 @@
   /*small devices only*/
   /* @media screen and (max-width: 39.9375em) { */
   @media screen and (max-width: 750px) {
-    /*TODO map is flowing off screen*/
-    /* .mb-panel-map {
-      top: 112.4063px;
-    } */
-
     .datasets-button {
       display: block;
     }
   }
 
   /* Medium and up */
-  @media screen and (min-width: 40em) {
+  /* @media screen and (min-width: 40em) {
 
-  }
+  } */
 
   /* Medium only */
-  @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+  /* @media screen and (min-width: 40em) and (max-width: 63.9375em) {
 
-  }
+  } */
 
   /* Large and up */
-  @media screen and (min-width: 64em) {
+  /* @media screen and (min-width: 64em) {
 
-  }
+  } */
 
   /* Large only */
-  @media screen and (min-width: 64em) and (max-width: 74.9375em) {
+  /* @media screen and (min-width: 64em) and (max-width: 74.9375em) {
 
-  }
+  } */
 
 </style>

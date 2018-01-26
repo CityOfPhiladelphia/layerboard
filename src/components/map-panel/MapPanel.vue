@@ -3,8 +3,7 @@
        :class="mapPanelContainerClass"
   >
     <full-screen-map-toggle-tab v-once />
-    <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active }"
-          id="map-tag"
+    <map_ id="map-tag"
           :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
           @l-click="handleMapClick"
@@ -606,9 +605,9 @@
     width: 275px;
   }
 
-  .mb-map-with-widget {
+  /* .mb-map-with-widget {
     height: 50%;
-  }
+  } */
 
   .widget-slot {
     display: inline-block;
@@ -651,17 +650,17 @@
     }
   }
 
-  @media screen and (max-width: 700px) {
-    .mb-search-control-input {
-      width: 100px;
-    }
-  }
-
-  @media screen and (max-width: 639px) {
+  @media screen and (max-width: 750px) {
     .mb-search-control-input {
       width: 250px;
     }
   }
+
+  /* @media screen and (max-width: 639px) {
+    .mb-search-control-input {
+      width: 250px;
+    }
+  } */
 
   @media screen and (max-width: 450px) {
     .mb-search-control-input {

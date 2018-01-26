@@ -53,10 +53,9 @@
     },
     watch: {
       picOrCycloActive(value) {
-        this.setDivHeight();
-        // this.$nextTick(() => {
-        //   this.$store.state.map.map.invalidateSize();
-        // })
+        this.$nextTick(() => {
+          this.setDivHeight();
+        })
       }
     },
     methods: {
@@ -64,6 +63,7 @@
         const el = document.getElementById('map-tag');
         const divStyle = window.getComputedStyle(el);
         const divHeight = parseFloat(divStyle.getPropertyValue('height').replace('px', ''));
+        console.log('setDivHeight is running, divHeight:', divHeight);
         this.divHeight = divHeight;
         // console.log('setDivHeight is running, divHeight:', divHeight);
         this.buttonPosition = (divHeight-48)/2 + 'px';
