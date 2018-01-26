@@ -10,12 +10,13 @@
         <span><i class="fa fa-info-circle fa-2x"></i></span>
       </a>
       <input :id="'checkbox-'+layerName"
+             :class="{ disabled: shouldBeDisabled }"
              type="checkbox"
              :layerid="layerId"
-             :disabled="shouldBeDisabled"
              :checked="webMapActiveLayers.includes(layerName)"
              @click="checkboxToggle"
       >
+      <!-- :disabled="shouldBeDisabled" -->
       <label :for="'checkbox-'+layerName"
              :class="{ disabled: shouldBeDisabled, 'label-text': true }"
       >
@@ -224,10 +225,6 @@
 
 <style scoped>
 
-  .disabled {
-    color: #d3d3d3;
-  }
-
   .sliderDiv {
     height: 60px;
   }
@@ -279,6 +276,14 @@
     margin-top: -12px;
     font-size: 30px;
     padding-right: 5px;
+  }
+
+  .disabled {
+    color: #d3d3d3 !important;
+  }
+
+  input[type=checkbox]+label.disabled::before {
+    color: #d3d3d3;
   }
 
   .label-text {

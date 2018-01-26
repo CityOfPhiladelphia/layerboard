@@ -522,19 +522,23 @@
         console.log('handleMapMove is running');
         const map = this.$store.state.map.map;
 
-        const pictometryConfig = this.$config.pictometry || {};
+        // const pictometryConfig = this.$config.pictometry || {};
 
         const center = map.getCenter();
         const { lat, lng } = center;
         const coords = [lng, lat];
+        const zoom = map.getZoom();
+        this.$store.commit('setMapZoom', zoom);
+        const scale = this.$config.map.scales[zoom];
+        this.$store.commit('setMapScale', scale);
 
-        if (pictometryConfig.enabled) {
-          // update state for pictometry
-          this.$store.commit('setPictometryMapCenter', coords);
-
-          const zoom = map.getZoom();
-          this.$store.commit('setPictometryMapZoom', zoom);
-        }
+        // if (pictometryConfig.enabled) {
+        //   // update state for pictometry
+        //   this.$store.commit('setPictometryMapCenter', coords);
+        //
+        //   const zoom = map.getZoom();
+        //   this.$store.commit('setPictometryMapZoom', zoom);
+        // }
 
         const cyclomediaConfig = this.$config.cyclomedia || {};
 
