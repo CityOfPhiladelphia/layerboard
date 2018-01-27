@@ -93,6 +93,7 @@
       // }
     },
     mounted() {
+      console.log('cyclomedia widget mounted is running');
       StreetSmartApi.init({
         targetElement: this.$refs.cycloviewer,
         username: this.$config.cyclomedia.username,
@@ -141,7 +142,7 @@
       //   // return width;
       // },
       setNewLocation(coords) {
-        // console.log('!!!!!!!!!!!!!!!!!!!!setNewLocation is running using THESE coords', coords);
+        console.log('cyclomedia widget setNewLocation is running using THESE coords', coords);
         const viewerType = StreetSmartApi.ViewerType.PANORAMA;
         // StreetSmartApi.open(center.lng + ',' + center.lat, {
         StreetSmartApi.open(coords[1] + ',' + coords[0], {
@@ -151,7 +152,7 @@
           maximizable: false,
         }).then (
           function(result) {
-            // console.log('StreetSmartApi2, result:', result);
+            console.log('cyclomedia widget StreetSmartApi.open happened, result:', result);
             const widget = this;
             // console.log('Created component through API:', result);
             if (result) {
@@ -160,9 +161,13 @@
               }
               widget.sendOrientationToStore();
               window.panoramaViewer.toggleNavbarExpanded(widget.navBarOpen);
-              if (widget.isMobileOrTablet) {
-                StreetSmartApi.removeOverlay('surfaceCursorLayer');
-              }
+              // window.panoramaViewer.toggleRecordingsVisible(false);
+              // StreetSmartApi.removeOverlay('cycloramaRecordingLayer');
+              StreetSmartApi.removeOverlay('measurementLayer');
+              window.panoramaViewer.toggleButtonEnabled('panorama.measure', false);
+              // if (widget.isMobileOrTablet) {
+              StreetSmartApi.removeOverlay('surfaceCursorLayer');
+              // }
 
               window.panoramaViewer.on('VIEW_CHANGE', function() {
                 if (window.panoramaViewer.props.orientation.yaw !== widget.$store.state.cyclomedia.orientation.yaw ||
