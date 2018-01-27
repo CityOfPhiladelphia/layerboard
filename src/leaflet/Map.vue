@@ -1,7 +1,10 @@
 <template>
-  <div class="map-container">
+  <div :class="this.mapContainerClass">
     <!-- the leaflet map -->
-    <div class="map" ref="map" id="map" />
+    <div class="mb-map"
+         ref="map"
+         id="map"
+    />
       <div>
         <slot />
       </div>
@@ -77,9 +80,26 @@
             return;
           }
         }
+      },
+      fullScreenMapEnabled() {
+        console.log('Map.vue fullScreenMapEnabled watch is firing');
+        this.$leafletElement.invalidateSize();
       }
     },
     computed: {
+      mapContainerClass() {
+        if (!this.cyclomediaActive) {
+          return 'map-container';
+        } else {
+          return 'map-container-w-widget';
+        }
+      },
+      cyclomediaActive() {
+        return this.$store.state.cyclomedia.active;
+      },
+      fullScreenMapEnabled() {
+        return this.$store.state.fullScreenMapEnabled;
+      },
       webMapDisplayedLayers() {
         return this.$store.state.map.webMapDisplayedLayers;
       },
@@ -172,10 +192,27 @@
 </script>
 
 <style>
+
   .map-container {
+    height: calc(100vh - 109px);
+  }
+
+  .map-container-w-widget {
+    height: calc((100vh - 109px)/2);
+  }
+
+  /* @media screen and (max-width: 40em) { */
+  @media screen and (max-width: 750px) {
+    .map-container {
+      height: calc(100vh - 141px);
+    }
+    .map-container-w-widget {
+      height: calc((100vh - 141px)/2);
+    }
+  }
+
+  .mb-map {
     height: 100%;
   }
-  .map {
-    height: 100%;
-  }
+
 </style>

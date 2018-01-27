@@ -1,9 +1,9 @@
 <template>
-  <div id="map-panel"
-       class="medium-12 large-16 columns mb-panel mb-panel-map"
+  <div id="map-panel-container"
+       :class="mapPanelContainerClass"
   >
-  <!-- class="large-18 columns mb-panel mb-panel-map" -->
-    <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
+    <full-screen-map-toggle-tab v-once />
+    <map_ id="map-tag"
           :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
           @l-click="handleMapClick"
@@ -218,6 +218,7 @@
   // import SvgShape from '../SvgShape';
   import BasemapToggleControl from '../BasemapToggleControl.vue';
   import BasemapSelectControl from '../BasemapSelectControl.vue';
+  import FullScreenMapToggleTab from '../FullScreenMapToggleTab.vue';
   import LocationControl from '../LocationControl.vue';
   import CyclomediaButton from '../../cyclomedia/Button';
   import PictometryButton from '../../pictometry/Button';
@@ -253,6 +254,7 @@
       // SvgShape,
       BasemapToggleControl,
       BasemapSelectControl,
+      FullScreenMapToggleTab,
       LocationControl,
       PictometryButton,
       CyclomediaButton,
@@ -269,6 +271,21 @@
     computed: {
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
+      },
+      fullScreenMapEnabled() {
+        return this.$store.state.fullScreenMapEnabled;
+      },
+      windowWidth() {
+        return this.$store.state.windowWidth;
+      },
+      mapPanelContainerClass() {
+        if (this.fullScreenMapEnabled) {
+          return 'medium-24 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map'
+        } else if (this.windowWidth >= 950) {
+          return 'medium-16 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map';
+        } else {
+          return 'medium-14 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map';
+        }
       },
       cycloLatlng() {
         if (this.$store.state.cyclomedia.orientation.xyz !== null) {
@@ -505,19 +522,23 @@
         // console.log('handleMapMove is running');
         const map = this.$store.state.map.map;
 
-        const pictometryConfig = this.$config.pictometry || {};
+        // const pictometryConfig = this.$config.pictometry || {};
 
         const center = map.getCenter();
         const { lat, lng } = center;
         const coords = [lng, lat];
+        const zoom = map.getZoom();
+        this.$store.commit('setMapZoom', zoom);
+        const scale = this.$config.map.scales[zoom];
+        this.$store.commit('setMapScale', scale);
 
-        if (pictometryConfig.enabled) {
-          // update state for pictometry
-          this.$store.commit('setPictometryMapCenter', coords);
-
-          const zoom = map.getZoom();
-          this.$store.commit('setPictometryMapZoom', zoom);
-        }
+        // if (pictometryConfig.enabled) {
+        //   // update state for pictometry
+        //   this.$store.commit('setPictometryMapCenter', coords);
+        //
+        //   const zoom = map.getZoom();
+        //   this.$store.commit('setPictometryMapZoom', zoom);
+        // }
 
         const cyclomediaConfig = this.$config.cyclomedia || {};
 
@@ -540,16 +561,27 @@
 </script>
 
 <style scoped>
+
+  /* .map-panel-container {
+    height: calc(100vh - 220px);
+  }
+
+  @media screen and (max-width: 40em) {
+    .map-panel-container {
+      height: calc(100vh - 256px);
+    }
+  } */
+
+/*this allows the loading mask to fill the div*/
   .mb-panel-map {
-    /*this allows the loading mask to fill the div*/
     position: relative;
   }
 
-  /*@media (max-width: 1024px) {
+  /* @media (max-width: 1024px) {
     .mb-panel-map {
       height: 600px;
     }
-  }*/
+  } */
 
   .mb-search-control-container {
     height: 48px;
@@ -558,27 +590,28 @@
   }
 
   .mb-search-control-button {
+    color: #fff;
     width: 50px;
-    background: #ccc;
+    background: #2176d2;
     line-height: 48px;
   }
 
   .mb-search-control-input {
-    background-color: white;
+    /* background-color: white; */
     border: 0;
-    height: 48px !important;
-    line-height: 48px;
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
+    /* height: 48px !important; */
+    /* line-height: 48px; */
+    padding: 15px;
+    /* padding-left: 15px; */
+    /* padding-right: 15px; */
     font-family: 'Montserrat', 'Tahoma', sans-serif;
     font-size: 16px;
-    width: 350px;
+    width: 275px;
   }
 
-  .mb-map-with-widget {
+  /* .mb-map-with-widget {
     height: 50%;
-  }
+  } */
 
   .widget-slot {
     display: inline-block;
@@ -621,17 +654,17 @@
     }
   }
 
-  @media screen and (max-width: 700px) {
-    .mb-search-control-input {
-      width: 100px;
-    }
-  }
-
-  @media screen and (max-width: 639px) {
+  @media screen and (max-width: 750px) {
     .mb-search-control-input {
       width: 250px;
     }
   }
+
+  /* @media screen and (max-width: 639px) {
+    .mb-search-control-input {
+      width: 250px;
+    }
+  } */
 
   @media screen and (max-width: 450px) {
     .mb-search-control-input {

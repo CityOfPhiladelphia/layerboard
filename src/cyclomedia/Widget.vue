@@ -12,7 +12,7 @@
     </div>
     <div id="cycloviewer"
          ref="cycloviewer"
-         class="panoramaViewerWindow"
+         class="panorama-viewer-window"
     >
     <!-- @mousedown="console.log('mouseup')" -->
     </div>
@@ -48,9 +48,9 @@
       // },
       cycloContainerClass() {
         if (this.pictometryActive) {
-          return 'large-16 columns mb-panel'
+          return 'large-16 columns'
         } else {
-          return 'large-24 columns mb-panel'
+          return 'large-24 columns'
         }
       },
       locForCyclo() {
@@ -120,6 +120,7 @@
       }
     },
     mounted() {
+      console.log('cyclomedia widget mounted is running');
       StreetSmartApi.init({
         targetElement: this.$refs.cycloviewer,
         username: this.$config.cyclomedia.username,
@@ -384,6 +385,21 @@
 
 <style>
 
+
+.panorama-viewer-window {
+  display: block;
+  width: 100%;
+  height: calc((100vh - 109px)/2);
+}
+
+@media screen and (max-width: 750px) {
+  .panorama-viewer-window {
+    display: block;
+    width: 100%;
+    height: calc((100vh - 142px)/2);
+  }
+}
+
 #cyclo-container {
   padding: 0px;
   height: 50%;
@@ -409,10 +425,12 @@
   margin-left: 8.5px;
 }
 
-.panoramaViewerWindow {
-  display: block;
-  width: 100%;
-  height:100%;
-}
+/* .panorama-viewer-container {
+  height: 50px !important;
+} */
+
+/* canvas {
+  height: 50px !important;
+} */
 
 </style>

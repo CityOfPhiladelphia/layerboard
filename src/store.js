@@ -9,6 +9,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
 
   const initialState = {
     isMobileOrTablet: false,
+    fullScreenMapEnabled: false,
     bennyEndpoints: {},
     // bennyEndpoints2: {},
     // bennyEndpoints3: [],
@@ -78,11 +79,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     didToggleTopicsOn: false,
     shouldShowTopics: true,
     shouldShowMap: true,
-    windowSize: {
-      // TODO set based on current window size
-      height: 0,
-      width: 0,
-    },
+    windowWidth: 0,
   };
 
   // TODO standardize how payloads are passed around/handled
@@ -92,6 +89,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     mutations: {
       setIsMobileOrTablet(state, payload) {
         state.isMobileOrTablet = payload;
+      },
+      setFullScreenMapEnabled(state, payload) {
+        state.fullScreenMapEnabled = payload;
       },
       setCategories(state, payload) {
         state.map.categories = payload;
@@ -262,8 +262,8 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setShouldShowMap(state, payload) {
         state.shouldShowMap = payload;
       },
-      setWindowSize(state, payload) {
-        state.windowSize = payload;
+      setWindowWidth(state, payload) {
+        state.windowWidth = payload;
       }
     }
   });

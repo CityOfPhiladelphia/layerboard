@@ -6,23 +6,24 @@ export default {
   },
   methods: {
     geocode(input) {
-      // console.log('geocode', input);
       const self = this;
       const searchConfig = this.$config.geocoder.methods.search;
       const url = searchConfig.url(input);
       const params = searchConfig.params;
+      console.log('geocode, input:', input, 'searchConfig:', searchConfig, 'url:', url, 'params:', params);
 
       // set status of geocode
       this.$store.commit('setGeocodeStatus', 'waiting');
 
-      this.$http.get(url, { params }).then(this.didGeocode, response => {
+      axios.get(url, { params }).then(this.didGeocode, response => {
         console.log('geocode error')
         self.$store.commit('setGeocodeData', null);
         self.$store.commit('setGeocodeStatus', 'error');
       });
     },
     didGeocode(response) {
-      const data = response.body;
+      console.log('didGeocode is running, response:', response);
+      const data = response.data;
       // TODO handle multiple results
 
       if (!data.features || data.features.length < 1) {

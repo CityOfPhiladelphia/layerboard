@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="div-row">
+    <!-- <div class="input-group"> -->
     <!-- <li> -->
       <a :href="'http://metadata.phila.gov/#home/representationdetails/' + this.bennyId"
          target="_blank"
@@ -9,25 +10,19 @@
         <span><i class="fa fa-info-circle fa-2x"></i></span>
       </a>
       <input :id="'checkbox-'+layerName"
+             :class="{ disabled: shouldBeDisabled }"
              type="checkbox"
              :layerid="layerId"
-             :disabled="shouldBeDisabled"
              :checked="webMapActiveLayers.includes(layerName)"
              @click="checkboxToggle"
       >
-      <!-- <ul class="dropdown menu" data-dropdown-menu>
-        <li>
-          <a href="#"><span><i class="fa fa-ellipsis-v"></i></span></a>
-          <ul class="menu" style="background: red">
-            <li><a href="#">Item 1A</a></li>
-          </ul>
-        </li>
-      </ul> -->
+      <!-- :disabled="shouldBeDisabled" -->
       <label :for="'checkbox-'+layerName"
              :class="{ disabled: shouldBeDisabled, 'label-text': true }"
       >
-        {{ layerName }}
+        <div class="layer-name">{{ layerName }}</div>
       </label>
+      <!-- <div class="layer-name">{{layerName}}</div> -->
     </div>
     <legend-box v-if="this.$store.state.map.webMapActiveLayers.includes(layerName)"
                 :layer="layer"
@@ -259,10 +254,6 @@
 
 <style scoped>
 
-  .disabled {
-    color: #d3d3d3;
-  }
-
   .sliderDiv {
     height: 60px;
   }
@@ -270,7 +261,6 @@
   .flex {
     margin-bottom: 16px;
   }
-
 
   .metadata-link {
     display: inline-block;
@@ -284,39 +274,62 @@
     width: 200px;
   }
 
-
   .div-row {
     position: relative;
     margin-bottom: 12px;
   }
 
-  input[type="checkbox"] {
-    width: 25px; /*Desired width*/
-    height: 25px; /*Desired height*/
+  /* input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
     position: absolute;
     top: 50%;
     margin-top: -10px;
     margin-left: 32px;
     cursor: pointer;
-    /*line-height: 15px;*/
-    /*margin: 0;*/
-    /*-webkit-appearance: none;*/
-    /*appearance: none;*/
-  }
+  } */
 
   a {
     position: absolute;
-    top: 50%;
-    margin-top: -11px;
+    /* top: 50%; */
+    /* margin-top: -10px; */
     /*margin-left: 25px;*/
   }
 
+  input[type=checkbox]+label[for] {
+    font-size: 16px;
+  }
+
+  input[type=checkbox]+label::before {
+    position: absolute;
+    margin-top: -12px;
+    font-size: 30px;
+    padding-right: 5px;
+  }
+
+  .disabled {
+    color: #d3d3d3 !important;
+  }
+
+  input[type=checkbox]+label.disabled::before {
+    color: #d3d3d3;
+  }
+
   .label-text {
-    /*position: absolute;*/
+    /* position: absolute; */
     display: inline-block;
-    /*top: 50%;*/
-    margin-top: 4px;
-    padding-left: 55px;
+    /* margin-top: 4px; */
+    margin-left: 0px;
+    padding-left: 30px;
+  }
+
+  .layer-name {
+    font-weight: normal;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 30px;
+    margin-bottom: 6px;
+
   }
 
 

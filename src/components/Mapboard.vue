@@ -1,24 +1,15 @@
 <template>
-  <div class="mb-root row collapse"
-       id="mb-root"
-  >
-  <!-- :style="this.$config.rootStyle" -->
+  <div class="cell medium-auto grid-x" id="mb-root">
     <button class="small-24 button datasets-button"
             @click="toggleTopics"
     >
-      <!-- <i class="fa fa-bars fa-inverse" aria-hidden="true"></i> -->
       {{ this.buttonMessage }}
     </button>
 
-    <!-- <div class="below-button"
-         id="below-button"
-    > -->
       <topic-panel v-show="shouldShowTopics"
-                   :style="styleObject"
       />
 
       <map-panel v-show="shouldShowMap"
-                 :style="styleObject"
       >
         <cyclomedia-widget v-if="this.$config.cyclomedia.enabled"
                            slot="cycloWidget"
@@ -76,15 +67,15 @@
       ViewCone,
       PngMarker
     },
-    data() {
-      const data = {
-        styleObject: {
-          'overflow-y': 'auto',
-          'height': '100%'
-        }
-      };
-      return data;
-    },
+    // data() {
+    //   const data = {
+    //     styleObject: {
+    //       'overflow-y': 'auto',
+    //       'height': '100%'
+    //     }
+    //   };
+    //   return data;
+    // },
     created() {
       // check if mobile or tablet
       this.$store.commit('setIsMobileOrTablet', this.isMobileOrTablet());
@@ -130,6 +121,9 @@
       });
     },
     computed: {
+      fullScreenMapEnabled() {
+        return this.$store.state.fullScreenMapEnabled;
+      },
       cyclomediaActive() {
         return this.$store.state.cyclomedia.active
       },
@@ -152,7 +146,7 @@
         return this.$store.state.geocode.data
       },
       windowWidth() {
-        return this.$store.state.windowSize.width;
+        return this.$store.state.windowWidth;
       },
       windowHeight() {
         return this.$store.state.windowSize.height;
@@ -182,6 +176,10 @@
         this.calculateShouldShowTopics();
         this.calculateShouldShowMap();
       },
+      fullScreenMapEnabled(nextValue) {
+        this.calculateShouldShowTopics();
+        this.calculateShouldShowMap();
+      },
       didToggleTopicsOn(nextValue) {
         this.calculateShouldShowTopics();
         this.calculateShouldShowMap();
@@ -189,9 +187,9 @@
       shouldShowTopics(nextValue) {
         this.handleWindowResize();
       },
-      // shouldShowMap(nextValue) {
-      //   this.handleWindowResize();
-      // }
+      shouldShowMap(nextValue) {
+        this.handleWindowResize();
+      }
     },
     methods: {
       isMobileOrTablet() {
@@ -211,14 +209,16 @@
       },
       calculateShouldShowTopics() {
         const windowWidth = this.windowWidth;
-        const notMobile = windowWidth >= 640;
+        const smallScreen = windowWidth < 750;
         const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
-        const shouldShowTopics = notMobile || didToggleTopicsOn;
+        const fullScreenMapEnabled = this.$store.state.fullScreenMapEnabled;
+        console.log('calculateShouldShowTopics, smallScreen:', smallScreen, 'didToggleTopicsOn', didToggleTopicsOn, 'fullScreenMapEnabled', fullScreenMapEnabled);
+        const shouldShowTopics = !smallScreen && !fullScreenMapEnabled || smallScreen && didToggleTopicsOn;
         this.$store.commit('setShouldShowTopics', shouldShowTopics);
       },
       calculateShouldShowMap() {
         const windowWidth = this.windowWidth;
-        const notMobile = windowWidth >= 640;
+        const notMobile = windowWidth > 750;
         const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
         const shouldShowMap = notMobile || !didToggleTopicsOn;
         this.$store.commit('setShouldShowMap', shouldShowMap);
@@ -226,28 +226,29 @@
       handleWindowResize() {
         const rootElement = document.getElementById('mb-root');
         const rootStyle = window.getComputedStyle(rootElement);
-        const rootHeight = rootStyle.getPropertyValue('height');
-        const rootHeightNum = parseInt(rootHeight.replace('px', ''));
+        // const rootHeight = rootStyle.getPropertyValue('height');
+        // const rootHeightNum = parseInt(rootHeight.replace('px', ''));
+        const rootHeightNum = 100;
         const rootWidth = rootStyle.getPropertyValue('width');
         const rootWidthNum = parseInt(rootWidth.replace('px', ''));
-        let boardHeight;
+        // let boardHeight;
         const windowWidth = rootWidthNum;
         const notMobile = windowWidth >= 640;
-        // console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
-        if (!notMobile) {
-          boardHeight = rootHeightNum - 34;
-          // console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-        } else {
-          boardHeight = rootHeightNum
-          // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-        }
-        this.styleObject.height = boardHeight.toString() + 'px';
+        console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
+        // if (!notMobile) {
+        //   boardHeight = rootHeightNum - 34;
+        //   console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
+        // } else {
+        //   boardHeight = rootHeightNum
+        //   // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
+        // }
+        // this.styleObject.height = boardHeight.toString() + 'px';
 
-        const obj = {
-          height: rootHeightNum,
-          width: rootWidthNum
-        }
-        this.$store.commit('setWindowSize', obj);
+        // const obj = {
+        //   height: rootHeightNum,
+        //   width: rootWidthNum
+        // }
+        this.$store.commit('setWindowWidth', rootWidthNum);
       }
     }
   };
@@ -260,6 +261,12 @@
   textarea:focus,
   button:focus {
     outline: none;
+  }
+
+  /* standards applies padding to buttons, which causes some weirdness with
+  buttons on the map panel. override here. */
+  button {
+    padding: inherit;
   }
 
   .mb-root {
@@ -285,35 +292,31 @@
   }*/
 
   /*small devices only*/
-  @media screen and (max-width: 39.9375em) {
-    /*TODO map is flowing off screen*/
-    .mb-map-panel {
-      top: 112.4063px;
-    }
-
+  /* @media screen and (max-width: 39.9375em) { */
+  @media screen and (max-width: 750px) {
     .datasets-button {
       display: block;
     }
   }
 
   /* Medium and up */
-  @media screen and (min-width: 40em) {
+  /* @media screen and (min-width: 40em) {
 
-  }
+  } */
 
   /* Medium only */
-  @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+  /* @media screen and (min-width: 40em) and (max-width: 63.9375em) {
 
-  }
+  } */
 
   /* Large and up */
-  @media screen and (min-width: 64em) {
+  /* @media screen and (min-width: 64em) {
 
-  }
+  } */
 
   /* Large only */
-  @media screen and (min-width: 64em) and (max-width: 74.9375em) {
+  /* @media screen and (min-width: 64em) and (max-width: 74.9375em) {
 
-  }
+  } */
 
 </style>

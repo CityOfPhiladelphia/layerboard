@@ -121,4 +121,18 @@
 .legend {
   margin-left: 10px;
 }
+
+ul {
+  list-style: none;
+  margin-left: 0px;
+}
+
+ul ul {
+  list-style: none;
+  margin-left: 0px;
+}
+
+li {
+  list-style: none;
+}
 </style>

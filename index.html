@@ -2,47 +2,56 @@
 <html>
   <head>
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    <!-- <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-NKCTSVS');</script>
-    <!-- End Google Tag Manager -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>OpenMaps | Phila.gov</title>
-    <link rel='icon' type='image/x-icon' href="//cityofphiladelphia.github.io/patterns/images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="http://standards.phila.gov/img/favicon.png">
+    <meta name="description" content=""> -->
+    <!-- <link rel='icon' type='image/x-icon' href="//cityofphiladelphia.github.io/patterns/images/favicon.ico"> -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenMaps | phila.gov</title>
+    <link rel="canonical" href="">
     <meta name="description" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="http://standards.phila.gov/img/favicon.png">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="//unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.css">
+    <link rel="stylesheet" href="//unpkg.com/phila-standards@0.12.0/dist/css/phila-app.min.css">
+    <!-- <link rel="stylesheet" href="//cityofphiladelphia.github.io/patterns/dist/1.3.0/css/patterns.css"> -->
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css">
+
+    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css"> -->
+    <link rel="stylesheet" href="//unpkg.com/leaflet@1.1.0/dist/leaflet.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.css">
     <!--pattern stylesheet includes foundation css -->
     <!-- <link rel="stylesheet" href="//unpkg.com/vuetify/dist/vuetify.min.css"> -->
     <!-- <link rel="stylesheet" href="//cityofphiladelphia.github.io/patterns/dist/1.4.1/css/patterns.css"> -->
-    <link rel="stylesheet" href="//cityofphiladelphia.github.io/patterns/dist/1.3.0/css/patterns.css">
-    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/foundation/6.1.2/foundation.css"> -->
+
     <!-- <link rel="stylesheet" href="jquery-ui-1.10.3.custom.min.css" /> -->
-    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css"> -->
-    <link rel="stylesheet" href="//unpkg.com/leaflet@1.1.0/dist/leaflet.css">
     <link rel="stylesheet" href="//unpkg.com/Leaflet.vector-markers@0.0.6/dist/leaflet-vector-markers.css">
     <link rel="stylesheet" href="src/util/measure/leaflet-measure.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="css/main.css">
+    <!-- <link rel="stylesheet" href="css/main.css"> -->
     <!-- <link rel="canonical" href=""> -->
 
   </head>
 
   <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKCTSVS"
+    <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKCTSVS"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     <div class="full" id="application">
-      <v-app>
-        <!-- Begin header -->
         <header data-swiftype-index='false' class="site-header app">
           <div class="row">
             <div class="small-24 columns">
@@ -54,35 +63,78 @@
                   <h1 class="page-title">OpenMaps
                     <span id="demo-badge">DEMO</span>
                   </h1>
-                  <!-- <h2 class="page-subtitle">Phila Map and Data Portal</h2> -->
                 </a>
               </div>
             </div>
           </div>
-        </header>
+        </header> -->
+        <div class="grid-y medium-grid-frame" id="application">
+          <!-- Begin header -->
+          <header class="site-header app group">
+            <div class="row expanded">
+              <div class="columns">
+                <a href="//beta.phila.gov" class="logo">
+                  <img src="http://standards.phila.gov/img/logo/city-of-philadelphia-yellow-white.png" alt="City of Philadelphia">
+                </a>
+                <div class="app-divide"></div>
+                <div class="page-title-container">
+                  <a href="#/">
+                    <h1 class="page-title">OpenMaps
+                      <span id="demo-badge">DEMO</span>
+                    </h1>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </header>
 
         <!-- Mapboard -->
         <div id="mapboard"></div>
-      </v-app>
+
+        <!-- Footer -->
+        <div class="app-footer">
+          <!-- remove the anchor class if you want to handle footer placement yourself, otherwise it will be postion: fixed -->
+          <footer>
+            <div class="row expanded">
+              <div class="columns">
+                <nav>
+                  <ul class="inline-list">
+                    <li>
+                      <a href="//philagsg.typeform.com/to/GQOPjW">Feedback</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </footer>
+        </div>
+
     </div><!-- end of application div -->
 
-    <!-- JS: Patterns -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <!-- JS: Foundation -->
+    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.js"></script>
+
+    <script src="//unpkg.com/vue@2.4.2"></script>
+    <!-- <script src="//unpkg.com/vue-router@2.5.3"></script>
+    <script src="//unpkg.com/vue-resource@1.3.1/dist/vue-resource.min.js"></script> -->
+
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> -->
     <script src="//unpkg.com/axios@0.16.2/dist/axios.min.js"></script>
     <!-- <script src="jquery-ui-1.10.3.custom.min.js"></script> -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/6.1.2/foundation.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/6.1.2/foundation.min.js"></script> -->
     <!-- <script src="//cityofphiladelphia.github.io/patterns/dist/1.4.1/js/patterns.min.js"></script> -->
-    <script src="//cityofphiladelphia.github.io/patterns/dist/1.3.0/js/patterns.min.js"></script>
-    <script src="//cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
+    <!-- <script src="//cityofphiladelphia.github.io/patterns/dist/1.3.0/js/patterns.min.js"></script> -->
+    <!-- <script src="//cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script> -->
     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.min.js"></script> -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
     <!-- JS: Mapboard -->
     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script> -->
-    <script src="//unpkg.com/vue@2.4.2"></script>
-    <script src="//unpkg.com/vue-router@2.5.3"></script>
-    <script src="//unpkg.com/vue-resource@1.3.1/dist/vue-resource.min.js"></script>
     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script> -->
     <script src="//unpkg.com/leaflet@1.1.0/dist/leaflet.js"></script>
     <!-- <script src="//unpkg.com/esri-leaflet@2.0.7"></script> -->
