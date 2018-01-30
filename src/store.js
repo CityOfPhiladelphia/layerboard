@@ -79,7 +79,16 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     shouldShowTopics: true,
     shouldShowMap: true,
     windowWidth: 0,
+    route: null,
+    modals: {
+      about: {
+        open: true
+      }
+    }
   };
+
+  // const TOGGLE_MODAL = 'modal/TOGGLE_MODAL'
+  // const CLOSE_MODALS = 'modal/CLOSE_MODALS'
 
   // TODO standardize how payloads are passed around/handled
   return new Vuex.Store({
@@ -256,7 +265,19 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setWindowWidth(state, payload) {
         state.windowWidth = payload;
-      }
+      },
+
+      setRoute(state, payload) {
+        state.route = payload;
+      },
+      // [types.TOGGLE_MODAL] (state, {name, open}) {
+      //   state.modals[name].open = open === null ? !state.modals[name].open : open
+      // },
+      // [types.CLOSE_MODALS] (state) {
+      //   for (let modalName in state.modals) {
+      //     state.modals[modalName].open = false
+      //   }
+      // }
     }
   });
 }

@@ -19,6 +19,9 @@ Mapboard.default({
   //   right: 0,
   //   overflow: 'auto',
   // },
+  router: {
+    enabled: true
+  },
   geolocation: {
     enabled: true
   },

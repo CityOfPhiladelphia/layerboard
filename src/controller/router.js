@@ -69,7 +69,7 @@ class Router {
     const location = window.location;
     const hash = location.hash;
 
-    // console.log('hash changed =>', hash);
+    console.log('hash changed =>', hash);
 
     // parse url
     const comps = parseUrl(location.href);
@@ -82,6 +82,7 @@ class Router {
 
     // parse path
     const pathComps = hash.split('/').splice(1);
+    console.log('pathComps:', pathComps);
     const addressComp = pathComps[0];
 
     // if there's no address, don't do anything
@@ -97,10 +98,12 @@ class Router {
       nextTopic = decodeURIComponent(pathComps[1]);
     }
 
-    this.store.commit('setLastSearchMethod', 'geocode');
+    // this.store.commit('setLastSearchMethod', 'geocode');
+    this.store.commit('setRoute', pathComps[0]);
 
-    this.routeToAddress(nextAddress);
-    this.routeToTopic(nextTopic);
+    // this.routeToAddress(nextAddress);
+    // this.routeToTopic(nextTopic);
+
   }
 
   routeToAddress(nextAddress) {
