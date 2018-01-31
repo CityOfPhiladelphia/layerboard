@@ -272,6 +272,9 @@
       Polyline_,
       ModalAbout
     },
+    mounted() {
+      this.$controller.appDidLoad();
+    },
     computed: {
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
