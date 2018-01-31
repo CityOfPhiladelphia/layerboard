@@ -1,4 +1,15 @@
 // console.log = console.info = console.debug = console.error = function () {};
+function openHelp() {
+  var firstHash = window.location.hash;
+  // console.log('setHash is running, firstHash:', firstHash);
+  var firstHashArr = firstHash.split('/').slice(2);
+  console.log('firstHashArr:', firstHashArr);
+  var finalHash = '#/help';
+  for (let hashPart of firstHashArr) {
+    finalHash = finalHash + '/' + hashPart;
+  }
+  window.location.hash = finalHash;
+}
 
 // var BASE_CONFIG_URL = 'https://raw.githubusercontent.com/ajrothwell/openmaps-base-config/develop/config.js';
 var BASE_CONFIG_URL = '//rawgit.com/ajrothwell/openmaps-base-config/ed90410f6cf5f88d86e5b0d46a6b06ca65abacb1/config.js';
@@ -19,6 +30,9 @@ Mapboard.default({
   //   right: 0,
   //   overflow: 'auto',
   // },
+  router: {
+    enabled: true
+  },
   geolocation: {
     enabled: true
   },

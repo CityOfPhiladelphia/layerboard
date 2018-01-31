@@ -5,6 +5,11 @@ body {
   overflow-y: hidden;
 }
 
+.bold-a {
+  font-weight: bold;
+  color: white;
+}
+
 .grid-y {
   overflow-y: hidden;
 }
@@ -70,4 +75,34 @@ body {
   padding: 4px;
   border-radius: 8px;
   background: #f3c613;
+}
+
+.tour-tip{
+  border-left: 3px solid color(dark-ben-franklin);
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  &:hover{
+    cursor: pointer;
+    cursor: hand;
+    background: color(ghost-gray);
+  }
+}
+
+.tour-tip__action{
+  color: color(dark-ben-franklin);
+  @include rem(font-size, 1.75);
+  margin:0;
+  padding:0;
+}
+
+.tour-tip__result{
+  // padding-left: 30px;
+}
+
+.tour-tip__icon {
+  margin-right: 10px;
+  @include rem(font-size, 3)
+  color: color(electric-blue);
 }
