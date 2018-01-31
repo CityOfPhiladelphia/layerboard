@@ -5,8 +5,8 @@ function openHelp() {
   var firstHashArr = firstHash.split('/').slice(2);
   console.log('firstHashArr:', firstHashArr);
   var finalHash = '#/help';
-  for (let hashPart of firstHashArr) {
-    finalHash = finalHash + '/' + hashPart;
+  for (var i=0; i < firstHashArr.length; i++) {
+    finalHash = finalHash + '/' + firstHashArr[i];
   }
   window.location.hash = finalHash;
 }
