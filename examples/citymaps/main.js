@@ -269,14 +269,6 @@ Mapboard.default({
   //       }
   //     },
   //   },
-  //   '311': {
-  //     type: 'esri-nearby',
-  //     url: 'http://192.168.103.143:6080/arcgis/rest/services/GSG/GIS311_365DAYS/MapServer/0',
-  //     options: {
-  //       geometryServerUrl: 'http://192.168.103.143:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer/',
-  //       radius: 500,
-  //       units: 'feet',
-  //     },
   //   },
   //   vacantLand: {
   //     type: 'esri',
