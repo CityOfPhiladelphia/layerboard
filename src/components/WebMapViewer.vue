@@ -104,7 +104,7 @@
         }
         store.commit('setBennyEndpoints', bennyEndpoints);
       }, response => {
-        console.log('AXIOS ERROR Mapboard.vue');
+        console.log('AXIOS ERROR WebMapViewer.vue');
       });
     },
     computed: {

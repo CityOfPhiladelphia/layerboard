@@ -1,4 +1,5 @@
-// console.log = console.info = console.debug = console.error = function () {};
+console.log = console.info = console.debug = console.error = function () {};
+
 function openHelp() {
   var firstHash = window.location.hash;
   // console.log('setHash is running, firstHash:', firstHash);
@@ -18,7 +19,7 @@ var WEBMAP_ID = '4c3ed877199c402895b7fa45ce6409b6';
 // configure accounting.js
 accounting.settings.currency.precision = 0;
 
-Mapboard.default({
+WebMapViewer.default({
   // rootStyle: {
   //   // height: '100%'
   //   position: 'absolute',

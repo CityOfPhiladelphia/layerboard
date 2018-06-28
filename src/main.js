@@ -3,7 +3,7 @@ import Vue from 'vue';
 import createStore from './store';
 import configMixin from './util/config-mixin';
 import eventBusMixin from './util/event-bus-mixin';
-import Mapboard from './components/Mapboard';
+import WebMapViewer from './components/WebMapViewer';
 import mergeDeep from './util/merge-deep';
 import controllerMixin from './controller';
 import generateUniqueId from './util/unique-id';
@@ -12,9 +12,8 @@ export default (clientConfig) => {
   const baseConfigUrl = clientConfig.baseConfig;
   // console.log('clientConfig', clientConfig, 'baseConfigUrl', baseConfigUrl);
 
-  // create a global event bus used to proxy events to the mapboard host
   // Vue.use(eventBusMixin);
-  // create a global event bus used to proxy events to the mapboard host
+  // create a global event bus used to proxy events to the host
   const eventBus = new Vue();
   Vue.prototype.$eventBus = eventBus;
 
@@ -39,12 +38,12 @@ export default (clientConfig) => {
 
     // mount main vue
     const vm = new Vue({
-      el: config.el || '#mapboard',
-      render: (h) => h(Mapboard),
+      el: config.el || '#webmap-viewer',
+      render: (h) => h(WebMapViewer),
       store
     });
 
-    // bind mapboard events to host app
+    // bind events to host app
     const events = config.events || {};
     for (let eventName of Object.keys(events)) {
       const callback = events[eventName];
