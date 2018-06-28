@@ -1,4 +1,18 @@
-console.log = console.info = console.debug = console.error = function () {};
+/*
+________                           _____
+\_____  \ ______   ____   ____    /     \ _____  ______  ______
+ /   |   \\____ \_/ __ \ /    \  /  \ /  \\__  \ \____ \/  ___/
+/    |    \  |_> >  ___/|   |  \/    Y    \/ __ \|  |_> >___ \
+\_______  /   __/ \___  >___|  /\____|__  (____  /   __/____  >
+        \/|__|        \/     \/         \/     \/|__|       \/
+*/
+
+// turn off console logging in production
+// TODO come up with better way of doing this with webpack + env vars
+const { hostname='' } = location;
+if (hostname !== 'localhost' && !hostname.match(/(\d+\.){3}\d+/)) {
+  console.log = console.info = console.debug = console.error = function () {};
+}
 
 function openHelp() {
   var firstHash = window.location.hash;
