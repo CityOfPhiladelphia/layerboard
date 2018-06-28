@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import isMobileDevice from './util/is-mobile-device';
 
 // when you load vuex from a script tag this seems to happen automatically
 // Vue.use(Vuex);
@@ -8,7 +9,7 @@ import Vuex from 'vuex';
 function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
 
   const initialState = {
-    isMobileOrTablet: false,
+    isMobileOrTablet: isMobileDevice(),
     fullScreenMapEnabled: false,
     bennyEndpoints: {},
     // bennyEndpoints2: {},
