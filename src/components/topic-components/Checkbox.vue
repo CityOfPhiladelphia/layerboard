@@ -58,6 +58,7 @@
   import TopicComponent from './TopicComponent';
   import LegendBox from './LegendBox';
   import Slider from './Slider';
+  import L from 'leaflet';
 
   export default {
     components: {
@@ -161,6 +162,9 @@
       },
       webMapDisplayedLayers() {
         return this.$store.state.map.webMapDisplayedLayers;
+      },
+      webMapGeoJson() {
+        return this.$store.state.map.webMapGeoJson;
       }
     },
     methods: {
@@ -170,6 +174,28 @@
       trim(s) {
         return ( s || '' ).replace( /^\s+|\s+$/g, '' );
       },
+      // getGeoJson(layer) {
+      //   const layer2 = 'services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/WasteBaskets_Big_Belly/FeatureServer/0'
+      //   // const url = 'http://' + layer2;
+      //   const url = 'http://' + this.layerUrls[layer];
+      //   console.log('getGeoJson is running, layer:', layer, 'url:', url);
+      //   const dataQuery = L.esri.query({ url });
+      //   dataQuery.where("1=1");
+      //   dataQuery.run((function(error, featureCollection, response) {
+      //     // console.log('parcelQuery ran, activeParcelLayer:', activeParcelLayer);
+      //     this.didGetData(error, featureCollection, response, layer);
+      //   }).bind(this)
+      // )
+      // },
+      // didGetData(error, featureCollection, response, layer) {
+      //   console.log('didGetData is running, layer:', layer, 'featureCollection:', featureCollection, 'response:', response);
+      //   // const obj = {
+      //   //   'layerName': layer,
+      //   //   'json': response
+      //   let obj = this.webMapGeoJson;
+      //   obj[layer] = response;
+      //   this.$store.commit('setWebMapGeoJson', obj);
+      // },
       checkboxToggle(e) {
         console.log('checkboxToggle', e.target, e.target.id, e.target.checked);
         const urlLayer = this.webMapUrlLayer;
@@ -178,7 +204,7 @@
         // const splitArray = e.target.id.split('-').splice(0, 1);
         const targetReplace = e.target.id.replace('checkbox-', '');
         if (e.target.checked) {
-          console.log('target checked');
+          console.log('target checked, targetReplace:', targetReplace);
           activeLayers.push(targetReplace);
           displayedLayers.push(targetReplace);
           // activeLayers.push(e.target.id.split('-')[1]);
@@ -187,6 +213,9 @@
             this.$store.commit('setWebMapUrlLayer', targetReplace);
             this.$controller.handleCheckboxClick(targetReplace);
           }
+          // if (!Object.keys(this.webMapGeoJson).includes(targetReplace)) {
+          //   this.getGeoJson(targetReplace);
+          // }
         } else {
           console.log('target not checked');
           const activeIndex = activeLayers.indexOf(targetReplace);

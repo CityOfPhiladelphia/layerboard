@@ -34,6 +34,7 @@ EsriLeaflet.Util.reduce = function(values, initial, fn, cb, context) {
   console.log('4 running EsriLeaflet.Util.reduce, values is:', values, 'curr is:', curr);
   // var legend = initial.layers[0].legend;
   function next(index) {
+    console.log('4 next is running, index:', index);
     var sync = true;
     // console.log('STARTING LOOP');
     // var labels = [];
@@ -226,6 +227,7 @@ EsriLeaflet.Legend.include({
         layer.drawingInfo.renderer.uniqueValueInfos = newUnique;
       }
       self._drawingInfoToLegend(layer.drawingInfo, function(err, legend) {
+        console.log('after _drawingInfoToLegend');
         if (err) {
           return cb(err, null);
         }
@@ -246,13 +248,14 @@ EsriLeaflet.Legend.include({
   },
 
   _getRendererSymbols: function(renderer) {
-    console.log('13 _getRendererSymbols is running');
+    console.log('13 _getRendererSymbols is running, renderer:', renderer);
     var symbols;
     if (renderer.type === 'uniqueValue') {
       symbols = renderer.uniqueValueInfos.slice();
     } else if (renderer.type === 'classBreaks') {
       symbols = renderer.classBreakInfos.slice();
     } else if (renderer.type === 'simple') {
+
       symbols = [{
         symbol: renderer.symbol,
         label: renderer.label,
@@ -277,6 +280,7 @@ EsriLeaflet.Legend.include({
     EsriLeaflet.Util.reduce(
       this._getRendererSymbols(drawingInfo.renderer), [],
       function(curr, symbol, cb) {
+        console.log('12 in callback function, curr:', curr, 'symbol:', symbol, 'cb:', cb);
         self._renderSymbol(symbol, function(err, image) {
           if (err) {
             return cb(err, curr);
@@ -298,6 +302,7 @@ EsriLeaflet.Legend.include({
   },
 
   _renderSymbol: function(symbol, callback, context) {
+    console.log('_renderSymbol is running, symbol:', symbol);
     return this._renderer.render(symbol.symbol, callback, context);
   }
 });
@@ -317,18 +322,18 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   render: function(symbol, callback, context) {
-    console.log('14 EsriLeaflet.Legend.SymbolRenderer render is running, symbol:', symbol, 'context:', context);
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
     var imageData = symbol.imageData;
+    console.log('14 EsriLeaflet.Legend.SymbolRenderer render is running, symbol:', symbol, 'context:', context, 'ctx:', ctx, 'imageData:', imageData);
 
     let newSymbol;
     // if (symbolChange === true) {
-      newSymbol = Object.assign({}, symbol);
-      console.log('14.1 - symbol size:', symbol.size)
-      newSymbol.size = symbol.size + 4;
-      console.log('14.2 - newSymbol size:', newSymbol.size)
-      this._setSize(canvas, newSymbol);
+    newSymbol = Object.assign({}, symbol);
+    console.log('14.1 - symbol size:', symbol.size)
+    newSymbol.size = symbol.size + 4;
+    console.log('14.2 - newSymbol size:', newSymbol.size)
+    this._setSize(canvas, newSymbol);
     // } else {
     //   this._setSize(canvas, symbol);
     // }
@@ -337,9 +342,12 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
       if (error) {
         callback.call(context, error);
       } else {
+        console.log('14 imageData:', imageData);
         callback.call(context, null, {
           width: canvas.width || EsriLeaflet.Tasks.Legend.SymbolRenderer.DEFAULT_SIZE,
           height: canvas.height || EsriLeaflet.Tasks.Legend.SymbolRenderer.DEFAULT_SIZE,
+          // width: 30,
+          // height: 30,
           imageData: imageData.replace('data:image/png;base64,', ''),
           url: null,
           contentType: 'image/png'
@@ -348,12 +356,15 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
     }
 
     if (symbol.imageData) {
+      console.log('14 symbol.imageData:', symbol.imageData);
       return done(null, symbol.imageData);
+    } else {
+      console.log('14 - no symbol.imageData.  symbol:', symbol);
     }
 
     switch (symbol.type) {
       case 'esriSMS':
-        console.log('14 after esriSMS, ctx:', ctx, 'symbol', symbol, 'newSymbol', newSymbol)
+        console.log('14 after esriSMS, ctx:', ctx, 'symbol', symbol, 'newSymbol', newSymbol);
         // if (symbolChange === true) {
           this._renderMarker(ctx, newSymbol, done);
         // } else {
@@ -361,9 +372,12 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
         // }
         break;
       case 'esriSLS':
+        console.log('14 after esriSLS, ctx:', ctx, 'symbol:', symbol, 'newSymbol', newSymbol);
         this._renderLine(ctx, symbol, done);
         break;
       case 'esriSFS':
+        console.log('14 after esriSFS, ctx:', ctx, 'symbol', symbol, 'newSymbol', newSymbol);
+        // this._renderLine(ctx, symbol, done);
         this._renderFill(ctx, symbol, done);
         break;
       case 'esriPMS':
@@ -385,7 +399,7 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _renderFill: function(ctx, symbol, callback) {
-    console.log('EsriLeaflet.Legend.SymbolRenderer _renderFill is running, EsriLeaflet:', EsriLeaflet);
+    console.log('EsriLeaflet.Legend.SymbolRenderer _renderFill is running, EsriLeaflet:', EsriLeaflet, 'symbol:', symbol);
     // var size = EsriLeaflet.Tasks.Legend.SymbolRenderer.DEFAULT_SIZE;
     var size = EsriLeaflet.Legend.SymbolRenderer.DEFAULT_SIZE;
     var lineWidth = symbol.outline ? symbol.outline.width : 1;
@@ -425,8 +439,15 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
         break;
 
       case 'esriSFSSolid':
+        console.log('esriSFSSolid ctx:', ctx, 'symbol:', symbol, 'size:', size);
         ctx.fillStyle = this._formatColor(symbol.color);
-        ctx.fillRect(0, 0, size, size);
+        ctx.fillRect(0, 0, 10, 10);
+        // ctx.fillRect(0, 0, size, size);
+        // ctx.beginPath();
+        // ctx.moveTo(75, 50);
+        // ctx.lineTo(100, 75);
+        // ctx.lineTo(100, 25);
+        // ctx.fill();
         break;
 
       case 'esriSFSNull':
@@ -450,6 +471,7 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _renderLine: function(ctx, symbol, callback) {
+    console.log('_renderLine is running');
     var size = EsriLeaflet.Legend.SymbolRenderer.DEFAULT_SIZE;
     ctx.beginPath();
     ctx.lineWidth = symbol.width;
@@ -465,6 +487,7 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _renderMarker: function(ctx, symbol, callback) {
+    console.log('_renderMarker is running');
     var xoffset = 0;
     var yoffset = 0;
     var size = symbol.size;
@@ -554,6 +577,7 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _renderImageFill: function(ctx, symbol, callback) {
+    console.log('_renderImageFill is running');
     this._setRotation(ctx, symbol.angle);
     if (symbol.imageData) {
       this._fillImage(ctx, symbol.imageData, symbol, symbol.contentType);
@@ -567,6 +591,7 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _renderImageMarker: function(ctx, symbol, callback) {
+    console.log('_renderImageMarker is running');
     this._setRotation(ctx, symbol.angle);
     if (symbol.imageData) {
       this._drawImage(ctx, symbol.imageData, symbol.contentType);
@@ -580,6 +605,7 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _setSize: function(ctx, symbol) {
+    console.log('_setSize is running, ctx:', ctx, 'symbol:', symbol);
     if (symbol.size) {
       ctx.width = ctx.height = symbol.size + 4;
     } else if (symbol.type === 'esriSLS' ||
@@ -668,10 +694,12 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _getImageData: function(ctx, symbol) {
+    console.log('_getImageData is running');
     return ctx.toDImageData(0, 0, symbol.width, symbol.height);
   },
 
   _fillImage: function(ctx, imageData, symbol, contentType, image) {
+    console.log('_fillImage is running');
     var size = L.esri.Legend.DEFAULT_SIZE;
     var w = symbol.width || size;
     var h = symbol.height || size;
@@ -697,12 +725,14 @@ EsriLeaflet.Legend.SymbolRenderer = L.Class.extend({
   },
 
   _drawImage: function(ctx, imageData, contentType) {
+    console.log('_drawImage is running');
     var image = new Image();
     image.src = 'data:' + contentType + ';base64,' + imageData;
     ctx.drawImage(image, 0, 0);
   },
 
   _loadImage: function(url, callback, context) {
+    console.log('_loadImage is running');
     var image = new Image();
     image.crossOrigin = '';
     image.onload = function() {
