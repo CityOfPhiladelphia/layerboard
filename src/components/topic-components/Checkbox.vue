@@ -21,6 +21,17 @@
              :class="{ disabled: shouldBeDisabled, 'label-text': true }"
       >
         <div class="layer-name">{{ layerName }}</div>
+        <div class="tag-title"
+             v-if="matchingTags.length > 0"
+        >
+          Matching Tags:
+        </div>
+        <div class="tag-holder"
+             v-if="matchingTags.length > 0"
+             v-for="matchingTag in matchingTags"
+        >
+          {{ matchingTag }}
+        </div>
       </label>
       <!-- <div class="layer-name">{{layerName}}</div> -->
     </div>
@@ -40,34 +51,6 @@
             :opacity="opacity"
     >
     </slider>
-    <!-- <div v-if="this.$store.state.map.webMapActiveLayers.includes(layerName)"
-         class="sliderDiv"
-         data-app="true"
-    >
-      <v-layout row wrap>
-        <v-flex xs6>
-            <v-slider v-model="opa"
-                      class="ml-3 mr-3 pr-3 pt-0"
-                      :id="layerName"
-                      min=1
-            >
-            </v-slider>
-        </v-flex>
-      </v-layout> -->
-      <!-- Want to download this dataset? -->
-      <!-- <select v-if="this.$store.state.map.webMapActiveLayers.includes(layerName)"
-              class="download-select"
-      >
-        <option>GeoJSON</option>
-        <option>CSV</option>
-        <option>KML</option>
-      </select>
-      <button class="button" v-if="this.$store.state.map.webMapActiveLayers.includes(layerName)"
-      >
-        Download
-      </button> -->
-    <!-- </div> -->
-  <!-- </li> -->
   </div>
 </template>
 
@@ -87,7 +70,8 @@
             // minScale, maxScale, and drawingInfo are stored in layerDefinition
             'layerDefinition',
             'opacity',
-            'legend'
+            'legend',
+            'tags'
     ],
     data() {
       return {
@@ -110,13 +94,30 @@
         } else if (this.webMapActiveLayers.includes(this.$props.layerName) && nextShouldBeDisabled === false) {
           this.addToWebMapDisplayedLayers();
         }
-      }
+      },
+      // inputTagsFilter(nextInputTagsFilter) {
+      //   this.findCurrentTags(nextInputTagsFilter);
+      // },
     },
     // mounted() {
     //   // REVIEW globals. also is this still needed?
     //   $(document).foundation();
     // },
     computed: {
+      matchingTags() {
+        let matches = [];
+        if (this.$props.tags !== null && this.inputTagsFilter !== '') {
+          for (let tag of this.$props.tags) {
+            if (tag.toLowerCase().includes(this.inputTagsFilter.toLowerCase())) {
+              matches.push(tag);
+            }
+          }
+        }
+        return matches;
+      },
+      inputTagsFilter() {
+        return this.$store.state.layers.inputTagsFilter;
+      },
       scale() {
         return this.$store.state.map.scale;
       },
@@ -163,6 +164,9 @@
       }
     },
     methods: {
+      // findCurrentTags(inputTagsFilter) {
+      //
+      // },
       trim(s) {
         return ( s || '' ).replace( /^\s+|\s+$/g, '' );
       },
@@ -300,7 +304,22 @@
     display: inline-block;
     margin-left: 30px;
     margin-bottom: 6px;
+  }
 
+  .tag-title {
+    padding-left: 30px;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 14px;
+    color: red;
+  }
+
+  .tag-holder {
+    /* display: inline-block; */
+    padding-left: 30px;
+    font-weight: normal;
+    font-size: 14px;
+    color: red;
   }
 
 

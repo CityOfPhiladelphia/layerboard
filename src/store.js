@@ -21,6 +21,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     layers: {
       layerUrls: {},
       inputLayerFilter: '',
+      inputTagsFilter: '',
     },
     map: {
       location: {
@@ -138,6 +139,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setInputLayerFilter(state, payload) {
         state.layers.inputLayerFilter = payload;
+      },
+      setInputTagsFilter(state, payload) {
+        state.layers.inputTagsFilter = payload;
       },
       setMap(state, payload) {
         state.map.map = payload.map;
