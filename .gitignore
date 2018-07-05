@@ -6,4 +6,6 @@ yarn-error.log
 src/config.js
 src/util/streetsmart.js
 
+esri-leaflet-webmap-safe
+
 sh.exe.stackdump
