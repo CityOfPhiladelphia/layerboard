@@ -369,14 +369,14 @@
           }
         );
 
-              }
-            }.bind(this)
-          ).catch(
-            function(reason) {
-              // console.log('Failed to create component(s) through API: ' + reason);
-            }
-          );
-        }
+          //     }
+          //   }.bind(this)
+          // ).catch(
+          //   function(reason) {
+          //     // console.log('Failed to create component(s) through API: ' + reason);
+          //   }
+          // );
+        // }
       },
 
       sendOrientationToStore() {

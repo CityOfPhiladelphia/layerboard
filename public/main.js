@@ -26,7 +26,7 @@ function openHelp() {
   window.location.hash = finalHash;
 }
 
-var BASE_CONFIG_URL = '//rawgit.com/ajrothwell/openmaps-base-config/c8a9f210f229e16529669ab98364aadda70f0941/config.js';
+var BASE_CONFIG_URL = 'https://rawgit.com/ajrothwell/openmaps-base-config/c8a9f210f229e16529669ab98364aadda70f0941/config.js';
 var GATEKEEPER_KEY = 'ec8681f792812d7e3ff15e9094bfd4ad';
 var WEBMAP_ID = '4c3ed877199c402895b7fa45ce6409b6';
 
@@ -62,7 +62,7 @@ WebMapViewer.default({
     },
   },
   cyclomedia: {
-    enabled: false
+    enabled: true
   },
   pictometry: {
     enabled: false
