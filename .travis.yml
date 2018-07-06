@@ -4,9 +4,6 @@ node_js:
 script: npm run build
 before_deploy:
   - rm -rf node_modules
-  # - source ./.travis/s3_utils.sh
-  # - S3_BUCKET=$(get_s3_bucket)
-  # - echo "Will push to S3 bucket $S3_BUCKET."
 deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
@@ -32,4 +29,3 @@ deploy:
       branch: cleanup
     local_dir: public
     skip_cleanup: true
-      # TODO add a condition to make sure the bucket exists using `aws s3 ls`
