@@ -1,10 +1,12 @@
 .DS_Store
 node_modules/
-dist/
 npm-debug.log
 yarn-error.log
 src/config.js
 src/util/streetsmart.js
+
+public/build.js
+public/build.js.map
 
 sh.exe.stackdump
 
