@@ -12,22 +12,22 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue'],
     // alias: {
-    //   'vue$': 'vue/dist/vue.esm.js'
+    //   'vue$': 'vue/public/vue.esm.js'
     // }
   },
   devtool: isDevelopment ? 'inline-source-map' : 'source-map',
   devServer: {
-    // contentBase: './dist',
+    contentBase: './public',
     historyApiFallback: true,
     // noInfo: true,
     host: process.env.WEBPACK_DEV_HOST,
     port: process.env.WEBPACK_DEV_PORT
   },
   output: {
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, 'public'),
     filename: 'build.js',
-    publicPath: '/dist/',
-    library: 'Mapboard',
+    publicPath: '/',
+    library: 'WebMapViewer',
   },
   module: {
     rules: [
