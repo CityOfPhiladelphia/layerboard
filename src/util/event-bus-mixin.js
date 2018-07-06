@@ -1,5 +1,5 @@
 /*
-for publishing mapboard events to the host app. see main.js for usage.
+for publishing events to the host app. see main.js for usage.
 */
 
 import Vue from 'vue';

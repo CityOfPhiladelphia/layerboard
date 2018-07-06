@@ -1,5 +1,5 @@
 {
-  "name": "mapboard",
+  "name": "openmaps",
   "description": "A Vue.js component for data-rich web mapping",
   "version": "0.0.3",
   "author": "City of Philadelphia <maps@phila.gov>",

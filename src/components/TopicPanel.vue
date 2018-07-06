@@ -5,23 +5,25 @@
   <!-- class="cell medium-8 small-order-2 medium-order-1" -->
       <div class="cell">
         <div class="forms-header">
-          <form @submit.prevent="handleFilterFormX"
+
+          <!-- layer filter -->
+          <form @submit.prevent="handleLayerFilterFormX"
                 @keydown="preventEnter"
-                class="mb-search-control-input"
+                class="om-search-control-input"
           >
             <div class="input-group text-filter">
               <span class="input-group-label input-font">Filter By Text:</span>
               <input
                      type="text"
                      class="input-type"
-                     @keyup="handleFilterFormKeyup"
+                     @keyup="handleLayerFilterFormKeyup"
               />
               <!-- placeholder="Filter datasets" -->
               <div class="input-group-button"
                    v-if="this.$store.state.layers.inputLayerFilter != ''"
               >
 
-                <button class="mb-search-control-button">
+                <button class="om-search-control-button">
                 <!-- <input type="submit" class="button" value="X"> -->
                 <!-- v-if="this.$store.state.layers.inputLayerFilter != ''" -->
                   <i class="fa fa-times fa-lg"></i>
@@ -29,6 +31,34 @@
               </div>
             </div>
           </form>
+
+          <!-- tags filter -->
+          <form @submit.prevent="handleTagsFilterFormX"
+                @keydown="preventEnter"
+                class="om-search-control-input-tags"
+          >
+            <div class="input-group text-filter">
+              <span class="input-group-label input-font">Filter By Tags:</span>
+              <input
+                     type="text"
+                     class="input-type"
+                     @keyup="handleTagsFilterFormKeyup"
+              />
+              <!-- placeholder="Filter datasets" -->
+              <div class="input-group-button"
+                   v-if="this.$store.state.layers.inputTagsFilter != ''"
+              >
+
+                <button class="om-search-control-button">
+                <!-- <input type="submit" class="button" value="X"> -->
+                <!-- v-if="this.$store.state.layers.inputLayerFilter != ''" -->
+                  <i class="fa fa-times fa-lg"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- categories filter -->
           <div class="input-group">
             <span class="input-group-label input-font">Filter By Category:</span>
 
@@ -59,6 +89,7 @@
                           :opacity="currentWmLayer.opacity"
                           :legend="currentWmLayer.legend"
                           :key="currentWmLayer.id"
+                          :tags="currentWmLayer.tags"
                 >
                 </checkbox>
               <!-- </ul> -->
@@ -126,8 +157,29 @@
         const layers = this.$store.state.map.webMapLayersAndRest;
         let currentLayers = [];
         for (let layer of layers) {
-          if (layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) && layer.category.includes(this.selectedCategory) || this.$store.state.map.webMapActiveLayers.includes(layer.title)) {
-            currentLayers.push(layer)
+          if (layer.tags) {
+            if (
+              layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) && layer.tags.join().toLowerCase().includes(this.inputTagsFilter.toLowerCase()) && layer.category.includes(this.selectedCategory)
+              || this.$store.state.map.webMapActiveLayers.includes(layer.title)
+            ) {
+              // if (this.inputTagsFilter !== '') {
+              //   for (let layerTag of layer.tags) {
+              //     if (layerTag.toLowerCase().includes(this.inputTagsFilter.toLowerCase())) {
+              //       console.log('layerTag:', layerTag);
+              //     }
+              //   }
+              // }
+              currentLayers.push(layer)
+            }
+          } else if (this.inputTagsFilter !== '') {
+            continue;
+          } else {
+            if (
+              layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) && layer.category.includes(this.selectedCategory)
+              || this.$store.state.map.webMapActiveLayers.includes(layer.title)
+            ) {
+              currentLayers.push(layer)
+            }
           }
         }
         return currentLayers;
@@ -139,6 +191,9 @@
       inputLayerFilter() {
         return this.$store.state.layers.inputLayerFilter;
       },
+      inputTagsFilter() {
+        return this.$store.state.layers.inputTagsFilter;
+      },
       windowSize() {
         return this.$store.state.windowSize;
       },
@@ -149,7 +204,7 @@
     //   }
     // },
     methods: {
-      handleFilterFormKeyup(e) {
+      handleLayerFilterFormKeyup(e) {
         // console.log('keyup', e.target.value);
         const input = e.target.value;
         // if (input.length >= 3) {
@@ -158,11 +213,26 @@
           // this.$store.commit('setInputLayerFilter', null);
         // }
       },
-      handleFilterFormX(e) {
+      handleLayerFilterFormX(e) {
         // const input = e.target[0].value;
         // this.$store.commit('setInputLayerFilter', input);
         e.target[0].value = ''
         this.$store.commit('setInputLayerFilter', '');
+      },
+      handleTagsFilterFormKeyup(e) {
+        // console.log('keyup', e.target.value);
+        const input = e.target.value;
+        // if (input.length >= 3) {
+        this.$store.commit('setInputTagsFilter', input);
+        // } else {
+          // this.$store.commit('setInputLayerFilter', null);
+        // }
+      },
+      handleTagsFilterFormX(e) {
+        // const input = e.target[0].value;
+        // this.$store.commit('setInputLayerFilter', input);
+        e.target[0].value = ''
+        this.$store.commit('setInputTagsFilter', '');
       },
       didSelectCategory(e) {
         const selected = e.target.selectedIndex;
@@ -296,14 +366,14 @@
     width: inherit;
   }
 
-  .mb-search-control-button {
+  .om-search-control-button {
     width: 40px;
     background: #ccc;
     /* line-height: 39px; */
     float: right;
   }
 
-  .mb-search-control-input {
+  .om-search-control-input {
     /* border: 0; */
     /* height: 48px !important;
     line-height: 48px; */
@@ -313,6 +383,11 @@
     font-family: 'Montserrat', 'Tahoma', sans-serif;
     font-size: 16px;
     /* width: inherit; */
+  }
+
+  .om-search-control-input-tags {
+    font-family: 'Montserrat', 'Tahoma', sans-serif;
+    font-size: 16px;
   }
 
   .input-font {

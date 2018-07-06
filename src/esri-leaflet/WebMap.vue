@@ -9,7 +9,7 @@
   import L from 'leaflet';
   import generateUniqueId from '../util/unique-id';
 
-  const EsriWebMap = L.esri.webMap;
+  // const EsriWebMap = L.esri.webMap;
 
   export default {
     computed: {
@@ -28,6 +28,7 @@
           dataType: 'json',
           webmapId: this.webmapId
         }
+        let webMapLayersAndRest = []
 
         axios.get(esriUrl, { params }).then(response => {
           const restData = response.data;
@@ -37,6 +38,7 @@
           self.$store.commit('setWebMap', webMap);
 
           webMap.on('load', function() {
+
             map.attributionControl.setPrefix('<a target="_blank" href="//www.phila.gov/it/aboutus/units/Pages/GISServicesGroup.aspx">City of Philadelphia | CityGeo</a>');
 
             const ignore = ["CityBasemap", "CityBasemap_Labels"];
@@ -63,49 +65,97 @@
             self.$store.commit('setLayerUrls', layerUrls);
 
             // create webMapLayersAndRest
-            let webMapLayersAndRest = []
+            // let webMapLayersAndRest = []
             const opLayers = restData.operationalLayers
-            // console.log('opLayers', opLayers);
-            // console.log('webMap layers', webMap.layers);
+
+            // start of for loop
             for (let [index, layer] of webMap.layers.splice(1).entries()) {
-              // console.log('layer.title', layer.title);
               let curOpLayer;
               for (let opLayer of opLayers) {
-                // console.log('opLayer and webmap titles', opLayer.title, layer.title);
                 if (opLayer.title === layer.title) {
                   curOpLayer = opLayer
                 }
               }
-              // console.log(curOpLayer.title)
+
+              const webmapMetaDataRequestUrl = 'https://www.arcgis.com/sharing/rest/content/items/' + curOpLayer.itemId;
               const id = generateUniqueId();
-              const layerObj = {
+              let layerObj = {
                 'category': layer.title.split('_')[0],
                 'title': layer.title.split('_')[1],
                 'layer': layer.layer,
-                // 'geoType': layer,
                 'id': id,
-                'serviceItemId': curOpLayer.itemId,
+                'serviceItemId': null,
+                // 'serviceItemId': curOpLayer.itemId,
                 'rest': curOpLayer,
                 'opacity': curOpLayer.opacity,
                 'type': curOpLayer.layerType,
-                // 'serviceItemId': restData.operationalLayers[index].itemId,
-                // 'rest': restData.operationalLayers[index],
-                // 'opacity': restData.operationalLayers[index].opacity,
-                // 'type': restData.operationalLayers[index].layerType,
                 'type2': layer.type,
-                'legend': null
+                'legend': null,
+                'tags': null,
+                'tagsString': null,
               }
-              webMapLayersAndRest.push(layerObj);
-            }
-            webMapLayersAndRest.sort(function(a, b) {
-              const titleA = a.title.toLowerCase()
-              const titleB=b.title.toLowerCase()
-              if (titleA < titleB) //sort string ascending
+
+              const params2 = {}
+
+              if (curOpLayer.itemId){
+
+                L.esri.request(webmapMetaDataRequestUrl, params2, function (error, response) {
+                  if (error) {
+                    // console.log('L.esri.request ERROR:', error, 'webmapMetaDataRequestUrl:', webmapMetaDataRequestUrl, 'layerObj:', layerObj);
+                    webMapLayersAndRest.push(layerObj);
+                    webMapLayersAndRest.sort(function(a, b) {
+                      const titleA = a.title.toLowerCase()
+                      const titleB=b.title.toLowerCase()
+                      if (titleA < titleB) //sort string ascending
+                      return -1
+                      if (titleA > titleB)
+                      return 1
+                      return 0 //default return value (no sorting)
+                    })
+
+                  } else {
+                    // console.log('WebMap MetaData:', response);
+                    const tags = response.tags.map(x => typeof x === 'string' ? x.toLowerCase() : x);
+                    const filteredTags =  Array.from(new Set(tags));
+                    layerObj.tags = filteredTags;
+                    layerObj.tagsString = response.tags.join();
+                    webMapLayersAndRest.push(layerObj);
+                    webMapLayersAndRest.sort(function(a, b) {
+                      const titleA = a.title.toLowerCase()
+                      const titleB=b.title.toLowerCase()
+                      if (titleA < titleB) //sort string ascending
+                      return -1
+                      if (titleA > titleB)
+                      return 1
+                      return 0 //default return value (no sorting)
+                    })
+                  } // end of if/else error
+                }); // end of L.esri.request
+
+              } else {
+                webMapLayersAndRest.push(layerObj);
+                webMapLayersAndRest.sort(function(a, b) {
+                  const titleA = a.title.toLowerCase()
+                  const titleB=b.title.toLowerCase()
+                  if (titleA < titleB) //sort string ascending
                   return -1
-              if (titleA > titleB)
+                  if (titleA > titleB)
                   return 1
-              return 0 //default return value (no sorting)
-            })
+                  return 0 //default return value (no sorting)
+                })
+              } // end of if/else curOpLayer.itemId
+
+            } // end of for loop
+
+            // webMapLayersAndRest.sort(function(a, b) {
+            //   const titleA = a.title.toLowerCase()
+            //   const titleB=b.title.toLowerCase()
+            //   if (titleA < titleB) //sort string ascending
+            //       return -1
+            //   if (titleA > titleB)
+            //       return 1
+            //   return 0 //default return value (no sorting)
+            // })
 
             const categories = ['']
             for (let layer of webMapLayersAndRest) {
@@ -127,24 +177,14 @@
             self.$store.commit('setWebMapLayersAndRest', webMapLayersAndRest);
             self.$store.commit('setCategories', categories);
             map.createPane('highlightOverlay');
-              // self.method2(webMap);
-          }); // end of webmap onload
+          }) // end of webmap onload
         }, response => {
           console.log('AXIOS ERROR WebMap.vue');
-        });
-      },
+        }) // end of axios
 
-      method2(webMap) {
-        console.log('method2 is running');
-        console.log('webmap.layers', webMap.layers);
-        console.log('layers[0]', webMap.layers[0]);
-        console.log('layer', webMap.layers[0].layer);
-        console.log('service', webMap.layers[0].layer.service);
-        console.log('maxZoom', webMap.layers[0].layer.service.options.maxZoom);
-        // webMap.layers[0].layer.service.options.maxZoom = 22;
-        console.log('maxZoom', webMap.layers[0].layer.service.options.maxZoom);
+      }, // end of parentMounted
 
-      },
-    }
-  };
+    } // end of methods
+
+  }; // end of export
 </script>

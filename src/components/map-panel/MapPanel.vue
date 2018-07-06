@@ -192,6 +192,7 @@
                                    @l-click="handleCyclomediaRecordingClick"
       />
     </map_>
+    <modal-about></modal-about>
     <slot class='widget-slot' name="cycloWidget" />
     <slot class='widget-slot' name="pictWidget" />
   </div>
@@ -233,6 +234,8 @@
   import Polygon_ from '../../leaflet/Polygon.vue';
   import Polyline_ from '../../leaflet/Polyline.vue';
 
+  import ModalAbout from '../ModalAbout.vue';
+
   export default {
     mixins: [
       markersMixin,
@@ -267,6 +270,10 @@
       PopUpContent,
       Polygon_,
       Polyline_,
+      ModalAbout
+    },
+    mounted() {
+      this.$controller.appDidLoad();
     },
     computed: {
       isMobileOrTablet() {

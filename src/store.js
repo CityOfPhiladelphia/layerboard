@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import isMobileDevice from './util/is-mobile-device';
 
 // when you load vuex from a script tag this seems to happen automatically
 // Vue.use(Vuex);
@@ -8,7 +9,7 @@ import Vuex from 'vuex';
 function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
 
   const initialState = {
-    isMobileOrTablet: false,
+    isMobileOrTablet: isMobileDevice(),
     fullScreenMapEnabled: false,
     bennyEndpoints: {},
     // bennyEndpoints2: {},
@@ -20,6 +21,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     layers: {
       layerUrls: {},
       inputLayerFilter: '',
+      inputTagsFilter: '',
     },
     map: {
       location: {
@@ -80,7 +82,16 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     shouldShowTopics: true,
     shouldShowMap: true,
     windowWidth: 0,
+    route: null,
+    modals: {
+      help: {
+        open: false
+      }
+    }
   };
+
+  // const TOGGLE_MODAL = 'modal/TOGGLE_MODAL'
+  // const CLOSE_MODALS = 'modal/CLOSE_MODALS'
 
   // TODO standardize how payloads are passed around/handled
   return new Vuex.Store({
@@ -129,6 +140,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setInputLayerFilter(state, payload) {
         state.layers.inputLayerFilter = payload;
+      },
+      setInputTagsFilter(state, payload) {
+        state.layers.inputTagsFilter = payload;
       },
       setMap(state, payload) {
         state.map.map = payload.map;
@@ -264,7 +278,23 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setWindowWidth(state, payload) {
         state.windowWidth = payload;
+      },
+
+      setRoute(state, payload) {
+        state.route = payload;
+      },
+      setDidToggleModal(state, {name, open}) {
+        console.log('setDidToggleModal, name:', name, 'open:', open);
+        state.modals[name].open = open === null ? !state.modals[name].open : open
       }
+      // [types.TOGGLE_MODAL] (state, {name, open}) {
+      //   state.modals[name].open = open === null ? !state.modals[name].open : open
+      // },
+      // [types.CLOSE_MODALS] (state) {
+      //   for (let modalName in state.modals) {
+      //     state.modals[modalName].open = false
+      //   }
+      // }
     }
   });
 }

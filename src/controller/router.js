@@ -69,7 +69,7 @@ class Router {
     const location = window.location;
     const hash = location.hash;
 
-    // console.log('hash changed =>', hash);
+    console.log('hash changed =>', hash);
 
     // parse url
     const comps = parseUrl(location.href);
@@ -82,60 +82,56 @@ class Router {
 
     // parse path
     const pathComps = hash.split('/').splice(1);
-    const addressComp = pathComps[0];
+    console.log('pathComps:', pathComps);
 
-    // if there's no address, don't do anything
-    if (!addressComp) {
-      // console.log('no address, returning');
-      return;
-    }
-
-    const nextAddress = decodeURIComponent(addressComp);
-    let nextTopic;
-
-    if (pathComps.length > 1) {
-      nextTopic = decodeURIComponent(pathComps[1]);
-    }
-
-    this.store.commit('setLastSearchMethod', 'geocode');
-
-    this.routeToAddress(nextAddress);
-    this.routeToTopic(nextTopic);
-  }
-
-  routeToAddress(nextAddress) {
-    console.log('Router.routeToAddress', nextAddress);
-
-    if (nextAddress) {
-      // check against current address
-      const prevAddress = this.getAddressFromState();
-
-      // if the hash address is different, geocode
-      if (!prevAddress || nextAddress !== prevAddress) {
-        this.dataManager.geocode(nextAddress)
-                        // .then(this.didGeocode.bind(this));
-      }
+    if (pathComps[0]) {
+      console.log('if pathComps[0] is true');
+      this.routeToModal('help', true);
+      // this.routeToModal("'"+pathComps[0]+"'", true);
+    } else {
+      console.log('if pathComps[0] is false');
+      this.routeToModal('help', false);
     }
   }
+
+  routeToModal(selectedModal, selectedOpen) {
+    console.log('routeToModal is running, selectedModal:', selectedModal, 'selectedOpen:', selectedOpen);
+    this.store.commit('setDidToggleModal', { name: selectedModal, open: selectedOpen })
+  }
+
+  // routeToAddress(nextAddress) {
+  //   console.log('Router.routeToAddress', nextAddress);
+  //
+  //   if (nextAddress) {
+  //     // check against current address
+  //     const prevAddress = this.getAddressFromState();
+  //
+  //     // if the hash address is different, geocode
+  //     if (!prevAddress || nextAddress !== prevAddress) {
+  //       this.dataManager.geocode(nextAddress)
+  //                       // .then(this.didGeocode.bind(this));
+  //     }
+  //   }
+  // }
 
   configForBasemap(key) {
     return this.config.map.basemaps[key];
   }
 
   // this gets called when you click a topic header.
-  routeToTopic(nextTopic) {
-    console.log('routeToTopic is running', nextTopic);
-    const nextHash = this.makeHash(nextTopic);
-    const lastHistoryState = this.history.state;
-    this.history.replaceState(lastHistoryState, null, nextHash);
-  }
-
-  routeOffTopic() {
-    console.log('routeOffTopic is running');
-    const nextHash = this.makeHash();
-    const lastHistoryState = this.history.state;
-    this.history.replaceState(lastHistoryState, null, nextHash);
-  }
+  // routeToTopic(nextTopic) {
+  //   console.log('routeToTopic is running', nextTopic);
+  //   const nextHash = this.makeHash(nextTopic);
+  //   const lastHistoryState = this.history.state;
+  //   this.history.replaceState(lastHistoryState, null, nextHash);
+  // }
+  //
+  // routeOffTopic() {
+  //   console.log('routeOffTopic is running');
+  //   const nextHash = this.makeHash();
+  //   const lastHistoryState = this.history.state;
+  //   this.history.replaceState(lastHistoryState, null, nextHash);
+  // }
 
   // didGeocode() {
   //   // console.log('Router.didGeocode');
