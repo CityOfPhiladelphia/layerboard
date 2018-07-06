@@ -9,6 +9,12 @@ module.exports = {
   entry: {
     app: './src/main.js',
   },
+  resolve: {
+    extensions: ['.js', '.vue'],
+    // alias: {
+    //   'vue$': 'vue/dist/vue.esm.js'
+    // }
+  },
   devtool: isDevelopment ? 'inline-source-map' : 'source-map',
   devServer: {
     // contentBase: './dist',
@@ -49,12 +55,6 @@ module.exports = {
         }
       }
     ]
-  },
-  resolve: {
-    extensions: ['.js', '.vue'],
-    // alias: {
-    //   'vue$': 'vue/dist/vue.esm.js'
-    // }
   },
   externals: {
     'vue': 'Vue',
