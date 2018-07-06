@@ -62,7 +62,7 @@ WebMapViewer.default({
     },
   },
   cyclomedia: {
-    enabled: false
+    enabled: true
   },
   pictometry: {
     enabled: false
