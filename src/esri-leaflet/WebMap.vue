@@ -8,6 +8,7 @@
   import axios from 'axios';
   import L from 'leaflet';
   import generateUniqueId from '../util/unique-id';
+  // import * as esri from 'esri-leaflet';
 
   // const EsriWebMap = L.esri.webMap;
 

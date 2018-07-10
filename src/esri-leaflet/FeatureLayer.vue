@@ -8,6 +8,7 @@
   // import OpacitySlider from '../leaflet/OpacitySlider';
   // TODO look into a cleaner way of importing from esri-leaflet
   const EsriFeatureLayer = L.esri.featureLayer;
+  // import { featureLayer as FeatureLayer } from 'esri-leaflet';
 
   // min and max zooms are not handled by esri leaflet, but are handled by vue
   export default {

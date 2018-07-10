@@ -199,6 +199,7 @@
 </template>
 
 <script>
+  import * as L from 'leaflet';
   // mixins
   import markersMixin from './markers-mixin';
   import geocodeMixin from './geocode-mixin';
