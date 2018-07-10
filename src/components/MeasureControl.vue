@@ -1,5 +1,6 @@
 <script>
   import MeasureControl from 'leaflet-measure';
+  console.log('MeasureControl:', MeasureControl);
 
   export default {
     props: ['position'],

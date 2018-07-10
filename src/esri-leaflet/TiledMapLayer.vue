@@ -1,8 +1,8 @@
 <script>
   import L from 'leaflet';
   // TODO look into a cleaner way of importing from esri-leaflet
-  const EsriTiledMapLayer = L.esri.tiledMapLayer;
-  // import { tiledMapLayer as TiledMapLayer } from 'esri-leaflet';
+  // const EsriTiledMapLayer = L.esri.tiledMapLayer;
+  import { tiledMapLayer as TiledMapLayer } from 'esri-leaflet';
 
   export default {
     props: [
@@ -44,7 +44,7 @@
     methods: {
       createLeafletElement() {
         const props = Object.assign({}, this.$props);
-        const mapLayer = new EsriTiledMapLayer(props);
+        const mapLayer = new TiledMapLayer(props);
         return mapLayer;
 
       },

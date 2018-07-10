@@ -21,6 +21,7 @@
 
 <script>
   import proj4 from 'proj4';
+  import axios from 'axios';
 
   export default {
     data() {
@@ -178,7 +179,7 @@
           });
           // console.log('a layer was added, arr:', arr[0], this.webMapGeoJson, Object.keys(this.webMapGeoJson));
           this.activeLayers.push(arr[0]);
-          this.getGeoJson([arr[0]]);
+          // this.getGeoJson([arr[0]]);
         }
       },
 

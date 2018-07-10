@@ -211,7 +211,7 @@
           // displayedLayers.push(e.target.id.split('-')[1]);
           if (activeLayers.length === 1) {
             this.$store.commit('setWebMapUrlLayer', targetReplace);
-            this.$controller.handleCheckboxClick(targetReplace);
+            // this.$controller.handleCheckboxClick(targetReplace);
           }
           // if (!Object.keys(this.webMapGeoJson).includes(targetReplace)) {
           //   this.getGeoJson(targetReplace);

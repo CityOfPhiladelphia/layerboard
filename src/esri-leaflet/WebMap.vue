@@ -6,11 +6,8 @@
 
 <script>
   import axios from 'axios';
-  import L from 'leaflet';
   import generateUniqueId from '../util/unique-id';
-  // import * as esri from 'esri-leaflet';
-
-  // const EsriWebMap = L.esri.webMap;
+  import * as LEsriWebMap from 'L-esri-WebMap'
 
   export default {
     computed: {
@@ -33,7 +30,8 @@
 
         axios.get(esriUrl, { params }).then(response => {
           const restData = response.data;
-          const webMap = this.$webMap = L.esri.webMap(this.webmapId, { map: map });
+          const webMap = this.$webMap = LEsriWebMap.webMap(this.webmapId, { map: map });
+          // const webMap = this.$webMap = L.esri.webMap(this.webmapId, { map: map });
 
           console.log('WEBMAP', webMap, 'restData', restData);
           self.$store.commit('setWebMap', webMap);
