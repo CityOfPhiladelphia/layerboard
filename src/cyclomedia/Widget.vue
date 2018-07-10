@@ -20,6 +20,8 @@
 </template>
 
 <script>
+  import proj4 from 'proj4';
+
   export default {
     data() {
       return {
@@ -94,12 +96,12 @@
         }
       },
       latLngFromMap(newCoords) {
-        // console.log('watch latLngFromMap is firing, setNewLocation running with newCoords:', newCoords);
+        console.log('watch latLngFromMap is firing, setNewLocation running with newCoords:', newCoords);
         if (Array.isArray(newCoords)) {
-          // console.log('it is an array');
-          this.setNewLocation([newCoords[0], newCoords[1]]);
+          console.log('it is an array');
+          this.setNewLocation([newCoords[1], newCoords[0]]);
         } else {
-          // console.log('it is not an array');
+          console.log('it is not an array');
           this.setNewLocation([newCoords.lat, newCoords.lng]);
         }
       },
@@ -111,7 +113,8 @@
       // },
       cyclomediaActive(newActiveStatus) {
         if (newActiveStatus === true) {
-          this.setNewLocation(this.latLngFromMap);
+          console.log('watch cyclomediaActive changed, setting new location:', this.latLngFromMap);
+          this.setNewLocation([this.latLngFromMap[1], this.latLngFromMap[0]]);
         }
       },
       webMapActiveLayers(currentLayers) {
@@ -138,7 +141,7 @@
           // get map center and set location
           const map = this.$store.state.map;
           console.log('mounted is calling setNewLocation, map.center:', map.center);
-          this.setNewLocation([map.center[1], map.center[0]]);
+          this.setNewLocation([map.center[0], map.center[1]]);
         },
         err => {
           // console.log('Api: init: failed. Error: ', err);
@@ -296,15 +299,19 @@
         this.webMapGeoJson = obj;
       },
 
-      setNewLocation(coords, updateStoreXY=true) {
-        console.log('setNewLocation is running using THESE coords', coords);
+      setNewLocation(coords) {
         const viewerType = StreetSmartApi.ViewerType.PANORAMA;
+        const coords2272 = proj4(this.projection4326, this.projection2272, [coords[0], coords[1]]);
+        console.log('setNewLocation is running using THESE coords:', coords, 'coords2272:', coords2272);
+
         // StreetSmartApi.open(center.lng + ',' + center.lat, {
-        StreetSmartApi.open(coords[1] + ',' + coords[0], {
+        StreetSmartApi.open(coords2272[0] + ',' + coords2272[1], {
           viewerType: viewerType,
-          srs: 'EPSG:4326',
-          closable: false,
-          maximizable: false,
+          srs: 'EPSG:2272',
+          panoramaViewer: {
+            closable: false,
+            maximizable: false,
+          }
         }).then (
           function(result) {
             console.log('cyclomedia widget StreetSmartApi.open happened, result:', result);
@@ -359,8 +366,6 @@
                   widget.$store.commit('setCyclomediaNavBarOpen', window.panoramaViewer.getNavbarExpanded());
                 }
               })
-
-
             }
           }.bind(this)
         ).catch(
@@ -368,30 +373,17 @@
             // console.log('Failed to create component(s) through API: ' + reason);
           }
         );
-
-          //     }
-          //   }.bind(this)
-          // ).catch(
-          //   function(reason) {
-          //     // console.log('Failed to create component(s) through API: ' + reason);
-          //   }
-          // );
-        // }
       },
 
       sendOrientationToStore() {
         // console.log('sendOrientationToStore, yaw:', window.panoramaViewer.props.orientation.yaw);
         this.$store.commit('setCyclomediaYaw', window.panoramaViewer.props.orientation.yaw);
         this.$store.commit('setCyclomediaHFov', window.panoramaViewer.props.orientation.hFov);
-      },
-
-      sendXYToStore() {
         const xy = [window.panoramaViewer.props.orientation.xyz[0], window.panoramaViewer.props.orientation.xyz[1]];
         const lnglat = proj4(this.projection2272, this.projection4326, xy);
         // console.log('xy:', xy, 'lnglat', lnglat);
         this.$store.commit('setCyclomediaXyz', lnglat);
       },
-
       popoutClicked() {
         const map = this.$store.state.map.map;
         const center = map.getCenter();
