@@ -231,7 +231,7 @@
           // this.$store.commit('setIntersectingFeatures', []);
           if (urlLayer === targetReplace) {
             this.$store.commit('setWebMapUrlLayer', null);
-            this.$controller.handleCheckboxUnClick(targetReplace);
+            // this.$controller.handleCheckboxUnClick(targetReplace);
           }
         }
         this.$store.commit('setWebMapActiveLayers', activeLayers);
