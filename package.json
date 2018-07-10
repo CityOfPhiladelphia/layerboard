@@ -15,6 +15,7 @@
     "Leaflet.vector-markers": "^0.0.6",
     "axios": "^0.16.2",
     "leaflet": "^1.1.0",
+    "leaflet-measure": "https://github.com/CityOfPhiladelphia/leaflet-measure#b70886af342f19597dc2937d79d64bad6bab07c6",
     "leaflet-rotatedmarker": "^0.2.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
