@@ -13,10 +13,14 @@
   },
   "dependencies": {
     "Leaflet.vector-markers": "^0.0.6",
-    "axios": "^0.16.2",
+    "axios": "^0.18.0",
+    "jquery": "^3.3.1",
+    "jquery-ui": "^1.12.1",
     "leaflet": "^1.1.0",
+    "leaflet-easybutton": "^2.3.0",
     "leaflet-measure": "https://github.com/CityOfPhiladelphia/leaflet-measure#b70886af342f19597dc2937d79d64bad6bab07c6",
     "leaflet-rotatedmarker": "^0.2.0",
+    "proj4": "^2.4.4",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

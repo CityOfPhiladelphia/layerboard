@@ -7,6 +7,13 @@ ________                           _____
         \/|__|        \/     \/         \/     \/|__|       \/
 */
 
+// styles
+import 'leaflet-easybutton/src/easy-button.css';
+import 'leaflet-measure/dist/leaflet-measure.css';
+
+
+import WebMapViewer from './main.js'
+
 // turn off console logging in production
 // TODO come up with better way of doing this with webpack + env vars
 const { hostname='' } = location;
@@ -26,24 +33,11 @@ function openHelp() {
   window.location.hash = finalHash;
 }
 
-var BASE_CONFIG_URL = 'https://rawgit.com/ajrothwell/openmaps-base-config/c8a9f210f229e16529669ab98364aadda70f0941/config.js';
+var BASE_CONFIG_URL = 'https://rawgit.com/ajrothwell/openmaps-base-config/b39c037e8bc058f54ff0ea0b61e879d5ad1ae800/config.js';
 var GATEKEEPER_KEY = 'ec8681f792812d7e3ff15e9094bfd4ad';
 var WEBMAP_ID = '4c3ed877199c402895b7fa45ce6409b6';
 
-// configure accounting.js
-accounting.settings.currency.precision = 0;
-
-WebMapViewer.default({
-  // rootStyle: {
-  //   // height: '100%'
-  //   position: 'absolute',
-  //   bottom: 0,
-  //   // top: '78px',
-  //   top: '120px',
-  //   left: 0,
-  //   right: 0,
-  //   overflow: 'auto',
-  // },
+WebMapViewer({
   router: {
     enabled: true
   },
@@ -67,6 +61,7 @@ WebMapViewer.default({
   pictometry: {
     enabled: false
   },
+  gatekeeperKey: GATEKEEPER_KEY,
   baseConfig: BASE_CONFIG_URL,
   webmapId: WEBMAP_ID,
 });

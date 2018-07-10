@@ -7,7 +7,8 @@ var isDevelopment = env === 'development';
 
 module.exports = {
   entry: {
-    app: './src/main.js',
+    // app: './src/main.js',
+    app: './src/config.js',
   },
   resolve: {
     extensions: ['.js', '.vue'],
@@ -57,7 +58,7 @@ module.exports = {
     ]
   },
   externals: {
-    'vue': 'Vue',
+    // 'vue': 'Vue',
     'leaflet': 'L',
     'jQuery': '$',
   },

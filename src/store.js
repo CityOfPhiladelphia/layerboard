@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import isMobileDevice from './util/is-mobile-device';
 
 // when you load vuex from a script tag this seems to happen automatically
-// Vue.use(Vuex);
+Vue.use(Vuex);
 
 // function createStore(config, bennyEndpoints, bennyRepresentation) {
 function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {

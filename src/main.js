@@ -6,11 +6,9 @@ import eventBusMixin from './util/event-bus-mixin';
 import WebMapViewer from './components/WebMapViewer';
 import mergeDeep from './util/merge-deep';
 import controllerMixin from './controller';
-import generateUniqueId from './util/unique-id';
 
 export default (clientConfig) => {
   const baseConfigUrl = clientConfig.baseConfig;
-  // console.log('clientConfig', clientConfig, 'baseConfigUrl', baseConfigUrl);
 
   // Vue.use(eventBusMixin);
   // create a global event bus used to proxy events to the host
@@ -20,7 +18,9 @@ export default (clientConfig) => {
   // get base config
   return axios.get(baseConfigUrl).then(response => {
     const data = response.data;
-    const baseConfig = eval(data);
+    const baseConfigFn = eval(data);
+    const { gatekeeperKey } = clientConfig;
+    const baseConfig = baseConfigFn({ gatekeeperKey });
     // console.log('baseConfig', baseConfig);
 
     // deep merge base config and client config
@@ -35,6 +35,7 @@ export default (clientConfig) => {
 
     // mix in controller
     Vue.use(controllerMixin, { config, store, eventBus });
+    // Vue.use(controllerMixin, { config, store });
 
     // mount main vue
     const vm = new Vue({
