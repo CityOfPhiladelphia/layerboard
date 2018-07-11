@@ -1,7 +1,7 @@
 <template>
-  <div :class="this.mapContainerClass">
+  <div class="map-container">
     <!-- the leaflet map -->
-    <div class="mb-map"
+    <div class="map"
          ref="map"
          id="map"
     />
@@ -87,6 +87,9 @@
       }
     },
     computed: {
+      fullScreenMapEnabled() {
+        return this.$store.state.fullScreenMapEnabled;
+      },
       mapContainerClass() {
         if (!this.cyclomediaActive) {
           return 'map-container';
@@ -96,9 +99,6 @@
       },
       cyclomediaActive() {
         return this.$store.state.cyclomedia.active;
-      },
-      fullScreenMapEnabled() {
-        return this.$store.state.fullScreenMapEnabled;
       },
       webMapDisplayedLayers() {
         return this.$store.state.map.webMapDisplayedLayers;
@@ -110,8 +110,7 @@
     methods: {
       createLeafletElement() {
         const { zoomControlPosition, ...options } = this.$props;
-        const theMap = new Map(this.$refs.map, options);
-        return theMap;
+        return new Map(this.$refs.map, options);
       },
       childDidMount(child) {
         child.addTo(this.$leafletElement);
@@ -194,12 +193,17 @@
 <style>
 
   .map-container {
+    /* height: 100%; */
     height: calc(100vh - 109px);
   }
 
-  .map-container-w-widget {
-    height: calc((100vh - 109px)/2);
+  .map {
+    height: 100%;
   }
+
+  /* .map-container-w-widget {
+    height: calc((100vh - 109px)/2);
+  } */
 
   /* @media screen and (max-width: 40em) { */
   @media screen and (max-width: 750px) {
@@ -211,8 +215,5 @@
     }
   }
 
-  .mb-map {
-    height: 100%;
-  }
 
 </style>

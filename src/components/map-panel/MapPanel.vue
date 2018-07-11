@@ -1,9 +1,10 @@
 <template>
   <div id="map-panel-container"
-       :class="mapPanelContainerClass"
+       :class="this.mapPanelContainerClass"
   >
     <full-screen-map-toggle-tab v-once />
-    <map_ id="map-tag"
+    <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
+          id="map-tag"
           :center="this.$store.state.map.center"
           :zoom="this.$store.state.map.zoom"
           @l-click="handleMapClick"
@@ -116,22 +117,21 @@
       </div>
 
       <div v-once>
-        <pictometry-button v-if="this.$config.pictometry.enabled"
+        <pictometry-button v-if="this.shouldShowPictometryButton"
                            v-once
                            :position="'topright'"
                            :link="'pictometry'"
                            :imgSrc="'../../src/assets/pictometry.png'"
-                           @click="handleButtonClick"
         />
       </div>
 
       <div v-once>
-        <cyclomedia-button v-if="this.$config.cyclomedia.enabled"
+        <cyclomedia-button v-if="this.shouldShowCyclomediaButton"
                            v-once
                            :position="'topright'"
                            :link="'cyclomedia'"
                            :imgSrc="'../../src/assets/cyclomedia.png'"
-                           @click="handleButtonClick"
+                           @click="handleCyclomediaButtonClick"
         />
       </div>
 
@@ -200,6 +200,51 @@
 
 <script>
   import * as L from 'leaflet';
+  import * as philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
+
+  const CircleMarker = philaVueMapping.CircleMarker;
+  const Control = philaVueMapping.Control;
+  const EsriTiledMapLayer = philaVueMapping.EsriTiledMapLayer;
+  const PngMarker = philaVueMapping.PngMarker;
+  const BasemapToggleControl = philaVueMapping.BasemapToggleControl;
+  const BasemapSelectControl = philaVueMapping.BasemapSelectControl;
+  const FullScreenMapToggleTab = philaVueMapping.FullScreenMapToggleTab;
+  const LocationControl = philaVueMapping.LocationControl;
+  const CyclomediaButton = philaVueMapping.CyclomediaButton;
+  const PictometryButton = philaVueMapping.PictometryButton;
+  const CyclomediaRecordingCircle = philaVueMapping.CyclomediaRecordingCircle;
+  const CyclomediaRecordingsClient = philaVueMapping.CyclomediaRecordingsClient;
+  const SvgViewConeMarker = philaVueMapping.SvgViewConeMarker;
+  const MeasureControl = philaVueMapping.MeasureControl;
+  const ControlCorner = philaVueMapping.ControlCorner;
+  const PopUp = philaVueMapping.PopUp;
+  const PopUpContent = philaVueMapping.PopUpContent;
+  const Polygon_ = philaVueMapping.Polygon_;
+  const Polyline_ = philaVueMapping.Polyline_;
+  // const ModalAbout = philaVueMapping.ModalAbout;
+
+  // import CircleMarker from '../../leaflet/CircleMarker';
+  // import Control from '../../leaflet/Control';
+  // import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
+  // import PngMarker from '../PngMarker';
+  // import BasemapToggleControl from '../BasemapToggleControl.vue';
+  // import BasemapSelectControl from '../BasemapSelectControl.vue';
+  // import FullScreenMapToggleTab from '../FullScreenMapToggleTab.vue';
+  // import LocationControl from '../LocationControl.vue';
+  // import CyclomediaButton from '../../cyclomedia/Button';
+  // import PictometryButton from '../../pictometry/Button';
+  // import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
+  // import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
+  // import SvgViewConeMarker from '../../cyclomedia/SvgViewConeMarker';
+  // import MeasureControl from '../MeasureControl.vue';
+  // import ControlCorner from '../../leaflet/ControlCorner.vue';
+  // import PopUp from '../../leaflet/PopUp.vue';
+  // import PopUpContent from '../../leaflet/PopUpContent.vue';
+  // import Polygon_ from '../../leaflet/Polygon.vue';
+  // import Polyline_ from '../../leaflet/Polyline.vue';
+  import ModalAbout from '../ModalAbout.vue';
+
+
   // mixins
   import markersMixin from './markers-mixin';
   import geocodeMixin from './geocode-mixin';
@@ -208,34 +253,14 @@
 
   // vue doesn't like it when you import this as Map (reserved-ish word)
   import Map_ from '../../leaflet/Map';
-  import Control from '../../leaflet/Control';
   import EsriWebMap from '../../esri-leaflet/WebMap';
   import EsriWebMapLayer from '../../esri-leaflet/WebMapLayer';
-  import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
-  import EsriFeatureLayer from '../../esri-leaflet/FeatureLayer';
-  // import Geojson from '../../leaflet/Geojson';
-  import CircleMarker from '../../leaflet/CircleMarker';
   import VectorMarker from '../VectorMarker';
-  import PngMarker from '../PngMarker';
-  // import SvgShape from '../SvgShape';
-  import BasemapToggleControl from '../BasemapToggleControl.vue';
-  import BasemapSelectControl from '../BasemapSelectControl.vue';
-  import FullScreenMapToggleTab from '../FullScreenMapToggleTab.vue';
-  import LocationControl from '../LocationControl.vue';
-  import CyclomediaButton from '../../cyclomedia/Button';
-  import PictometryButton from '../../pictometry/Button';
-  import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
-  import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
-  import SvgViewConeMarker from '../../cyclomedia/SvgViewConeMarker';
-  import MeasureControl from '../MeasureControl.vue';
-  // import LegendControl from '../../esri-leaflet/Legend.vue';
-  import ControlCorner from '../../leaflet/ControlCorner.vue';
-  import PopUp from '../../leaflet/PopUp.vue';
-  import PopUpContent from '../../leaflet/PopUpContent.vue';
-  import Polygon_ from '../../leaflet/Polygon.vue';
-  import Polyline_ from '../../leaflet/Polyline.vue';
 
-  import ModalAbout from '../ModalAbout.vue';
+  // import EsriFeatureLayer from '../../esri-leaflet/FeatureLayer';
+  // import Geojson from '../../leaflet/Geojson';
+  // import SvgShape from '../SvgShape';
+  // import LegendControl from '../../esri-leaflet/Legend.vue';
 
   export default {
     mixins: [
@@ -250,12 +275,9 @@
       EsriWebMap,
       EsriWebMapLayer,
       EsriTiledMapLayer,
-      EsriFeatureLayer,
-      // Geojson,
       CircleMarker,
       VectorMarker,
       PngMarker,
-      // SvgShape,
       BasemapToggleControl,
       BasemapSelectControl,
       FullScreenMapToggleTab,
@@ -265,13 +287,17 @@
       CyclomediaRecordingCircle,
       SvgViewConeMarker,
       MeasureControl,
-      // LegendControl,
       ControlCorner,
       PopUp,
       PopUpContent,
       Polygon_,
       Polyline_,
       ModalAbout
+
+      // EsriFeatureLayer,
+      // Geojson,
+      // SvgShape,
+      // LegendControl,
     },
     mounted() {
       this.$controller.appDidLoad();
@@ -309,6 +335,12 @@
       },
       cycloHFov() {
         return this.$store.state.cyclomedia.orientation.hFov;
+      },
+      shouldShowCyclomediaButton() {
+        return this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
+      },
+      shouldShowPictometryButton() {
+        return this.$config.pictometry.enabled && !this.isMobileOrTablet;
       },
       shouldShowPopup() {
         if (this.intersectingFeatures.length > 0) {
@@ -583,6 +615,10 @@
 /*this allows the loading mask to fill the div*/
   .mb-panel-map {
     position: relative;
+  }
+
+  .mb-map-with-widget {
+    height: 50%;
   }
 
   /* @media (max-width: 1024px) {

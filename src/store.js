@@ -50,6 +50,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       // webMapGeoJson: {}
     },
     cyclomedia: {
+      initialized: false,
       navBarOpen: false,
       latLngFromMap: null,
       orientation: {
@@ -98,6 +99,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     state: initialState,
     getters: {},
     mutations: {
+      setCyclomediaInitialized(state, payload) {
+        state.cyclomedia.initialized = payload;
+      },
       setIsMobileOrTablet(state, payload) {
         state.isMobileOrTablet = payload;
       },

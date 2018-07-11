@@ -12,10 +12,11 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot"
   },
   "dependencies": {
+    "@cityofphiladelphia/phila-vue-mapping": "^0.0.4",
     "L-esri-WebMap": "https://github.com/CityOfPhiladelphia/L.esri.WebMap#5849bfa6248a886d8675eeff98fa9dff4949f12a",
     "Leaflet.vector-markers": "^0.0.6",
     "axios": "^0.18.0",
-    "esri-leaflet": "^2.2.0",
+    "esri-leaflet": "2.1.4",
     "jquery": "^3.3.1",
     "jquery-ui": "^1.12.1",
     "leaflet": "^1.1.0",
