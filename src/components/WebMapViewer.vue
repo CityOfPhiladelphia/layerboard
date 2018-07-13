@@ -48,14 +48,20 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  import TopicPanel from './TopicPanel';
-  import MapPanel from './map-panel/MapPanel';
+  import * as philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
+
+  // const CyclomediaWidget = philaVueMapping.CyclomediaWidget;
+  // const PictometryWidget = philaVueMapping.PictometryWidget;
+  const Layer = philaVueMapping.PictometryLayer;
+  const ViewCone = philaVueMapping.PictometryViewCone;
+  const PngMarker = philaVueMapping.PictometryPngMarker;
+
   import CyclomediaWidget from '../cyclomedia/Widget';
   import PictometryWidget from '../pictometry/Widget';
-  import Layer from '../pictometry/Layer';
-  import ViewCone from '../pictometry/ViewCone';
-  import PngMarker from '../pictometry/PngMarker';
+
+  import axios from 'axios';
+  import TopicPanel from './TopicPanel';
+  import MapPanel from './MapPanel';
 
   export default {
     components: {

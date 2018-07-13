@@ -221,46 +221,23 @@
   const PopUpContent = philaVueMapping.PopUpContent;
   const Polygon_ = philaVueMapping.Polygon_;
   const Polyline_ = philaVueMapping.Polyline_;
-  // const ModalAbout = philaVueMapping.ModalAbout;
+  const ModalAbout = philaVueMapping.ModalAbout;
 
-  // import CircleMarker from '../../leaflet/CircleMarker';
-  // import Control from '../../leaflet/Control';
-  // import EsriTiledMapLayer from '../../esri-leaflet/TiledMapLayer';
-  // import PngMarker from '../PngMarker';
-  // import BasemapToggleControl from '../BasemapToggleControl.vue';
-  // import BasemapSelectControl from '../BasemapSelectControl.vue';
-  // import FullScreenMapToggleTab from '../FullScreenMapToggleTab.vue';
-  // import LocationControl from '../LocationControl.vue';
-  // import CyclomediaButton from '../../cyclomedia/Button';
-  // import PictometryButton from '../../pictometry/Button';
-  // import CyclomediaRecordingCircle from '../../cyclomedia/RecordingCircle';
-  // import CyclomediaRecordingsClient from '../../cyclomedia/recordings-client';
-  // import SvgViewConeMarker from '../../cyclomedia/SvgViewConeMarker';
-  // import MeasureControl from '../MeasureControl.vue';
-  // import ControlCorner from '../../leaflet/ControlCorner.vue';
-  // import PopUp from '../../leaflet/PopUp.vue';
-  // import PopUpContent from '../../leaflet/PopUpContent.vue';
-  // import Polygon_ from '../../leaflet/Polygon.vue';
-  // import Polyline_ from '../../leaflet/Polyline.vue';
-  import ModalAbout from '../ModalAbout.vue';
-
+  const cyclomediaMixin = philaVueMapping.CyclomediaMixin;
+  const pictometryMixin = philaVueMapping.PictometryMixin;
 
   // mixins
   import markersMixin from './markers-mixin';
   import geocodeMixin from './geocode-mixin';
-  import cyclomediaMixin from '../../cyclomedia/map-panel-mixin';
-  import pictometryMixin from '../../pictometry/map-panel-mixin';
 
   // vue doesn't like it when you import this as Map (reserved-ish word)
-  import Map_ from '../../leaflet/Map';
-  import EsriWebMap from '../../esri-leaflet/WebMap';
-  import EsriWebMapLayer from '../../esri-leaflet/WebMapLayer';
-  import VectorMarker from '../VectorMarker';
+  import Map_ from '../leaflet/Map';
+  const EsriWebMap = philaVueMapping.WebMap;
+  const EsriWebMapLayer = philaVueMapping.WebMapLayer;
 
-  // import EsriFeatureLayer from '../../esri-leaflet/FeatureLayer';
-  // import Geojson from '../../leaflet/Geojson';
-  // import SvgShape from '../SvgShape';
-  // import LegendControl from '../../esri-leaflet/Legend.vue';
+  const VectorMarker = philaVueMapping.VectorMarker;
+  // import VectorMarker from '../VectorMarker';
+
 
   export default {
     mixins: [
@@ -293,11 +270,6 @@
       Polygon_,
       Polyline_,
       ModalAbout
-
-      // EsriFeatureLayer,
-      // Geojson,
-      // SvgShape,
-      // LegendControl,
     },
     mounted() {
       this.$controller.appDidLoad();

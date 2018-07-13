@@ -103,7 +103,9 @@
 </template>
 
 <script>
-  import Checkbox from './topic-components/Checkbox';
+  import * as philaVueComps from '@cityofphiladelphia/phila-vue-comps';
+  const Checkbox = philaVueComps.Checkbox
+  // import Checkbox from './topic-components/Checkbox';
 
   export default {
     components: {

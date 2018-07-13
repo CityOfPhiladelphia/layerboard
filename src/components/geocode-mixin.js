@@ -39,7 +39,7 @@ export default {
       this.$store.commit('setGeocodeStatus', 'success');
 
       // send geocode result event to host
-      this.$eventBus.$emit('geocodeResult', feature);
+      // this.$eventBus.$emit('geocodeResult', feature);
 
       // pan and center map
       // TODO ideally the map should fit its bounds to the combined extent

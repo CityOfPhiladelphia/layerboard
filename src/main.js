@@ -2,7 +2,7 @@ import axios from 'axios';
 import Vue from 'vue';
 import createStore from './store';
 import configMixin from './util/config-mixin';
-import eventBusMixin from './util/event-bus-mixin';
+// import eventBusMixin from './util/event-bus-mixin';
 import WebMapViewer from './components/WebMapViewer';
 import mergeDeep from './util/merge-deep';
 import controllerMixin from './controller';
@@ -12,8 +12,8 @@ export default (clientConfig) => {
 
   // Vue.use(eventBusMixin);
   // create a global event bus used to proxy events to the host
-  const eventBus = new Vue();
-  Vue.prototype.$eventBus = eventBus;
+  // const eventBus = new Vue();
+  // Vue.prototype.$eventBus = eventBus;
 
   // get base config
   return axios.get(baseConfigUrl).then(response => {
@@ -34,8 +34,8 @@ export default (clientConfig) => {
     const store = createStore(config);
 
     // mix in controller
-    Vue.use(controllerMixin, { config, store, eventBus });
-    // Vue.use(controllerMixin, { config, store });
+    // Vue.use(controllerMixin, { config, store, eventBus });
+    Vue.use(controllerMixin, { config, store });
 
     // mount main vue
     const vm = new Vue({
@@ -45,11 +45,11 @@ export default (clientConfig) => {
     });
 
     // bind events to host app
-    const events = config.events || {};
-    for (let eventName of Object.keys(events)) {
-      const callback = events[eventName];
-      vm.$eventBus.$on(eventName, callback);
-    }
+    // const events = config.events || {};
+    // for (let eventName of Object.keys(events)) {
+    //   const callback = events[eventName];
+    //   vm.$eventBus.$on(eventName, callback);
+    // }
 
   }, response => {
     console.error('AXIOS ERROR loading base config');
