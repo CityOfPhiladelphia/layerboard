@@ -12,9 +12,9 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot"
   },
   "dependencies": {
-    "@cityofphiladelphia/phila-vue-comps": "^0.0.3",
-    "@cityofphiladelphia/phila-vue-datafetch": "^0.0.3",
-    "@cityofphiladelphia/phila-vue-mapping": "^0.0.4",
+    "@cityofphiladelphia/phila-vue-comps": "^0.0.4",
+    "@cityofphiladelphia/phila-vue-datafetch": "^0.0.4",
+    "@cityofphiladelphia/phila-vue-mapping": "^0.0.6",
     "L-esri-WebMap": "https://github.com/CityOfPhiladelphia/L.esri.WebMap#5849bfa6248a886d8675eeff98fa9dff4949f12a",
     "axios": "^0.18.0",
     "esri-leaflet": "2.1.4",

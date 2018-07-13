@@ -6,6 +6,7 @@ src/util/streetsmart.js
 
 public/build.js
 public/build.js.map
+public/*.png
 
 sh.exe.stackdump
 
