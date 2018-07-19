@@ -2,18 +2,15 @@ import axios from 'axios';
 import Vue from 'vue';
 import createStore from './store';
 import configMixin from './util/config-mixin';
-// import eventBusMixin from './util/event-bus-mixin';
 import WebMapViewer from './components/WebMapViewer';
 import mergeDeep from './util/merge-deep';
-import controllerMixin from './controller';
+
+// import controllerMixin from './controller';
+import * as controllerMixinShell from '@cityofphiladelphia/phila-vue-datafetch';
+const controllerMixin = controllerMixinShell.controllerMixin;
 
 export default (clientConfig) => {
   const baseConfigUrl = clientConfig.baseConfig;
-
-  // Vue.use(eventBusMixin);
-  // create a global event bus used to proxy events to the host
-  // const eventBus = new Vue();
-  // Vue.prototype.$eventBus = eventBus;
 
   // get base config
   return axios.get(baseConfigUrl).then(response => {
@@ -21,10 +18,8 @@ export default (clientConfig) => {
     const baseConfigFn = eval(data);
     const { gatekeeperKey } = clientConfig;
     const baseConfig = baseConfigFn({ gatekeeperKey });
-    // console.log('baseConfig', baseConfig);
 
     // deep merge base config and client config
-    //const config = mergeDeep(clientConfig, baseConfig);
     const config = mergeDeep(baseConfig, clientConfig);
 
     // make config accessible from each component via this.$config
@@ -34,7 +29,6 @@ export default (clientConfig) => {
     const store = createStore(config);
 
     // mix in controller
-    // Vue.use(controllerMixin, { config, store, eventBus });
     Vue.use(controllerMixin, { config, store });
 
     // mount main vue
@@ -43,13 +37,6 @@ export default (clientConfig) => {
       render: (h) => h(WebMapViewer),
       store
     });
-
-    // bind events to host app
-    // const events = config.events || {};
-    // for (let eventName of Object.keys(events)) {
-    //   const callback = events[eventName];
-    //   vm.$eventBus.$on(eventName, callback);
-    // }
 
   }, response => {
     console.error('AXIOS ERROR loading base config');

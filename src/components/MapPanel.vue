@@ -5,7 +5,7 @@
     <full-screen-map-toggle-tab v-once />
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
           id="map-tag"
-          :center="this.$store.state.map.center"
+          :center="this.mapCenter"
           :zoom="this.$store.state.map.zoom"
           @l-click="handleMapClick"
           @l-moveend="handleMapMove"
@@ -13,8 +13,6 @@
           :min-zoom="this.$config.map.minZoom"
           :max-zoom="22"
     >
-    <!-- :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }" -->
-    <!-- @l-click="handleMapClick" -->
 
     <!-- <polygon_ -->
     <polygon_ v-if="this.selectedPopupLayerGeometryType === 'Polygon' || this.selectedPopupLayerGeometryType === 'MultiPolygon'"
@@ -103,6 +101,11 @@
       >
       </control-corner>
 
+      <control-corner :vSide="'top'"
+                      :hSide="'almostleft'"
+      >
+      </control-corner>
+
       <div v-once>
         <basemap-toggle-control v-if="shouldShowImageryToggle"
                                 v-once
@@ -148,25 +151,12 @@
       </div>
 
       <!-- search control -->
-      <!-- custom components seem to have to be wrapped like this to work
-           with v-once
-      -->
       <div v-once>
-        <control position="topleft">
-          <div class="mb-search-control-container">
-            <form @submit.prevent="handleSearchFormSubmit">
-                <input class="mb-search-control-input"
-                       id="addressSearch"
-                       placeholder="Search the map"
-                       :value="this.$config.defaultAddress"
-                />
-                <button class="mb-search-control-button">
-                  <i class="fa fa-search fa-lg"></i>
-                </button>
-            </form>
-          </div>
-        </control>
+        <AddressInput :position="this.addressInputPosition" />
       </div>
+      <AddressCandidateList v-if="this.addressAutocompleteEnabled"
+                            :position="this.addressInputPosition"
+      />
 
       <!-- location marker -->
       <circle-marker v-if="this.$store.state.map.location.lat != null"
@@ -179,7 +169,6 @@
                      :fillOpacity="this.locationMarker.fillOpacity"
                      :pane="'highlightOverlay'"
       />
-      <!-- :key="Math.random()" -->
 
       <cyclomedia-recording-circle v-for="recording in cyclomediaRecordings"
                                    v-if="cyclomediaActive"
@@ -202,6 +191,15 @@
   import * as L from 'leaflet';
   import * as philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
 
+  // mixins
+  import markersMixin from './markers-mixin';
+  const cyclomediaMixin = philaVueMapping.CyclomediaMixin;
+  const pictometryMixin = philaVueMapping.PictometryMixin;
+
+  // vue doesn't like it when you import this as Map (reserved-ish word)
+  const Map_ = philaVueMapping.Map_;
+  const AddressInput = philaVueMapping.AddressInput;
+  const AddressCandidateList = philaVueMapping.AddressCandidateList;
   const CircleMarker = philaVueMapping.CircleMarker;
   const Control = philaVueMapping.Control;
   const EsriTiledMapLayer = philaVueMapping.EsriTiledMapLayer;
@@ -223,30 +221,19 @@
   const Polyline_ = philaVueMapping.Polyline_;
   const ModalAbout = philaVueMapping.ModalAbout;
 
-  const cyclomediaMixin = philaVueMapping.CyclomediaMixin;
-  const pictometryMixin = philaVueMapping.PictometryMixin;
-
-  // mixins
-  import markersMixin from './markers-mixin';
-  import geocodeMixin from './geocode-mixin';
-
-  // vue doesn't like it when you import this as Map (reserved-ish word)
-  import Map_ from '../leaflet/Map';
   const EsriWebMap = philaVueMapping.WebMap;
   const EsriWebMapLayer = philaVueMapping.WebMapLayer;
-
   const VectorMarker = philaVueMapping.VectorMarker;
-  // import VectorMarker from '../VectorMarker';
-
 
   export default {
     mixins: [
       markersMixin,
-      geocodeMixin,
       cyclomediaMixin,
       pictometryMixin,
     ],
     components: {
+      AddressInput,
+      AddressCandidateList,
       Map_,
       Control,
       EsriWebMap,
@@ -275,6 +262,24 @@
       this.$controller.appDidLoad();
     },
     computed: {
+      mapCenter() {
+        return this.$store.state.map.center;
+      },
+      addressAutocompleteEnabled() {
+        // TODO tidy up the code
+        if (this.$config.addressAutocomplete.enabled === true) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      addressInputPosition() {
+        if (this.isMobileOrTablet) {
+          return 'topleft'
+        } else {
+          return 'topalmostleft'
+        }
+      },
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
       },
@@ -422,7 +427,7 @@
       // if there's a default address, navigate to it
       const defaultAddress = this.$config.defaultAddress;
       if (defaultAddress) {
-        this.geocode(defaultAddress);
+        this.$controller.goToDefaultAddress(defaultAddress);
       }
 
       const cyclomediaConfig = this.$config.cyclomedia || {};
@@ -435,8 +440,6 @@
           4326
         );
       }
-
-      // console.log('MAPPANEL CREATED', this, 'push at 12:32');
     },
     watch: {
       picOrCycloActive(value) {
@@ -490,51 +493,19 @@
           return false;
         }
       },
-      // calculateLayerGeometryType(layer) {
-      //   layer.metadata(function(error, metadata){
-      //     return metadata;
-      //   });
-      // //   console.log('calculateLayerGeometryType layer', layer.layer._layers)
-      // //   const firstLayer = layer.layer._layers[Object.keys(layer.layer._layers)[0]];
-      // //   console.log(Object.keys(layer.layer._layers)[0], 'firstLayer', firstLayer);
-      // //   if (firstLayer.feature) {
-      // //     geometry = firstLayer.feature.geometry.type;
-      // //   } else {
-      // //     const firstLayerFirstLayer = firstLayer._layers[Object.keys(firstLayer._layers)[0]];
-      // //     geometry = firstLayerFirstLayer.feature.geometry.type;
-      // //   }
-      // //   return geometry;
-      // },
       handleMapClick() {
         // console.log('handle map click, e:', e);
-        document.getElementById('addressSearch').blur()
+        document.getElementById('pvm-search-control-input').blur()
       },
       handleButtonClick() {
         // console.log('handle button click is running');
-        document.getElementById('addressSearch').blur()
+        document.getElementById('pvm-search-control-input').blur()
       },
-      // handleMapMove(e) {
-      //   const map = this.$store.state.map.map;
-      //
-      //   const center = map.getCenter();
-      //   this.$store.commit('setMapCenter', center);
-      //   const zoom = map.getZoom();
-      //   this.$store.commit('setMapZoom', zoom);
-      //   const scale = this.$config.map.scales[zoom];
-      //   this.$store.commit('setMapScale', scale);
-      //
-      //   const cyclomediaConfig = this.$config.cyclomedia || {};
-      //   if (cyclomediaConfig.enabled) {
-      //     // update cyclo recordings
-      //     this.updateCyclomediaRecordings();
-      //   }
-      // },
-
       handleMapMove(e) {
         // console.log('handleMapMove is running');
         const map = this.$store.state.map.map;
 
-        // const pictometryConfig = this.$config.pictometry || {};
+        const pictometryConfig = this.$config.pictometry || {};
 
         const center = map.getCenter();
         const { lat, lng } = center;
@@ -544,13 +515,13 @@
         const scale = this.$config.map.scales[zoom];
         this.$store.commit('setMapScale', scale);
 
-        // if (pictometryConfig.enabled) {
-        //   // update state for pictometry
-        //   this.$store.commit('setPictometryMapCenter', coords);
-        //
-        //   const zoom = map.getZoom();
-        //   this.$store.commit('setPictometryMapZoom', zoom);
-        // }
+        if (pictometryConfig.enabled) {
+          // update state for pictometry
+          this.$store.commit('setPictometryMapCenter', coords);
+
+          const zoom = map.getZoom();
+          this.$store.commit('setPictometryMapZoom', zoom);
+        }
 
         const cyclomediaConfig = this.$config.cyclomedia || {};
 
@@ -561,13 +532,6 @@
         }
       },
 
-      handleSearchFormSubmit(e) {
-        // this.$controller.handleSearchFormSubmit(e);
-        document.getElementById('addressSearch').blur()
-        const input = e.target[0].value;
-        // this.$store.commit('setLastSearchMethod', 'geocode');
-        this.geocode(input);
-      }
     }, // end of methods
   }; //end of export
 </script>

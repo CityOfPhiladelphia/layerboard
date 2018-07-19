@@ -27,11 +27,5 @@ export default {
       }
       return marker;
     },
-    // leafletMarkers() {
-    //   const markers = [];
-    //   markers.push.apply(markers, this.markers);
-    //   markers.push.apply(markers, this.geojsonFeatures);
-    //   return markers;
-    // },
   },
 };

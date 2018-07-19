@@ -11,7 +11,6 @@ ________                           _____
 import 'leaflet-easybutton/src/easy-button.css';
 import 'leaflet-measure/dist/leaflet-measure.css';
 
-
 import WebMapViewer from './main.js'
 
 // turn off console logging in production
@@ -33,7 +32,7 @@ function openHelp() {
   window.location.hash = finalHash;
 }
 
-var BASE_CONFIG_URL = 'https://rawgit.com/ajrothwell/openmaps-base-config/b39c037e8bc058f54ff0ea0b61e879d5ad1ae800/config.js';
+var BASE_CONFIG_URL = 'https://rawgit.com/ajrothwell/openmaps-base-config/f7a091508316694767f24fd68ab07af38ddad163/config.js';
 var GATEKEEPER_KEY = 'ec8681f792812d7e3ff15e9094bfd4ad';
 var WEBMAP_ID = '4c3ed877199c402895b7fa45ce6409b6';
 
@@ -42,6 +41,9 @@ WebMapViewer({
     enabled: true
   },
   geolocation: {
+    enabled: true
+  },
+  addressAutocomplete: {
     enabled: true
   },
   map: {
@@ -54,12 +56,17 @@ WebMapViewer({
     historicBasemaps: {
       enabled: true
     },
+    center: [-75.16347348690034, 39.952562122622254],
+    clickToIdentifyFeatures: true,
+    containerClass: 'map-container-type2',
   },
   cyclomedia: {
-    enabled: true
+    enabled: true,
+    measurementAllowed: false,
+    popoutAble: true,
   },
   pictometry: {
-    enabled: false
+    enabled: true
   },
   gatekeeperKey: GATEKEEPER_KEY,
   baseConfig: BASE_CONFIG_URL,

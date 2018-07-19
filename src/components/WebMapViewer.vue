@@ -6,41 +6,40 @@
       {{ this.buttonMessage }}
     </button>
 
-      <topic-panel v-show="shouldShowTopics"
-      />
-
-      <map-panel v-show="shouldShowMap"
-      >
-        <cyclomedia-widget v-if="this.$config.cyclomedia.enabled"
+      <topic-panel v-show="shouldShowTopics" />
+      <map-panel v-show="shouldShowMap">
+        <cyclomedia-widget v-if="this.shouldLoadCyclomediaWidget"
                            slot="cycloWidget"
                            v-show="cyclomediaActive"
+                           screen-percent="3"
         />
-        <pictometry-widget v-if="this.$config.pictometry.enabled"
+        <pictometry-widget v-if="this.shouldLoadPictometryWidget"
                            slot="pictWidget"
                            v-show="pictometryActive"
-                           :apiKey="this.$config.pictometry.apiKey"
-                           :secretKey="this.$config.pictometry.secretKey"
+                           :apiKey="this.ak"
+                           :secretKey="this.sk"
         >
           <png-marker v-if="this.pictometryShowAddressMarker"
-                  :latlng="[this.geocodeData.geometry.coordinates[1], this.geocodeData.geometry.coordinates[0]]"
-                  :icon="'markers.png'"
-                  :height="60"
-                  :width="40"
-                  :offsetX="0"
-                  :offsetY="0"
+                      :latlng="[this.geocodeData.geometry.coordinates[1], this.geocodeData.geometry.coordinates[0]]"
+                      :icon="'markers.png'"
+                      :height="60"
+                      :width="40"
+                      :offsetX="0"
+                      :offsetY="0"
           />
-          <layer v-if="this.pictometryActive"
-          />
+          <layer v-if="this.pictometryActive" />
           <png-marker v-if="this.cyclomediaActive && this.pictometryActive"
-                  :latlng="[this.$store.state.cyclomedia.viewer.props.orientation.xyz[1], this.$store.state.cyclomedia.viewer.props.orientation.xyz[0]]"
-                  :icon="'camera2.png'"
-                  :height="20"
-                  :width="30"
-                  :offsetX="-2"
-                  :offsetY="-2"
+                      :latlng="cycloLatlng"
+                      :icon="'camera2.png'"
+                      :height="20"
+                      :width="30"
+                      :offsetX="-2"
+                      :offsetY="-2"
           />
           <view-cone v-if="this.cyclomediaActive && this.pictometryActive"
-                     :orientation="this.$store.state.cyclomedia.viewer.props.orientation"
+                     :latlng="cycloLatlng"
+                     :rotationAngle="cycloRotationAngle"
+                     :hFov="cycloHFov"
           />
         </pictometry-widget>
       </map-panel>
@@ -49,15 +48,11 @@
 
 <script>
   import * as philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
-
-  // const CyclomediaWidget = philaVueMapping.CyclomediaWidget;
-  // const PictometryWidget = philaVueMapping.PictometryWidget;
+  const CyclomediaWidget = philaVueMapping.CyclomediaWidget;
+  const PictometryWidget = philaVueMapping.PictometryWidget;
   const Layer = philaVueMapping.PictometryLayer;
   const ViewCone = philaVueMapping.PictometryViewCone;
   const PngMarker = philaVueMapping.PictometryPngMarker;
-
-  import CyclomediaWidget from '../cyclomedia/Widget';
-  import PictometryWidget from '../pictometry/Widget';
 
   import axios from 'axios';
   import TopicPanel from './TopicPanel';
@@ -74,7 +69,7 @@
       PngMarker
     },
     mounted() {
-      console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
+      // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
       window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize();
 
@@ -114,11 +109,35 @@
       });
     },
     computed: {
+      isMobileOrTablet() {
+        return this.$store.state.isMobileOrTablet;
+      },
+      shouldLoadCyclomediaWidget() {
+        return this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
+      },
+      shouldLoadPictometryWidget() {
+        return this.$config.pictometry.enabled && !this.isMobileOrTablet;
+      },
       fullScreenMapEnabled() {
         return this.$store.state.fullScreenMapEnabled;
       },
       cyclomediaActive() {
         return this.$store.state.cyclomedia.active
+      },
+      cycloLatlng() {
+        if (this.$store.state.cyclomedia.orientation.xyz !== null) {
+          const xyz = this.$store.state.cyclomedia.orientation.xyz;
+          return [xyz[1], xyz[0]];
+        } else {
+          const center = this.$config.map.center;
+          return center;
+        }
+      },
+      cycloRotationAngle() {
+        return this.$store.state.cyclomedia.orientation.yaw * (180/3.14159265359);
+      },
+      cycloHFov() {
+        return this.$store.state.cyclomedia.orientation.hFov;
       },
       pictometryActive() {
         return this.$store.state.pictometry.active
@@ -133,6 +152,45 @@
           return false;
         } else {
           return true;
+        }
+      },
+      geocodeData() {
+        return this.$store.state.geocode.data
+      },
+      ak() {
+        const host = window.location.hostname;
+        if (host === 'atlas.phila.gov') {
+          return this.$config.pictometry.apiKey;
+        }
+        if (host === 'atlas-dev.phila.gov') {
+          return this.$config.pictometryDev.apiKey;
+        }
+        if (host === 'cityatlas.phila.gov') {
+          return this.$config.pictometryCity.apiKey;
+        }
+        if (host === 'cityatlas-dev.phila.gov') {
+          return this.$config.pictometryCityDev.apiKey;
+        }
+        if (host === '10.8.101.67') {
+          return this.$config.pictometryLocal.apiKey;
+        }
+      },
+      sk() {
+        const host = window.location.hostname;
+        if (host === 'atlas.phila.gov') {
+          return this.$config.pictometry.secretKey;
+        }
+        if (host === 'atlas-dev.phila.gov') {
+          return this.$config.pictometryDev.secretKey;
+        }
+        if (host === 'cityatlas.phila.gov') {
+          return this.$config.pictometryCity.secretKey;
+        }
+        if (host === 'cityatlas-dev.phila.gov') {
+          return this.$config.pictometryCityDev.secretKey;
+        }
+        if (host === '10.8.101.67') {
+          return this.$config.pictometryLocal.secretKey;
         }
       },
       geocodeData() {
@@ -195,7 +253,7 @@
         const smallScreen = windowWidth < 750;
         const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
         const fullScreenMapEnabled = this.$store.state.fullScreenMapEnabled;
-        console.log('calculateShouldShowTopics, smallScreen:', smallScreen, 'didToggleTopicsOn', didToggleTopicsOn, 'fullScreenMapEnabled', fullScreenMapEnabled);
+        // console.log('calculateShouldShowTopics, smallScreen:', smallScreen, 'didToggleTopicsOn', didToggleTopicsOn, 'fullScreenMapEnabled', fullScreenMapEnabled);
         const shouldShowTopics = !smallScreen && !fullScreenMapEnabled || smallScreen && didToggleTopicsOn;
         this.$store.commit('setShouldShowTopics', shouldShowTopics);
       },
@@ -217,7 +275,7 @@
         // let boardHeight;
         const windowWidth = rootWidthNum;
         const notMobile = windowWidth >= 640;
-        console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
+        // console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
         // if (!notMobile) {
         //   boardHeight = rootHeightNum - 34;
         //   console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);

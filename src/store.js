@@ -16,7 +16,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     // bennyEndpoints3: [],
     geocode: {
       status: null,
-      data: null
+      data: null,
+      input: null,
+      related: null,
     },
     layers: {
       layerUrls: {},
@@ -49,6 +51,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       selectedCategory: '',
       // webMapGeoJson: {}
     },
+    shouldShowAddressCandidateList: false,
+    candidates: [],
+    addressEntered: null,
     cyclomedia: {
       initialized: false,
       navBarOpen: false,
@@ -217,9 +222,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setGeocodeData(state, payload) {
         state.geocode.data = payload;
       },
-
-
-
+      setGeocodeRelated(state, payload) {
+        state.geocode.related = payload;
+      },
+      setGeocodeInput(state, payload) {
+        state.geocode.input = payload;
+      },
       setPictometryActive(state, payload) {
         if (!config.pictometry.enabled) {
           return;
@@ -290,7 +298,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setDidToggleModal(state, {name, open}) {
         console.log('setDidToggleModal, name:', name, 'open:', open);
         state.modals[name].open = open === null ? !state.modals[name].open : open
-      }
+      },
       // [types.TOGGLE_MODAL] (state, {name, open}) {
       //   state.modals[name].open = open === null ? !state.modals[name].open : open
       // },
@@ -299,6 +307,15 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       //     state.modals[modalName].open = false
       //   }
       // }
+      setShouldShowAddressCandidateList(state, payload) {
+        state.shouldShowAddressCandidateList = payload;
+      },
+      setCandidates(state, payload) {
+        state.candidates = payload;
+      },
+      setAddressEntered(state, payload) {
+        state.addressEntered = payload;
+      }
     }
   });
 }
