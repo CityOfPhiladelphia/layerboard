@@ -5,9 +5,8 @@ import configMixin from './util/config-mixin';
 import WebMapViewer from './components/WebMapViewer';
 import mergeDeep from './util/merge-deep';
 
-// import controllerMixin from './controller';
-import * as controllerMixinShell from '@cityofphiladelphia/phila-vue-datafetch';
-const controllerMixin = controllerMixinShell.controllerMixin;
+import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch';
+const controllerMixin = philaVueDatafetch;
 
 export default (clientConfig) => {
   const baseConfigUrl = clientConfig.baseConfig;
