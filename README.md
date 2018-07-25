@@ -1,8 +1,6 @@
 # openmaps
 
-_(work in progress)_
-
-openmaps.phila.gov is a portal for viewing and downloading open data from the City of Philadelphia.
+[Openmaps](https://openmaps.phila.gov) is a portal for viewing and downloading open data from the City of Philadelphia.
 
 ![OpenMaps](https://s3.amazonaws.com/mapboard-images/OpenMaps.JPG)
 
