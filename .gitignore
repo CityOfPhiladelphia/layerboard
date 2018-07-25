@@ -11,3 +11,4 @@ sh.exe.stackdump
 
 public/build.js
 public/build.js.map
+public/*.png
