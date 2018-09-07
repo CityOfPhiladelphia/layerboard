@@ -2,7 +2,7 @@ import axios from 'axios';
 import Vue from 'vue';
 import createStore from './store';
 import configMixin from './util/config-mixin';
-import WebMapViewer from './components/WebMapViewer';
+import WebMapViewer from './components/WebMapViewer.vue';
 import mergeDeep from './util/merge-deep';
 
 import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch';

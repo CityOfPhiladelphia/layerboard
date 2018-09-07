@@ -1,16 +1,16 @@
 {
-  "name": "openmaps",
-  "version": "0.0.3",
+  "name": "@cityofphiladelphia/openmaps",
   "description": "A Vue.js component for data-rich web mapping",
-  "main": "",
-  "repository": "https://github.com/cityofphiladelphia/openmaps",
+  "version": "0.0.3",
   "author": "City of Philadelphia <maps@phila.gov>",
+  "repository": "https://github.com/cityofphiladelphia/openmaps",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "cross-env NODE_ENV=production npx webpack",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --hot"
+    "build": "rollup -c rollup.config.js",
+    "dev": "yarn build -w"
   },
+  "main": "./dist/openmaps.js",
   "dependencies": {
     "@cityofphiladelphia/phila-vue-comps": "0.0.9",
     "@cityofphiladelphia/phila-vue-datafetch": "0.0.8",
@@ -31,26 +31,25 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "cross-env": "^5.1.4",
-    "css-loader": "^0.28.11",
-    "file-loader": "^1.1.11",
-    "vue-loader": "^15.2.4",
-    "vue-style-loader": "^4.1.0",
-    "vue-template-compiler": "^2.5.16",
-    "webpack": "^4.2.0",
-    "webpack-cli": "^2.0.13",
-    "webpack-dev-server": "^3.1.4"
+    "chromedriver": "^2.37.0",
+    "cross-spawn": "^6.0.4",
+    "nightwatch": "^0.9.19",
+    "rollup": "^0.57.1",
+    "rollup-analyzer-plugin": "^1.1.1",
+    "rollup-plugin-buble": "^0.19.2",
+    "rollup-plugin-commonjs": "^9.1.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.2.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "rollup-plugin-vue": "^3.0.0",
+    "selenium-server": "^3.11.0",
+    "vue-template-compiler": "^2.5.13",
+    "webpack": "^4.6.0",
+    "webpack-serve": "^0.3.2"
   },
-  "babel": {
-    "presets": [
-      "env"
-    ],
-    "plugins": [
-      "transform-object-rest-spread"
-    ]
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -55,8 +55,8 @@
   const PngMarker = philaVueMapping.PictometryPngMarker;
 
   import axios from 'axios';
-  import TopicPanel from './TopicPanel';
-  import MapPanel from './MapPanel';
+  import TopicPanel from './TopicPanel.vue';
+  import MapPanel from './MapPanel.vue';
 
   export default {
     components: {
