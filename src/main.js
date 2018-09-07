@@ -8,7 +8,7 @@ import mergeDeep from './util/merge-deep';
 import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch';
 const controllerMixin = philaVueDatafetch;
 
-export default (clientConfig) => {
+function initOpenMaps(clientConfig) {
   const baseConfigUrl = clientConfig.baseConfig;
 
   // get base config
@@ -40,4 +40,8 @@ export default (clientConfig) => {
   }, response => {
     console.error('AXIOS ERROR loading base config');
   });
-};
+}
+
+export default initOpenMaps;
+
+export { WebMapViewer };
