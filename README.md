@@ -1,14 +1,14 @@
-# openmaps
+# layerboard
 
-_(work in progress)_
+layerboard is a framework for creating app that are portals for viewing and downloading data from the City of Philadelphia.
 
-openmaps.phila.gov is a portal for viewing and downloading open data from the City of Philadelphia.
+For example, [Openmaps](https://github.com/CityOfPhiladelphia/openmaps) is built using layerboard.
 
 ![OpenMaps](https://s3.amazonaws.com/mapboard-images/OpenMaps.JPG)
 
 ## Usage
-Check out [the wiki](https://github.com/CityOfPhiladelphia/openmaps/wiki) for usage documentation.
+Check out [the wiki](https://github.com/CityOfPhiladelphia/layerboard/wiki) for usage documentation.
 
-## Site
+## Example Site
 
-See it [live](https://openmaps.phila.gov)
+See the example Openmaps [live](https://openmaps.phila.gov)
