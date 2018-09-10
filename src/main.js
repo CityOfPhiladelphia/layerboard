@@ -32,7 +32,7 @@ function initOpenMaps(clientConfig) {
 
     // mount main vue
     const vm = new Vue({
-      el: config.el || '#webmap-viewer',
+      el: config.el || '#layerboard',
       render: (h) => h(Layerboard),
       store
     });
