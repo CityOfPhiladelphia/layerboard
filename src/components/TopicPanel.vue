@@ -67,8 +67,8 @@
                 {{ category }}
               </option>
             </select>
-          </div>
-        </div> -->
+          </div> -->
+        </div>
       <!-- </div> -->
 
         <div class="topics-container cell medium-cell-block-y"
