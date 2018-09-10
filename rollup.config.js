@@ -25,9 +25,9 @@ external.push('leaflet-vector-icon/dist/leaflet-vector-icon.css');
 export default {
   input: 'src/main.js',
   output: {
-    file: 'dist/openmaps.js',
+    file: 'dist/layerboard.js',
     format: 'umd',
-    name: 'openmaps',
+    name: 'layerboard',
     // silence warning about multiple exports
     exports: 'named',
     // map imports to global names for using mapboard in the browser
