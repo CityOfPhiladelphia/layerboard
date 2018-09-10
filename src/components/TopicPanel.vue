@@ -55,7 +55,7 @@
           </form>
 
           <!-- categories filter -->
-          <div class="input-group">
+          <!-- <div class="input-group">
             <span class="input-group-label input-font">Filter By Category:</span>
 
             <select @change="didSelectCategory"
@@ -68,7 +68,7 @@
               </option>
             </select>
           </div>
-        </div>
+        </div> -->
       <!-- </div> -->
 
         <div class="topics-container cell medium-cell-block-y"
