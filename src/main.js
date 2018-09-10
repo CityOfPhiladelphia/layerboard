@@ -2,7 +2,7 @@ import axios from 'axios';
 import Vue from 'vue';
 import createStore from './store';
 import configMixin from './util/config-mixin';
-import WebMapViewer from './components/WebMapViewer.vue';
+import Layerboard from './components/Layerboard.vue';
 import mergeDeep from './util/merge-deep';
 
 import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch';
@@ -33,7 +33,7 @@ function initOpenMaps(clientConfig) {
     // mount main vue
     const vm = new Vue({
       el: config.el || '#webmap-viewer',
-      render: (h) => h(WebMapViewer),
+      render: (h) => h(Layerboard),
       store
     });
 
@@ -44,4 +44,4 @@ function initOpenMaps(clientConfig) {
 
 export default initOpenMaps;
 
-export { WebMapViewer };
+export { Layerboard };

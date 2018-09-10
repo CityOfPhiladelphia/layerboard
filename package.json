@@ -1,16 +1,16 @@
 {
-  "name": "@cityofphiladelphia/openmaps",
-  "description": "A Vue.js component for data-rich web mapping",
-  "version": "0.0.3",
+  "name": "@cityofphiladelphia/layerboard",
+  "description": "A Vue.js component for creating an app from an ESRI web map",
+  "version": "0.0.1",
   "author": "City of Philadelphia <maps@phila.gov>",
-  "repository": "https://github.com/cityofphiladelphia/openmaps",
+  "repository": "https://github.com/cityofphiladelphia/layerboard",
   "license": "MIT",
   "private": false,
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "dev": "yarn build -w"
   },
-  "main": "./dist/openmaps.js",
+  "main": "./dist/layerboard.js",
   "dependencies": {
     "@cityofphiladelphia/phila-vue-comps": "0.0.9",
     "@cityofphiladelphia/phila-vue-datafetch": "0.0.8",
