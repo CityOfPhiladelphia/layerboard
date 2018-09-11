@@ -1,0 +1,108 @@
+/* header.site-header > .row:last-of-type {
+    background: #2176d2;
+} */
+body {
+  overflow-y: hidden;
+}
+
+.bold-a {
+  font-weight: bold;
+  color: white;
+}
+
+.grid-y {
+  overflow-y: hidden;
+}
+
+.greeting > h2 {
+  margin-bottom: 30px;
+}
+
+.greeting > .callout {
+  border-color: #58c04d;
+  background: #fff;
+  /*margin: 0 0 1rem 0;*/
+  padding: 1rem;
+}
+
+.greeting > .callout > ul {
+  margin: 0 0 0 1.42857rem;
+  padding: 0 0 0 1.42857rem;
+}
+
+#application .site-header, #application .app-footer {
+	background: #2176d2;
+}
+
+#application .site-header .page-title-container h1 {
+	font-size: 2.14286rem;
+}
+
+/*this fixes an issue with the topic panel scrolling over the footer padding*/
+#application .app-footer {
+	position: relative;
+}
+
+/*small*/
+@media screen and (max-width: 750px) {
+	.logo {
+		float: left;
+	}
+
+  #application .site-header .logo img {
+    max-width: 100px;
+    height: auto;
+  }
+
+  #application .site-header .page-title-container h1 {
+    font-size: 1.75rem;
+  }
+
+  .page-title
+
+	.page-title-container {
+		float: right;
+	}
+}
+
+#demo-badge {
+  /*text-transform: capitalize;*/
+  font-size: 14px;
+  vertical-align: top;
+  /*color: #eee;*/
+  margin-left: 4px;
+  line-height: 35px;
+  padding: 4px;
+  border-radius: 8px;
+  background: #f3c613;
+}
+
+.tour-tip{
+  border-left: 3px solid color(dark-ben-franklin);
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  &:hover{
+    cursor: pointer;
+    cursor: hand;
+    background: color(ghost-gray);
+  }
+}
+
+.tour-tip__action{
+  color: color(dark-ben-franklin);
+  @include rem(font-size, 1.75);
+  margin:0;
+  padding:0;
+}
+
+.tour-tip__result{
+  // padding-left: 30px;
+}
+
+.tour-tip__icon {
+  margin-right: 10px;
+  @include rem(font-size, 3)
+  color: color(electric-blue);
+}

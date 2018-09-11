@@ -8,7 +8,8 @@
   "private": false,
   "scripts": {
     "build": "rollup -c rollup.config.js",
-    "dev": "yarn build -w"
+    "dev": "yarn build -w",
+    "example": "webpack-serve ./example/webpack.config.js"
   },
   "main": "./dist/layerboard.js",
   "dependencies": {
