@@ -32,6 +32,8 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "babel-loader": "^8.0.2",
     "chromedriver": "^2.37.0",
     "cross-spawn": "^6.0.4",
     "nightwatch": "^0.9.19",
@@ -46,6 +48,7 @@
     "rollup-plugin-uglify": "^3.0.0",
     "rollup-plugin-vue": "^3.0.0",
     "selenium-server": "^3.11.0",
+    "vue-loader": "^15.4.2",
     "vue-template-compiler": "^2.5.13",
     "webpack": "^4.6.0",
     "webpack-serve": "^0.3.2"

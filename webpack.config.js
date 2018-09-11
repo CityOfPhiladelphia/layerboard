@@ -8,7 +8,7 @@ var isDevelopment = env === 'development';
 module.exports = {
   entry: {
     // app: './src/main.js',
-    app: './src/config.js',
+    app: './config.js',
   },
   resolve: {
     extensions: ['.js', '.vue'],
@@ -28,7 +28,7 @@ module.exports = {
     path: path.resolve(__dirname, 'public'),
     filename: 'build.js',
     publicPath: '/',
-    library: 'WebMapViewer',
+    library: 'layerboard',
   },
   module: {
     rules: [

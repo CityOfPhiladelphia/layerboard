@@ -1,11 +1,6 @@
-const path = require('path');
-const webpack = require('webpack');
-
-// const env = process.env.NODE_ENV;
-// const isDevelopment = env === 'development';
-
-// console.log('NODE_ENV:', env, 'process.env.NODE_ENV:', process.env.NODE_ENV);
-console.log(path.join(__dirname, 'app.js'));
+var path = require('path')
+var webpack = require('webpack')
+var VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
   mode: 'development',
@@ -15,7 +10,35 @@ module.exports = {
   output: {
     filename: 'bundle.js',
   },
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]?[hash]'
+        }
+      }
+    ]
+  },
   externals: {
+    'leaflet': 'L',
+    'jQuery': '$',
     moment: 'moment',
     accounting: 'accounting',
     axios: 'axios',
@@ -25,4 +48,8 @@ module.exports = {
     host: process.env.WEBPACK_DEV_HOST,
     port: process.env.WEBPACK_DEV_PORT,
   },
+  plugins: [
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
+    new VueLoaderPlugin(),
+  ],
 };
