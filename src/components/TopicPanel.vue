@@ -248,7 +248,8 @@
 
   .topics-container {
     /* height: calc(100vh - 220px); */
-    height: calc(100vh - 268px);
+    /* height: calc(100vh - 268px); */
+    height: calc(100vh - 218px);
   }
 
   /* @media screen and (max-width: 40em) { */
