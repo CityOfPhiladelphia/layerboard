@@ -4,6 +4,8 @@ import createStore from './store';
 import configMixin from './util/config-mixin';
 import Layerboard from './components/Layerboard.vue';
 import mergeDeep from './util/merge-deep';
+import '@fortawesome/fontawesome-pro/js/all';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch';
 const controllerMixin = philaVueDatafetch;
@@ -29,6 +31,8 @@ function initOpenMaps(clientConfig) {
 
     // mix in controller
     Vue.use(controllerMixin, { config, store });
+
+    Vue.component('font-awesome-icon', FontAwesomeIcon)
 
     // mount main vue
     const vm = new Vue({

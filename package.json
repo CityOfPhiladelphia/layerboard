@@ -9,15 +9,21 @@
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "dev": "yarn build -w",
-    "example": "webpack-serve ./example/webpack.config.js"
+    "example": "cross-env NODE_ENV=development webpack-dev-server"
   },
   "main": "./dist/layerboard.js",
   "dependencies": {
     "@cityofphiladelphia/phila-vue-comps": "0.0.9",
     "@cityofphiladelphia/phila-vue-datafetch": "0.0.8",
     "@cityofphiladelphia/phila-vue-mapping": "0.0.8",
+    "@fortawesome/fontawesome-pro": "^5.4.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.5",
+    "@fortawesome/vue-fontawesome": "^0.1.1",
     "L-esri-WebMap": "https://github.com/CityOfPhiladelphia/L.esri.WebMap#5849bfa6248a886d8675eeff98fa9dff4949f12a",
+    "accounting": "^0.4.1",
     "axios": "^0.18.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
     "blueimp-md5": "^2.10.0",
     "esri-leaflet": "2.1.4",
     "jquery": "^3.3.1",
@@ -35,6 +41,7 @@
     "@babel/core": "^7.0.0",
     "babel-loader": "^8.0.2",
     "chromedriver": "^2.37.0",
+    "cross-env": "^5.2.0",
     "cross-spawn": "^6.0.4",
     "nightwatch": "^0.9.19",
     "rollup": "^0.57.1",
@@ -51,6 +58,8 @@
     "vue-loader": "^15.4.2",
     "vue-template-compiler": "^2.5.13",
     "webpack": "^4.6.0",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.8",
     "webpack-serve": "^0.3.2"
   },
   "publishConfig": {

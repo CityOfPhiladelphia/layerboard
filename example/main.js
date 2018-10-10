@@ -1,10 +1,12 @@
 /*
-________                           _____
-\_____  \ ______   ____   ____    /     \ _____  ______  ______
- /   |   \\____ \_/ __ \ /    \  /  \ /  \\__  \ \____ \/  ___/
-/    |    \  |_> >  ___/|   |  \/    Y    \/ __ \|  |_> >___ \
-\_______  /   __/ \___  >___|  /\____|__  (____  /   __/____  >
-        \/|__|        \/     \/         \/     \/|__|       \/
+  _                       _                         _
+ | |                     | |                       | |
+ | | __ _ _   _  ___ _ __| |__   ___   __ _ _ __ __| |
+ | |/ _` | | | |/ _ \ '__| '_ \ / _ \ / _` | '__/ _` |
+ | | (_| | |_| |  __/ |  | |_) | (_) | (_| | | | (_| |
+ |_|\__,_|\__, |\___|_|  |_.__/ \___/ \__,_|_|  \__,_|
+           __/ |
+          |___/
 */
 
 import accounting from 'accounting';
@@ -34,6 +36,8 @@ function openHelp() {
   }
   window.location.hash = finalHash;
 }
+
+console.log('openHelp:', openHelp);
 
 var BASE_CONFIG_URL = 'https://rawgit.com/ajrothwell/openmaps-base-config/f7a091508316694767f24fd68ab07af38ddad163/config.js';
 var GATEKEEPER_KEY = 'ec8681f792812d7e3ff15e9094bfd4ad';
