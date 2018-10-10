@@ -1,6 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import isMobileDevice from './util/is-mobile-device';
+import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch'
+import philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
+import philaVueComps from '@cityofphiladelphia/phila-vue-comps';
+import mergeDeep from './util/merge-deep';
+
+const pvdStore = philaVueDatafetch.pvdStore
+const pvmStore = philaVueMapping.pvmStore
+const pvcStore = philaVueComps.pvcStore
 
 // when you load vuex from a script tag this seems to happen automatically
 Vue.use(Vuex);
@@ -14,12 +22,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     bennyEndpoints: {},
     // bennyEndpoints2: {},
     // bennyEndpoints3: [],
-    geocode: {
-      status: null,
-      data: null,
-      input: null,
-      related: null,
-    },
+    // geocode: {
+    //   status: null,
+    //   data: null,
+    //   input: null,
+    //   related: null,
+    // },
     layers: {
       layerUrls: {},
       inputLayerFilter: '',
@@ -54,34 +62,34 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     shouldShowAddressCandidateList: false,
     candidates: [],
     addressEntered: null,
-    cyclomedia: {
-      initialized: false,
-      navBarOpen: false,
-      latLngFromMap: null,
-      orientation: {
-        yaw: null,
-        hFov: null,
-        xyz: null,
-      },
-      active: false,
-      recordings: [],
-    },
-    pictometry: {
-      ipa: null,
-      active: false,
-      shapeIds: [],
-      pngMarkerIds: [],
-      zoom: null,
-      // this is the state of the main leaflet map. when these values change
-      // the pictometry widget should react. the reason these are duplicated
-      // here is to avoid an infinite loop in the Map component when the
-      // viewport changes.
-      map: {
-        center: config.map.center,
-        zoom: config.map.zoom
-      }
-    },
-    lastSearchMethod: null,
+    // cyclomedia: {
+    //   initialized: false,
+    //   navBarOpen: false,
+    //   latLngFromMap: null,
+    //   orientation: {
+    //     yaw: null,
+    //     hFov: null,
+    //     xyz: null,
+    //   },
+    //   active: false,
+    //   recordings: [],
+    // },
+    // pictometry: {
+    //   ipa: null,
+    //   active: false,
+    //   shapeIds: [],
+    //   pngMarkerIds: [],
+    //   zoom: null,
+    //   // this is the state of the main leaflet map. when these values change
+    //   // the pictometry widget should react. the reason these are duplicated
+    //   // here is to avoid an infinite loop in the Map component when the
+    //   // viewport changes.
+    //   map: {
+    //     center: config.map.center,
+    //     zoom: config.map.zoom
+    //   }
+    // },
+    // lastSearchMethod: null,
     // this gets set to true on a mobile device when the user clicks the
     // "See Datasets" button
     didToggleTopicsOn: false,
@@ -99,8 +107,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
   // const TOGGLE_MODAL = 'modal/TOGGLE_MODAL'
   // const CLOSE_MODALS = 'modal/CLOSE_MODALS'
 
-  // TODO standardize how payloads are passed around/handled
-  return new Vuex.Store({
+  const lb = {
     state: initialState,
     getters: {},
     mutations: {
@@ -315,8 +322,24 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setAddressEntered(state, payload) {
         state.addressEntered = payload;
-      }
+      },
     }
+  }
+
+  let mergeStore = mergeDeep(lb, pvdStore.store);
+  mergeStore = mergeDeep(mergeStore, pvmStore);
+  mergeStore = mergeDeep(mergeStore, pvcStore);
+
+  // reset the map center and zoom based on the config
+  mergeStore.state.map.center = config.map.center;
+  mergeStore.state.map.zoom = config.map.zoom;
+  mergeStore.state.pictometry.map.center = config.map.center;
+  mergeStore.state.pictometry.map.zoom = config.map.zoom;
+
+  return new Vuex.Store({
+    state: mergeStore.state,
+    getters: mergeStore.getters,
+    mutations: mergeStore.mutations
   });
 }
 

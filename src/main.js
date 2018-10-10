@@ -8,7 +8,7 @@ import '@fortawesome/fontawesome-pro/js/all';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch';
-const controllerMixin = philaVueDatafetch;
+const controllerMixin = philaVueDatafetch.controllerMixin;
 
 function initOpenMaps(clientConfig) {
   const baseConfigUrl = clientConfig.baseConfig;

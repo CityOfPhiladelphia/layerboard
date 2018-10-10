@@ -84,7 +84,7 @@
 
       <!-- marker using a png and ablility to rotate it -->
       <png-marker v-if="this.cyclomediaActive"
-                  :icon="'../../src/assets/camera.png'"
+                  :icon="'images/camera.png'"
                   :latlng="cycloLatlng"
                   :rotationAngle="cycloRotationAngle"
       />
@@ -124,7 +124,7 @@
                            v-once
                            :position="'topright'"
                            :link="'pictometry'"
-                           :imgSrc="'../../src/assets/pictometry.png'"
+                           :imgSrc="'images/pictometry.png'"
         />
       </div>
 
@@ -133,12 +133,14 @@
                            v-once
                            :position="'topright'"
                            :link="'cyclomedia'"
-                           :imgSrc="'../../src/assets/cyclomedia.png'"
+                           :imgSrc="'images/cyclomedia.png'"
                            @click="handleCyclomediaButtonClick"
         />
       </div>
 
-      <div v-once>
+      <div v-once
+           v-if="this.measureControlEnabled"
+      >
         <measure-control :position="'bottomleft'" />
       </div>
 
@@ -420,6 +422,13 @@
           return true;
         } else {
           return false;
+        }
+      },
+      measureControlEnabled() {
+        if (this.$config.measureControlEnabled === false) {
+          return false;
+        } else {
+          return true;
         }
       },
     },
