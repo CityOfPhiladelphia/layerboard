@@ -9,6 +9,6 @@ For example, [Openmaps](https://github.com/CityOfPhiladelphia/openmaps) is built
 ## Usage
 Check out [the wiki](https://github.com/CityOfPhiladelphia/layerboard/wiki) for usage documentation.
 
-## Example Site
+## Example Site 
 
-See the example Openmaps [live](https://openmaps.phila.gov) 
+See the example Openmaps [live](https://openmaps.phila.gov)
