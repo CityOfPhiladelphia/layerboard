@@ -15,6 +15,7 @@ Vue.use(Vuex);
 
 // function createStore(config, bennyEndpoints, bennyRepresentation) {
 function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
+  // const modals = pvdStore.createModals(config);
 
   const initialState = {
     isMobileOrTablet: isMobileDevice(),
@@ -98,10 +99,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     windowWidth: 0,
     route: null,
     modals: {
-      help: {
-        open: false
-      }
-    }
+      keys: config.modals,
+      open: '',
+    },
   };
 
   // const TOGGLE_MODAL = 'modal/TOGGLE_MODAL'
@@ -302,9 +302,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setRoute(state, payload) {
         state.route = payload;
       },
-      setDidToggleModal(state, {name, open}) {
-        console.log('setDidToggleModal, name:', name, 'open:', open);
-        state.modals[name].open = open === null ? !state.modals[name].open : open
+      // setDidToggleModal(state, {name, open}) {
+      setDidToggleModal(state, name) {
+        // console.log('setDidToggleModal, name:', name, 'open:', open);
+        console.log('setDidToggleModal, name:', name);
+        // state.modals[name].open = open === null ? !state.modals[name].open : open
+        state.modals.open = name;
       },
       // [types.TOGGLE_MODAL] (state, {name, open}) {
       //   state.modals[name].open = open === null ? !state.modals[name].open : open
