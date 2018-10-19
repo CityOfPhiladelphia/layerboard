@@ -305,7 +305,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       // setDidToggleModal(state, {name, open}) {
       setDidToggleModal(state, name) {
         // console.log('setDidToggleModal, name:', name, 'open:', open);
-        console.log('setDidToggleModal, name:', name);
+        // console.log('setDidToggleModal, name:', name);
         // state.modals[name].open = open === null ? !state.modals[name].open : open
         state.modals.open = name;
       },
