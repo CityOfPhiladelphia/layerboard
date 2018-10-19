@@ -101,7 +101,6 @@
 <script>
   import * as philaVueComps from '@cityofphiladelphia/phila-vue-comps';
   const Checkbox = philaVueComps.Checkbox
-  console.log('checkbox:', Checkbox);
 
   export default {
     components: {
