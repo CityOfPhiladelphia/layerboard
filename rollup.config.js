@@ -46,6 +46,11 @@ export default {
       '@turf/helpers': 'turf',
       '@turf/distance': 'turf.distance',
       '@turf/area': 'turf.area',
+      '@fortawesome/vue-fontawesome':'vueFontAwesome',
+      '@cityofphiladelphia/phila-vue-comps': 'philaVueComps',
+      '@cityofphiladelphia/phila-vue-mapping': 'philaVueMapping',
+      '@cityofphiladelphia/phila-vue-datafetch': 'philaVueDatafetch',
+      "lodash.debounce": "debounce"
     },
     sourcemap: true,
   },
