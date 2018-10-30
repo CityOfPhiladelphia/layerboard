@@ -9,7 +9,15 @@ export default {
       if (geocodeGeom) {
         const latlng = [...geocodeGeom.coordinates].reverse();
         const key = this.geocodeResult.properties.street_address;
-        const addressMarker = {latlng, key};
+        const color = '#2176d2';
+        const markerType = 'geocode';
+        const icon = {
+          prefix: 'fas',
+          icon: 'map-marker-alt',
+          shadow: true,
+          size: 50,
+        }
+        const addressMarker = {latlng, key, color, markerType, icon};
         markers.push(addressMarker);
       }
       return markers;

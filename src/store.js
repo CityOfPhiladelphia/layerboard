@@ -21,78 +21,26 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     isMobileOrTablet: isMobileDevice(),
     fullScreenMapEnabled: false,
     bennyEndpoints: {},
-    // bennyEndpoints2: {},
-    // bennyEndpoints3: [],
-    // geocode: {
-    //   status: null,
-    //   data: null,
-    //   input: null,
-    //   related: null,
-    // },
     layers: {
       layerUrls: {},
       inputLayerFilter: '',
       inputTagsFilter: '',
     },
     map: {
-      location: {
-        lat: null,
-        lng: null
-      },
-      center: config.map.center,
-      zoom: config.map.zoom,
       scale: null,
-      map: null,
-      basemap: 'pwd',
-      imagery: 'imagery2017',
-      shouldShowImagery: false,
-      basemapLayers: {},
       webMap: null,
       webMapUrlLayer: null,
       webMapActiveLayers: [],
       webMapDisplayedLayers: [],
       webMapLayersAndRest: [],
-      watchPositionOn: false,
       intersectingFeatures: [],
       popupCoords: null,
       selectedPopupLayer: null,
       categories: [],
       selectedCategory: '',
-      // webMapGeoJson: {}
     },
-    shouldShowAddressCandidateList: false,
     candidates: [],
     addressEntered: null,
-    // cyclomedia: {
-    //   initialized: false,
-    //   navBarOpen: false,
-    //   latLngFromMap: null,
-    //   orientation: {
-    //     yaw: null,
-    //     hFov: null,
-    //     xyz: null,
-    //   },
-    //   active: false,
-    //   recordings: [],
-    // },
-    // pictometry: {
-    //   ipa: null,
-    //   active: false,
-    //   shapeIds: [],
-    //   pngMarkerIds: [],
-    //   zoom: null,
-    //   // this is the state of the main leaflet map. when these values change
-    //   // the pictometry widget should react. the reason these are duplicated
-    //   // here is to avoid an infinite loop in the Map component when the
-    //   // viewport changes.
-    //   map: {
-    //     center: config.map.center,
-    //     zoom: config.map.zoom
-    //   }
-    // },
-    // lastSearchMethod: null,
-    // this gets set to true on a mobile device when the user clicks the
-    // "See Datasets" button
     didToggleTopicsOn: false,
     shouldShowTopics: true,
     shouldShowMap: true,
@@ -104,16 +52,10 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     },
   };
 
-  // const TOGGLE_MODAL = 'modal/TOGGLE_MODAL'
-  // const CLOSE_MODALS = 'modal/CLOSE_MODALS'
-
   const lb = {
     state: initialState,
     getters: {},
     mutations: {
-      setCyclomediaInitialized(state, payload) {
-        state.cyclomedia.initialized = payload;
-      },
       setIsMobileOrTablet(state, payload) {
         state.isMobileOrTablet = payload;
       },
@@ -137,12 +79,6 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setBennyEndpoints(state, payload) {
         state.bennyEndpoints = payload;
-      },
-      setBennyEndpoints2(state, payload) {
-        state.bennyEndpoints2 = payload;
-      },
-      setBennyEndpoints3(state, payload) {
-        state.bennyEndpoints3 = payload;
       },
       setLocation(state, payload) {
         state.map.location.lat = payload.lat;
@@ -187,105 +123,15 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
         //   return currentLayer[0];
         // console.log('SETWEBMAPLAYERSOPACITY FINISHED RUNNING');
       },
-      // setWebMapGeoJson(state, payload) {
-      //   // const layerName = payload.layerName;
-      //   // const json = payload.json;
-      //   console.log('payload', payload);
-      //   // state.map.webMapGeoJson[payload[]] = payload[json];
-      //   state.map.webMapGeoJson = payload;
-      // },
-
       setLegend(state, payload) {
         state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].legend = payload.legend;
       },
-
-
       setMapScale(state, payload) {
         state.map.scale = payload
       },
-      setBasemap(state, payload) {
-        state.map.basemap = payload;
-      },
-      setImagery(state, payload) {
-        state.map.imagery = payload;
-      },
-      setShouldShowImagery(state, payload) {
-        state.map.shouldShowImagery = payload;
-      },
-      // setLastSearchMethod(state, payload) {
-      //   state.lastSearchMethod = payload;
+      // setBasemap(state, payload) {
+      //   state.map.basemap = payload;
       // },
-
-
-      setMapCenter(state, payload) {
-        state.map.center = payload;
-      },
-      setMapZoom(state, payload) {
-        state.map.zoom = payload
-      },
-      setGeocodeStatus(state, payload) {
-        state.geocode.status = payload;
-      },
-      setGeocodeData(state, payload) {
-        state.geocode.data = payload;
-      },
-      setGeocodeRelated(state, payload) {
-        state.geocode.related = payload;
-      },
-      setGeocodeInput(state, payload) {
-        state.geocode.input = payload;
-      },
-      setPictometryActive(state, payload) {
-        if (!config.pictometry.enabled) {
-          return;
-        }
-        state.pictometry.active = payload;
-      },
-      setPictometryIpa(state, payload) {
-        state.pictometry.ipa = payload;
-      },
-      setPictometryShapeIds(state, payload) {
-        state.pictometry.shapeIds = payload;
-      },
-      setPictometryPngMarkerIds(state, payload) {
-        state.pictometry.pngMarkerIds = payload;
-      },
-      setPictometryMapCenter(state, payload) {
-        state.pictometry.map.center = payload;
-      },
-      setPictometryMapZoom(state, payload) {
-        state.pictometry.map.zoom = payload;
-      },
-      setPictometryZoom(state, payload) {
-        state.pictometry.zoom = payload;
-      },
-      setCyclomediaActive(state, payload) {
-        if (!config.cyclomedia.enabled) {
-          return;
-        }
-        state.cyclomedia.active = payload;
-      },
-      setCyclomediaYaw(state, payload) {
-        state.cyclomedia.orientation.yaw = payload
-      },
-      setCyclomediaHFov(state, payload) {
-        state.cyclomedia.orientation.hFov = payload
-      },
-      setCyclomediaXyz(state, payload) {
-        state.cyclomedia.orientation.xyz = payload
-      },
-      setCyclomediaRecordings(state, payload) {
-        state.cyclomedia.recordings = payload;
-      },
-      setCyclomediaLatLngFromMap(state, payload) {
-        state.cyclomedia.latLngFromMap = payload;
-        // const { lat, lng } = payload || {};
-        // state.cyclomedia.latLngFromMap[0] = lat;
-        // state.cyclomedia.latLngFromMap[1] = lng;
-      },
-      setCyclomediaNavBarOpen(state, payload) {
-        state.cyclomedia.navBarOpen = payload;
-      },
       setDidToggleTopicsOn(state, payload) {
         state.didToggleTopicsOn = payload;
       },
@@ -298,27 +144,14 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setWindowWidth(state, payload) {
         state.windowWidth = payload;
       },
-
       setRoute(state, payload) {
         state.route = payload;
       },
-      // setDidToggleModal(state, {name, open}) {
       setDidToggleModal(state, name) {
         // console.log('setDidToggleModal, name:', name, 'open:', open);
         // console.log('setDidToggleModal, name:', name);
         // state.modals[name].open = open === null ? !state.modals[name].open : open
         state.modals.open = name;
-      },
-      // [types.TOGGLE_MODAL] (state, {name, open}) {
-      //   state.modals[name].open = open === null ? !state.modals[name].open : open
-      // },
-      // [types.CLOSE_MODALS] (state) {
-      //   for (let modalName in state.modals) {
-      //     state.modals[modalName].open = false
-      //   }
-      // }
-      setShouldShowAddressCandidateList(state, payload) {
-        state.shouldShowAddressCandidateList = payload;
       },
       setCandidates(state, payload) {
         state.candidates = payload;
@@ -329,9 +162,10 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     }
   }
 
-  let mergeStore = mergeDeep(lb, pvdStore.store);
+  // let mergeStore = mergeDeep(lb, pvdStore.store);
+  let mergeStore = mergeDeep(pvcStore, pvdStore.store);
   mergeStore = mergeDeep(mergeStore, pvmStore);
-  mergeStore = mergeDeep(mergeStore, pvcStore);
+  mergeStore = mergeDeep(mergeStore, lb);
 
   // reset the map center and zoom based on the config
   mergeStore.state.map.center = config.map.center;
