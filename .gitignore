@@ -11,3 +11,4 @@ public/*.png
 sh.exe.stackdump
 
 esri-leaflet-webmap-safe
+.npmrc
