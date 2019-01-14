@@ -193,8 +193,8 @@
 
 <script>
 
-  import { geoJSON, featureGroup } from 'leaflet';
-  import { marker as Lmarker } from 'leaflet';
+  // import { geoJSON, featureGroup } from 'leaflet';
+  // import { marker as Lmarker } from 'leaflet';
 
   // mixins
   import markersMixin from './markers-mixin';
@@ -209,7 +209,7 @@
     EsriTiledOverlay,
     EsriDynamicMapLayer,
     EsriFeatureLayer,
-    Geojson,
+    // Geojson,
     CircleMarker,
     // OpacitySlider,
     VectorMarker,
