@@ -7,7 +7,7 @@
         <div class="forms-header">
 
           <!-- layer filter -->
-          <form @submit.prevent="handleLayerFilterFormX"
+          <!-- <form @submit.prevent="handleLayerFilterFormX"
                 @keydown="preventEnter"
                 class="om-search-control-input"
           >
@@ -18,7 +18,6 @@
                      class="input-type"
                      @keyup="handleLayerFilterFormKeyup"
               />
-              <!-- placeholder="Filter datasets" -->
               <div class="input-group-button"
                    v-if="this.$store.state.layers.inputLayerFilter != ''"
               >
@@ -28,7 +27,7 @@
                 </button>
               </div>
             </div>
-          </form>
+          </form> -->
 
           <!-- tags filter -->
           <form @submit.prevent="handleTagsFilterFormX"
@@ -36,7 +35,7 @@
                 class="om-search-control-input-tags"
           >
             <div class="input-group text-filter">
-              <span class="input-group-label input-font">Filter By Tags:</span>
+              <span class="input-group-label input-font">Filter:</span>
               <input
                      type="text"
                      class="input-type"
@@ -85,8 +84,8 @@
                           :opacity="currentWmLayer.opacity"
                           :legend="currentWmLayer.legend"
                           :key="currentWmLayer.id"
-                          :tags="currentWmLayer.tags"
                 >
+                <!-- :tags="currentWmLayer.tags" -->
                 </checkbox>
               <!-- </ul> -->
             </fieldset>
@@ -99,8 +98,12 @@
 </template>
 
 <script>
-  import * as philaVueComps from '@cityofphiladelphia/phila-vue-comps';
-  const Checkbox = philaVueComps.Checkbox
+  // import * as philaVueComps from '@cityofphiladelphia/phila-vue-comps';
+  // const Checkbox = philaVueComps.Checkbox
+
+  import {
+    Checkbox
+  } from '@cityofphiladelphia/phila-vue-mapping';
 
   export default {
     components: {
@@ -249,7 +252,9 @@
   .topics-container {
     /* height: calc(100vh - 220px); */
     /* height: calc(100vh - 268px); */
-    height: calc(100vh - 218px);
+
+    /* height: calc(100vh - 218px); */
+    height: calc(100vh - 170px);
   }
 
   /* @media screen and (max-width: 40em) { */

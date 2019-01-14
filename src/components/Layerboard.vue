@@ -19,7 +19,7 @@
                            :apiKey="this.ak"
                            :secretKey="this.sk"
         >
-          <png-marker v-if="this.pictometryShowAddressMarker"
+          <pictometry-png-marker v-if="this.pictometryShowAddressMarker"
                       :latlng="[this.geocodeData.geometry.coordinates[1], this.geocodeData.geometry.coordinates[0]]"
                       :icon="'markers.png'"
                       :height="60"
@@ -27,8 +27,8 @@
                       :offsetX="0"
                       :offsetY="0"
           />
-          <layer v-if="this.pictometryActive" />
-          <png-marker v-if="this.cyclomediaActive && this.pictometryActive"
+          <pictometry-layer v-if="this.pictometryActive" />
+          <pictometry-png-marker v-if="this.cyclomediaActive && this.pictometryActive"
                       :latlng="cycloLatlng"
                       :icon="'camera2.png'"
                       :height="20"
@@ -36,7 +36,7 @@
                       :offsetX="-2"
                       :offsetY="-2"
           />
-          <view-cone v-if="this.cyclomediaActive && this.pictometryActive"
+          <pictometry-view-cone v-if="this.cyclomediaActive && this.pictometryActive"
                      :latlng="cycloLatlng"
                      :rotationAngle="cycloRotationAngle"
                      :hFov="cycloHFov"
@@ -47,26 +47,28 @@
 </template>
 
 <script>
-  import * as philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
-  const CyclomediaWidget = philaVueMapping.CyclomediaWidget;
-  const PictometryWidget = philaVueMapping.PictometryWidget;
-  const Layer = philaVueMapping.PictometryLayer;
-  const ViewCone = philaVueMapping.PictometryViewCone;
-  const PngMarker = philaVueMapping.PictometryPngMarker;
+  import {
+    CyclomediaWidget,
+    PictometryWidget,
+    PictometryLayer,
+    PictometryViewCone,
+    PictometryPngMarker
+  } from '@cityofphiladelphia/phila-vue-mapping';
 
   import axios from 'axios';
   import TopicPanel from './TopicPanel.vue';
   import MapPanel from './MapPanel.vue';
 
   export default {
+    name: 'Layerboard',
     components: {
       TopicPanel,
       MapPanel,
       CyclomediaWidget,
       PictometryWidget,
-      Layer,
-      ViewCone,
-      PngMarker
+      PictometryLayer,
+      PictometryViewCone,
+      PictometryPngMarker
     },
     mounted() {
       // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);

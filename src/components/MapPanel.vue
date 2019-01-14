@@ -156,9 +156,9 @@
 
       <!-- search control -->
       <div v-once>
-        <AddressInput :position="this.addressInputPosition" />
+        <map-address-input :position="this.addressInputPosition" />
       </div>
-      <AddressCandidateList v-if="this.addressAutocompleteEnabled"
+      <map-address-candidate-list v-if="this.addressAutocompleteEnabled"
                             :position="this.addressInputPosition"
       />
 
@@ -192,54 +192,64 @@
 </template>
 
 <script>
-  import * as L from 'leaflet';
-  import * as philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
+
+  import { geoJSON, featureGroup } from 'leaflet';
+  import { marker as Lmarker } from 'leaflet';
 
   // mixins
   import markersMixin from './markers-mixin';
-  const cyclomediaMixin = philaVueMapping.CyclomediaMixin;
-  const pictometryMixin = philaVueMapping.PictometryMixin;
+  import {
+    cyclomediaMixin,
+    pictometryMixin,
+    Map_,
+    Control,
+    MapAddressInput,
+    MapAddressCandidateList,
+    EsriTiledMapLayer,
+    EsriTiledOverlay,
+    EsriDynamicMapLayer,
+    EsriFeatureLayer,
+    Geojson,
+    CircleMarker,
+    // OpacitySlider,
+    VectorMarker,
+    PngMarker,
+    BasemapToggleControl,
+    BasemapSelectControl,
+    FullScreenMapToggleTab,
+    LocationControl,
+    CyclomediaButton,
+    PictometryButton,
+    CyclomediaRecordingCircle,
+    CyclomediaRecordingsClient,
+    SvgViewConeMarker,
+    MeasureControl,
+    LegendControl,
+    BasemapTooltip,
+    ControlCorner,
+    EsriWebMap,
+    EsriWebMapLayer,
+    PopUp,
+    PopUpContent,
+    Polygon_,
+    Polyline_,
+    ModalAbout
+  } from '@cityofphiladelphia/phila-vue-mapping';
 
-  // vue doesn't like it when you import this as Map (reserved-ish word)
-  const Map_ = philaVueMapping.Map_;
-  const AddressInput = philaVueMapping.AddressInput;
-  const AddressCandidateList = philaVueMapping.AddressCandidateList;
-  const CircleMarker = philaVueMapping.CircleMarker;
-  const Control = philaVueMapping.Control;
-  const EsriTiledMapLayer = philaVueMapping.EsriTiledMapLayer;
-  const PngMarker = philaVueMapping.PngMarker;
-  const BasemapToggleControl = philaVueMapping.BasemapToggleControl;
-  const BasemapSelectControl = philaVueMapping.BasemapSelectControl;
-  const FullScreenMapToggleTab = philaVueMapping.FullScreenMapToggleTab;
-  const LocationControl = philaVueMapping.LocationControl;
-  const CyclomediaButton = philaVueMapping.CyclomediaButton;
-  const PictometryButton = philaVueMapping.PictometryButton;
-  const CyclomediaRecordingCircle = philaVueMapping.CyclomediaRecordingCircle;
-  const CyclomediaRecordingsClient = philaVueMapping.CyclomediaRecordingsClient;
-  const SvgViewConeMarker = philaVueMapping.SvgViewConeMarker;
-  const MeasureControl = philaVueMapping.MeasureControl;
-  const ControlCorner = philaVueMapping.ControlCorner;
-  const PopUp = philaVueMapping.PopUp;
-  const PopUpContent = philaVueMapping.PopUpContent;
-  const Polygon_ = philaVueMapping.Polygon_;
-  const Polyline_ = philaVueMapping.Polyline_;
-  const ModalAbout = philaVueMapping.ModalAbout;
-
-  const EsriWebMap = philaVueMapping.WebMap;
-  const EsriWebMapLayer = philaVueMapping.WebMapLayer;
-  const VectorMarker = philaVueMapping.VectorMarker;
+  console.log('EsriWebMap:', EsriWebMap)
 
   export default {
+    name: 'MapPanel',
     mixins: [
       markersMixin,
       cyclomediaMixin,
       pictometryMixin,
     ],
     components: {
-      AddressInput,
-      AddressCandidateList,
       Map_,
       Control,
+      MapAddressInput,
+      MapAddressCandidateList,
       EsriWebMap,
       EsriWebMapLayer,
       EsriTiledMapLayer,
