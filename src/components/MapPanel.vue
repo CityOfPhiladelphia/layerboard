@@ -236,8 +236,6 @@
     ModalAbout
   } from '@cityofphiladelphia/phila-vue-mapping';
 
-  console.log('EsriWebMap:', EsriWebMap)
-
   export default {
     name: 'MapPanel',
     mixins: [
