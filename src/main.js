@@ -7,13 +7,20 @@
         \/    \/\/         \/          \/           \/           \/
 */
 
-import axios from 'axios';
 import Vue from 'vue';
+import axios from 'axios';
 import createStore from './store';
 import configMixin from './util/config-mixin';
 import Layerboard from './components/Layerboard.vue';
 import mergeDeep from './util/merge-deep';
-import '@fortawesome/fontawesome-pro/js/all';
+
+// Font Awesome Icons
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faInfoCircle } from '@fortawesome/pro-solid-svg-icons/faInfoCircle';
+import { faCheckSquare } from '@fortawesome/pro-solid-svg-icons/faCheckSquare';
+import { faFilter } from '@fortawesome/pro-solid-svg-icons/faFilter';
+import { faSquare } from '@fortawesome/pro-light-svg-icons/faSquare';
+library.add(faInfoCircle, faCheckSquare, faFilter, faSquare);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch';

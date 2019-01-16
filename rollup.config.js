@@ -34,7 +34,6 @@ export default {
     globals: {
       leaflet: 'L',
       'esri-leaflet': 'L.esri',
-      moment: 'moment',
       'leaflet-measure': 'L.Control.Measure',
       'leaflet-vector-icon': 'leafletVectorIcon',
       jquery: '$',
@@ -47,10 +46,11 @@ export default {
       '@turf/distance': 'turf.distance',
       '@turf/area': 'turf.area',
       '@fortawesome/vue-fontawesome':'vueFontAwesome',
+      '@fortawesome/fontawesome-svg-core': 'fontawesomeSvgCore',
       '@cityofphiladelphia/phila-vue-comps': 'philaVueComps',
       '@cityofphiladelphia/phila-vue-mapping': 'philaVueMapping',
       '@cityofphiladelphia/phila-vue-datafetch': 'philaVueDatafetch',
-      "lodash.debounce": "debounce"
+      'lodash.debounce': 'debounce'
     },
     sourcemap: true,
   },
