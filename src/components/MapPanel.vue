@@ -514,11 +514,11 @@
       },
       handleMapClick() {
         // console.log('handle map click, e:', e);
-        document.getElementById('pvm-search-control-input').blur()
+        document.getElementsByClassName('pvm-search-control-input')[0].blur()
       },
       handleButtonClick() {
         // console.log('handle button click is running');
-        document.getElementById('pvm-search-control-input').blur()
+        document.getElementsByClassName('pvm-search-control-input')[0].blur()
       },
       handleMapMove(e) {
         // console.log('handleMapMove is running');

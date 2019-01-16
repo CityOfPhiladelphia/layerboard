@@ -13,9 +13,9 @@
   },
   "main": "./dist/layerboard.js",
   "dependencies": {
-    "@cityofphiladelphia/phila-vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#4781a1e268bee5c255baafdebefb2f13b48a2ba3",
-    "@cityofphiladelphia/phila-vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#41f6ee45b15752457ef129e87d8338770c5c0278",
-    "@cityofphiladelphia/phila-vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#68dadec067b1a48a24c25e1fbdcd39354bc75673",
+    "@cityofphiladelphia/phila-vue-comps": "^1.0.15",
+    "@cityofphiladelphia/phila-vue-datafetch": "^0.0.13",
+    "@cityofphiladelphia/phila-vue-mapping": "^1.0.12",
     "@fortawesome/fontawesome-svg-core": "^1.2.5",
     "@fortawesome/pro-light-svg-icons": "^5.6.3",
     "@fortawesome/pro-regular-svg-icons": "^5.6.3",
