@@ -156,10 +156,15 @@
 
       <!-- search control -->
       <div v-once>
-        <map-address-input :position="this.addressInputPosition" />
+        <map-address-input :position="this.addressInputPosition"
+                           :placeholder="this.addressInputPlaceholder"
+                           :widthFromConfig="this.addressInputWidth"
+        >
+        </map-address-input>
       </div>
       <map-address-candidate-list v-if="this.addressAutocompleteEnabled"
-                            :position="this.addressInputPosition"
+                                 :position="this.addressInputPosition"
+                                 :widthFromConfig="this.addressInputWidth"
       />
 
       <!-- location marker -->
@@ -279,8 +284,12 @@
       },
       addressAutocompleteEnabled() {
         // TODO tidy up the code
-        if (this.$config.addressAutocomplete.enabled === true) {
-          return true;
+        if (this.$config.addressInput) {
+          if (this.$config.addressInput.autocompleteEnabled === true) {
+            return true;
+          } else {
+            return false;
+          }
         } else {
           return false;
         }
@@ -290,6 +299,13 @@
           return 'topleft'
         } else {
           return 'topalmostleft'
+        }
+      },
+      addressInputWidth() {
+        if (this.$config.addressInput) {
+          return this.$config.addressInput.mapWidth;
+        } else {
+          return 415;
         }
       },
       isMobileOrTablet() {
