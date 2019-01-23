@@ -195,9 +195,6 @@
           return this.$config.pictometryLocal.secretKey;
         }
       },
-      geocodeData() {
-        return this.$store.state.geocode.data
-      },
       windowWidth() {
         return this.$store.state.windowWidth;
       },
