@@ -1,7 +1,7 @@
 {
   "name": "@cityofphiladelphia/layerboard",
   "description": "A Vue.js component for creating an app from an ESRI web map",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "City of Philadelphia <maps@phila.gov>",
   "repository": "https://github.com/cityofphiladelphia/layerboard",
   "license": "MIT",
