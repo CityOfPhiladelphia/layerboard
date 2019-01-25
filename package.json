@@ -21,7 +21,6 @@
     "axios": "^0.18.0",
     "blueimp-md5": "^2.10.0",
     "esri-leaflet": "^2.2.3",
-    "leaflet": "^1.4.0",
     "leaflet-easybutton": "^2.3.0",
     "leaflet-measure": "https://github.com/CityOfPhiladelphia/leaflet-measure#b70886af342f19597dc2937d79d64bad6bab07c6",
     "leaflet-rotatedmarker": "^0.2.0",
