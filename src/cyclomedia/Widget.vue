@@ -228,7 +228,7 @@
           const buffer = L.polygon(latlngCoords);
           // console.log('!!!!!!xyCoords:', xyCoords, 'latlngCoords:', latlngCoords, 'buffer:', buffer);
           const map = this.$store.state.map.map;
-          buffer.addTo(map);
+          // buffer.addTo(map);
 
           const options = {}
           const calculateDistance = false;
@@ -317,13 +317,26 @@
                 }
                 widget.sendOrientationToStore();
                 // if (updateStoreXY) {
-                widget.sendXYToStore();
+                // widget.sendXYToStore();
                 // }
                 window.panoramaViewer.toggleNavbarExpanded(widget.navBarOpen);
 
+                window.panoramaViewer.toggleButtonEnabled('panorama.elevation', false);
+                window.panoramaViewer.toggleButtonEnabled('panorama.reportBlurring', false);
+
+
                 // if (widget.isMobileOrTablet) {
-                StreetSmartApi.removeOverlay('surfaceCursorLayer');
+                // StreetSmartApi.removeOverlay('surfaceCursorLayer');
                 // }
+                for (let overlay of window.panoramaViewer.props.overlays) {
+                  // console.log('overlay:', overlay);
+                  if (overlay.id === 'surfaceCursorLayer') {
+                    if (overlay.visible === true) {
+                      window.panoramaViewer.toggleOverlay(overlay);
+                      // overlay.visible = false;
+                    }
+                  }
+                }
 
                 if (!this.$config.cyclomedia.measurementAllowed || this.$config.cyclomedia.measurementAllowed === 'false') {
                   StreetSmartApi.removeOverlay('measurementLayer');
@@ -342,6 +355,17 @@
                     // console.log('on VIEW_CHANGE fired with yaw change', window.panoramaViewer.props.orientation);
                     widget.sendOrientationToStore();
                     widget.sendXYToStore();
+                  } else if (window.panoramaViewer.getNavbarExpanded() !== this.navBarOpen) {
+                    widget.$store.commit('setCyclomediaNavBarOpen', window.panoramaViewer.getNavbarExpanded());
+                  }
+                })
+
+                window.panoramaViewer.on('VIEW_LOAD_END', function() {
+                  if (window.panoramaViewer.props.orientation.yaw !== widget.$store.state.cyclomedia.orientation.yaw ||
+                      window.panoramaViewer.props.orientation.xyz !== widget.$store.state.cyclomedia.orientation.xyz
+                  ) {
+                    // console.log('on VIEW_CHANGE fired with yaw change', window.panoramaViewer.props.orientation);
+                    widget.sendOrientationToStore();
                   } else if (window.panoramaViewer.getNavbarExpanded() !== this.navBarOpen) {
                     widget.$store.commit('setCyclomediaNavBarOpen', window.panoramaViewer.getNavbarExpanded());
                   }
