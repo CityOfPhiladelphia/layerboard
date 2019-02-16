@@ -53,7 +53,7 @@
     PictometryLayer,
     PictometryViewCone,
     PictometryPngMarker
-  } from '@cityofphiladelphia/phila-vue-mapping';
+  } from '@philly/vue-mapping';
 
   import axios from 'axios';
   import TopicPanel from './TopicPanel.vue';

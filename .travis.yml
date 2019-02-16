@@ -19,7 +19,7 @@ deploy:
   #     branch: develop
       # TODO add a condition to make sure the bucket exists using `aws s3 ls`
   - provider: npm
-    email: "maps@phila.gov"
+    email: "phillypackage@gmail.com"
     api_key: $NPM_AUTH_TOKEN
     skip_cleanup: true
     on:

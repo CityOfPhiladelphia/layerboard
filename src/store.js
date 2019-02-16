@@ -2,9 +2,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import isMobileDevice from './util/is-mobile-device';
 import mergeDeep from './util/merge-deep';
-import { pvmStore } from '@cityofphiladelphia/phila-vue-mapping';
-import { pvcStore } from '@cityofphiladelphia/phila-vue-comps';
-import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch'
+import { pvmStore } from '@philly/vue-mapping';
+import { pvcStore } from '@philly/vue-comps';
+import philaVueDatafetch from '@philly/vue-datafetch'
 const pvdStore = philaVueDatafetch.pvdStore
 
 // when you load vuex from a script tag this seems to happen automatically

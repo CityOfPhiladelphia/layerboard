@@ -47,9 +47,9 @@ export default {
       '@turf/area': 'turf.area',
       '@fortawesome/vue-fontawesome':'vueFontAwesome',
       '@fortawesome/fontawesome-svg-core': 'fontawesomeSvgCore',
-      '@cityofphiladelphia/phila-vue-comps': 'philaVueComps',
-      '@cityofphiladelphia/phila-vue-mapping': 'philaVueMapping',
-      '@cityofphiladelphia/phila-vue-datafetch': 'philaVueDatafetch',
+      '@philly/vue-comps': 'philaVueComps',
+      '@philly/vue-mapping': 'philaVueMapping',
+      '@philly/vue-datafetch': 'philaVueDatafetch',
       'lodash.debounce': 'debounce'
     },
     sourcemap: true,

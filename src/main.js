@@ -23,7 +23,7 @@ import { faSquare } from '@fortawesome/free-solid-svg-icons/faSquare';
 library.add(faInfoCircle, faCheckSquare, faFilter, faSquare);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch';
+import philaVueDatafetch from '@philly/vue-datafetch';
 const controllerMixin = philaVueDatafetch.controllerMixin;
 
 function initOpenMaps(clientConfig) {
