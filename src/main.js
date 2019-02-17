@@ -17,8 +17,9 @@ import mergeDeep from './util/merge-deep';
 import * as faAll from './fa.js';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import philaVueDatafetch from '@philly/vue-datafetch';
-const controllerMixin = philaVueDatafetch.controllerMixin;
+// import philaVueDatafetch from '@philly/vue-datafetch';
+// const controllerMixin = philaVueDatafetch.controllerMixin;
+import controllerMixin from '@philly/vue-datafetch/src/controller/index.js';
 
 function initLayerboard(clientConfig) {
   const baseConfigUrl = clientConfig.baseConfig;
