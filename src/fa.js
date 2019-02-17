@@ -7,7 +7,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons/faInfoCircle';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
 import { faFilter } from '@fortawesome/free-solid-svg-icons/faFilter';
-import { faSquare } from '@fortawesome/free-light-svg-icons/faSquare';
+import { faSquare } from '@fortawesome/free-solid-svg-icons/faSquare';
 library.add(faInfoCircle, faCheckSquare, faFilter, faSquare);
 
 export default library;
