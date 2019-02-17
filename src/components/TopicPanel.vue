@@ -98,12 +98,12 @@
 </template>
 
 <script>
-  // import * as philaVueComps from '@cityofphiladelphia/phila-vue-comps';
+  // import * as philaVueComps from '@philly/vue-comps';
   // const Checkbox = philaVueComps.Checkbox
 
   import {
     Checkbox
-  } from '@cityofphiladelphia/phila-vue-mapping';
+  } from '@philly/vue-mapping';
 
   export default {
     components: {

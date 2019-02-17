@@ -14,16 +14,10 @@ import configMixin from './util/config-mixin';
 import Layerboard from './components/Layerboard.vue';
 import mergeDeep from './util/merge-deep';
 
-// Font Awesome Icons
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faInfoCircle } from '@fortawesome/pro-solid-svg-icons/faInfoCircle';
-import { faCheckSquare } from '@fortawesome/pro-solid-svg-icons/faCheckSquare';
-import { faFilter } from '@fortawesome/pro-solid-svg-icons/faFilter';
-import { faSquare } from '@fortawesome/pro-light-svg-icons/faSquare';
-library.add(faInfoCircle, faCheckSquare, faFilter, faSquare);
+import * as faAll from './fa.js';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import philaVueDatafetch from '@cityofphiladelphia/phila-vue-datafetch';
+import philaVueDatafetch from '@philly/vue-datafetch';
 const controllerMixin = philaVueDatafetch.controllerMixin;
 
 function initOpenMaps(clientConfig) {
