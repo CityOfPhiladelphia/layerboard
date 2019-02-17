@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import philaVueDatafetch from '@philly/vue-datafetch';
 const controllerMixin = philaVueDatafetch.controllerMixin;
 
-function initOpenMaps(clientConfig) {
+function initLayerboard(clientConfig) {
   const baseConfigUrl = clientConfig.baseConfig;
 
   // get base config
@@ -56,6 +56,4 @@ function initOpenMaps(clientConfig) {
   });
 }
 
-export default initOpenMaps;
-
-export { Layerboard };
+export default initLayerboard;
