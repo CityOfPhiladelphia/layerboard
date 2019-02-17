@@ -101,13 +101,14 @@
   // import * as philaVueComps from '@philly/vue-comps';
   // const Checkbox = philaVueComps.Checkbox
 
-  import {
-    Checkbox
-  } from '@philly/vue-mapping';
+  // import {
+  //   Checkbox
+  // } from '@philly/vue-mapping';
 
   export default {
     components: {
-      Checkbox
+      // Checkbox
+      Checkbox: () => import(/* webpackChunkName: "lbmp_pvm_Checkbox" */'@philly/vue-mapping/src/components/Checkbox.vue'),
     },
     computed: {
       windowWidth() {

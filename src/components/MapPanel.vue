@@ -203,43 +203,60 @@
 
   // mixins
   import markersMixin from './markers-mixin';
-  import {
-    cyclomediaMixin,
-    pictometryMixin,
-    Map_,
-    Control,
-    MapAddressInput,
-    MapAddressCandidateList,
-    EsriTiledMapLayer,
-    EsriTiledOverlay,
-    EsriDynamicMapLayer,
-    EsriFeatureLayer,
-    // Geojson,
-    CircleMarker,
-    // OpacitySlider,
-    VectorMarker,
-    PngMarker,
-    BasemapToggleControl,
-    BasemapSelectControl,
-    FullScreenMapToggleTab,
-    LocationControl,
-    CyclomediaButton,
-    PictometryButton,
-    CyclomediaRecordingCircle,
-    CyclomediaRecordingsClient,
-    SvgViewConeMarker,
-    MeasureControl,
-    LegendControl,
-    BasemapTooltip,
-    ControlCorner,
-    EsriWebMap,
-    EsriWebMapLayer,
-    PopUp,
-    PopUpContent,
-    Polygon_,
-    Polyline_,
-    ModalAbout
-  } from '@philly/vue-mapping';
+  import cyclomediaMixin from '@philly/vue-mapping/src/cyclomedia/map-panel-mixin.js';
+  import pictometryMixin from '@philly/vue-mapping/src/pictometry/map-panel-mixin.js';
+
+  // components
+  import CyclomediaRecordingsClient from '@philly/vue-mapping/src/cyclomedia/recordings-client.js';
+  import ControlCorner from '@philly/vue-mapping/src/leaflet/ControlCorner.vue';
+  import FullScreenMapToggleTab from '@philly/vue-mapping/src/components/FullScreenMapToggleTab.vue';
+  import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
+  import LocationControl from '@philly/vue-mapping/src/components/LocationControl.vue';
+  import BasemapToggleControl from '@philly/vue-mapping/src/components/BasemapToggleControl.vue';
+  import BasemapSelectControl from '@philly/vue-mapping/src/components/BasemapSelectControl.vue';
+  import PictometryButton from '@philly/vue-mapping/src/pictometry/Button.vue';
+  import CyclomediaButton from '@philly/vue-mapping/src/cyclomedia/Button.vue';
+  import MeasureControl from '@philly/vue-mapping/src/components/MeasureControl.vue';
+  import LegendControl from '@philly/vue-mapping/src/components/LegendControl.vue';
+  import MapAddressInput from '@philly/vue-mapping/src/components/MapAddressInput.vue';
+
+  // import {
+  //   cyclomediaMixin,
+  //   pictometryMixin,
+  //   Map_,
+  //   Control,
+  //   MapAddressInput,
+  //   MapAddressCandidateList,
+  //   EsriTiledMapLayer,
+  //   EsriTiledOverlay,
+  //   EsriDynamicMapLayer,
+  //   EsriFeatureLayer,
+  //   // Geojson,
+  //   CircleMarker,
+  //   // OpacitySlider,
+  //   VectorMarker,
+  //   PngMarker,
+  //   BasemapToggleControl,
+  //   BasemapSelectControl,
+  //   FullScreenMapToggleTab,
+  //   LocationControl,
+  //   CyclomediaButton,
+  //   PictometryButton,
+  //   CyclomediaRecordingCircle,
+  //   CyclomediaRecordingsClient,
+  //   SvgViewConeMarker,
+  //   MeasureControl,
+  //   LegendControl,
+  //   BasemapTooltip,
+  //   ControlCorner,
+  //   EsriWebMap,
+  //   EsriWebMapLayer,
+  //   PopUp,
+  //   PopUpContent,
+  //   Polygon_,
+  //   Polyline_,
+  //   ModalAbout
+  // } from '@philly/vue-mapping';
 
   export default {
     name: 'MapPanel',
@@ -249,31 +266,62 @@
       pictometryMixin,
     ],
     components: {
+      Control: () => import(/* webpackChunkName: "lbmp_pvm_Control" */'@philly/vue-mapping/src/leaflet/Control.vue'),
+      MapAddressCandidateList: () => import(/* webpackChunkName: "lbmp_pvm_MapAddressCandidateList" */'@philly/vue-mapping/src/components/MapAddressCandidateList.vue'),
+      EsriTiledMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriTiledMapLayer" */'@philly/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
+      EsriTiledOverlay: () => import(/* webpackChunkName: "lbmp_pvm_EsriTiledOverlay" */'@philly/vue-mapping/src/esri-leaflet/TiledOverlay.vue'),
+      EsriDynamicMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriDynamicMapLayer" */'@philly/vue-mapping/src/esri-leaflet/DynamicMapLayer.vue'),
+      EsriFeatureLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriFeatureLayer" */'@philly/vue-mapping/src/esri-leaflet/FeatureLayer.vue'),
+      EsriWebMap: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMap" */'@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue'),
+      EsriWebMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMapLayer" */'@philly/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue'),
+
+      ModalAbout: () => import(/* webpackChunkName: "lbmp_pvm_ModalAbout" */'@philly/vue-mapping/src/components/ModalAbout.vue'),
+
+      Geojson: () => import(/* webpackChunkName: "lbmp_pvm_Geojson" */'@philly/vue-mapping/src/leaflet/Geojson.vue'),
+      CircleMarker: () => import(/* webpackChunkName: "lbmp_pvm_CircleMarker" */'@philly/vue-mapping/src/leaflet/CircleMarker.vue'),
+      VectorMarker: () => import(/* webpackChunkName: "lbmp_pvm_VectorMarker" */'@philly/vue-mapping/src/components/VectorMarker.vue'),
+      PngMarker: () => import(/* webpackChunkName: "lbmp_pvm_PngMarker" */'@philly/vue-mapping/src/components/PngMarker.vue'),
+      CyclomediaRecordingCircle: () => import(/* webpackChunkName: "lbmp_pvm_CyclomediaRecordingCircle" */'@philly/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
+      SvgViewConeMarker: () => import(/* webpackChunkName: "lbmp_pvm_CyclomediaSvgViewConeMarker" */'@philly/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
+      BasemapTooltip: () => import(/* webpackChunkName: "lbmp_pvm_BasemapTooltip" */'@philly/vue-mapping/src/components/BasemapTooltip.vue'),
+      ControlCorner,
+      FullScreenMapToggleTab,
       Map_,
-      Control,
-      MapAddressInput,
-      MapAddressCandidateList,
-      EsriWebMap,
-      EsriWebMapLayer,
-      EsriTiledMapLayer,
-      CircleMarker,
-      VectorMarker,
-      PngMarker,
+      LocationControl,
       BasemapToggleControl,
       BasemapSelectControl,
-      FullScreenMapToggleTab,
-      LocationControl,
       PictometryButton,
       CyclomediaButton,
-      CyclomediaRecordingCircle,
-      SvgViewConeMarker,
       MeasureControl,
-      ControlCorner,
-      PopUp,
-      PopUpContent,
-      Polygon_,
-      Polyline_,
-      ModalAbout
+      LegendControl,
+      MapAddressInput,
+
+
+      // Map_,
+      // Control,
+      // MapAddressInput,
+      // MapAddressCandidateList,
+      // EsriWebMap,
+      // EsriWebMapLayer,
+      // EsriTiledMapLayer,
+      // CircleMarker,
+      // VectorMarker,
+      // PngMarker,
+      // BasemapToggleControl,
+      // BasemapSelectControl,
+      // FullScreenMapToggleTab,
+      // LocationControl,
+      // PictometryButton,
+      // CyclomediaButton,
+      // CyclomediaRecordingCircle,
+      // SvgViewConeMarker,
+      // MeasureControl,
+      // ControlCorner,
+      // PopUp,
+      // PopUpContent,
+      // Polygon_,
+      // Polyline_,
+      // ModalAbout
     },
     mounted() {
       this.$controller.appDidLoad();

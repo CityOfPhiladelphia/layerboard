@@ -1,11 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import isMobileDevice from './util/is-mobile-device';
+import pvdStore from '@philly/vue-datafetch/src/controller/store.js';
+import pvmStore from '@philly/vue-mapping/src/store.js';
+import pvcStore from '@philly/vue-comps/src/store.js';
 import mergeDeep from './util/merge-deep';
-import { pvmStore } from '@philly/vue-mapping';
-import { pvcStore } from '@philly/vue-comps';
-import philaVueDatafetch from '@philly/vue-datafetch'
-const pvdStore = philaVueDatafetch.pvdStore
 
 // when you load vuex from a script tag this seems to happen automatically
 Vue.use(Vuex);

@@ -6,8 +6,17 @@
       {{ this.buttonMessage }}
     </button>
 
-      <topic-panel v-show="shouldShowTopics" />
-      <map-panel v-show="shouldShowMap">
+      <!-- <topic-panel v-show="shouldShowTopics" /> -->
+      <component :is="topicPanelLoader"
+                 :class="this.shouldShowTopicPanel"
+                 v-show="shouldShowTopics"
+      />
+
+      <!-- <map-panel v-show="shouldShowMap"> -->
+      <component :is="mapPanelLoader"
+                 :class="this.shouldShowMapPanel"
+                 v-show="shouldShowMap"
+      >
         <cyclomedia-widget v-if="this.shouldLoadCyclomediaWidget"
                            slot="cycloWidget"
                            v-show="cyclomediaActive"
@@ -42,33 +51,34 @@
                      :hFov="cycloHFov"
           />
         </pictometry-widget>
-      </map-panel>
+      </component>
+      <!-- </map-panel> -->
   </div>
 </template>
 
 <script>
-  import {
-    CyclomediaWidget,
-    PictometryWidget,
-    PictometryLayer,
-    PictometryViewCone,
-    PictometryPngMarker
-  } from '@philly/vue-mapping';
+  // import {
+  //   CyclomediaWidget,
+  //   PictometryWidget,
+  //   PictometryLayer,
+  //   PictometryViewCone,
+  //   PictometryPngMarker
+  // } from '@philly/vue-mapping';
 
   import axios from 'axios';
-  import TopicPanel from './TopicPanel.vue';
-  import MapPanel from './MapPanel.vue';
+  // import TopicPanel from './TopicPanel.vue';
+  // import MapPanel from './MapPanel.vue';
 
   export default {
     name: 'Layerboard',
     components: {
-      TopicPanel,
-      MapPanel,
-      CyclomediaWidget,
-      PictometryWidget,
-      PictometryLayer,
-      PictometryViewCone,
-      PictometryPngMarker
+      // TopicPanel,
+      // MapPanel,
+      CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@philly/vue-mapping/src/cyclomedia/Widget.vue'),
+      PictometryWidget: () => import(/* webpackChunkName: "mbmb_pvm_PictometryWidget" */'@philly/vue-mapping/src/pictometry/Widget.vue'),
+      PictometryLayer: () => import(/* webpackChunkName: "mbmb_pvm_PictometryLayer" */'@philly/vue-mapping/src/pictometry/Layer.vue'),
+      PictometryPngMarker: () => import(/* webpackChunkName: "mbmb_pvm_PictometryPngMarker" */'@philly/vue-mapping/src/pictometry/PngMarker.vue'),
+      PictometryViewCone: () => import(/* webpackChunkName: "mbmb_pvm_PictometryViewCone" */'@philly/vue-mapping/src/pictometry/ViewCone.vue')
     },
     mounted() {
       // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
@@ -111,6 +121,25 @@
       });
     },
     computed: {
+      mapPanelLoader() {
+        console.log('computed mapPanelLoader is running');
+        if (this.fullScreenTopicsOnly) {
+          console.log('if this.fullScreenTopicsOnly is true, returning');
+          return;
+        } else {
+          console.log('else is true, importing mapPanel.vue');
+          return () => import(/* webpackChunkName: "lblb_MapPanelLoader" */'./MapPanel.vue').then(console.log('after MapPanel import'))
+        }
+      },
+      topicPanelLoader() {
+        if (this.fullScreenMapOnly) {
+          console.log('if this.fullScreenMapOnly is true, returning');
+          return;
+        } else {
+          console.log('else is true, importing topicPanel.vue');
+          return () => import(/* webpackChunkName: "lblb_TopicPanelLoader" */'./TopicPanel.vue').then(console.log('after TopicPanel import'))
+        }
+      },
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
       },
