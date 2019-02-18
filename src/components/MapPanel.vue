@@ -361,6 +361,13 @@
           return 415;
         }
       },
+      addressInputPlaceholder() {
+        if (this.$config.addressInput) {
+          return this.$config.addressInput.placeholder;
+        } else {
+          return null
+        }
+      },
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
       },

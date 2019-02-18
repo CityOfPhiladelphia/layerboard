@@ -8,15 +8,15 @@
 
       <!-- <topic-panel v-show="shouldShowTopics" /> -->
       <component :is="topicPanelLoader"
-                 :class="this.shouldShowTopicPanel"
                  v-show="shouldShowTopics"
       />
+      <!-- :class="this.shouldShowTopicPanel" -->
 
       <!-- <map-panel v-show="shouldShowMap"> -->
       <component :is="mapPanelLoader"
-                 :class="this.shouldShowMapPanel"
                  v-show="shouldShowMap"
       >
+      <!-- :class="this.shouldShowMapPanel" -->
         <cyclomedia-widget v-if="this.shouldLoadCyclomediaWidget"
                            slot="cycloWidget"
                            v-show="cyclomediaActive"
