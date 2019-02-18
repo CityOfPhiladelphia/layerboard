@@ -13,9 +13,9 @@
   },
   "main": "./dist/layerboard.js",
   "dependencies": {
-    "@philly/vue-comps": "^1.0.19",
+    "@philly/vue-comps": "^1.0.20",
     "@philly/vue-datafetch": "^0.0.13",
-    "@philly/vue-mapping": "^1.0.18",
+    "@philly/vue-mapping": "^1.0.19",
     "L-esri-WebMap": "https://github.com/CityOfPhiladelphia/L.esri.WebMap#5849bfa6248a886d8675eeff98fa9dff4949f12a",
     "accounting": "^0.4.1",
     "axios": "^0.18.0",
