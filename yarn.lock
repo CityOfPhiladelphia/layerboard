@@ -115,10 +115,6 @@
   version "0.2.15"
   resolved "https://npm.fontawesome.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.15.tgz#16af950653083d1e3064061de9f8e5e3b579f688"
 
-"@fortawesome/fontawesome-pro@^5.4.0":
-  version "5.6.3"
-  resolved "https://npm.fontawesome.com/@fortawesome/fontawesome-pro/-/fontawesome-pro-5.6.3.tgz#f45b1573735e9a0bd75a1334fdf710e979708316"
-
 "@fortawesome/fontawesome-svg-core@^1.2.15":
   version "1.2.15"
   resolved "https://npm.fontawesome.com/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.15.tgz#368f9fc7e8e8d8636495dc7483f97510f920ba97"
@@ -168,10 +164,10 @@
     vue "^2.5.22"
     vuex "^3.0.1"
 
-"@philly/vue-mapping@^1.0.17":
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/@philly/vue-mapping/-/vue-mapping-1.0.17.tgz#26d23fa122422183cd762cd66b8393b65aa174ec"
-  integrity sha512-YQsuCLQ8A5CpKZh3VaY6IN73PKZ8Sge1KaaaBg7LcRPCfMbsJIe4KDifPMrA5TCntrD67l8I8TwwBtjvyBfRXQ==
+"@philly/vue-mapping@^1.0.18":
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/@philly/vue-mapping/-/vue-mapping-1.0.18.tgz#f0815cc237af5140ddf468e5240367da6a0ceee4"
+  integrity sha512-GomypsWhYNO3Ivg/4wETWihgX17eaUyWgVpxZBe0jZ9fQLpeMbfha1idvLATp7y1eL7MhQUL7KUD/y06ly5YQw==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-solid-svg-icons" "^5.7.2"
@@ -186,10 +182,10 @@
     esri-leaflet "^2.2.3"
     jquery "^3.3.1"
     leaflet "^1.4.0"
-    leaflet-easybutton "^2.2.2"
+    leaflet-easybutton "^2.3.0"
     leaflet-measure "https://github.com/CityOfPhiladelphia/leaflet-measure#b70886af342f19597dc2937d79d64bad6bab07c6"
     leaflet-rotatedmarker "^0.2.0"
-    leaflet-vector-icon "https://github.com/CityOfPhiladelphia/leaflet-vector-icon#74a56f048bceccef9c945f752bbd0379ae9dc77c"
+    leaflet-vector-icon "https://github.com/CityOfPhiladelphia/leaflet-vector-icon#c37571e92c66ce0003f22058f2d246b31d3941a5"
     lodash.debounce "^4.0.8"
     phila-standards "^1.0.2"
     proj4 "^2.5.0"
@@ -5582,7 +5578,7 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-leaflet-easybutton@^2.2.2, leaflet-easybutton@^2.3.0:
+leaflet-easybutton@^2.3.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/leaflet-easybutton/-/leaflet-easybutton-2.4.0.tgz#3ad8ad31c9cf6d5ca7a6a1988f82eed13ff2c1af"
   dependencies:
@@ -5628,15 +5624,14 @@ leaflet-shape-markers@^1.0.4:
   dependencies:
     leaflet "^1.0.0"
 
-"leaflet-vector-icon@git+https://github.com/CityOfPhiladelphia/leaflet-vector-icon.git#74a56f048bceccef9c945f752bbd0379ae9dc77c":
+"leaflet-vector-icon@git+https://github.com/CityOfPhiladelphia/leaflet-vector-icon.git#c37571e92c66ce0003f22058f2d246b31d3941a5":
   version "1.0.0"
-  resolved "git+https://github.com/CityOfPhiladelphia/leaflet-vector-icon.git#74a56f048bceccef9c945f752bbd0379ae9dc77c"
+  resolved "git+https://github.com/CityOfPhiladelphia/leaflet-vector-icon.git#c37571e92c66ce0003f22058f2d246b31d3941a5"
 
-"leaflet-vector-icon@https://github.com/CityOfPhiladelphia/leaflet-vector-icon#1836076bc5ede54ae2618f1e5f6d9df10769a001":
+"leaflet-vector-icon@https://github.com/CityOfPhiladelphia/leaflet-vector-icon#c37571e92c66ce0003f22058f2d246b31d3941a5":
   version "1.0.0"
-  resolved "https://github.com/CityOfPhiladelphia/leaflet-vector-icon#1836076bc5ede54ae2618f1e5f6d9df10769a001"
-  dependencies:
-    "@fortawesome/fontawesome-pro" "^5.4.0"
+  uid c37571e92c66ce0003f22058f2d246b31d3941a5
+  resolved "https://github.com/CityOfPhiladelphia/leaflet-vector-icon#c37571e92c66ce0003f22058f2d246b31d3941a5"
 
 leaflet-vectoricon@^0.1.0:
   version "0.1.0"
