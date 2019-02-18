@@ -220,6 +220,9 @@
   import LegendControl from '@philly/vue-mapping/src/components/LegendControl.vue';
   import MapAddressInput from '@philly/vue-mapping/src/components/MapAddressInput.vue';
 
+  import EsriWebMap from '@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue';
+  import EsriWebMapLayer from '@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue';
+
   // import {
   //   cyclomediaMixin,
   //   pictometryMixin,
@@ -272,11 +275,13 @@
       EsriTiledOverlay: () => import(/* webpackChunkName: "lbmp_pvm_EsriTiledOverlay" */'@philly/vue-mapping/src/esri-leaflet/TiledOverlay.vue'),
       EsriDynamicMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriDynamicMapLayer" */'@philly/vue-mapping/src/esri-leaflet/DynamicMapLayer.vue'),
       EsriFeatureLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriFeatureLayer" */'@philly/vue-mapping/src/esri-leaflet/FeatureLayer.vue'),
-      EsriWebMap: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMap" */'@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue'),
-      EsriWebMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMapLayer" */'@philly/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue'),
+
+      // EsriWebMap: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMap" */'@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue'),
+      // EsriWebMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMapLayer" */'@philly/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue'),
+      EsriWebMap,
+      EsriWebMapLayer,
 
       ModalAbout: () => import(/* webpackChunkName: "lbmp_pvm_ModalAbout" */'@philly/vue-mapping/src/components/ModalAbout.vue'),
-
       Geojson: () => import(/* webpackChunkName: "lbmp_pvm_Geojson" */'@philly/vue-mapping/src/leaflet/Geojson.vue'),
       CircleMarker: () => import(/* webpackChunkName: "lbmp_pvm_CircleMarker" */'@philly/vue-mapping/src/leaflet/CircleMarker.vue'),
       VectorMarker: () => import(/* webpackChunkName: "lbmp_pvm_VectorMarker" */'@philly/vue-mapping/src/components/VectorMarker.vue'),
