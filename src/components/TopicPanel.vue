@@ -104,11 +104,12 @@
   // import {
   //   Checkbox
   // } from '@philly/vue-mapping';
+  import Checkbox from '@philly/vue-mapping/src/esri-leaflet/Checkbox.vue';
 
   export default {
     components: {
-      // Checkbox
-      Checkbox: () => import(/* webpackChunkName: "lbmp_pvm_Checkbox" */'@philly/vue-mapping/src/esri-leaflet/Checkbox.vue'),
+      Checkbox
+      // Checkbox: () => import(/* webpackChunkName: "lbmp_pvm_Checkbox" */'@philly/vue-mapping/src/esri-leaflet/Checkbox.vue'),
     },
     computed: {
       windowWidth() {
