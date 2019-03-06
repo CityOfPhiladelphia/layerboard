@@ -300,6 +300,8 @@
       MeasureControl,
       LegendControl,
       MapAddressInput,
+      PopUp: () => import(/* webpackChunkName: "lbmp_pvm_PopUp" */'@philly/vue-mapping/src/leaflet/PopUp.vue'),
+      PopUpContent: () => import(/* webpackChunkName: "lbmp_pvm_PopUpContent" */'@philly/vue-mapping/src/leaflet/PopUpContent.vue'),
 
 
       // Map_,
