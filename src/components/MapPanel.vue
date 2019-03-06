@@ -221,7 +221,7 @@
   import MapAddressInput from '@philly/vue-mapping/src/components/MapAddressInput.vue';
 
   import EsriWebMap from '@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue';
-  import EsriWebMapLayer from '@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue';
+  import EsriWebMapLayer from '@philly/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue';
 
   // import {
   //   cyclomediaMixin,
