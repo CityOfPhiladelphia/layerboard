@@ -629,18 +629,6 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@mapbox/leaflet-omnivore@^0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@mapbox/leaflet-omnivore/-/leaflet-omnivore-0.3.4.tgz#d8255eb981549cac421ccf9c1a56a78f6a350346"
-  dependencies:
-    brfs "1.4.3"
-    corslite "0.0.7"
-    csv2geojson "~5.0.0"
-    polyline "0.2.0"
-    togeojson "0.13.0"
-    topojson "1.6.26"
-    wellknown "0.4.2"
-
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
