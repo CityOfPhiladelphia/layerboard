@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@mapbox/leaflet-omnivore": "^0.3.4",
-    "@philly/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#dbb1bbe780a7d34a7a6fe1b131cd00fa38bbd52c",
-    "@philly/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#a60c88f2a145c99594854970bed1af24c9256c01",
-    "@philly/vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#e8fb36886db8137c79a848817ba1f722a7e4e63f",
+    "@philly/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#02704868f330ed74813000ff89675f6b4f923b05",
+    "@philly/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#501a91705e32b96ecce666636f83b7a5982d9778",
+    "@philly/vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#cb5bf3356aea21cd581d3db710166707889441b0",
     "L-esri-WebMap": "https://github.com/CityOfPhiladelphia/L.esri.WebMap#5849bfa6248a886d8675eeff98fa9dff4949f12a",
     "accounting": "^0.4.1",
     "axios": "^0.18.0",
@@ -29,14 +29,14 @@
     "leaflet-vector-icon": "https://github.com/CityOfPhiladelphia/leaflet-vector-icon#c37571e92c66ce0003f22058f2d246b31d3941a5",
     "leaflet.heat": "https://github.com/Leaflet/Leaflet.heat#5885ec0ec2442876b67725c64dc537cb12c52c73",
     "phila-standards": "^1.0.2",
-    "vue": "^2.5.22",
+    "vue": "^2.6.8",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.5",
     "@vue/cli-service": "^3.0.5",
-    "vue-template-compiler": "2.5.22",
+    "vue-template-compiler": "^2.6.8",
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "postcss": {

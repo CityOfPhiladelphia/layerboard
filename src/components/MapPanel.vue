@@ -302,6 +302,8 @@
       MapAddressInput,
       PopUp: () => import(/* webpackChunkName: "lbmp_pvm_PopUp" */'@philly/vue-mapping/src/leaflet/PopUp.vue'),
       PopUpContent: () => import(/* webpackChunkName: "lbmp_pvm_PopUpContent" */'@philly/vue-mapping/src/leaflet/PopUpContent.vue'),
+      Polygon_: () => import(/* webpackChunkName: "lbmp_pvm_Polygon_" */'@philly/vue-mapping/src/leaflet/Polygon.vue'),
+      Polyline_: () => import(/* webpackChunkName: "lbmp_pvm_Polyline_" */'@philly/vue-mapping/src/leaflet/Polyline.vue'),
 
 
       // Map_,
