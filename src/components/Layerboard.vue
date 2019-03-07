@@ -51,8 +51,8 @@
                      :hFov="cycloHFov"
           />
         </pictometry-widget>
-      </component>
-      <!-- </map-panel> -->
+      <!-- </component> -->
+      </map-panel>
   </div>
 </template>
 
