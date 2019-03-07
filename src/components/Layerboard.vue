@@ -6,16 +6,16 @@
       {{ this.buttonMessage }}
     </button>
 
-      <!-- <topic-panel v-show="shouldShowTopics" /> -->
-      <component :is="topicPanelLoader"
+      <topic-panel v-show="shouldShowTopics" />
+      <!-- <component :is="topicPanelLoader"
                  v-show="shouldShowTopics"
-      />
+      /> -->
       <!-- :class="this.shouldShowTopicPanel" -->
 
-      <!-- <map-panel v-show="shouldShowMap"> -->
-      <component :is="mapPanelLoader"
+      <map-panel v-show="shouldShowMap">
+      <!-- <component :is="mapPanelLoader"
                  v-show="shouldShowMap"
-      >
+      > -->
       <!-- :class="this.shouldShowMapPanel" -->
         <cyclomedia-widget v-if="this.shouldLoadCyclomediaWidget"
                            slot="cycloWidget"
@@ -66,14 +66,14 @@
   // } from '@philly/vue-mapping';
 
   import axios from 'axios';
-  // import TopicPanel from './TopicPanel.vue';
-  // import MapPanel from './MapPanel.vue';
+  import TopicPanel from './TopicPanel.vue';
+  import MapPanel from './MapPanel.vue';
 
   export default {
     name: 'Layerboard',
     components: {
-      // TopicPanel,
-      // MapPanel,
+      TopicPanel,
+      MapPanel,
       CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@philly/vue-mapping/src/cyclomedia/Widget.vue'),
       PictometryWidget: () => import(/* webpackChunkName: "mbmb_pvm_PictometryWidget" */'@philly/vue-mapping/src/pictometry/Widget.vue'),
       PictometryLayer: () => import(/* webpackChunkName: "mbmb_pvm_PictometryLayer" */'@philly/vue-mapping/src/pictometry/Layer.vue'),
@@ -121,25 +121,25 @@
       });
     },
     computed: {
-      mapPanelLoader() {
-        console.log('computed mapPanelLoader is running');
-        if (this.fullScreenTopicsOnly) {
-          console.log('if this.fullScreenTopicsOnly is true, returning');
-          return;
-        } else {
-          console.log('else is true, importing mapPanel.vue');
-          return () => import(/* webpackChunkName: "lblb_MapPanelLoader" */'./MapPanel.vue').then(console.log('after MapPanel import'))
-        }
-      },
-      topicPanelLoader() {
-        if (this.fullScreenMapOnly) {
-          console.log('if this.fullScreenMapOnly is true, returning');
-          return;
-        } else {
-          console.log('else is true, importing topicPanel.vue');
-          return () => import(/* webpackChunkName: "lblb_TopicPanelLoader" */'./TopicPanel.vue').then(console.log('after TopicPanel import'))
-        }
-      },
+      // mapPanelLoader() {
+      //   console.log('computed mapPanelLoader is running');
+      //   if (this.fullScreenTopicsOnly) {
+      //     console.log('if this.fullScreenTopicsOnly is true, returning');
+      //     return;
+      //   } else {
+      //     console.log('else is true, importing mapPanel.vue');
+      //     return () => import(/* webpackChunkName: "lblb_MapPanelLoader" */'./MapPanel.vue').then(console.log('after MapPanel import'))
+      //   }
+      // },
+      // topicPanelLoader() {
+      //   if (this.fullScreenMapOnly) {
+      //     console.log('if this.fullScreenMapOnly is true, returning');
+      //     return;
+      //   } else {
+      //     console.log('else is true, importing topicPanel.vue');
+      //     return () => import(/* webpackChunkName: "lblb_TopicPanelLoader" */'./TopicPanel.vue').then(console.log('after TopicPanel import'))
+      //   }
+      // },
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
       },
