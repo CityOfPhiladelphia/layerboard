@@ -629,6 +629,18 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
+"@mapbox/leaflet-omnivore@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@mapbox/leaflet-omnivore/-/leaflet-omnivore-0.3.4.tgz#d8255eb981549cac421ccf9c1a56a78f6a350346"
+  dependencies:
+    brfs "1.4.3"
+    corslite "0.0.7"
+    csv2geojson "~5.0.0"
+    polyline "0.2.0"
+    togeojson "0.13.0"
+    topojson "1.6.26"
+    wellknown "0.4.2"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -671,24 +683,27 @@
     vue "^2.6.8"
     vuex "^3.0.1"
 
-"@philly/vue-mapping@https://github.com/CityOfPhiladelphia/phila-vue-mapping#cb5bf3356aea21cd581d3db710166707889441b0":
+"@philly/vue-mapping@https://github.com/CityOfPhiladelphia/phila-vue-mapping#690b65f58d61ae8b8fa02b6eb9f128d5f8a289cb":
   version "1.0.20"
-  resolved "https://github.com/CityOfPhiladelphia/phila-vue-mapping#cb5bf3356aea21cd581d3db710166707889441b0"
+  resolved "https://github.com/CityOfPhiladelphia/phila-vue-mapping#690b65f58d61ae8b8fa02b6eb9f128d5f8a289cb"
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
     "@fortawesome/free-solid-svg-icons" "^5.7.2"
     "@fortawesome/vue-fontawesome" "^0.1.5"
+    "@mapbox/leaflet-omnivore" "^0.3.4"
     "@turf/turf" "^5.1.6"
     L-esri-WebMap "https://github.com/CityOfPhiladelphia/L.esri.WebMap#5849bfa6248a886d8675eeff98fa9dff4949f12a"
+    Leaflet-PointInPolygon "https://github.com/hayeswise/Leaflet.PointInPolygon#7a7c7df3d5ccef184c6720c696fa54fde5a0b4e9"
     Leaflet.vector-markers "^0.0.6"
     axios "^0.18.0"
     blueimp-md5 "^2.10.0"
     esri-leaflet "^2.2.3"
     esri-leaflet-legend "https://github.com/ajrothwell/esri-leaflet-legend#f275e4bf4495931712fb11b4dd8b895129ce5308"
+    esri-leaflet-renderers "^2.0.6"
     jquery "^3.3.1"
     leaflet "^1.4.0"
-    leaflet-easybutton "^2.2.2"
+    leaflet-easybutton "^2.3.0"
     leaflet-measure "https://github.com/CityOfPhiladelphia/leaflet-measure#b70886af342f19597dc2937d79d64bad6bab07c6"
     leaflet-rotatedmarker "^0.2.0"
     leaflet-vector-icon "https://github.com/CityOfPhiladelphia/leaflet-vector-icon#c37571e92c66ce0003f22058f2d246b31d3941a5"
@@ -2098,6 +2113,10 @@
     leaflet-vectoricon "^0.1.0"
     leaflet.heat "^0.1.3"
     moment "^2.18.1"
+
+"Leaflet-PointInPolygon@https://github.com/hayeswise/Leaflet.PointInPolygon#7a7c7df3d5ccef184c6720c696fa54fde5a0b4e9":
+  version "0.0.0"
+  resolved "https://github.com/hayeswise/Leaflet.PointInPolygon#7a7c7df3d5ccef184c6720c696fa54fde5a0b4e9"
 
 Leaflet.vector-markers@^0.0.6:
   version "0.0.6"
@@ -5369,7 +5388,7 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-leaflet-easybutton@^2.2.2, leaflet-easybutton@^2.3.0:
+leaflet-easybutton@^2.3.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/leaflet-easybutton/-/leaflet-easybutton-2.4.0.tgz#3ad8ad31c9cf6d5ca7a6a1988f82eed13ff2c1af"
   dependencies:
@@ -5423,10 +5442,6 @@ leaflet-virtual-grid@^1.0.7:
 leaflet.heat@^0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/leaflet.heat/-/leaflet.heat-0.1.3.tgz#ad798d8db69d49873bfcbe7116a22158ed7c7076"
-
-"leaflet.heat@https://github.com/Leaflet/Leaflet.heat#5885ec0ec2442876b67725c64dc537cb12c52c73":
-  version "0.2.0"
-  resolved "https://github.com/Leaflet/Leaflet.heat#5885ec0ec2442876b67725c64dc537cb12c52c73"
 
 leaflet@^0.7.0:
   version "0.7.7"
