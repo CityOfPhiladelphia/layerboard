@@ -340,7 +340,16 @@
         return config || {};
       },
       activeTopicLayers() {
-        return this.activeTopicConfig.components[0].options.topicLayers;
+        const activeTopicConfigComponents = this.activeTopicConfig.components;
+        let topicLayers;
+        for (let component of activeTopicConfigComponents) {
+          console.log('component:', component);
+          if (component.type === 'checkbox-set') {
+            topicLayers = component.options.topicLayers;
+          }
+        }
+        return topicLayers;
+        // return this.activeTopicConfig.components[0].options.topicLayers;
       },
       mapPanelContainerClass() {
         if (this.fullScreenMapEnabled) {

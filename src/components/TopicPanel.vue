@@ -4,7 +4,9 @@
   >
   <!-- class="cell medium-8 small-order-2 medium-order-1" -->
       <div class="cell">
-        <div class="forms-header">
+        <div class="forms-header"
+             v-show="!!this.$config.layerFilter"
+        >
 
           <!-- layer filter -->
           <!-- <form @submit.prevent="handleLayerFilterFormX"
@@ -252,7 +254,7 @@
 
   .topics-container {
     padding: 20px;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .topics-container {
@@ -260,14 +262,18 @@
     /* height: calc(100vh - 268px); */
 
     /* height: calc(100vh - 218px); */
-    height: calc(100vh - 170px);
+
+    /* height: calc(100vh - 170px); */
+    height: calc(100vh - 110px);
   }
 
   /* @media screen and (max-width: 40em) { */
   @media screen and (max-width: 750px) {
     .topics-container {
       /* height: calc(100vh - 256px); */
-      height: calc(100vh - 300px);
+
+      /* height: calc(100vh - 300px); */
+      height: calc(100vh - 140px);
     }
   }
 
