@@ -220,46 +220,11 @@
   import LegendControl from '@philly/vue-mapping/src/components/LegendControl.vue';
   import MapAddressInput from '@philly/vue-mapping/src/components/MapAddressInput.vue';
 
+  import PopUp from '@philly/vue-mapping/src/leaflet/PopUp.vue';
+  import PopUpContent from '@philly/vue-mapping/src/leaflet/PopUpContent.vue';
+
   import EsriWebMap from '@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue';
   import EsriWebMapLayer from '@philly/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue';
-
-  // import {
-  //   cyclomediaMixin,
-  //   pictometryMixin,
-  //   Map_,
-  //   Control,
-  //   MapAddressInput,
-  //   MapAddressCandidateList,
-  //   EsriTiledMapLayer,
-  //   EsriTiledOverlay,
-  //   EsriDynamicMapLayer,
-  //   EsriFeatureLayer,
-  //   // Geojson,
-  //   CircleMarker,
-  //   // OpacitySlider,
-  //   VectorMarker,
-  //   PngMarker,
-  //   BasemapToggleControl,
-  //   BasemapSelectControl,
-  //   FullScreenMapToggleTab,
-  //   LocationControl,
-  //   CyclomediaButton,
-  //   PictometryButton,
-  //   CyclomediaRecordingCircle,
-  //   CyclomediaRecordingsClient,
-  //   SvgViewConeMarker,
-  //   MeasureControl,
-  //   LegendControl,
-  //   BasemapTooltip,
-  //   ControlCorner,
-  //   EsriWebMap,
-  //   EsriWebMapLayer,
-  //   PopUp,
-  //   PopUpContent,
-  //   Polygon_,
-  //   Polyline_,
-  //   ModalAbout
-  // } from '@philly/vue-mapping';
 
   export default {
     name: 'MapPanel',
@@ -300,37 +265,12 @@
       MeasureControl,
       LegendControl,
       MapAddressInput,
-      PopUp: () => import(/* webpackChunkName: "lbmp_pvm_PopUp" */'@philly/vue-mapping/src/leaflet/PopUp.vue'),
-      PopUpContent: () => import(/* webpackChunkName: "lbmp_pvm_PopUpContent" */'@philly/vue-mapping/src/leaflet/PopUpContent.vue'),
+      PopUp,
+      PopUpContent,
+      // PopUp: () => import(/* webpackChunkName: "lbmp_pvm_PopUp" */'@philly/vue-mapping/src/leaflet/PopUp.vue'),
+      // PopUpContent: () => import(/* webpackChunkName: "lbmp_pvm_PopUpContent" */'@philly/vue-mapping/src/leaflet/PopUpContent.vue'),
       Polygon_: () => import(/* webpackChunkName: "lbmp_pvm_Polygon_" */'@philly/vue-mapping/src/leaflet/Polygon.vue'),
       Polyline_: () => import(/* webpackChunkName: "lbmp_pvm_Polyline_" */'@philly/vue-mapping/src/leaflet/Polyline.vue'),
-
-
-      // Map_,
-      // Control,
-      // MapAddressInput,
-      // MapAddressCandidateList,
-      // EsriWebMap,
-      // EsriWebMapLayer,
-      // EsriTiledMapLayer,
-      // CircleMarker,
-      // VectorMarker,
-      // PngMarker,
-      // BasemapToggleControl,
-      // BasemapSelectControl,
-      // FullScreenMapToggleTab,
-      // LocationControl,
-      // PictometryButton,
-      // CyclomediaButton,
-      // CyclomediaRecordingCircle,
-      // SvgViewConeMarker,
-      // MeasureControl,
-      // ControlCorner,
-      // PopUp,
-      // PopUpContent,
-      // Polygon_,
-      // Polyline_,
-      // ModalAbout
     },
     mounted() {
       this.$controller.appDidLoad();
