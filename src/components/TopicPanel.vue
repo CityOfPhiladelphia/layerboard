@@ -73,9 +73,9 @@
         <div class="topics-container cell medium-cell-block-y"
              id="topics-container"
         >
-          <form action="#/">
+          <topic-component-group :topic-components="this.$config.components" />
+          <!-- <form action="#/">
             <fieldset class="options">
-              <!-- <ul class="no-bullet"> -->
                 <checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
                           :layer="currentWmLayer.layer"
                           :layerName="currentWmLayer.title"
@@ -85,11 +85,9 @@
                           :legend="currentWmLayer.legend"
                           :key="currentWmLayer.id"
                 >
-                <!-- :tags="currentWmLayer.tags" -->
                 </checkbox>
-              <!-- </ul> -->
             </fieldset>
-          </form>
+          </form> -->
         </div>
 
       </div>
@@ -106,9 +104,15 @@
   // } from '@philly/vue-mapping';
   import Checkbox from '@philly/vue-mapping/src/esri-leaflet/Checkbox.vue';
 
+  import Topic from '@philly/vue-comps/src/components/Topic.vue';
+  import TopicComponentGroup from '@philly/vue-comps/src/components/TopicComponentGroup.vue';
+
+
   export default {
     components: {
-      Checkbox
+      Checkbox,
+      TopicComponentGroup,
+      Topic
       // Checkbox: () => import(/* webpackChunkName: "lbmp_pvm_Checkbox" */'@philly/vue-mapping/src/esri-leaflet/Checkbox.vue'),
     },
     computed: {

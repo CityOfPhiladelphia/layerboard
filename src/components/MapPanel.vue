@@ -321,6 +321,27 @@
       windowWidth() {
         return this.$store.state.windowWidth;
       },
+      activeTopic() {
+        return this.$store.state.activeTopic;
+      },
+      activeTopicConfig() {
+        const key = this.activeTopic;
+        const createdComplete = this.createdComplete;
+        // console.log('computed activeTopicConfig is running, this.$config:', this.$config, 'key:', key, 'createdComplete:', createdComplete);
+        let config;
+
+        // if no active topic, return null
+        if (key && this.$config) {
+          config = this.$config.topics.filter((topic) => {
+            return topic.key === key;
+          })[0];
+        }
+
+        return config || {};
+      },
+      activeTopicLayers() {
+        return this.activeTopicConfig.components[0].options.topicLayers;
+      },
       mapPanelContainerClass() {
         if (this.fullScreenMapEnabled) {
           return 'medium-24 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map'
@@ -518,14 +539,17 @@
         if (layer.rest.layerDefinition) {
           if (layer.rest.layerDefinition.minScale) {
             // console.log('minZoom for', layer.title, 'is', layer.rest.layerDefinition.minScale, typeof layer.rest.layerDefinition.minScale, 'and current scale is', this.scale, typeof this.scale);
-            if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title)) {
+            if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title) && this.activeTopicLayers.includes(layer.title)) {
+            // if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title)) {
               // console.log('checkLayer used layerDefinition and is returning true for', layer.title);
               return true;
             }
-          } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title)) {
+          } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title) && this.activeTopicLayers.includes(layer.title)) {
+          // } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title)) {
             return true;
           }
-        } else if (this.webMapActiveLayers.includes(layer.title)) {
+        } else if (this.webMapActiveLayers.includes(layer.title) && this.activeTopicLayers.includes(layer.title)) {
+        // } else if (this.webMapActiveLayers.includes(layer.title)) {
           // console.log('checkLayer is returning true for', layer.title);
           return true;
         } else {
