@@ -82,6 +82,19 @@
     },
     mounted() {
       // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
+      // console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics);
+      let defaultLayers = [];
+      for (let topic of this.$config.topics) {
+        for (let component of topic.components) {
+          if (component.type === 'checkbox-set') {
+            defaultLayers = defaultLayers.concat(component.options.defaultTopicLayers);
+          }
+        }
+      }
+      // console.log('firstLayers:', firstLayers);
+      this.$store.commit('setDefaultLayers', defaultLayers);
+      this.$store.commit('setWebMapActiveLayers', defaultLayers);
+
       window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize();
 

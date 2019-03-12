@@ -366,6 +366,9 @@
         return config || {};
       },
       activeTopicLayers() {
+        if (!this.activeTopic) {
+          return [];
+        }
         const activeTopicConfigComponents = this.activeTopicConfig.components;
         let topicLayers;
         for (let component of activeTopicConfigComponents) {
@@ -634,7 +637,7 @@
         const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
         const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
         const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
-        console.log('MapPanel handleWindowResize is running, datasetsButtonHeightNum:', datasetsButtonHeightNum);
+        // console.log('MapPanel handleWindowResize is running, datasetsButtonHeightNum:', datasetsButtonHeightNum);
         let mapPanelHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - datasetsButtonHeightNum;
 
         this.mapPanelContainerStyle.height = mapPanelHeight.toString() + 'px';

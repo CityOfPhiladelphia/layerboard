@@ -18,6 +18,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     fullScreenMapEnabled: false,
     bennyEndpoints: {},
     layers: {
+      defaultLayers: [],
       layerUrls: {},
       inputLayerFilter: '',
       inputTagsFilter: '',
@@ -82,6 +83,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       },
       setWatchPositionOn(state, payload) {
         state.map.watchPositionOn = payload;
+      },
+      setDefaultLayers(state, payload) {
+        state.layers.defaultLayers = payload;
       },
       setLayerUrls(state, payload) {
         state.layers.layerUrls = payload;

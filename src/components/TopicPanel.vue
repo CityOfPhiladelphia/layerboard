@@ -186,7 +186,7 @@
         const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
         const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
         const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
-        console.log('TopicPanel handleWindowResize is running');
+        // console.log('TopicPanel handleWindowResize is running');
         let topicsHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - datasetsButtonHeightNum;
 
         this.topicsContainerStyle.height = topicsHeight.toString() + 'px';
