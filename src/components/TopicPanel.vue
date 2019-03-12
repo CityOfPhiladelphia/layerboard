@@ -7,30 +7,6 @@
         <div class="forms-header"
              v-show="!!this.$config.layerFilter"
         >
-
-          <!-- layer filter -->
-          <!-- <form @submit.prevent="handleLayerFilterFormX"
-                @keydown="preventEnter"
-                class="om-search-control-input"
-          >
-            <div class="input-group text-filter">
-              <span class="input-group-label input-font">Filter By Text:</span>
-              <input
-                     type="text"
-                     class="input-type"
-                     @keyup="handleLayerFilterFormKeyup"
-              />
-              <div class="input-group-button"
-                   v-if="this.$store.state.layers.inputLayerFilter != ''"
-              >
-
-                <button class="om-search-control-button">
-                  <i class="fa fa-times fa-lg"></i>
-                </button>
-              </div>
-            </div>
-          </form> -->
-
           <!-- tags filter -->
           <form @submit.prevent="handleTagsFilterFormX"
                 @keydown="preventEnter"
@@ -55,22 +31,7 @@
             </div>
           </form>
 
-          <!-- categories filter -->
-          <!-- <div class="input-group">
-            <span class="input-group-label input-font">Filter By Category:</span>
-
-            <select @change="didSelectCategory"
-                    class="input-select"
-            >
-              <option v-for="category in this.categories"
-                      value="category"
-              >
-                {{ category }}
-              </option>
-            </select>
-          </div> -->
         </div>
-      <!-- </div> -->
 
         <div class="topics-container cell medium-cell-block-y"
              id="topics-container"
