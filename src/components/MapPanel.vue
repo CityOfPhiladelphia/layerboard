@@ -296,16 +296,9 @@
       };
       return data;
     },
-    created() {
-      window.addEventListener('resize', this.handleWindowResize);
-      // this.handleWindowResize(25);
-    },
-    beforeMount() {
-      // this.handleWindowResize(25);
-    },
     mounted() {
       this.$controller.appDidLoad();
-      // window.addEventListener('resize', this.handleWindowResize);
+      window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize(25);
     },
     computed: {
@@ -637,11 +630,11 @@
         }
       },
       handleWindowResize(pixelAdjustment) {
-        console.log('MapPanel handleWindowResize is running');
         const windowHeight = window.innerHeight;
         const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
         const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
         const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
+        console.log('MapPanel handleWindowResize is running, datasetsButtonHeightNum:', datasetsButtonHeightNum);
         let mapPanelHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - datasetsButtonHeightNum;
 
         this.mapPanelContainerStyle.height = mapPanelHeight.toString() + 'px';

@@ -354,7 +354,7 @@
   }
 
   .mb-panel {
-    height: 100%;
+    /* height: 100%; */
   }
 
   /*.mb-panel-topics-with-widget {
