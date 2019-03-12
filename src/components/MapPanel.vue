@@ -1,6 +1,7 @@
 <template>
   <div id="map-panel-container"
        :class="this.mapPanelContainerClass"
+       :style="mapPanelContainerStyle"
   >
     <full-screen-map-toggle-tab v-once />
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
@@ -272,8 +273,40 @@
       Polygon_: () => import(/* webpackChunkName: "lbmp_pvm_Polygon_" */'@philly/vue-mapping/src/leaflet/Polygon.vue'),
       Polyline_: () => import(/* webpackChunkName: "lbmp_pvm_Polyline_" */'@philly/vue-mapping/src/leaflet/Polyline.vue'),
     },
+    data() {
+      const windowHeight = window.innerHeight;
+      const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
+      console.log('siteHeaderHeightNum:', siteHeaderHeightNum);
+      const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
+      // console.log('appFooterHeightNum:', appFooterHeightNum);
+      // console.log(document.getElementsByClassName('datasets-button'))
+      // const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
+      // console.log('datasetsButtonHeightNum:', datasetsButtonHeightNum);
+      let mapPanelHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - 36;
+      let mapPanelHeightStr = mapPanelHeight.toString() + 'px';
+      console.log('mapPanelHeightStr:', mapPanelHeightStr);
+
+      const data = {
+        mapPanelContainerStyle: {
+          // 'height': '470px',
+          // 'min-height': '470px',
+          'height': mapPanelHeightStr,
+          'min-height': mapPanelHeightStr,
+        }
+      };
+      return data;
+    },
+    created() {
+      window.addEventListener('resize', this.handleWindowResize);
+      // this.handleWindowResize(25);
+    },
+    beforeMount() {
+      // this.handleWindowResize(25);
+    },
     mounted() {
       this.$controller.appDidLoad();
+      // window.addEventListener('resize', this.handleWindowResize);
+      this.handleWindowResize(25);
     },
     computed: {
       mapCenter() {
@@ -603,6 +636,18 @@
           this.$store.commit('setCyclomediaLatLngFromMap', [lat, lng]);
         }
       },
+      handleWindowResize(pixelAdjustment) {
+        console.log('MapPanel handleWindowResize is running');
+        const windowHeight = window.innerHeight;
+        const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
+        const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
+        const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
+        let mapPanelHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - datasetsButtonHeightNum;
+
+        this.mapPanelContainerStyle.height = mapPanelHeight.toString() + 'px';
+        this.mapPanelContainerStyle['min-height'] = mapPanelHeight.toString() + 'px';
+        // this.mapPanelContainerStyle['overflow-y'] = 'auto';
+      }
 
     }, // end of methods
   }; //end of export

@@ -349,6 +349,7 @@
 
   .datasets-button {
     display: none;
+    height: 36px;
     margin: 0;
   }
 
@@ -365,6 +366,7 @@
   @media screen and (max-width: 750px) {
     .datasets-button {
       display: block;
+      height: 36px;
     }
   }
 

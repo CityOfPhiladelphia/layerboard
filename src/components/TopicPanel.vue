@@ -2,74 +2,67 @@
   <div id="topic-panel-container"
        :class="this.topicPanelContainerClass"
   >
-  <!-- class="cell medium-8 small-order-2 medium-order-1" -->
-      <div class="cell">
-        <div class="forms-header"
-             v-show="!!this.$config.layerFilter"
-        >
-          <!-- tags filter -->
-          <form @submit.prevent="handleTagsFilterFormX"
-                @keydown="preventEnter"
-                class="om-search-control-input-tags"
+    <!-- <div class="cell"> -->
+    <div class="forms-header"
+         v-show="!!this.$config.layerFilter"
+    >
+      <!-- tags filter -->
+      <form @submit.prevent="handleTagsFilterFormX"
+            @keydown="preventEnter"
+            class="om-search-control-input-tags"
+      >
+        <div class="input-group text-filter">
+          <span class="input-group-label input-font">Filter:</span>
+          <input
+                 type="text"
+                 class="input-type"
+                 @keyup="handleTagsFilterFormKeyup"
+          />
+          <!-- placeholder="Filter datasets" -->
+          <div class="input-group-button"
+               v-if="this.$store.state.layers.inputTagsFilter != ''"
           >
-            <div class="input-group text-filter">
-              <span class="input-group-label input-font">Filter:</span>
-              <input
-                     type="text"
-                     class="input-type"
-                     @keyup="handleTagsFilterFormKeyup"
-              />
-              <!-- placeholder="Filter datasets" -->
-              <div class="input-group-button"
-                   v-if="this.$store.state.layers.inputTagsFilter != ''"
-              >
 
-                <button class="om-search-control-button">
-                  <i class="fa fa-times fa-lg"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-
+            <button class="om-search-control-button">
+              <i class="fa fa-times fa-lg"></i>
+            </button>
+          </div>
         </div>
+      </form>
 
-        <div class="topics-container cell medium-cell-block-y"
-             id="topics-container"
-        >
-          <topic-component-group :topic-components="this.$config.components" />
-          <!-- <form action="#/">
-            <fieldset class="options">
-                <checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
-                          :layer="currentWmLayer.layer"
-                          :layerName="currentWmLayer.title"
-                          :layerId="currentWmLayer.id"
-                          :layerDefinition="currentWmLayer.rest.layerDefinition"
-                          :opacity="currentWmLayer.opacity"
-                          :legend="currentWmLayer.legend"
-                          :key="currentWmLayer.id"
-                >
-                </checkbox>
-            </fieldset>
-          </form> -->
-        </div>
+    </div>
 
-      </div>
+    <div class="topics-container cell medium-cell-block-y"
+         id="topics-container"
+         :style="topicsContainerStyle"
+    >
+      <topic-component-group :topic-components="this.$config.components" />
+      <!-- <form action="#/">
+        <fieldset class="options">
+            <checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
+                      :layer="currentWmLayer.layer"
+                      :layerName="currentWmLayer.title"
+                      :layerId="currentWmLayer.id"
+                      :layerDefinition="currentWmLayer.rest.layerDefinition"
+                      :opacity="currentWmLayer.opacity"
+                      :legend="currentWmLayer.legend"
+                      :key="currentWmLayer.id"
+            >
+            </checkbox>
+        </fieldset>
+      </form> -->
+    </div>
+
+    <!-- </div> -->
 
   </div>
 </template>
 
 <script>
-  // import * as philaVueComps from '@philly/vue-comps';
-  // const Checkbox = philaVueComps.Checkbox
 
-  // import {
-  //   Checkbox
-  // } from '@philly/vue-mapping';
   import Checkbox from '@philly/vue-mapping/src/esri-leaflet/Checkbox.vue';
-
   import Topic from '@philly/vue-comps/src/components/Topic.vue';
   import TopicComponentGroup from '@philly/vue-comps/src/components/TopicComponentGroup.vue';
-
 
   export default {
     components: {
@@ -77,6 +70,20 @@
       TopicComponentGroup,
       Topic
       // Checkbox: () => import(/* webpackChunkName: "lbmp_pvm_Checkbox" */'@philly/vue-mapping/src/esri-leaflet/Checkbox.vue'),
+    },
+    data() {
+      const data = {
+        topicsContainerStyle: {
+          'overflow-y': 'auto',
+          'height': '100px',
+          'min-height': '100px',
+        }
+      };
+      return data;
+    },
+    mounted() {
+      window.addEventListener('resize', this.handleWindowResize);
+      this.handleWindowResize(25);
     },
     computed: {
       windowWidth() {
@@ -174,6 +181,18 @@
           e.preventDefault();
         }
       },
+      handleWindowResize(pixelAdjustment) {
+        console.log('TopicPanel handleWindowResize is running');
+        const windowHeight = window.innerHeight;
+        const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
+        const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
+        const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
+        let topicsHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - datasetsButtonHeightNum;
+
+        this.topicsContainerStyle.height = topicsHeight.toString() + 'px';
+        this.topicsContainerStyle['min-height'] = topicsHeight.toString() + 'px';
+        this.topicsContainerStyle['overflow-y'] = 'auto';
+      }
     },
   };
 </script>
