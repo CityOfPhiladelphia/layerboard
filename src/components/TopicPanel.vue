@@ -2,7 +2,6 @@
   <div id="topic-panel-container"
        :class="this.topicPanelContainerClass"
   >
-    <!-- <div class="cell"> -->
     <div class="forms-header"
          v-show="!!this.$config.layerFilter"
     >
@@ -29,31 +28,14 @@
           </div>
         </div>
       </form>
-
     </div>
 
     <div class="topics-container cell medium-cell-block-y"
          id="topics-container"
          :style="topicsContainerStyle"
     >
-      <topic-component-group :topic-components="this.$config.components" />
-      <!-- <form action="#/">
-        <fieldset class="options">
-            <checkbox v-for="(currentWmLayer, index) in this.currentWmLayers"
-                      :layer="currentWmLayer.layer"
-                      :layerName="currentWmLayer.title"
-                      :layerId="currentWmLayer.id"
-                      :layerDefinition="currentWmLayer.rest.layerDefinition"
-                      :opacity="currentWmLayer.opacity"
-                      :legend="currentWmLayer.legend"
-                      :key="currentWmLayer.id"
-            >
-            </checkbox>
-        </fieldset>
-      </form> -->
+      <topic-component-group :topic-components="this.appComponents" />
     </div>
-
-    <!-- </div> -->
 
   </div>
 </template>
@@ -86,6 +68,14 @@
       this.handleWindowResize(25);
     },
     computed: {
+      appComponents() {
+        if (this.$config.components) {
+          return this.$config.components;
+        } else {
+          // if no components, use a single 'checkbox-set'
+          return [{ type: 'checkbox-set' }];
+        }
+      },
       windowWidth() {
         return this.$store.state.windowWidth;
       },
@@ -110,37 +100,37 @@
       scale() {
         return this.$store.state.map.scale;
       },
-      currentWmLayers() {
-        const layers = this.$store.state.map.webMapLayersAndRest;
-        let currentLayers = [];
-        for (let layer of layers) {
-          if (layer.tags) {
-            if (
-              layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) && layer.tags.join().toLowerCase().includes(this.inputTagsFilter.toLowerCase()) && layer.category.includes(this.selectedCategory)
-              || this.$store.state.map.webMapActiveLayers.includes(layer.title)
-            ) {
-              // if (this.inputTagsFilter !== '') {
-              //   for (let layerTag of layer.tags) {
-              //     if (layerTag.toLowerCase().includes(this.inputTagsFilter.toLowerCase())) {
-              //       console.log('layerTag:', layerTag);
-              //     }
-              //   }
-              // }
-              currentLayers.push(layer)
-            }
-          } else if (this.inputTagsFilter !== '') {
-            continue;
-          } else {
-            if (
-              layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) && layer.category.includes(this.selectedCategory)
-              || this.$store.state.map.webMapActiveLayers.includes(layer.title)
-            ) {
-              currentLayers.push(layer)
-            }
-          }
-        }
-        return currentLayers;
-      },
+      // currentWmLayers() {
+      //   const layers = this.$store.state.map.webMapLayersAndRest;
+      //   let currentLayers = [];
+      //   for (let layer of layers) {
+      //     if (layer.tags) {
+      //       if (
+      //         layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) && layer.tags.join().toLowerCase().includes(this.inputTagsFilter.toLowerCase()) && layer.category.includes(this.selectedCategory)
+      //         || this.$store.state.map.webMapActiveLayers.includes(layer.title)
+      //       ) {
+      //         // if (this.inputTagsFilter !== '') {
+      //         //   for (let layerTag of layer.tags) {
+      //         //     if (layerTag.toLowerCase().includes(this.inputTagsFilter.toLowerCase())) {
+      //         //       console.log('layerTag:', layerTag);
+      //         //     }
+      //         //   }
+      //         // }
+      //         currentLayers.push(layer)
+      //       }
+      //     } else if (this.inputTagsFilter !== '') {
+      //       continue;
+      //     } else {
+      //       if (
+      //         layer.title.toLowerCase().includes(this.inputLayerFilter.toLowerCase()) && layer.category.includes(this.selectedCategory)
+      //         || this.$store.state.map.webMapActiveLayers.includes(layer.title)
+      //       ) {
+      //         currentLayers.push(layer)
+      //       }
+      //     }
+      //   }
+      //   return currentLayers;
+      // },
       inputLayerFilter() {
         return this.$store.state.layers.inputLayerFilter;
       },

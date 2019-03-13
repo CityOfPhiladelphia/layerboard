@@ -84,10 +84,13 @@
       // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
       // console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics);
       let defaultLayers = [];
-      for (let topic of this.$config.topics) {
-        for (let component of topic.components) {
-          if (component.type === 'checkbox-set') {
-            defaultLayers = defaultLayers.concat(component.options.defaultTopicLayers);
+
+      if (this.$config.topics != undefined) {
+        for (let topic of this.$config.topics) {
+          for (let component of topic.components) {
+            if (component.type === 'checkbox-set') {
+              defaultLayers = defaultLayers.concat(component.options.defaultTopicLayers);
+            }
           }
         }
       }

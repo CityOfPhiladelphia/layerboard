@@ -288,8 +288,6 @@
 
       const data = {
         mapPanelContainerStyle: {
-          // 'height': '470px',
-          // 'min-height': '470px',
           'height': mapPanelHeightStr,
           'min-height': mapPanelHeightStr,
         }
@@ -347,6 +345,17 @@
       windowWidth() {
         return this.$store.state.windowWidth;
       },
+      topics() {
+        let configTopics = [];
+        if (this.$config.topics) {
+          for (let topic of this.$config.topics) {
+            configTopics.push(topic.label);
+          }
+        } else {
+          configTopics = null;
+        }
+        return configTopics;
+      },
       activeTopic() {
         return this.$store.state.activeTopic;
       },
@@ -366,19 +375,25 @@
         return config || {};
       },
       activeTopicLayers() {
-        if (!this.activeTopic) {
+        if (!this.topics) {
+          // if there are no topics, return all layers
+          let titles = [];
+          for (let layer of this.$store.state.map.webMapLayersAndRest) {
+            titles.push(layer.title);
+          }
+          return titles;
+        } else if (this.topics && !this.activeTopic) {
+          // if there are topics, but none is open, return no layers
           return [];
         }
         const activeTopicConfigComponents = this.activeTopicConfig.components;
         let topicLayers;
         for (let component of activeTopicConfigComponents) {
-          console.log('component:', component);
           if (component.type === 'checkbox-set') {
             topicLayers = component.options.topicLayers;
           }
         }
         return topicLayers;
-        // return this.activeTopicConfig.components[0].options.topicLayers;
       },
       mapPanelContainerClass() {
         if (this.fullScreenMapEnabled) {
