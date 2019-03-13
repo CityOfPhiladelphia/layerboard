@@ -82,6 +82,22 @@
     },
     mounted() {
       // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
+      // console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics);
+      let defaultLayers = [];
+
+      if (this.$config.topics != undefined) {
+        for (let topic of this.$config.topics) {
+          for (let component of topic.components) {
+            if (component.type === 'checkbox-set') {
+              defaultLayers = defaultLayers.concat(component.options.defaultTopicLayers);
+            }
+          }
+        }
+      }
+      // console.log('firstLayers:', firstLayers);
+      this.$store.commit('setDefaultLayers', defaultLayers);
+      this.$store.commit('setWebMapActiveLayers', defaultLayers);
+
       window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize();
 
@@ -349,11 +365,12 @@
 
   .datasets-button {
     display: none;
+    height: 36px;
     margin: 0;
   }
 
   .mb-panel {
-    height: 100%;
+    /* height: 100%; */
   }
 
   /*.mb-panel-topics-with-widget {
@@ -365,6 +382,7 @@
   @media screen and (max-width: 750px) {
     .datasets-button {
       display: block;
+      height: 36px;
     }
   }
 

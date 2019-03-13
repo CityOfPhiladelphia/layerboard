@@ -1,6 +1,7 @@
 <template>
   <div id="map-panel-container"
        :class="this.mapPanelContainerClass"
+       :style="mapPanelContainerStyle"
   >
     <full-screen-map-toggle-tab v-once />
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
@@ -272,8 +273,31 @@
       Polygon_: () => import(/* webpackChunkName: "lbmp_pvm_Polygon_" */'@philly/vue-mapping/src/leaflet/Polygon.vue'),
       Polyline_: () => import(/* webpackChunkName: "lbmp_pvm_Polyline_" */'@philly/vue-mapping/src/leaflet/Polyline.vue'),
     },
+    data() {
+      const windowHeight = window.innerHeight;
+      const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
+      console.log('siteHeaderHeightNum:', siteHeaderHeightNum);
+      const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
+      // console.log('appFooterHeightNum:', appFooterHeightNum);
+      // console.log(document.getElementsByClassName('datasets-button'))
+      // const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
+      // console.log('datasetsButtonHeightNum:', datasetsButtonHeightNum);
+      let mapPanelHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - 36;
+      let mapPanelHeightStr = mapPanelHeight.toString() + 'px';
+      console.log('mapPanelHeightStr:', mapPanelHeightStr);
+
+      const data = {
+        mapPanelContainerStyle: {
+          'height': mapPanelHeightStr,
+          'min-height': mapPanelHeightStr,
+        }
+      };
+      return data;
+    },
     mounted() {
       this.$controller.appDidLoad();
+      window.addEventListener('resize', this.handleWindowResize);
+      this.handleWindowResize(25);
     },
     computed: {
       mapCenter() {
@@ -320,6 +344,56 @@
       },
       windowWidth() {
         return this.$store.state.windowWidth;
+      },
+      topics() {
+        let configTopics = [];
+        if (this.$config.topics) {
+          for (let topic of this.$config.topics) {
+            configTopics.push(topic.label);
+          }
+        } else {
+          configTopics = null;
+        }
+        return configTopics;
+      },
+      activeTopic() {
+        return this.$store.state.activeTopic;
+      },
+      activeTopicConfig() {
+        const key = this.activeTopic;
+        const createdComplete = this.createdComplete;
+        // console.log('computed activeTopicConfig is running, this.$config:', this.$config, 'key:', key, 'createdComplete:', createdComplete);
+        let config;
+
+        // if no active topic, return null
+        if (key && this.$config) {
+          config = this.$config.topics.filter((topic) => {
+            return topic.key === key;
+          })[0];
+        }
+
+        return config || {};
+      },
+      activeTopicLayers() {
+        if (!this.topics) {
+          // if there are no topics, return all layers
+          let titles = [];
+          for (let layer of this.$store.state.map.webMapLayersAndRest) {
+            titles.push(layer.title);
+          }
+          return titles;
+        } else if (this.topics && !this.activeTopic) {
+          // if there are topics, but none is open, return no layers
+          return [];
+        }
+        const activeTopicConfigComponents = this.activeTopicConfig.components;
+        let topicLayers;
+        for (let component of activeTopicConfigComponents) {
+          if (component.type === 'checkbox-set') {
+            topicLayers = component.options.topicLayers;
+          }
+        }
+        return topicLayers;
       },
       mapPanelContainerClass() {
         if (this.fullScreenMapEnabled) {
@@ -518,14 +592,17 @@
         if (layer.rest.layerDefinition) {
           if (layer.rest.layerDefinition.minScale) {
             // console.log('minZoom for', layer.title, 'is', layer.rest.layerDefinition.minScale, typeof layer.rest.layerDefinition.minScale, 'and current scale is', this.scale, typeof this.scale);
-            if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title)) {
+            if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title) && this.activeTopicLayers.includes(layer.title)) {
+            // if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title)) {
               // console.log('checkLayer used layerDefinition and is returning true for', layer.title);
               return true;
             }
-          } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title)) {
+          } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title) && this.activeTopicLayers.includes(layer.title)) {
+          // } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title)) {
             return true;
           }
-        } else if (this.webMapActiveLayers.includes(layer.title)) {
+        } else if (this.webMapActiveLayers.includes(layer.title) && this.activeTopicLayers.includes(layer.title)) {
+        // } else if (this.webMapActiveLayers.includes(layer.title)) {
           // console.log('checkLayer is returning true for', layer.title);
           return true;
         } else {
@@ -570,6 +647,18 @@
           this.$store.commit('setCyclomediaLatLngFromMap', [lat, lng]);
         }
       },
+      handleWindowResize(pixelAdjustment) {
+        const windowHeight = window.innerHeight;
+        const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
+        const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
+        const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
+        // console.log('MapPanel handleWindowResize is running, datasetsButtonHeightNum:', datasetsButtonHeightNum);
+        let mapPanelHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - datasetsButtonHeightNum;
+
+        this.mapPanelContainerStyle.height = mapPanelHeight.toString() + 'px';
+        this.mapPanelContainerStyle['min-height'] = mapPanelHeight.toString() + 'px';
+        // this.mapPanelContainerStyle['overflow-y'] = 'auto';
+      }
 
     }, // end of methods
   }; //end of export
