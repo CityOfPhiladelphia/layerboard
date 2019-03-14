@@ -208,7 +208,7 @@
       //   return this.$store.state.windowWidth;
       // },
       windowDim() {
-        return this.$store.state.windowDim;
+        return this.$store.state.windowDimensions;
       },
       windowHeight() {
         return this.$store.state.windowSize.height;
