@@ -63,11 +63,15 @@
       };
       return data;
     },
-    mounted() {
-      window.addEventListener('resize', this.handleWindowResize);
-      this.handleWindowResize(25);
+    watch: {
+      windowDim(nextDim) {
+        this.handleWindowResize(nextDim);
+      }
     },
     computed: {
+      windowDim() {
+        return this.$store.state.windowDimensions;
+      },
       appComponents() {
         if (this.$config.components) {
           return this.$config.components;
@@ -76,16 +80,16 @@
           return [{ type: 'checkbox-set' }];
         }
       },
-      windowWidth() {
-        return this.$store.state.windowWidth;
-      },
+      // windowWidth() {
+      //   return this.$store.state.windowWidth;
+      // },
       fullScreenMapEnabled() {
         return this.$store.state.fullScreenMapEnabled;
       },
       topicPanelContainerClass() {
         if (this.fullScreenMapEnabled) {
           return 'cell medium-1 small-order-2 medium-order-1'
-        } else if (this.windowWidth >= 950) {
+        } else if (this.windowDim.width >= 950) {
           return 'cell medium-8 small-order-1 small-24 medium-order-2';
         } else {
           return 'cell medium-10 small-order-1 small-24 medium-order-2';
@@ -171,13 +175,17 @@
           e.preventDefault();
         }
       },
-      handleWindowResize(pixelAdjustment) {
+      handleWindowResize(dim) {
+        // console.log('TopicPanel handleWindowResize, dim:', dim);
         const windowHeight = window.innerHeight;
         const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
         const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
         const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
         // console.log('TopicPanel handleWindowResize is running');
         let topicsHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - datasetsButtonHeightNum;
+        // console.log('topicsHeight:', topicsHeight);
+
+        // let topicsHeight = dim.height;
 
         this.topicsContainerStyle.height = topicsHeight.toString() + 'px';
         this.topicsContainerStyle['min-height'] = topicsHeight.toString() + 'px';

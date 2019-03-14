@@ -294,12 +294,43 @@
       };
       return data;
     },
+    created() {
+      // if there's a default address, navigate to it
+      const defaultAddress = this.$config.defaultAddress;
+      if (defaultAddress) {
+        this.$controller.goToDefaultAddress(defaultAddress);
+      }
+
+      const cyclomediaConfig = this.$config.cyclomedia || {};
+      if (cyclomediaConfig.enabled) {
+      // create cyclomedia recordings client
+        this.$cyclomediaRecordingsClient = new CyclomediaRecordingsClient(
+          this.$config.cyclomedia.recordingsUrl,
+          this.$config.cyclomedia.username,
+          this.$config.cyclomedia.password,
+          4326
+        );
+      }
+    },
     mounted() {
       this.$controller.appDidLoad();
-      window.addEventListener('resize', this.handleWindowResize);
-      this.handleWindowResize(25);
+      // window.addEventListener('resize', this.handleWindowResize);
+      // this.handleWindowResize(25);
+    },
+    watch: {
+      windowDim(nextDim) {
+        this.handleWindowResize(nextDim);
+      },
+      picOrCycloActive(value) {
+        this.$nextTick(() => {
+          this.$store.state.map.map.invalidateSize();
+        })
+      }
     },
     computed: {
+      windowDim() {
+        return this.$store.state.windowDimensions;
+      },
       mapCenter() {
         return this.$store.state.map.center;
       },
@@ -342,9 +373,9 @@
       fullScreenMapEnabled() {
         return this.$store.state.fullScreenMapEnabled;
       },
-      windowWidth() {
-        return this.$store.state.windowWidth;
-      },
+      // windowWidth() {
+      //   return this.$store.state.windowWidth;
+      // },
       topics() {
         let configTopics = [];
         if (this.$config.topics) {
@@ -398,7 +429,7 @@
       mapPanelContainerClass() {
         if (this.fullScreenMapEnabled) {
           return 'medium-24 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map'
-        } else if (this.windowWidth >= 950) {
+        } else if (this.windowDim.width >= 950) {
           return 'medium-16 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map';
         } else {
           return 'medium-14 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map';
@@ -536,31 +567,6 @@
         }
       },
     },
-    created() {
-      // if there's a default address, navigate to it
-      const defaultAddress = this.$config.defaultAddress;
-      if (defaultAddress) {
-        this.$controller.goToDefaultAddress(defaultAddress);
-      }
-
-      const cyclomediaConfig = this.$config.cyclomedia || {};
-      if (cyclomediaConfig.enabled) {
-      // create cyclomedia recordings client
-        this.$cyclomediaRecordingsClient = new CyclomediaRecordingsClient(
-          this.$config.cyclomedia.recordingsUrl,
-          this.$config.cyclomedia.username,
-          this.$config.cyclomedia.password,
-          4326
-        );
-      }
-    },
-    watch: {
-      picOrCycloActive(value) {
-        this.$nextTick(() => {
-          this.$store.state.map.map.invalidateSize();
-        })
-      }
-    },
     methods: {
       flipCoords(coords) {
         // console.log('flipCoords is running on:', coords);
@@ -647,7 +653,7 @@
           this.$store.commit('setCyclomediaLatLngFromMap', [lat, lng]);
         }
       },
-      handleWindowResize(pixelAdjustment) {
+      handleWindowResize(dim) {
         const windowHeight = window.innerHeight;
         const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
         const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);

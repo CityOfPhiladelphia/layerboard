@@ -41,7 +41,11 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     didToggleTopicsOn: false,
     shouldShowTopics: true,
     shouldShowMap: true,
-    windowWidth: 0,
+    windowDimensions: {
+      height: 0,
+      width: 0,
+    },
+    // windowWidth: 0,
     route: null,
     modals: {
       keys: config.modals,
@@ -141,9 +145,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setShouldShowMap(state, payload) {
         state.shouldShowMap = payload;
       },
-      setWindowWidth(state, payload) {
-        state.windowWidth = payload;
+      setWindowDimensions(state, payload) {
+        state.windowDimensions = payload;
       },
+      // setWindowWidth(state, payload) {
+      //   state.windowWidth = payload;
+      // },
       setRoute(state, payload) {
         state.route = payload;
       },

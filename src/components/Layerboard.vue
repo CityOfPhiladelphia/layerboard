@@ -7,16 +7,8 @@
     </button>
 
       <topic-panel v-show="shouldShowTopics" />
-      <!-- <component :is="topicPanelLoader"
-                 v-show="shouldShowTopics"
-      /> -->
-      <!-- :class="this.shouldShowTopicPanel" -->
 
       <map-panel v-show="shouldShowMap">
-      <!-- <component :is="mapPanelLoader"
-                 v-show="shouldShowMap"
-      > -->
-      <!-- :class="this.shouldShowMapPanel" -->
         <cyclomedia-widget v-if="this.shouldLoadCyclomediaWidget"
                            slot="cycloWidget"
                            v-show="cyclomediaActive"
@@ -51,20 +43,11 @@
                      :hFov="cycloHFov"
           />
         </pictometry-widget>
-      <!-- </component> -->
       </map-panel>
   </div>
 </template>
 
 <script>
-  // import {
-  //   CyclomediaWidget,
-  //   PictometryWidget,
-  //   PictometryLayer,
-  //   PictometryViewCone,
-  //   PictometryPngMarker
-  // } from '@philly/vue-mapping';
-
   import axios from 'axios';
   import TopicPanel from './TopicPanel.vue';
   import MapPanel from './MapPanel.vue';
@@ -137,25 +120,6 @@
       });
     },
     computed: {
-      // mapPanelLoader() {
-      //   console.log('computed mapPanelLoader is running');
-      //   if (this.fullScreenTopicsOnly) {
-      //     console.log('if this.fullScreenTopicsOnly is true, returning');
-      //     return;
-      //   } else {
-      //     console.log('else is true, importing mapPanel.vue');
-      //     return () => import(/* webpackChunkName: "lblb_MapPanelLoader" */'./MapPanel.vue').then(console.log('after MapPanel import'))
-      //   }
-      // },
-      // topicPanelLoader() {
-      //   if (this.fullScreenMapOnly) {
-      //     console.log('if this.fullScreenMapOnly is true, returning');
-      //     return;
-      //   } else {
-      //     console.log('else is true, importing topicPanel.vue');
-      //     return () => import(/* webpackChunkName: "lblb_TopicPanelLoader" */'./TopicPanel.vue').then(console.log('after TopicPanel import'))
-      //   }
-      // },
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
       },
@@ -240,8 +204,11 @@
           return this.$config.pictometryLocal.secretKey;
         }
       },
-      windowWidth() {
-        return this.$store.state.windowWidth;
+      // windowWidth() {
+      //   return this.$store.state.windowWidth;
+      // },
+      windowDim() {
+        return this.$store.state.windowDim;
       },
       windowHeight() {
         return this.$store.state.windowSize.height;
@@ -267,10 +234,14 @@
       pictometryShowAddressMarker(nextValue) {
         // console.log('watch pictometryShowAddressMarker', nextValue);
       },
-      windowWidth(nextWidth) {
+      windowDim(nextDim) {
         this.calculateShouldShowTopics();
         this.calculateShouldShowMap();
       },
+      // windowWidth(nextWidth) {
+      //   this.calculateShouldShowTopics();
+      //   this.calculateShouldShowMap();
+      // },
       fullScreenMapEnabled(nextValue) {
         this.calculateShouldShowTopics();
         this.calculateShouldShowMap();
@@ -293,7 +264,8 @@
         this.$store.commit('setDidToggleTopicsOn', !prevVal);
       },
       calculateShouldShowTopics() {
-        const windowWidth = this.windowWidth;
+        // const windowWidth = this.windowWidth;
+        const windowWidth = this.windowDim.width;
         const smallScreen = windowWidth < 750;
         const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
         const fullScreenMapEnabled = this.$store.state.fullScreenMapEnabled;
@@ -302,38 +274,32 @@
         this.$store.commit('setShouldShowTopics', shouldShowTopics);
       },
       calculateShouldShowMap() {
-        const windowWidth = this.windowWidth;
+        // const windowWidth = this.windowWidth;
+        const windowWidth = this.windowDim.width;
         const notMobile = windowWidth > 750;
         const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
         const shouldShowMap = notMobile || !didToggleTopicsOn;
         this.$store.commit('setShouldShowMap', shouldShowMap);
       },
       handleWindowResize() {
+        const windowHeight = window.innerHeight;
         const rootElement = document.getElementById('mb-root');
         const rootStyle = window.getComputedStyle(rootElement);
         // const rootHeight = rootStyle.getPropertyValue('height');
         // const rootHeightNum = parseInt(rootHeight.replace('px', ''));
-        const rootHeightNum = 100;
+        // const rootHeightNum = 100;
         const rootWidth = rootStyle.getPropertyValue('width');
+        const rootHeight = rootStyle.getPropertyValue('height');
         const rootWidthNum = parseInt(rootWidth.replace('px', ''));
-        // let boardHeight;
-        const windowWidth = rootWidthNum;
-        const notMobile = windowWidth >= 640;
-        // console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
-        // if (!notMobile) {
-        //   boardHeight = rootHeightNum - 34;
-        //   console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-        // } else {
-        //   boardHeight = rootHeightNum
-        //   // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-        // }
-        // this.styleObject.height = boardHeight.toString() + 'px';
+        const rootHeightNum = parseInt(rootHeight.replace('px', ''));
 
-        // const obj = {
-        //   height: rootHeightNum,
-        //   width: rootWidthNum
-        // }
-        this.$store.commit('setWindowWidth', rootWidthNum);
+        const dim = {
+          width: rootWidthNum,
+          height: rootHeightNum
+        }
+
+        // this.$store.commit('setWindowWidth', rootWidthNum);
+        this.$store.commit('setWindowDimensions', dim);
       }
     }
   };
@@ -373,10 +339,6 @@
     /* height: 100%; */
   }
 
-  /*.mb-panel-topics-with-widget {
-    height: 50%;
-  }*/
-
   /*small devices only*/
   /* @media screen and (max-width: 39.9375em) { */
   @media screen and (max-width: 750px) {
@@ -385,25 +347,5 @@
       height: 36px;
     }
   }
-
-  /* Medium and up */
-  /* @media screen and (min-width: 40em) {
-
-  } */
-
-  /* Medium only */
-  /* @media screen and (min-width: 40em) and (max-width: 63.9375em) {
-
-  } */
-
-  /* Large and up */
-  /* @media screen and (min-width: 64em) {
-
-  } */
-
-  /* Large only */
-  /* @media screen and (min-width: 64em) and (max-width: 74.9375em) {
-
-  } */
 
 </style>
