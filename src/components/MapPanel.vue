@@ -1,6 +1,7 @@
 <template>
   <div id="map-panel-container"
        :class="this.mapPanelContainerClass"
+       :style="mapPanelContainerStyle"
   >
     <full-screen-map-toggle-tab v-once />
     <map_ :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
@@ -203,43 +204,28 @@
 
   // mixins
   import markersMixin from './markers-mixin';
-  import {
-    cyclomediaMixin,
-    pictometryMixin,
-    Map_,
-    Control,
-    MapAddressInput,
-    MapAddressCandidateList,
-    EsriTiledMapLayer,
-    EsriTiledOverlay,
-    EsriDynamicMapLayer,
-    EsriFeatureLayer,
-    // Geojson,
-    CircleMarker,
-    // OpacitySlider,
-    VectorMarker,
-    PngMarker,
-    BasemapToggleControl,
-    BasemapSelectControl,
-    FullScreenMapToggleTab,
-    LocationControl,
-    CyclomediaButton,
-    PictometryButton,
-    CyclomediaRecordingCircle,
-    CyclomediaRecordingsClient,
-    SvgViewConeMarker,
-    MeasureControl,
-    LegendControl,
-    BasemapTooltip,
-    ControlCorner,
-    EsriWebMap,
-    EsriWebMapLayer,
-    PopUp,
-    PopUpContent,
-    Polygon_,
-    Polyline_,
-    ModalAbout
-  } from '@philly/vue-mapping';
+  import cyclomediaMixin from '@philly/vue-mapping/src/cyclomedia/map-panel-mixin.js';
+  import pictometryMixin from '@philly/vue-mapping/src/pictometry/map-panel-mixin.js';
+
+  // components
+  import CyclomediaRecordingsClient from '@philly/vue-mapping/src/cyclomedia/recordings-client.js';
+  import ControlCorner from '@philly/vue-mapping/src/leaflet/ControlCorner.vue';
+  import FullScreenMapToggleTab from '@philly/vue-mapping/src/components/FullScreenMapToggleTab.vue';
+  import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
+  import LocationControl from '@philly/vue-mapping/src/components/LocationControl.vue';
+  import BasemapToggleControl from '@philly/vue-mapping/src/components/BasemapToggleControl.vue';
+  import BasemapSelectControl from '@philly/vue-mapping/src/components/BasemapSelectControl.vue';
+  import PictometryButton from '@philly/vue-mapping/src/pictometry/Button.vue';
+  import CyclomediaButton from '@philly/vue-mapping/src/cyclomedia/Button.vue';
+  import MeasureControl from '@philly/vue-mapping/src/components/MeasureControl.vue';
+  import LegendControl from '@philly/vue-mapping/src/components/LegendControl.vue';
+  import MapAddressInput from '@philly/vue-mapping/src/components/MapAddressInput.vue';
+
+  import PopUp from '@philly/vue-mapping/src/leaflet/PopUp.vue';
+  import PopUpContent from '@philly/vue-mapping/src/leaflet/PopUpContent.vue';
+
+  import EsriWebMap from '@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue';
+  import EsriWebMapLayer from '@philly/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue';
 
   export default {
     name: 'MapPanel',
@@ -249,36 +235,102 @@
       pictometryMixin,
     ],
     components: {
-      Map_,
-      Control,
-      MapAddressInput,
-      MapAddressCandidateList,
+      Control: () => import(/* webpackChunkName: "lbmp_pvm_Control" */'@philly/vue-mapping/src/leaflet/Control.vue'),
+      MapAddressCandidateList: () => import(/* webpackChunkName: "lbmp_pvm_MapAddressCandidateList" */'@philly/vue-mapping/src/components/MapAddressCandidateList.vue'),
+      EsriTiledMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriTiledMapLayer" */'@philly/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
+      EsriTiledOverlay: () => import(/* webpackChunkName: "lbmp_pvm_EsriTiledOverlay" */'@philly/vue-mapping/src/esri-leaflet/TiledOverlay.vue'),
+      EsriDynamicMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriDynamicMapLayer" */'@philly/vue-mapping/src/esri-leaflet/DynamicMapLayer.vue'),
+      EsriFeatureLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriFeatureLayer" */'@philly/vue-mapping/src/esri-leaflet/FeatureLayer.vue'),
+
+      // EsriWebMap: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMap" */'@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue'),
+      // EsriWebMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMapLayer" */'@philly/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue'),
       EsriWebMap,
       EsriWebMapLayer,
-      EsriTiledMapLayer,
-      CircleMarker,
-      VectorMarker,
-      PngMarker,
+
+      ModalAbout: () => import(/* webpackChunkName: "lbmp_pvm_ModalAbout" */'@philly/vue-mapping/src/components/ModalAbout.vue'),
+      Geojson: () => import(/* webpackChunkName: "lbmp_pvm_Geojson" */'@philly/vue-mapping/src/leaflet/Geojson.vue'),
+      CircleMarker: () => import(/* webpackChunkName: "lbmp_pvm_CircleMarker" */'@philly/vue-mapping/src/leaflet/CircleMarker.vue'),
+      VectorMarker: () => import(/* webpackChunkName: "lbmp_pvm_VectorMarker" */'@philly/vue-mapping/src/components/VectorMarker.vue'),
+      PngMarker: () => import(/* webpackChunkName: "lbmp_pvm_PngMarker" */'@philly/vue-mapping/src/components/PngMarker.vue'),
+      CyclomediaRecordingCircle: () => import(/* webpackChunkName: "lbmp_pvm_CyclomediaRecordingCircle" */'@philly/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
+      SvgViewConeMarker: () => import(/* webpackChunkName: "lbmp_pvm_CyclomediaSvgViewConeMarker" */'@philly/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
+      BasemapTooltip: () => import(/* webpackChunkName: "lbmp_pvm_BasemapTooltip" */'@philly/vue-mapping/src/components/BasemapTooltip.vue'),
+      ControlCorner,
+      FullScreenMapToggleTab,
+      Map_,
+      LocationControl,
       BasemapToggleControl,
       BasemapSelectControl,
-      FullScreenMapToggleTab,
-      LocationControl,
       PictometryButton,
       CyclomediaButton,
-      CyclomediaRecordingCircle,
-      SvgViewConeMarker,
       MeasureControl,
-      ControlCorner,
+      LegendControl,
+      MapAddressInput,
       PopUp,
       PopUpContent,
-      Polygon_,
-      Polyline_,
-      ModalAbout
+      // PopUp: () => import(/* webpackChunkName: "lbmp_pvm_PopUp" */'@philly/vue-mapping/src/leaflet/PopUp.vue'),
+      // PopUpContent: () => import(/* webpackChunkName: "lbmp_pvm_PopUpContent" */'@philly/vue-mapping/src/leaflet/PopUpContent.vue'),
+      Polygon_: () => import(/* webpackChunkName: "lbmp_pvm_Polygon_" */'@philly/vue-mapping/src/leaflet/Polygon.vue'),
+      Polyline_: () => import(/* webpackChunkName: "lbmp_pvm_Polyline_" */'@philly/vue-mapping/src/leaflet/Polyline.vue'),
+    },
+    data() {
+      const windowHeight = window.innerHeight;
+      const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
+      console.log('siteHeaderHeightNum:', siteHeaderHeightNum);
+      const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
+      // console.log('appFooterHeightNum:', appFooterHeightNum);
+      // console.log(document.getElementsByClassName('datasets-button'))
+      // const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
+      // console.log('datasetsButtonHeightNum:', datasetsButtonHeightNum);
+      let mapPanelHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - 36;
+      let mapPanelHeightStr = mapPanelHeight.toString() + 'px';
+      console.log('mapPanelHeightStr:', mapPanelHeightStr);
+
+      const data = {
+        mapPanelContainerStyle: {
+          'height': mapPanelHeightStr,
+          'min-height': mapPanelHeightStr,
+        }
+      };
+      return data;
+    },
+    created() {
+      // if there's a default address, navigate to it
+      const defaultAddress = this.$config.defaultAddress;
+      if (defaultAddress) {
+        this.$controller.goToDefaultAddress(defaultAddress);
+      }
+
+      const cyclomediaConfig = this.$config.cyclomedia || {};
+      if (cyclomediaConfig.enabled) {
+      // create cyclomedia recordings client
+        this.$cyclomediaRecordingsClient = new CyclomediaRecordingsClient(
+          this.$config.cyclomedia.recordingsUrl,
+          this.$config.cyclomedia.username,
+          this.$config.cyclomedia.password,
+          4326
+        );
+      }
     },
     mounted() {
       this.$controller.appDidLoad();
+      // window.addEventListener('resize', this.handleWindowResize);
+      // this.handleWindowResize(25);
+    },
+    watch: {
+      windowDim(nextDim) {
+        this.handleWindowResize(nextDim);
+      },
+      picOrCycloActive(value) {
+        this.$nextTick(() => {
+          this.$store.state.map.map.invalidateSize();
+        })
+      }
     },
     computed: {
+      windowDim() {
+        return this.$store.state.windowDimensions;
+      },
       mapCenter() {
         return this.$store.state.map.center;
       },
@@ -308,19 +360,76 @@
           return 415;
         }
       },
+      addressInputPlaceholder() {
+        if (this.$config.addressInput) {
+          return this.$config.addressInput.placeholder;
+        } else {
+          return null
+        }
+      },
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
       },
       fullScreenMapEnabled() {
         return this.$store.state.fullScreenMapEnabled;
       },
-      windowWidth() {
-        return this.$store.state.windowWidth;
+      // windowWidth() {
+      //   return this.$store.state.windowWidth;
+      // },
+      topics() {
+        let configTopics = [];
+        if (this.$config.topics) {
+          for (let topic of this.$config.topics) {
+            configTopics.push(topic.label);
+          }
+        } else {
+          configTopics = null;
+        }
+        return configTopics;
+      },
+      activeTopic() {
+        return this.$store.state.activeTopic;
+      },
+      activeTopicConfig() {
+        const key = this.activeTopic;
+        const createdComplete = this.createdComplete;
+        // console.log('computed activeTopicConfig is running, this.$config:', this.$config, 'key:', key, 'createdComplete:', createdComplete);
+        let config;
+
+        // if no active topic, return null
+        if (key && this.$config) {
+          config = this.$config.topics.filter((topic) => {
+            return topic.key === key;
+          })[0];
+        }
+
+        return config || {};
+      },
+      activeTopicLayers() {
+        if (!this.topics) {
+          // if there are no topics, return all layers
+          let titles = [];
+          for (let layer of this.$store.state.map.webMapLayersAndRest) {
+            titles.push(layer.title);
+          }
+          return titles;
+        } else if (this.topics && !this.activeTopic) {
+          // if there are topics, but none is open, return no layers
+          return [];
+        }
+        const activeTopicConfigComponents = this.activeTopicConfig.components;
+        let topicLayers;
+        for (let component of activeTopicConfigComponents) {
+          if (component.type === 'checkbox-set') {
+            topicLayers = component.options.topicLayers;
+          }
+        }
+        return topicLayers;
       },
       mapPanelContainerClass() {
         if (this.fullScreenMapEnabled) {
           return 'medium-24 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map'
-        } else if (this.windowWidth >= 950) {
+        } else if (this.windowDim.width >= 950) {
           return 'medium-16 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map';
         } else {
           return 'medium-14 small-order-1 small-24 medium-order-2 mb-panel mb-panel-map';
@@ -458,31 +567,6 @@
         }
       },
     },
-    created() {
-      // if there's a default address, navigate to it
-      const defaultAddress = this.$config.defaultAddress;
-      if (defaultAddress) {
-        this.$controller.goToDefaultAddress(defaultAddress);
-      }
-
-      const cyclomediaConfig = this.$config.cyclomedia || {};
-      if (cyclomediaConfig.enabled) {
-      // create cyclomedia recordings client
-        this.$cyclomediaRecordingsClient = new CyclomediaRecordingsClient(
-          this.$config.cyclomedia.recordingsUrl,
-          this.$config.cyclomedia.username,
-          this.$config.cyclomedia.password,
-          4326
-        );
-      }
-    },
-    watch: {
-      picOrCycloActive(value) {
-        this.$nextTick(() => {
-          this.$store.state.map.map.invalidateSize();
-        })
-      }
-    },
     methods: {
       flipCoords(coords) {
         // console.log('flipCoords is running on:', coords);
@@ -514,14 +598,17 @@
         if (layer.rest.layerDefinition) {
           if (layer.rest.layerDefinition.minScale) {
             // console.log('minZoom for', layer.title, 'is', layer.rest.layerDefinition.minScale, typeof layer.rest.layerDefinition.minScale, 'and current scale is', this.scale, typeof this.scale);
-            if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title)) {
+            if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title) && this.activeTopicLayers.includes(layer.title)) {
+            // if (this.scale <= layer.rest.layerDefinition.minScale && this.webMapActiveLayers.includes(layer.title)) {
               // console.log('checkLayer used layerDefinition and is returning true for', layer.title);
               return true;
             }
-          } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title)) {
+          } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title) && this.activeTopicLayers.includes(layer.title)) {
+          // } else if (layer.rest.layerDefinition.drawingInfo && this.webMapActiveLayers.includes(layer.title)) {
             return true;
           }
-        } else if (this.webMapActiveLayers.includes(layer.title)) {
+        } else if (this.webMapActiveLayers.includes(layer.title) && this.activeTopicLayers.includes(layer.title)) {
+        // } else if (this.webMapActiveLayers.includes(layer.title)) {
           // console.log('checkLayer is returning true for', layer.title);
           return true;
         } else {
@@ -566,6 +653,18 @@
           this.$store.commit('setCyclomediaLatLngFromMap', [lat, lng]);
         }
       },
+      handleWindowResize(dim) {
+        const windowHeight = window.innerHeight;
+        const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
+        const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
+        const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
+        // console.log('MapPanel handleWindowResize is running, datasetsButtonHeightNum:', datasetsButtonHeightNum);
+        let mapPanelHeight = windowHeight - siteHeaderHeightNum - appFooterHeightNum - datasetsButtonHeightNum;
+
+        this.mapPanelContainerStyle.height = mapPanelHeight.toString() + 'px';
+        this.mapPanelContainerStyle['min-height'] = mapPanelHeight.toString() + 'px';
+        // this.mapPanelContainerStyle['overflow-y'] = 'auto';
+      }
 
     }, // end of methods
   }; //end of export

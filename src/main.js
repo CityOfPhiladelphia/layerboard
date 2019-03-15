@@ -14,19 +14,12 @@ import configMixin from './util/config-mixin';
 import Layerboard from './components/Layerboard.vue';
 import mergeDeep from './util/merge-deep';
 
-// Font Awesome Icons
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons/faInfoCircle';
-import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
-import { faFilter } from '@fortawesome/free-solid-svg-icons/faFilter';
-import { faSquare } from '@fortawesome/free-solid-svg-icons/faSquare';
-library.add(faInfoCircle, faCheckSquare, faFilter, faSquare);
+import * as faAll from './fa.js';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import philaVueDatafetch from '@philly/vue-datafetch';
-const controllerMixin = philaVueDatafetch.controllerMixin;
+import controllerMixin from '@philly/vue-datafetch/src/controller/index.js';
 
-function initOpenMaps(clientConfig) {
+function initLayerboard(clientConfig) {
   const baseConfigUrl = clientConfig.baseConfig;
 
   // get base config
@@ -62,6 +55,4 @@ function initOpenMaps(clientConfig) {
   });
 }
 
-export default initOpenMaps;
-
-export { Layerboard };
+export default initLayerboard;

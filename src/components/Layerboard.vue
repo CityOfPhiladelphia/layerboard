@@ -7,6 +7,7 @@
     </button>
 
       <topic-panel v-show="shouldShowTopics" />
+
       <map-panel v-show="shouldShowMap">
         <cyclomedia-widget v-if="this.shouldLoadCyclomediaWidget"
                            slot="cycloWidget"
@@ -47,14 +48,6 @@
 </template>
 
 <script>
-  import {
-    CyclomediaWidget,
-    PictometryWidget,
-    PictometryLayer,
-    PictometryViewCone,
-    PictometryPngMarker
-  } from '@philly/vue-mapping';
-
   import axios from 'axios';
   import TopicPanel from './TopicPanel.vue';
   import MapPanel from './MapPanel.vue';
@@ -64,14 +57,30 @@
     components: {
       TopicPanel,
       MapPanel,
-      CyclomediaWidget,
-      PictometryWidget,
-      PictometryLayer,
-      PictometryViewCone,
-      PictometryPngMarker
+      CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@philly/vue-mapping/src/cyclomedia/Widget.vue'),
+      PictometryWidget: () => import(/* webpackChunkName: "mbmb_pvm_PictometryWidget" */'@philly/vue-mapping/src/pictometry/Widget.vue'),
+      PictometryLayer: () => import(/* webpackChunkName: "mbmb_pvm_PictometryLayer" */'@philly/vue-mapping/src/pictometry/Layer.vue'),
+      PictometryPngMarker: () => import(/* webpackChunkName: "mbmb_pvm_PictometryPngMarker" */'@philly/vue-mapping/src/pictometry/PngMarker.vue'),
+      PictometryViewCone: () => import(/* webpackChunkName: "mbmb_pvm_PictometryViewCone" */'@philly/vue-mapping/src/pictometry/ViewCone.vue')
     },
     mounted() {
       // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
+      // console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics);
+      let defaultLayers = [];
+
+      if (this.$config.topics != undefined) {
+        for (let topic of this.$config.topics) {
+          for (let component of topic.components) {
+            if (component.type === 'checkbox-set') {
+              defaultLayers = defaultLayers.concat(component.options.defaultTopicLayers);
+            }
+          }
+        }
+      }
+      // console.log('firstLayers:', firstLayers);
+      this.$store.commit('setDefaultLayers', defaultLayers);
+      this.$store.commit('setWebMapActiveLayers', defaultLayers);
+
       window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize();
 
@@ -195,8 +204,11 @@
           return this.$config.pictometryLocal.secretKey;
         }
       },
-      windowWidth() {
-        return this.$store.state.windowWidth;
+      // windowWidth() {
+      //   return this.$store.state.windowWidth;
+      // },
+      windowDim() {
+        return this.$store.state.windowDimensions;
       },
       windowHeight() {
         return this.$store.state.windowSize.height;
@@ -222,10 +234,14 @@
       pictometryShowAddressMarker(nextValue) {
         // console.log('watch pictometryShowAddressMarker', nextValue);
       },
-      windowWidth(nextWidth) {
+      windowDim(nextDim) {
         this.calculateShouldShowTopics();
         this.calculateShouldShowMap();
       },
+      // windowWidth(nextWidth) {
+      //   this.calculateShouldShowTopics();
+      //   this.calculateShouldShowMap();
+      // },
       fullScreenMapEnabled(nextValue) {
         this.calculateShouldShowTopics();
         this.calculateShouldShowMap();
@@ -248,7 +264,8 @@
         this.$store.commit('setDidToggleTopicsOn', !prevVal);
       },
       calculateShouldShowTopics() {
-        const windowWidth = this.windowWidth;
+        // const windowWidth = this.windowWidth;
+        const windowWidth = this.windowDim.width;
         const smallScreen = windowWidth < 750;
         const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
         const fullScreenMapEnabled = this.$store.state.fullScreenMapEnabled;
@@ -257,38 +274,32 @@
         this.$store.commit('setShouldShowTopics', shouldShowTopics);
       },
       calculateShouldShowMap() {
-        const windowWidth = this.windowWidth;
+        // const windowWidth = this.windowWidth;
+        const windowWidth = this.windowDim.width;
         const notMobile = windowWidth > 750;
         const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
         const shouldShowMap = notMobile || !didToggleTopicsOn;
         this.$store.commit('setShouldShowMap', shouldShowMap);
       },
       handleWindowResize() {
+        const windowHeight = window.innerHeight;
         const rootElement = document.getElementById('mb-root');
         const rootStyle = window.getComputedStyle(rootElement);
         // const rootHeight = rootStyle.getPropertyValue('height');
         // const rootHeightNum = parseInt(rootHeight.replace('px', ''));
-        const rootHeightNum = 100;
+        // const rootHeightNum = 100;
         const rootWidth = rootStyle.getPropertyValue('width');
+        const rootHeight = rootStyle.getPropertyValue('height');
         const rootWidthNum = parseInt(rootWidth.replace('px', ''));
-        // let boardHeight;
-        const windowWidth = rootWidthNum;
-        const notMobile = windowWidth >= 640;
-        // console.log('handleWindowResize is running, windowWidth:', windowWidth, 'notMobile:', notMobile, 'this.$store.state.shouldShowTopics:', this.$store.state.shouldShowTopics);
-        // if (!notMobile) {
-        //   boardHeight = rootHeightNum - 34;
-        //   console.log('subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-        // } else {
-        //   boardHeight = rootHeightNum
-        //   // console.log('NOT subtracting 34, rootHeightNum:', rootHeightNum, 'boardHeight:', boardHeight);
-        // }
-        // this.styleObject.height = boardHeight.toString() + 'px';
+        const rootHeightNum = parseInt(rootHeight.replace('px', ''));
 
-        // const obj = {
-        //   height: rootHeightNum,
-        //   width: rootWidthNum
-        // }
-        this.$store.commit('setWindowWidth', rootWidthNum);
+        const dim = {
+          width: rootWidthNum,
+          height: rootHeightNum
+        }
+
+        // this.$store.commit('setWindowWidth', rootWidthNum);
+        this.$store.commit('setWindowDimensions', dim);
       }
     }
   };
@@ -320,43 +331,21 @@
 
   .datasets-button {
     display: none;
+    height: 36px;
     margin: 0;
   }
 
   .mb-panel {
-    height: 100%;
+    /* height: 100%; */
   }
-
-  /*.mb-panel-topics-with-widget {
-    height: 50%;
-  }*/
 
   /*small devices only*/
   /* @media screen and (max-width: 39.9375em) { */
   @media screen and (max-width: 750px) {
     .datasets-button {
       display: block;
+      height: 36px;
     }
   }
-
-  /* Medium and up */
-  /* @media screen and (min-width: 40em) {
-
-  } */
-
-  /* Medium only */
-  /* @media screen and (min-width: 40em) and (max-width: 63.9375em) {
-
-  } */
-
-  /* Large and up */
-  /* @media screen and (min-width: 64em) {
-
-  } */
-
-  /* Large only */
-  /* @media screen and (min-width: 64em) and (max-width: 74.9375em) {
-
-  } */
 
 </style>

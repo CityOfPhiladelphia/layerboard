@@ -66,7 +66,7 @@ layerboard({
     },
     center: [-75.16347348690034, 39.952562122622254],
     clickToIdentifyFeatures: true,
-    containerClass: 'map-container-type2',
+    containerClass: 'map-container-type3',
   },
   cyclomedia: {
     enabled: true,
