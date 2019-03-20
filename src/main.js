@@ -19,6 +19,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import controllerMixin from '@philly/vue-datafetch/src/controller/index.js';
 
+import * as esri from 'esri-leaflet';
+L.esri = esri;
+import * as rend from 'esri-leaflet-renderers';
+L.esri.Renderers = rend;
+import 'esri-leaflet-legend/dist/esri-leaflet-legend-compat-src-edit.js';
+import 'Leaflet-PointInPolygon/wise-leaflet-pip.js';
+
 function initLayerboard(clientConfig) {
   const baseConfigUrl = clientConfig.baseConfig;
 
