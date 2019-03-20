@@ -81,6 +81,12 @@
       this.$store.commit('setDefaultLayers', defaultLayers);
       this.$store.commit('setWebMapActiveLayers', defaultLayers);
 
+      if (this.$config.defaultPanel) {
+        if (this.$config.defaultPanel === 'topics') {
+          this.$store.commit('setDidToggleTopicsOn', true);
+        }
+      }
+
       window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize();
 
