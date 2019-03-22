@@ -198,6 +198,7 @@
 </template>
 
 <script>
+  import 'leaflet/dist/leaflet.css';
 
   // import { geoJSON, featureGroup } from 'leaflet';
   // import { marker as Lmarker } from 'leaflet';

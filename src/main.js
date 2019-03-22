@@ -26,10 +26,6 @@ L.esri.Renderers = rend;
 import 'esri-leaflet-legend/dist/esri-leaflet-legend-compat-src-edit.js';
 import 'Leaflet-PointInPolygon/wise-leaflet-pip.js';
 
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-easybutton/src/easy-button.css';
-import 'leaflet-measure/dist/leaflet-measure.css';
-
 function initLayerboard(clientConfig) {
   const baseConfigUrl = clientConfig.baseConfig;
 
