@@ -1,5 +1,8 @@
 <template>
-  <div class="cell medium-auto grid-x" id="mb-root">
+  <div id="mb-root"
+       class="cell medium-auto grid-x"
+  >
+
     <button class="small-24 button datasets-button"
             @click="toggleTopics"
     >

@@ -26,7 +26,7 @@ L.esri.Renderers = rend;
 import 'esri-leaflet-legend/dist/esri-leaflet-legend-compat-src-edit.js';
 import 'Leaflet-PointInPolygon/wise-leaflet-pip.js';
 
-function initLayerboard(clientConfig) {
+function initLayerboard(clientConfig, secondFile) {
   const baseConfigUrl = clientConfig.baseConfig;
 
   // get base config
@@ -37,7 +37,10 @@ function initLayerboard(clientConfig) {
     const baseConfig = baseConfigFn({ gatekeeperKey });
 
     // deep merge base config and client config
-    const config = mergeDeep(baseConfig, clientConfig);
+    let config = mergeDeep(baseConfig, clientConfig);
+    if (secondFile) {
+      config = mergeDeep(config, secondFile);
+    }
 
     // make config accessible from each component via this.$config
     Vue.use(configMixin, config);
