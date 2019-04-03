@@ -20,8 +20,6 @@
         <pictometry-widget v-if="this.shouldLoadPictometryWidget"
                            slot="pictWidget"
                            v-show="pictometryActive"
-                           :apiKey="this.ak"
-                           :secretKey="this.sk"
         >
           <pictometry-png-marker v-if="this.pictometryShowAddressMarker"
                       :latlng="[this.geocodeData.geometry.coordinates[1], this.geocodeData.geometry.coordinates[0]]"
@@ -177,45 +175,6 @@
       geocodeData() {
         return this.$store.state.geocode.data
       },
-      ak() {
-        const host = window.location.hostname;
-        if (host === 'atlas.phila.gov') {
-          return this.$config.pictometry.apiKey;
-        }
-        if (host === 'atlas-dev.phila.gov') {
-          return this.$config.pictometryDev.apiKey;
-        }
-        if (host === 'cityatlas.phila.gov') {
-          return this.$config.pictometryCity.apiKey;
-        }
-        if (host === 'cityatlas-dev.phila.gov') {
-          return this.$config.pictometryCityDev.apiKey;
-        }
-        if (host === '10.8.101.67') {
-          return this.$config.pictometryLocal.apiKey;
-        }
-      },
-      sk() {
-        const host = window.location.hostname;
-        if (host === 'atlas.phila.gov') {
-          return this.$config.pictometry.secretKey;
-        }
-        if (host === 'atlas-dev.phila.gov') {
-          return this.$config.pictometryDev.secretKey;
-        }
-        if (host === 'cityatlas.phila.gov') {
-          return this.$config.pictometryCity.secretKey;
-        }
-        if (host === 'cityatlas-dev.phila.gov') {
-          return this.$config.pictometryCityDev.secretKey;
-        }
-        if (host === '10.8.101.67') {
-          return this.$config.pictometryLocal.secretKey;
-        }
-      },
-      // windowWidth() {
-      //   return this.$store.state.windowWidth;
-      // },
       windowDim() {
         return this.$store.state.windowDimensions;
       },
