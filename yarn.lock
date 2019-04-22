@@ -817,16 +817,16 @@
     vue "^2.6.9"
     vuex "^3.0.1"
 
-"@philly/vue-mapping@https://github.com/CityOfPhiladelphia/phila-vue-mapping#afbaa16efecd5f788e1e20ca31bd11532d731016":
+"@philly/vue-mapping@https://github.com/CityOfPhiladelphia/phila-vue-mapping#e566c6882aedf466d7ea3cfd620cb2a5ee4ca4f2":
   version "1.0.27"
-  resolved "https://github.com/CityOfPhiladelphia/phila-vue-mapping#afbaa16efecd5f788e1e20ca31bd11532d731016"
+  resolved "https://github.com/CityOfPhiladelphia/phila-vue-mapping#e566c6882aedf466d7ea3cfd620cb2a5ee4ca4f2"
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
     "@fortawesome/free-solid-svg-icons" "^5.7.2"
     "@fortawesome/vue-fontawesome" "^0.1.5"
     "@turf/turf" "^5.1.6"
-    L-esri-WebMap "https://github.com/CityOfPhiladelphia/L.esri.WebMap#9b4f584c53354558b2ad77e99bbbff832ffc6399"
+    L-esri-WebMap "https://github.com/CityOfPhiladelphia/L.esri.WebMap#4b02da177a6de1c0a7218b26bab007dcf2256feb"
     Leaflet-PointInPolygon "https://github.com/hayeswise/Leaflet.PointInPolygon#7a7c7df3d5ccef184c6720c696fa54fde5a0b4e9"
     axios "^0.18.0"
     blueimp-md5 "^2.10.0"
@@ -2401,9 +2401,9 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.1.tgz#5c85d662f76fa1d34575766c5dcd6615abcd30d8"
   integrity sha512-FZdkNBDqBRHKQ2MEbSC17xnPFOhZxeJ2YGSfr2BKf3sujG49Qe3bB+rGCwQfIaA7WHnGeGkSijX4FuBCdrzW/g==
 
-"L-esri-WebMap@https://github.com/CityOfPhiladelphia/L.esri.WebMap#9b4f584c53354558b2ad77e99bbbff832ffc6399":
+"L-esri-WebMap@https://github.com/CityOfPhiladelphia/L.esri.WebMap#4b02da177a6de1c0a7218b26bab007dcf2256feb":
   version "0.4.0"
-  resolved "https://github.com/CityOfPhiladelphia/L.esri.WebMap#9b4f584c53354558b2ad77e99bbbff832ffc6399"
+  resolved "https://github.com/CityOfPhiladelphia/L.esri.WebMap#4b02da177a6de1c0a7218b26bab007dcf2256feb"
   dependencies:
     arcgis-to-geojson-utils "^1.0.1"
     date-fns "^1.30.1"
