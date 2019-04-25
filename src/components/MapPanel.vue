@@ -421,7 +421,7 @@
         const activeTopicConfigComponents = this.activeTopicConfig.components;
         let topicLayers;
         for (let component of activeTopicConfigComponents) {
-          if (component.type === 'checkbox-set') {
+          if (component.type === 'checkbox-set' || component.type === 'radio-button-set') {
             topicLayers = component.options.topicLayers;
           }
         }

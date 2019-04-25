@@ -72,7 +72,7 @@
       if (this.$config.topics != undefined) {
         for (let topic of this.$config.topics) {
           for (let component of topic.components) {
-            if (component.type === 'checkbox-set') {
+            if (component.type === 'checkbox-set' || component.type === 'radio-button-set') {
               defaultLayers = defaultLayers.concat(component.options.defaultTopicLayers);
             }
           }
