@@ -12,8 +12,10 @@ Vue.use(Vuex);
 // function createStore(config, bennyEndpoints, bennyRepresentation) {
 function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
   // const modals = pvdStore.createModals(config);
+  const sources = pvdStore.createSources(config);
 
   const initialState = {
+    sources,
     isMobileOrTablet: isMobileDevice(),
     fullScreenMapEnabled: false,
     bennyEndpoints: {},
