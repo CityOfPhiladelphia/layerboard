@@ -45,6 +45,12 @@
           />
         </pictometry-widget>
       </map-panel>
+
+      <popover
+               v-if="popoverOpen"
+               :options="this.popoverOptions"
+               :slots="{'text': this.popoverText}"
+      />
   </div>
 </template>
 
@@ -62,12 +68,21 @@
       PictometryWidget: () => import(/* webpackChunkName: "mbmb_pvm_PictometryWidget" */'@philly/vue-mapping/src/pictometry/Widget.vue'),
       PictometryLayer: () => import(/* webpackChunkName: "mbmb_pvm_PictometryLayer" */'@philly/vue-mapping/src/pictometry/Layer.vue'),
       PictometryPngMarker: () => import(/* webpackChunkName: "mbmb_pvm_PictometryPngMarker" */'@philly/vue-mapping/src/pictometry/PngMarker.vue'),
-      PictometryViewCone: () => import(/* webpackChunkName: "mbmb_pvm_PictometryViewCone" */'@philly/vue-mapping/src/pictometry/ViewCone.vue')
+      PictometryViewCone: () => import(/* webpackChunkName: "mbmb_pvm_PictometryViewCone" */'@philly/vue-mapping/src/pictometry/ViewCone.vue'),
+      Popover: () => import(/* webpackChunkName: "mbmb_pvc_Popover" */'@philly/vue-comps/src/components/Popover.vue'),
     },
     mounted() {
       // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
       // console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics);
       let defaultLayers = [];
+
+      if (this.$config.initialPopover && window.location.hash == '') {
+        this.$store.commit('setPopoverOpen', true);
+        this.$store.commit('setPopoverOptions', this.$config.initialPopover.options);
+        if (this.$config.initialPopover.slots) {
+          this.$store.commit('setPopoverText', this.$config.initialPopover.slots.text);
+        }
+      }
 
       if (this.$config.topics != undefined) {
         for (let topic of this.$config.topics) {
@@ -127,6 +142,15 @@
       });
     },
     computed: {
+      popoverOpen() {
+        return this.$store.state.popover.open;
+      },
+      popoverText() {
+        return this.$store.state.popover.text;
+      },
+      popoverOptions() {
+        return this.$store.state.popover.options;
+      },
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
       },
