@@ -103,6 +103,10 @@
         }
       }
 
+      if (this.$config.dataSources) {
+        this.$controller.dataManager.fetchData();
+      }
+
       window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize();
 
