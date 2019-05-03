@@ -42,13 +42,13 @@
 
 <script>
 
-  import Checkbox from '@philly/vue-mapping/src/esri-leaflet/Checkbox.vue';
+  // import Checkbox from '@philly/vue-mapping/src/esri-leaflet/Checkbox.vue';
   import Topic from '@philly/vue-comps/src/components/Topic.vue';
   import TopicComponentGroup from '@philly/vue-comps/src/components/TopicComponentGroup.vue';
 
   export default {
     components: {
-      Checkbox,
+      // Checkbox,
       TopicComponentGroup,
       Topic
       // Checkbox: () => import(/* webpackChunkName: "lbmp_pvm_Checkbox" */'@philly/vue-mapping/src/esri-leaflet/Checkbox.vue'),
