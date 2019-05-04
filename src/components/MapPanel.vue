@@ -117,9 +117,7 @@
       </div>
 
       <div v-once>
-        <basemap-select-control
-                       :position="'topalmostright'"
-        />
+        <basemap-select-control :position="this.basemapSelectControlPosition" />
       </div>
 
       <div v-once>
@@ -366,6 +364,13 @@
           return this.$config.addressInput.placeholder;
         } else {
           return null
+        }
+      },
+      basemapSelectControlPosition() {
+        if (this.isMobileOrTablet) {
+          return 'topright'
+        } else {
+          return 'topalmostright'
         }
       },
       isMobileOrTablet() {
