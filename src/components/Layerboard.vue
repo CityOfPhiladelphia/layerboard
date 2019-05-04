@@ -46,6 +46,7 @@
         </pictometry-widget>
       </map-panel>
 
+      <!-- <footer-test></footer-test> -->
       <popover
                v-if="popoverOpen"
                :options="this.popoverOptions"
@@ -58,22 +59,26 @@
   import axios from 'axios';
   import TopicPanel from './TopicPanel.vue';
   import MapPanel from './MapPanel.vue';
+  // import FooterTest from './FooterTest.vue';
+  // console.log('FooterTest:', FooterTest)
 
   export default {
     name: 'Layerboard',
     components: {
       TopicPanel,
       MapPanel,
+      // FooterTest,
       CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@philly/vue-mapping/src/cyclomedia/Widget.vue'),
       PictometryWidget: () => import(/* webpackChunkName: "mbmb_pvm_PictometryWidget" */'@philly/vue-mapping/src/pictometry/Widget.vue'),
       PictometryLayer: () => import(/* webpackChunkName: "mbmb_pvm_PictometryLayer" */'@philly/vue-mapping/src/pictometry/Layer.vue'),
       PictometryPngMarker: () => import(/* webpackChunkName: "mbmb_pvm_PictometryPngMarker" */'@philly/vue-mapping/src/pictometry/PngMarker.vue'),
       PictometryViewCone: () => import(/* webpackChunkName: "mbmb_pvm_PictometryViewCone" */'@philly/vue-mapping/src/pictometry/ViewCone.vue'),
       Popover: () => import(/* webpackChunkName: "mbmb_pvc_Popover" */'@philly/vue-comps/src/components/Popover.vue'),
+      // Footer: () => import(/* webpackChunkName: "Footer" */'./Footer.vue'),
     },
     mounted() {
       // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
-      // console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics);
+      console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics);
       let defaultLayers = [];
 
       if (this.$config.initialPopover && window.location.hash == '') {
@@ -294,6 +299,7 @@
           height: rootHeightNum
         }
 
+        // console.log('Layerboard handleWindowResize is running, dim:', dim);
         // this.$store.commit('setWindowWidth', rootWidthNum);
         this.$store.commit('setWindowDimensions', dim);
       }

@@ -8,7 +8,8 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons/faInfoCircle';
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons/faCheckSquare';
 import { faFilter } from '@fortawesome/free-solid-svg-icons/faFilter';
-import { faSquare } from '@fortawesome/free-solid-svg-icons/faSquare';
-library.add(faSpinner, faInfoCircle, faCheckSquare, faFilter, faSquare);
+import { faSquare } from '@fortawesome/free-regular-svg-icons/faSquare';
+import { faCircle } from '@fortawesome/free-regular-svg-icons/faCircle';
+library.add(faSpinner, faInfoCircle, faCheckSquare, faFilter, faSquare, faCircle);
 
 export default library;

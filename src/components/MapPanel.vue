@@ -276,7 +276,8 @@
       const windowHeight = window.innerHeight;
       const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
       console.log('siteHeaderHeightNum:', siteHeaderHeightNum);
-      const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
+      // const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
+      const appFooterHeightNum = 36;
       // console.log('appFooterHeightNum:', appFooterHeightNum);
       // console.log(document.getElementsByClassName('datasets-button'))
       // const datasetsButtonHeightNum = parseInt(document.getElementsByClassName('datasets-button')[0].getBoundingClientRect().height);
@@ -318,6 +319,7 @@
     },
     watch: {
       windowDim(nextDim) {
+        // console.log('mapPanel windowDim watch is firing, nextDim:', nextDim);
         this.handleWindowResize(nextDim);
       },
       picOrCycloActive(value) {
@@ -660,6 +662,7 @@
         }
       },
       handleWindowResize(dim) {
+        // console.log('MapPanel handleWindowResize is running, dim:', dim);
         const windowHeight = window.innerHeight;
         const siteHeaderHeightNum = parseInt(document.getElementsByClassName('site-header')[0].getBoundingClientRect().height);
         const appFooterHeightNum = parseInt(document.getElementsByClassName('app-footer')[0].getBoundingClientRect().height);
