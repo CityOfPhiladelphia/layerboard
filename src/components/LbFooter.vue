@@ -48,9 +48,20 @@
           return { 'color': 'white', 'border-bottom': '0px' }
         }
       },
+      popoverHeight() {
+        if (this.$config.helpPopover) {
+          if (this.$config.helpPopover.height) {
+            return this.$config.helpPopover.height
+          } else {
+            return '80%'
+          }
+        } else {
+          return '80%'
+        }
+      },
       popoverLinkOptions() {
         return {
-          height: '100%',
+          height: this.popoverHeight,
           components: [
             {
               type: 'helpInstructions'
