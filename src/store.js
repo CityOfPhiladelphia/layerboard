@@ -130,6 +130,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
         // console.log('SETWEBMAPLAYERSOPACITY FINISHED RUNNING');
       },
       setLegend(state, payload) {
+        // console.log('METHOD layerboard store setLegend is running, payload:', payload);
         state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].legend = payload.legend;
       },
       setMapScale(state, payload) {

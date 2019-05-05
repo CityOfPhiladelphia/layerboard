@@ -78,7 +78,6 @@
     },
     mounted() {
       // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
-      console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics);
       let defaultLayers = [];
 
       if (this.$config.initialPopover && window.location.hash == '') {
@@ -98,7 +97,9 @@
           }
         }
       }
-      // console.log('firstLayers:', firstLayers);
+
+      // console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics, 'defaultLayers:', defaultLayers, 'this.$store.state.map.webMapLayersAndRest:', this.$store.state.map.webMapLayersAndRest);
+
       this.$store.commit('setDefaultLayers', defaultLayers);
       this.$store.commit('setWebMapActiveLayers', defaultLayers);
 
