@@ -12,7 +12,7 @@
                 />
               </li>
               <li>
-                <a target="_blank" href="//philagsg.typeform.com/to/GQOPjW">Feedback</a>
+                <a target="_blank" :href="this.feedbackUrl">Feedback</a>
               </li>
             </ul>
           </nav>
@@ -27,20 +27,29 @@
 
   export default {
     name: 'LbFooter',
-    mounted() {
-      console.log('LbFooter mounted, this$config:', this.$config)
-    },
     components: {
       PopoverLink: () => import(/* webpackChunkName: "lblb_pvc_PopoverLink" */'@philly/vue-comps/src/components/PopoverLink.vue'),
     },
-    created() {
-      console.log('Footer created');
-    },
     computed: {
+      feedbackUrl() {
+        if (this.$config.footer) {
+          if (this.$config.footer.feedbackUrl) {
+            return this.$config.footer.feedbackUrl
+          } else {
+            return null
+          }
+        } else {
+          return null
+        }
+      },
       customStyle() {
-        if (this.$config.helpPopover) {
-          if (this.$config.helpPopover.linkStyle) {
-            return this.$config.helpPopover.linkStyle
+        if (this.$config.footer) {
+          if (this.$config.footer.helpPopover) {
+            if (this.$config.footer.helpPopover.linkStyle) {
+              return this.$config.footer.helpPopover.linkStyle
+            } else {
+              return { 'color': 'white', 'border-bottom': '0px' }
+            }
           } else {
             return { 'color': 'white', 'border-bottom': '0px' }
           }
@@ -49,9 +58,13 @@
         }
       },
       popoverHeight() {
-        if (this.$config.helpPopover) {
-          if (this.$config.helpPopover.height) {
-            return this.$config.helpPopover.height
+        if (this.$config.footer) {
+          if (this.$config.footer.helpPopover) {
+            if (this.$config.footer.helpPopover.height) {
+              return this.$config.footer.helpPopover.height
+            } else {
+              return '80%'
+            }
           } else {
             return '80%'
           }
