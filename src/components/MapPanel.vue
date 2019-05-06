@@ -432,7 +432,11 @@
             topicLayers = component.options.topicLayers;
           }
         }
-        return topicLayers;
+        let topicLayersKeys = [];
+        for (let topicLayer of topicLayers) {
+          topicLayersKeys.push(topicLayer.title)
+        }
+        return topicLayersKeys;
       },
       mapPanelContainerClass() {
         if (this.fullScreenMapEnabled) {
