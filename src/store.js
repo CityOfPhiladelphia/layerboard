@@ -12,8 +12,10 @@ Vue.use(Vuex);
 // function createStore(config, bennyEndpoints, bennyRepresentation) {
 function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
   // const modals = pvdStore.createModals(config);
+  const sources = pvdStore.createSources(config);
 
   const initialState = {
+    sources,
     isMobileOrTablet: isMobileDevice(),
     fullScreenMapEnabled: false,
     bennyEndpoints: {},
@@ -128,6 +130,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
         // console.log('SETWEBMAPLAYERSOPACITY FINISHED RUNNING');
       },
       setLegend(state, payload) {
+        // console.log('METHOD layerboard store setLegend is running, payload:', payload);
         state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].legend = payload.legend;
       },
       setMapScale(state, payload) {

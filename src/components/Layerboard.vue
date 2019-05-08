@@ -45,6 +45,13 @@
           />
         </pictometry-widget>
       </map-panel>
+
+      <!-- <footer-test></footer-test> -->
+      <popover
+               v-if="popoverOpen"
+               :options="this.popoverOptions"
+               :slots="{'text': this.popoverText}"
+      />
   </div>
 </template>
 
@@ -52,22 +59,34 @@
   import axios from 'axios';
   import TopicPanel from './TopicPanel.vue';
   import MapPanel from './MapPanel.vue';
+  // import FooterTest from './FooterTest.vue';
+  // console.log('FooterTest:', FooterTest)
 
   export default {
     name: 'Layerboard',
     components: {
       TopicPanel,
       MapPanel,
+      // FooterTest,
       CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@philly/vue-mapping/src/cyclomedia/Widget.vue'),
       PictometryWidget: () => import(/* webpackChunkName: "mbmb_pvm_PictometryWidget" */'@philly/vue-mapping/src/pictometry/Widget.vue'),
       PictometryLayer: () => import(/* webpackChunkName: "mbmb_pvm_PictometryLayer" */'@philly/vue-mapping/src/pictometry/Layer.vue'),
       PictometryPngMarker: () => import(/* webpackChunkName: "mbmb_pvm_PictometryPngMarker" */'@philly/vue-mapping/src/pictometry/PngMarker.vue'),
-      PictometryViewCone: () => import(/* webpackChunkName: "mbmb_pvm_PictometryViewCone" */'@philly/vue-mapping/src/pictometry/ViewCone.vue')
+      PictometryViewCone: () => import(/* webpackChunkName: "mbmb_pvm_PictometryViewCone" */'@philly/vue-mapping/src/pictometry/ViewCone.vue'),
+      Popover: () => import(/* webpackChunkName: "mbmb_pvc_Popover" */'@philly/vue-comps/src/components/Popover.vue'),
+      // Footer: () => import(/* webpackChunkName: "Footer" */'./Footer.vue'),
     },
     mounted() {
       // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
-      // console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics);
       let defaultLayers = [];
+
+      if (this.$config.initialPopover && window.location.hash == '') {
+        this.$store.commit('setPopoverOpen', true);
+        this.$store.commit('setPopoverOptions', this.$config.initialPopover.options);
+        if (this.$config.initialPopover.slots) {
+          this.$store.commit('setPopoverText', this.$config.initialPopover.slots.text);
+        }
+      }
 
       if (this.$config.topics != undefined) {
         for (let topic of this.$config.topics) {
@@ -78,7 +97,9 @@
           }
         }
       }
-      // console.log('firstLayers:', firstLayers);
+
+      // console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics, 'defaultLayers:', defaultLayers, 'this.$store.state.map.webMapLayersAndRest:', this.$store.state.map.webMapLayersAndRest);
+
       this.$store.commit('setDefaultLayers', defaultLayers);
       this.$store.commit('setWebMapActiveLayers', defaultLayers);
 
@@ -86,6 +107,10 @@
         if (this.$config.defaultPanel === 'topics') {
           this.$store.commit('setDidToggleTopicsOn', true);
         }
+      }
+
+      if (this.$config.dataSources) {
+        this.$controller.dataManager.fetchData();
       }
 
       window.addEventListener('resize', this.handleWindowResize);
@@ -127,6 +152,15 @@
       });
     },
     computed: {
+      popoverOpen() {
+        return this.$store.state.popover.open;
+      },
+      popoverText() {
+        return this.$store.state.popover.text;
+      },
+      popoverOptions() {
+        return this.$store.state.popover.options;
+      },
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
       },
@@ -266,6 +300,7 @@
           height: rootHeightNum
         }
 
+        // console.log('Layerboard handleWindowResize is running, dim:', dim);
         // this.$store.commit('setWindowWidth', rootWidthNum);
         this.$store.commit('setWindowDimensions', dim);
       }

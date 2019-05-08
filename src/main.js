@@ -11,6 +11,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import createStore from './store';
 import configMixin from './util/config-mixin';
+import App from './App.vue';
 import Layerboard from './components/Layerboard.vue';
 import mergeDeep from './util/merge-deep';
 
@@ -53,10 +54,16 @@ function initLayerboard(clientConfig, secondFile) {
 
     Vue.component('font-awesome-icon', FontAwesomeIcon)
 
+    const customComps = config.customComps || [];
+    // console.log('mapboard main.js, customComps:', customComps);
+    for (let key of Object.keys(customComps)) {
+      Vue.component(key, customComps[key]);
+    }
+
     // mount main vue
     const vm = new Vue({
       el: config.el || '#layerboard',
-      render: (h) => h(Layerboard),
+      render: (h) => h(App),
       store
     });
 
