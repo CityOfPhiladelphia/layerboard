@@ -5,15 +5,18 @@
         <div class="columns">
           <nav>
             <ul class="inline-list">
-              <li>
-                <popover-link :options="this.popoverLinkOptions"
+              <!-- <li v-for="link in this.$config.footerContent"> -->
+                <topic-component-group :topic-components="this.footerComponents"
+                                       :isList="true"
+                />
+                <!-- <popover-link :options="this.popoverLinkOptions"
                               :slots="this.popoverLinkSlots"
                               :customStyle="this.customStyle"
-                />
-              </li>
-              <li>
+                /> -->
+              <!-- </li> -->
+              <!-- <li>
                 <a target="_blank" :href="this.feedbackUrl">Feedback</a>
-              </li>
+              </li> -->
             </ul>
           </nav>
         </div>
@@ -25,12 +28,27 @@
 
 <script>
 
+  import TopicComponentGroup from '@philly/vue-comps/src/components/TopicComponentGroup.vue';
+
   export default {
     name: 'LbFooter',
     components: {
+      TopicComponentGroup,
       PopoverLink: () => import(/* webpackChunkName: "lblb_pvc_PopoverLink" */'@philly/vue-comps/src/components/PopoverLink.vue'),
     },
     computed: {
+      footerContent() {
+        return this.$config.footerContent;
+      },
+      footerComponents() {
+        if (this.$config.footerContent.components) {
+          return this.$config.footerContent.components;
+        } else {
+          return null;
+          // if no components, use a single 'checkbox-set'
+          // return [{ type: 'checkbox-set' }];
+        }
+      },
       feedbackUrl() {
         if (this.$config.footer) {
           if (this.$config.footer.feedbackUrl) {
