@@ -518,8 +518,8 @@
         return this.$store.state.map.webMapActiveLayers;
       },
       activeBasemap() {
-        const shouldShowImagery = this.$store.state.map.shouldShowImagery;
-        if (shouldShowImagery) {
+        const shouldShowBasemapSelectControl = this.$store.state.map.shouldShowBasemapSelectControl;
+        if (shouldShowBasemapSelectControl) {
           return this.$store.state.map.imagery;
         }
         const defaultBasemap = this.$config.map.defaultBasemap;
