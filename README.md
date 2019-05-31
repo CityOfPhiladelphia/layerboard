@@ -12,3 +12,12 @@ Check out [the wiki](https://github.com/CityOfPhiladelphia/layerboard/wiki) for 
 ## Example Site
 
 See the example Openmaps [live](https://openmaps.phila.gov)
+
+## Release Notes
+
+### 0.0.24 - 5/30/2019
+
+* Uses @philly/vue-comps 1.0.30
+* Uses @philly/vue-mapping 1.0.30
+* Uses @philly/vue-datafetch 0.0.17
+* Allows you to use [footerContent](https://github.com/CityOfPhiladelphia/layerboard/wiki/footerContent)
