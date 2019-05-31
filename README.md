@@ -4,14 +4,18 @@ layerboard is a framework for creating app that are portals for viewing and down
 
 For example, [Openmaps](https://github.com/CityOfPhiladelphia/openmaps) is built using layerboard.
 
-![OpenMaps](https://s3.amazonaws.com/mapboard-images/OpenMaps.JPG)
+![](https://s3.amazonaws.com/mapboard-images/OpenMaps2.JPG)
+
+Also, [StreetSmartPHL](https://github.com/CityOfPhiladelphia/StreetSmartPHL) is built using layerboard.
+
+![](https://s3.amazonaws.com/mapboard-images/StreetSmart.JPG)
 
 ## Usage
 Check out [the wiki](https://github.com/CityOfPhiladelphia/layerboard/wiki) for usage documentation.
 
-## Example Site
+## Example Sites
 
-See the example Openmaps [live](https://openmaps.phila.gov)
+See the examples [Openmaps](https://openmaps.phila.gov) ans [StreetSmartPHL](https://streetsmartphl.phila.gov/).
 
 ## Release Notes
 
