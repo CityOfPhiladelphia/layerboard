@@ -15,7 +15,7 @@ Check out [the wiki](https://github.com/CityOfPhiladelphia/layerboard/wiki) for 
 
 ## Example Sites
 
-See the examples [Openmaps](https://openmaps.phila.gov) ans [StreetSmartPHL](https://streetsmartphl.phila.gov/).
+See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](https://streetsmartphl.phila.gov/).
 
 ## Release Notes
 
