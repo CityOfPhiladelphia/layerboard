@@ -20,4 +20,4 @@ See the example Openmaps [live](https://openmaps.phila.gov)
 * Uses @philly/vue-comps 1.0.30
 * Uses @philly/vue-mapping 1.0.30
 * Uses @philly/vue-datafetch 0.0.17
-* Allows you to use [footerContent](https://github.com/CityOfPhiladelphia/layerboard/wiki/footerContent)
+* Allows you to put [footerContent](https://github.com/CityOfPhiladelphia/mapboard/wiki/footerContent) in your config, which allows you to put as many popover
