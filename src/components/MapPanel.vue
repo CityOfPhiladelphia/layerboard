@@ -52,9 +52,9 @@
                             :type="layer.type2"
         />
       </esri-web-map>
-      <pop-up v-if="this.shouldShowPopup">
-        <pop-up-content />
-      </pop-up>
+      <popup v-if="this.shouldShowPopup">
+        <popup-content />
+      </popup>
 
 
       <!-- basemaps -->
@@ -220,8 +220,8 @@
   import LegendControl from '@philly/vue-mapping/src/components/LegendControl.vue';
   import MapAddressInput from '@philly/vue-mapping/src/components/MapAddressInput.vue';
 
-  import PopUp from '@philly/vue-mapping/src/leaflet/PopUp.vue';
-  import PopUpContent from '@philly/vue-mapping/src/leaflet/PopUpContent.vue';
+  import Popup from '@philly/vue-mapping/src/leaflet/Popup.vue';
+  import PopupContent from '@philly/vue-mapping/src/leaflet/PopupContent.vue';
 
   import EsriWebMap from '@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue';
   import EsriWebMapLayer from '@philly/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue';
@@ -265,10 +265,8 @@
       MeasureControl,
       LegendControl,
       MapAddressInput,
-      PopUp,
-      PopUpContent,
-      // PopUp: () => import(/* webpackChunkName: "lbmp_pvm_PopUp" */'@philly/vue-mapping/src/leaflet/PopUp.vue'),
-      // PopUpContent: () => import(/* webpackChunkName: "lbmp_pvm_PopUpContent" */'@philly/vue-mapping/src/leaflet/PopUpContent.vue'),
+      Popup,
+      PopupContent,
       Polygon_: () => import(/* webpackChunkName: "lbmp_pvm_Polygon_" */'@philly/vue-mapping/src/leaflet/Polygon.vue'),
       Polyline_: () => import(/* webpackChunkName: "lbmp_pvm_Polyline_" */'@philly/vue-mapping/src/leaflet/Polyline.vue'),
     },
