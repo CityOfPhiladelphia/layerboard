@@ -157,12 +157,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setRoute(state, payload) {
         state.route = payload;
       },
-      setDidToggleModal(state, name) {
-        // console.log('setDidToggleModal, name:', name, 'open:', open);
-        // console.log('setDidToggleModal, name:', name);
-        // state.modals[name].open = open === null ? !state.modals[name].open : open
-        state.modals.open = name;
-      },
+      // setDidToggleModal(state, name) {
+      //   // console.log('setDidToggleModal, name:', name, 'open:', open);
+      //   // console.log('setDidToggleModal, name:', name);
+      //   // state.modals[name].open = open === null ? !state.modals[name].open : open
+      //   state.modals.open = name;
+      // },
       setCandidates(state, payload) {
         state.candidates = payload;
       },
