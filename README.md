@@ -19,7 +19,7 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
-### 0.0.27 - 6/2/2019
+### 0.0.27 - 8/9/2019
 
 * Uses new releases of @philly libraries which use axios 0.19.0:
   * Uses @philly/vue-comps 1.0.36
