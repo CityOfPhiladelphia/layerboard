@@ -55,6 +55,17 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     },
   };
 
+  if (config.map) {
+    if (config.map.initialImagery) {
+      initialState.map.imagery = config.map.initialImagery;
+    }
+    if (config.map.overlaySelectControl) {
+      if (config.map.overlaySelectControl.initialSelection) {
+        initialState.map.selectedOverlay = config.map.overlaySelectControl.initialSelection;
+      }
+    }
+  }
+
   const lb = {
     state: initialState,
     getters: {},
