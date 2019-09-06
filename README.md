@@ -19,6 +19,10 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 0.0.30 - 9/6/2019
+
+* Adds lines to store.js to handle new "fullScreen" changes in pvc
+
 ### 0.0.29 - 9/6/2019
 
 * Uses new releases of @philly libraries which ran upgrades:
