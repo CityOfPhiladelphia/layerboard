@@ -19,6 +19,17 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 0.0.29 - 9/6/2019
+
+* Uses new releases of @philly libraries which ran upgrades:
+  * Uses @philly/vue-comps 1.0.37
+  * Uses @philly/vue-mapping 1.0.36
+  * Uses @philly/vue-datafetch 0.0.24
+
+### 0.0.28 - 8/26/2019
+
+* Allows you to set initial imagery in the config
+
 ### 0.0.27 - 8/9/2019
 
 * Uses new releases of @philly libraries which use axios 0.19.0:
