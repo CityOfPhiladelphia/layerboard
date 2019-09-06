@@ -17,6 +17,10 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
   const initialState = {
     sources,
     isMobileOrTablet: isMobileDevice(),
+    fullScreen: {
+      mapOnly: false,
+      topicsOnly: false,
+    },
     fullScreenMapEnabled: false,
     bennyEndpoints: {},
     layers: {
@@ -72,6 +76,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     mutations: {
       setIsMobileOrTablet(state, payload) {
         state.isMobileOrTablet = payload;
+      },
+      setMapOnly(state, payload) {
+        state.fullScreen.mapOnly = payload;
+      },
+      setTopicsOnly(state, payload) {
+        state.fullScreen.topicsOnly = payload;
       },
       setFullScreenMapEnabled(state, payload) {
         state.fullScreenMapEnabled = payload;
