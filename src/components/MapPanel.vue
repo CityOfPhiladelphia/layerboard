@@ -158,6 +158,7 @@
         <map-address-input :position="this.addressInputPosition"
                            :placeholder="this.addressInputPlaceholder"
                            :widthFromConfig="this.addressInputWidth"
+                           @handle-search-form-submit="handleSearchFormSubmit"
         >
         </map-address-input>
       </div>
@@ -324,9 +325,24 @@
         this.$nextTick(() => {
           this.$store.state.map.map.invalidateSize();
         })
-      }
+      },
+      geocodeResult(nextGeocodeResult) {
+        if (nextGeocodeResult._featureId) {
+          this.$store.commit('setMapCenter', nextGeocodeResult.geometry.coordinates);
+          this.$store.commit('setMapZoom', this.geocodeZoom);
+        } else {
+          this.$store.commit('setBasemap', 'pwd');
+        }
+      },
     },
     computed: {
+      geocodeZoom() {
+        if (this.$config.map.geocodeZoom) {
+          return this.$config.map.geocodeZoom;
+        } else {
+          return 19;
+        }
+      },
       windowDim() {
         return this.$store.state.windowDimensions;
       },
@@ -455,7 +471,7 @@
         }
       },
       cycloRotationAngle() {
-        return this.$store.state.cyclomedia.orientation.yaw * (180/3.14159265359);
+        return this.$store.state.cyclomedia.orientation.yaw;// * (180/3.14159265359);
       },
       cycloHFov() {
         return this.$store.state.cyclomedia.orientation.hFov;
@@ -578,6 +594,10 @@
       },
     },
     methods: {
+      handleSearchFormSubmit(value) {
+        console.log('MapPanel.vue handleSearchFormSubmit is running');
+        this.$controller.handleSearchFormSubmit(value);
+      },
       flipCoords(coords) {
         // console.log('flipCoords is running on:', coords);
         return [coords[1], coords[0]];
