@@ -18,7 +18,7 @@ import mergeDeep from './util/merge-deep';
 import * as faAll from './fa.js';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import controllerMixin from '@philly/pvd/src/controller.js';
+import controllerMixin from '@philly/vue-datafetch/src/controller.js';
 
 import * as esri from 'esri-leaflet';
 L.esri = esri;
