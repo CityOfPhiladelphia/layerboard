@@ -19,6 +19,13 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 0.0.31 - 10/7/2019
+
+* Uses new releases of @philly libraries which ran upgrades:
+  * Uses @philly/vue-comps 1.0.40
+  * Uses @philly/vue-mapping 1.0.41
+  * Uses @philly/vue-datafetch 0.0.26
+
 ### 0.0.30 - 9/6/2019
 
 * Adds lines to store.js to handle new "fullScreen" changes in pvc
