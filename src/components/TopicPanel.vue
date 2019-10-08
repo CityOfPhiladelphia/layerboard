@@ -34,7 +34,9 @@
          id="topics-container"
          :style="topicsContainerStyle"
     >
-      <topic-component-group :topic-components="this.appComponents" />
+      <topic-component-group :topic-components="this.appComponents"
+                             @handle-topic-header-click="handleTopicHeaderClick"
+      />
     </div>
 
   </div>
@@ -112,6 +114,10 @@
       },
     },
     methods: {
+      handleTopicHeaderClick(nextTopic) {
+        // console.log('TopicPanel handleTopicHeaderClick is running');
+        this.$controller.handleTopicHeaderClick(nextTopic);
+      },
       handleLayerFilterFormKeyup(e) {
         const input = e.target.value;
         this.$store.commit('setInputLayerFilter', input);
