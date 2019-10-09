@@ -19,6 +19,10 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 0.0.34 - 10/9/2019
+
+* Uses update to L.esri.Webmap to add datetime to popups
+
 ### 0.0.33 - 10/8/2019
 
 * Uses new releases of @philly libraries which fix bugs:

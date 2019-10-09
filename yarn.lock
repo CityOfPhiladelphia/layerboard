@@ -852,17 +852,17 @@
     vue "^2.6.10"
     vuex "^3.1.1"
 
-"@philly/vue-mapping@^1.0.41":
-  version "1.0.41"
-  resolved "https://registry.yarnpkg.com/@philly/vue-mapping/-/vue-mapping-1.0.41.tgz#88cde4359b26fe4010c2dd1cb4372efa13824c01"
-  integrity sha512-BZtuOR+IaZJfqBqf5I2Fl3bOZ+uKZ7brV2nL3qRgQq7z7a/QJOnWaAQV8DHC/g8ExmnXbhMTZLN5T84nIkDu5Q==
+"@philly/vue-mapping@^1.0.42":
+  version "1.0.42"
+  resolved "https://registry.yarnpkg.com/@philly/vue-mapping/-/vue-mapping-1.0.42.tgz#1d702d910bcb190ee33fe42494f9253b9ca58d81"
+  integrity sha512-3Qy3157rB51LsM7ZvdAuSJ5JieMS6v/trXXxX7aM+lctOeiHq/8BJe5qlh0K5iWYUPB4eNcCeMkXa9zPwm9xjQ==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
     "@fortawesome/free-solid-svg-icons" "^5.7.2"
     "@fortawesome/vue-fontawesome" "^0.1.5"
     "@turf/turf" "^5.1.6"
-    L-esri-WebMap "https://github.com/CityOfPhiladelphia/L.esri.WebMap#00997e51a7ec5b65d43e54df07a00805797fce0c"
+    L-esri-WebMap "https://github.com/CityOfPhiladelphia/L.esri.WebMap#1d4ee074f60f2bba8bfe596d150ea23556c8a94f"
     Leaflet-PointInPolygon "https://github.com/CityOfPhiladelphia/Leaflet.PointInPolygon#a0d410f69aacf5f9165c4d01ccffeed824ccaed8"
     axios "^0.19.0"
     blueimp-md5 "^2.10.0"
@@ -2449,9 +2449,9 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"L-esri-WebMap@https://github.com/CityOfPhiladelphia/L.esri.WebMap#00997e51a7ec5b65d43e54df07a00805797fce0c":
+"L-esri-WebMap@https://github.com/CityOfPhiladelphia/L.esri.WebMap#1d4ee074f60f2bba8bfe596d150ea23556c8a94f":
   version "0.4.0"
-  resolved "https://github.com/CityOfPhiladelphia/L.esri.WebMap#00997e51a7ec5b65d43e54df07a00805797fce0c"
+  resolved "https://github.com/CityOfPhiladelphia/L.esri.WebMap#1d4ee074f60f2bba8bfe596d150ea23556c8a94f"
   dependencies:
     arcgis-to-geojson-utils "^1.0.1"
     date-fns "^1.30.1"
