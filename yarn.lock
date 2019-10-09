@@ -818,10 +818,10 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@philly/vue-comps@^1.0.41":
-  version "1.0.41"
-  resolved "https://registry.yarnpkg.com/@philly/vue-comps/-/vue-comps-1.0.41.tgz#026d646546625da72b382391b53790f556848062"
-  integrity sha512-c4eogZS3lJSqMgbQ+7xcRcsAtUHwtjP9e5VsZj0x7XtbikvfQtR+nqt5BposKi+GUmYI2VRRYyUZBqkzhD08hw==
+"@philly/vue-comps@^1.0.42":
+  version "1.0.42"
+  resolved "https://registry.yarnpkg.com/@philly/vue-comps/-/vue-comps-1.0.42.tgz#64afcaf675cf2cccc805a190862100f06ebff971"
+  integrity sha512-SUtD2VN+5wjXbnSp0TwY71VGHD9BSvs7PNHnQzrQoCIpTRsTz/Ke7yeQ4tYhxKRvbwuJIV903hMV/NTn5mNxsw==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
