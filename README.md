@@ -19,6 +19,9 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 0.0.35 - 10/9/2019
+Uses pvc 1.0.42, allows LegendBox class to be passed in
+
 ### 0.0.34 - 10/9/2019
 
 * Uses update to L.esri.Webmap to add datetime to popups
