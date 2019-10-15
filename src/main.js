@@ -16,10 +16,11 @@ import Layerboard from './components/Layerboard.vue';
 import mergeDeep from './util/merge-deep';
 
 import * as faAll from './fa.js';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import controllerMixin from '@philly/vue-datafetch/src/controller.js';
 
+import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 L.esri = esri;
 import * as rend from 'esri-leaflet-renderers';
@@ -52,7 +53,7 @@ function initLayerboard(clientConfig, secondFile) {
     // mix in controller
     Vue.use(controllerMixin, { config, store });
 
-    Vue.component('font-awesome-icon', FontAwesomeIcon)
+    Vue.component('font-awesome-icon', FontAwesomeIcon);
 
     const customComps = config.customComps || [];
     // console.log('mapboard main.js, customComps:', customComps);
@@ -64,7 +65,7 @@ function initLayerboard(clientConfig, secondFile) {
     const vm = new Vue({
       el: config.el || '#layerboard',
       render: (h) => h(App),
-      store
+      store,
     });
 
   }, response => {

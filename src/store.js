@@ -155,7 +155,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
         state.map.webMapLayersAndRest.filter(layer => layer.title === payload.layerName)[0].legend = payload.legend;
       },
       setMapScale(state, payload) {
-        state.map.scale = payload
+        state.map.scale = payload;
       },
       // setBasemap(state, payload) {
       //   state.map.basemap = payload;
@@ -190,8 +190,8 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setAddressEntered(state, payload) {
         state.addressEntered = payload;
       },
-    }
-  }
+    },
+  };
 
   // let mergeStore = mergeDeep(lb, pvdStore.store);
   let mergeStore = mergeDeep(pvcStore, pvdStore.store);
@@ -207,7 +207,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
   return new Vuex.Store({
     state: mergeStore.state,
     getters: mergeStore.getters,
-    mutations: mergeStore.mutations
+    mutations: mergeStore.mutations,
   });
 }
 
