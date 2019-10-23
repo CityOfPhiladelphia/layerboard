@@ -14,3 +14,5 @@ esri-leaflet-webmap-safe
 .npmrc
 
 statistics.html
+
+dist/
