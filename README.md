@@ -19,6 +19,10 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 0.0.37 - 10/23/2019
+
+* fixes linting issue
+
 ### 0.0.36 - 10/23/2019
 
 * you have to use the following (at minimum) with this:
