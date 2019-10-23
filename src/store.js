@@ -30,6 +30,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       inputTagsFilter: '',
     },
     map: {
+      mode: 'identifyFeatures',
       scale: null,
       webMap: null,
       webMapUrlLayer: null,
@@ -41,6 +42,10 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       selectedPopupLayer: null,
       categories: [],
       selectedCategory: '',
+      clickMarkerLocation: {
+        lat: null,
+        lng: null,
+      },
     },
     candidates: [],
     addressEntered: null,
@@ -74,6 +79,12 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     state: initialState,
     getters: {},
     mutations: {
+      setClickMarkerLocation(state, payload) {
+        state.map.clickMarkerLocation = payload;
+      },
+      setMapMode(state, payload) {
+        state.map.mode = payload;
+      },
       setIsMobileOrTablet(state, payload) {
         state.isMobileOrTablet = payload;
       },
@@ -104,10 +115,10 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       setBennyEndpoints(state, payload) {
         state.bennyEndpoints = payload;
       },
-      setLocation(state, payload) {
-        state.map.location.lat = payload.lat;
-        state.map.location.lng = payload.lng;
-      },
+      // setLocation(state, payload) {
+      //   state.map.location.lat = payload.lat;
+      //   state.map.location.lng = payload.lng;
+      // },
       setWatchPositionOn(state, payload) {
         state.map.watchPositionOn = payload;
       },

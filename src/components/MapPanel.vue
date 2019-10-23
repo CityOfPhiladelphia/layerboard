@@ -93,6 +93,14 @@
         :icon="marker.icon"
       />
 
+      <!-- marker showing last click -->
+      <vector-marker
+        v-if="clickMarker.latlng[0] !== null"
+        :latlng="clickMarker.latlng"
+        :marker-color="clickMarker.color"
+        :icon="clickMarker.icon"
+      />
+
       <!-- marker using a png and ablility to rotate it -->
       <png-marker
         v-if="cyclomediaActive"
@@ -222,6 +230,10 @@
 
 <script>
 import 'leaflet/dist/leaflet.css';
+
+import {
+  LatLngBounds,
+} from 'leaflet';
 
 // import { geoJSON, featureGroup } from 'leaflet';
 // import { marker as Lmarker } from 'leaflet';
@@ -427,8 +439,11 @@ export default {
         }
       }
       let topicLayersKeys = [];
-      for (let topicLayer of topicLayers) {
-        topicLayersKeys.push(topicLayer.title);
+      console.log('topicLayers:', topicLayers);
+      if (topicLayers) {
+        for (let topicLayer of topicLayers) {
+          topicLayersKeys.push(topicLayer.title);
+        }
       }
       return topicLayersKeys;
     },
@@ -669,10 +684,87 @@ export default {
         return false;
       }
     },
-    handleMapClick() {
-      // console.log('handle map click, e:', e);
+    handleMapClick(e) {
+      console.log('handle map click, e:', e);
       document.getElementsByClassName('pvm-search-control-input')[0].blur();
+
+      if (this.$store.state.map.mode === 'clickMarker') {
+        console.log('map was in clickMarker mode');
+        this.setClickMarkerLocation(e);
+        this.$store.commit('setMapMode', 'identifyFeatures');
+      } else {
+        this.identifyFeatures(e);
+      }
     },
+
+    setClickMarkerLocation(e) {
+      const payload = {
+        lat: e.latlng.lat,
+        lng: e.latlng.lng,
+      };
+      this.$store.commit('setClickMarkerLocation', payload);
+    },
+
+    // this is used when the click should identify features
+    identifyFeatures(e) {
+      console.log('identifyFeatures is running, e:', e);
+      const map = this.$store.state.map.map;
+      // const map = this.$leafletElement;
+      const clickBounds = new LatLngBounds(e.latlng, e.latlng);
+      // console.log('map._layers', map._layers);
+      let intersectingFeatures = [];
+      let geometry;
+      for (let layer in map._layers) {
+        var overlay = map._layers[layer];
+        // console.log('layer:', layer, 'overlay:', overlay);
+        if (overlay._layers) {
+          for (let oLayer in overlay._layers) {
+            const feature = overlay._layers[oLayer];
+            // console.log('feature:', feature);
+            if (feature.feature) {
+              geometry = feature.feature.geometry.type;
+              // console.log('clickHandler LAYER:', layer, 'FEATURE:', feature, 'GEOMETRY:', geometry);
+              let bounds;
+              if (geometry === 'Polygon' || geometry === 'MultiPolygon') {
+                // console.log('polygon or multipolygon');
+                if (feature.contains(e.latlng)) {
+                  // console.log('about to run checkForDuplicates')
+                  this.checkForDuplicates(layer, feature, intersectingFeatures);
+                }
+              } else if (geometry === 'LineString') {
+                // console.log('Line');
+                bounds = feature.getBounds();
+                if (bounds && clickBounds.intersects(bounds)) {
+                  this.checkForDuplicates(layer, feature, intersectingFeatures);
+                }
+              } else if (geometry === 'Point') {
+                // console.log('Point');
+                bounds = new LatLngBounds(feature._latlng, feature._latlng);
+                if (bounds && clickBounds.intersects(bounds)) {
+                  this.checkForDuplicates(layer, feature, intersectingFeatures);
+                }
+              }
+            }
+          }
+        }
+      }
+      this.$store.commit('setPopupCoords', e.latlng);
+      this.$store.commit('setIntersectingFeatures', intersectingFeatures);
+    },
+    checkForDuplicates(layer, feature, intersectingFeatures) {
+      // console.log('checkForDuplicates is running, layer:', layer, 'feature:', feature);
+      let ids = [];
+      for (let i = 0; i < intersectingFeatures.length; i++) {
+        ids[i] = layer + '_' + intersectingFeatures[i].feature.id;
+      }
+      // console.log('layer:', layer, 'feature.feature.id:', feature.feature.id);
+      if (!ids.includes(layer + '_' + feature.feature.id)) {
+        // console.log('checkForDuplicates going to push to intersectingFeatures:', layer, feature.feature.id);
+        intersectingFeatures.push(feature);
+      }
+    },
+
+
     handleButtonClick() {
       // console.log('handle button click is running');
       document.getElementsByClassName('pvm-search-control-input')[0].blur();

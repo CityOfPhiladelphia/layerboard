@@ -35,5 +35,24 @@ export default {
       };
       return marker;
     },
+    clickMarker() {
+      const latlngArray = [ this.$store.state.map.clickMarkerLocation.lat, this.$store.state.map.clickMarkerLocation.lng ];
+      const marker = {
+        latlng: latlngArray,
+        radius: 6,
+        fillColor: '#ff3f3f',
+        color: '#ff0000',
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 1.0,
+        icon: {
+          prefix: 'fas',
+          icon: 'map-marker-alt',
+          shadow: true,
+          size: 50,
+        },
+      };
+      return marker;
+    },
   },
 };
