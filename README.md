@@ -19,6 +19,14 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 0.0.36 - 10/23/2019
+
+* you have to use the following (at minimum) with this:
+
+    "@vue/cli-plugin-babel": "^4.0.5",
+    "@vue/cli-plugin-eslint": "^4.0.5",
+    "@vue/cli-service": "^4.0.5",
+
 ### 0.0.35 - 10/9/2019
 
 * Uses pvc 1.0.42, allows LegendBox class to be passed in
