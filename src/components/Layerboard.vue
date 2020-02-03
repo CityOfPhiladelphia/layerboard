@@ -18,6 +18,7 @@
         v-show="cyclomediaActive"
         slot="cycloWidget"
         screen-percent="3"
+        :orientation="this.$config.cyclomedia.orientation"
       />
       <pictometry-widget
         v-if="shouldLoadPictometryWidget"
