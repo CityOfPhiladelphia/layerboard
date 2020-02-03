@@ -1,4 +1,4 @@
-# layerboard ([@philly/layerboard](https://www.npmjs.com/package/@philly/layerboard) in [npmjs.com](https://npmjs.com))
+# layerboard ([@phila/layerboard](https://www.npmjs.com/package/@phila/layerboard) in [npmjs.com](https://npmjs.com))
 
 layerboard is a framework for creating app that are portals for viewing and downloading data from the City of Philadelphia.
 
@@ -18,6 +18,14 @@ Check out [the wiki](https://github.com/CityOfPhiladelphia/layerboard/wiki) for 
 See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](https://streetsmartphl.phila.gov/).
 
 ## Release Notes
+
+### 1.0.1 - 2/3/2020
+
+* uses new locations for phila libraries:
+  * @phila/vue-comps 2.0.9
+  * @phila/vue-mapping 2.0.5
+  * @phila/vue-datafetch 1.1.7
+* pushes to @phila/layerboard instead of @philly/layerboard
 
 ### 1.0.0 - 12/17/2019
 
