@@ -1,5 +1,5 @@
 {
-  "name": "@philly/layerboard",
+  "name": "@phila/layerboard",
   "description": "A Vue.js component for creating an app from an ESRI web map",
   "version": "1.0.1",
   "author": "City of Philadelphia <maps@phila.gov>",
