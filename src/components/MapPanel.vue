@@ -240,40 +240,40 @@ import {
 
 // mixins
 import markersMixin from './markers-mixin';
-import cyclomediaMixin from '@philly/vue-mapping/src/cyclomedia/map-panel-mixin.js';
-import pictometryMixin from '@philly/vue-mapping/src/pictometry/map-panel-mixin.js';
+import cyclomediaMixin from '@phila/vue-mapping/src/cyclomedia/map-panel-mixin.js';
+import pictometryMixin from '@phila/vue-mapping/src/pictometry/map-panel-mixin.js';
 
 // components
-import CyclomediaRecordingsClient from '@philly/vue-mapping/src/cyclomedia/recordings-client.js';
-import ControlCorner from '@philly/vue-mapping/src/leaflet/ControlCorner.vue';
-import FullScreenMapToggleTab from '@philly/vue-mapping/src/components/FullScreenMapToggleTab.vue';
-import Map_ from '@philly/vue-mapping/src/leaflet/Map.vue';
-import LocationControl from '@philly/vue-mapping/src/components/LocationControl.vue';
-import BasemapToggleControl from '@philly/vue-mapping/src/components/BasemapToggleControl.vue';
-import BasemapSelectControl from '@philly/vue-mapping/src/components/BasemapSelectControl.vue';
-import PictometryButton from '@philly/vue-mapping/src/pictometry/Button.vue';
-import CyclomediaButton from '@philly/vue-mapping/src/cyclomedia/Button.vue';
-import MeasureControl from '@philly/vue-mapping/src/components/MeasureControl.vue';
-// import LegendControl from '@philly/vue-mapping/src/components/LegendControl.vue';
-import MapAddressInput from '@philly/vue-mapping/src/components/MapAddressInput.vue';
+import CyclomediaRecordingsClient from '@phila/vue-mapping/src/cyclomedia/recordings-client.js';
+import ControlCorner from '@phila/vue-mapping/src/leaflet/ControlCorner.vue';
+import FullScreenMapToggleTab from '@phila/vue-mapping/src/components/FullScreenMapToggleTab.vue';
+import Map_ from '@phila/vue-mapping/src/leaflet/Map.vue';
+import LocationControl from '@phila/vue-mapping/src/components/LocationControl.vue';
+import BasemapToggleControl from '@phila/vue-mapping/src/components/BasemapToggleControl.vue';
+import BasemapSelectControl from '@phila/vue-mapping/src/components/BasemapSelectControl.vue';
+import PictometryButton from '@phila/vue-mapping/src/pictometry/Button.vue';
+import CyclomediaButton from '@phila/vue-mapping/src/cyclomedia/Button.vue';
+import MeasureControl from '@phila/vue-mapping/src/components/MeasureControl.vue';
+// import LegendControl from '@phila/vue-mapping/src/components/LegendControl.vue';
+import MapAddressInput from '@phila/vue-mapping/src/components/MapAddressInput.vue';
 
-import Popup from '@philly/vue-mapping/src/leaflet/Popup.vue';
-import PopupContent from '@philly/vue-mapping/src/leaflet/PopupContent.vue';
+import Popup from '@phila/vue-mapping/src/leaflet/Popup.vue';
+import PopupContent from '@phila/vue-mapping/src/leaflet/PopupContent.vue';
 
-import EsriWebMap from '@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue';
-import EsriWebMapLayer from '@philly/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue';
+import EsriWebMap from '@phila/vue-mapping/src/esri-leaflet/EsriWebMap.vue';
+import EsriWebMapLayer from '@phila/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue';
 
 export default {
   name: 'MapPanel',
   components: {
-    MapAddressCandidateList: () => import(/* webpackChunkName: "lbmp_pvm_MapAddressCandidateList" */'@philly/vue-mapping/src/components/MapAddressCandidateList.vue'),
-    EsriTiledMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriTiledMapLayer" */'@philly/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
-    ModalAbout: () => import(/* webpackChunkName: "lbmp_pvm_ModalAbout" */'@philly/vue-mapping/src/components/ModalAbout.vue'),
-    CircleMarker: () => import(/* webpackChunkName: "lbmp_pvm_CircleMarker" */'@philly/vue-mapping/src/leaflet/CircleMarker.vue'),
-    VectorMarker: () => import(/* webpackChunkName: "lbmp_pvm_VectorMarker" */'@philly/vue-mapping/src/components/VectorMarker.vue'),
-    PngMarker: () => import(/* webpackChunkName: "lbmp_pvm_PngMarker" */'@philly/vue-mapping/src/components/PngMarker.vue'),
-    CyclomediaRecordingCircle: () => import(/* webpackChunkName: "lbmp_pvm_CyclomediaRecordingCircle" */'@philly/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
-    SvgViewConeMarker: () => import(/* webpackChunkName: "lbmp_pvm_CyclomediaSvgViewConeMarker" */'@philly/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
+    MapAddressCandidateList: () => import(/* webpackChunkName: "lbmp_pvm_MapAddressCandidateList" */'@phila/vue-mapping/src/components/MapAddressCandidateList.vue'),
+    EsriTiledMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriTiledMapLayer" */'@phila/vue-mapping/src/esri-leaflet/TiledMapLayer.vue'),
+    ModalAbout: () => import(/* webpackChunkName: "lbmp_pvm_ModalAbout" */'@phila/vue-mapping/src/components/ModalAbout.vue'),
+    CircleMarker: () => import(/* webpackChunkName: "lbmp_pvm_CircleMarker" */'@phila/vue-mapping/src/leaflet/CircleMarker.vue'),
+    VectorMarker: () => import(/* webpackChunkName: "lbmp_pvm_VectorMarker" */'@phila/vue-mapping/src/components/VectorMarker.vue'),
+    PngMarker: () => import(/* webpackChunkName: "lbmp_pvm_PngMarker" */'@phila/vue-mapping/src/components/PngMarker.vue'),
+    CyclomediaRecordingCircle: () => import(/* webpackChunkName: "lbmp_pvm_CyclomediaRecordingCircle" */'@phila/vue-mapping/src/cyclomedia/RecordingCircle.vue'),
+    SvgViewConeMarker: () => import(/* webpackChunkName: "lbmp_pvm_CyclomediaSvgViewConeMarker" */'@phila/vue-mapping/src/cyclomedia/SvgViewConeMarker.vue'),
     EsriWebMap,
     EsriWebMapLayer,
     ControlCorner,
@@ -288,17 +288,17 @@ export default {
     MapAddressInput,
     Popup,
     PopupContent,
-    Polygon_: () => import(/* webpackChunkName: "lbmp_pvm_Polygon_" */'@philly/vue-mapping/src/leaflet/Polygon.vue'),
-    Polyline_: () => import(/* webpackChunkName: "lbmp_pvm_Polyline_" */'@philly/vue-mapping/src/leaflet/Polyline.vue'),
-    // Control: () => import(/* webpackChunkName: "lbmp_pvm_Control" */'@philly/vue-mapping/src/leaflet/Control.vue'),
+    Polygon_: () => import(/* webpackChunkName: "lbmp_pvm_Polygon_" */'@phila/vue-mapping/src/leaflet/Polygon.vue'),
+    Polyline_: () => import(/* webpackChunkName: "lbmp_pvm_Polyline_" */'@phila/vue-mapping/src/leaflet/Polyline.vue'),
+    // Control: () => import(/* webpackChunkName: "lbmp_pvm_Control" */'@phila/vue-mapping/src/leaflet/Control.vue'),
     // LegendControl,
-    // Geojson: () => import(/* webpackChunkName: "lbmp_pvm_Geojson" */'@philly/vue-mapping/src/leaflet/Geojson.vue'),
-    // BasemapTooltip: () => import(/* webpackChunkName: "lbmp_pvm_BasemapTooltip" */'@philly/vue-mapping/src/components/BasemapTooltip.vue'),
-    // EsriFeatureLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriFeatureLayer" */'@philly/vue-mapping/src/esri-leaflet/FeatureLayer.vue'),
-    // EsriTiledOverlay: () => import(/* webpackChunkName: "lbmp_pvm_EsriTiledOverlay" */'@philly/vue-mapping/src/esri-leaflet/TiledOverlay.vue'),
-    // EsriDynamicMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriDynamicMapLayer" */'@philly/vue-mapping/src/esri-leaflet/DynamicMapLayer.vue'),
-    // EsriWebMap: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMap" */'@philly/vue-mapping/src/esri-leaflet/EsriWebMap.vue'),
-    // EsriWebMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMapLayer" */'@philly/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue'),
+    // Geojson: () => import(/* webpackChunkName: "lbmp_pvm_Geojson" */'@phila/vue-mapping/src/leaflet/Geojson.vue'),
+    // BasemapTooltip: () => import(/* webpackChunkName: "lbmp_pvm_BasemapTooltip" */'@phila/vue-mapping/src/components/BasemapTooltip.vue'),
+    // EsriFeatureLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriFeatureLayer" */'@phila/vue-mapping/src/esri-leaflet/FeatureLayer.vue'),
+    // EsriTiledOverlay: () => import(/* webpackChunkName: "lbmp_pvm_EsriTiledOverlay" */'@phila/vue-mapping/src/esri-leaflet/TiledOverlay.vue'),
+    // EsriDynamicMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriDynamicMapLayer" */'@phila/vue-mapping/src/esri-leaflet/DynamicMapLayer.vue'),
+    // EsriWebMap: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMap" */'@phila/vue-mapping/src/esri-leaflet/EsriWebMap.vue'),
+    // EsriWebMapLayer: () => import(/* webpackChunkName: "lbmp_pvm_EsriWebMapLayer" */'@phila/vue-mapping/src/esri-leaflet/EsriWebMapLayer.vue'),
   },
   mixins: [
     markersMixin,

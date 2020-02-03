@@ -29,13 +29,13 @@
 
 <script>
 
-import TopicComponentGroup from '@philly/vue-comps/src/components/TopicComponentGroup.vue';
+import TopicComponentGroup from '@phila/vue-comps/src/components/TopicComponentGroup.vue';
 
 export default {
   name: 'LbFooter',
   components: {
     TopicComponentGroup,
-    // PopoverLink: () => import(/* webpackChunkName: "lblb_pvc_PopoverLink" */'@philly/vue-comps/src/components/PopoverLink.vue'),
+    // PopoverLink: () => import(/* webpackChunkName: "lblb_pvc_PopoverLink" */'@phila/vue-comps/src/components/PopoverLink.vue'),
   },
   computed: {
     footerContent() {

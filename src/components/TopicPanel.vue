@@ -48,16 +48,16 @@
 
 <script>
 
-// import Checkbox from '@philly/vue-mapping/src/esri-leaflet/Checkbox.vue';
-// import Topic from '@philly/vue-comps/src/components/Topic.vue';
-import TopicComponentGroup from '@philly/vue-comps/src/components/TopicComponentGroup.vue';
+// import Checkbox from '@phila/vue-mapping/src/esri-leaflet/Checkbox.vue';
+// import Topic from '@phila/vue-comps/src/components/Topic.vue';
+import TopicComponentGroup from '@phila/vue-comps/src/components/TopicComponentGroup.vue';
 
 export default {
   components: {
     // Checkbox,
     TopicComponentGroup,
     // Topic,
-    // Checkbox: () => import(/* webpackChunkName: "lbmp_pvm_Checkbox" */'@philly/vue-mapping/src/esri-leaflet/Checkbox.vue'),
+    // Checkbox: () => import(/* webpackChunkName: "lbmp_pvm_Checkbox" */'@phila/vue-mapping/src/esri-leaflet/Checkbox.vue'),
   },
   data() {
     const data = {
