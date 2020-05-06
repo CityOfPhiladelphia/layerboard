@@ -19,6 +19,13 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 4.1.0 - 5/6/2020
+
+* uses minor releases of libraries:
+  * @phila/vue-comps 2.1.1
+  * @phila/vue-mapping 2.1.1
+  * @phila/vue-datafetch 1.2.0
+
 ### 1.0.1 - 2/3/2020
 
 * uses new locations for phila libraries:
