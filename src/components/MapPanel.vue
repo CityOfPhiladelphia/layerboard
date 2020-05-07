@@ -55,6 +55,7 @@
           :layer-definition="layer.rest.layerDefinition"
           :opacity="layer.opacity"
           :type="layer.type2"
+          :layer-options="layer.options"
         />
       </esri-web-map>
       <popup v-if="shouldShowPopup">

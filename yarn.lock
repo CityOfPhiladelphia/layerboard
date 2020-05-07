@@ -983,10 +983,10 @@
     vue "^2.6.10"
     vuex "^3.1.2"
 
-"@phila/vue-mapping@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@phila/vue-mapping/-/vue-mapping-2.1.1.tgz#040014682c761f85105443ebd9097c426f7ff933"
-  integrity sha512-PBoe5fa/gG4d5YLWRODwdIBnuDQxTHVkL16y9+dbf6wY3CA2rPiuaBMhGWs6pwK0PKj8sUq/LjWkm8+wAaD7VA==
+"@phila/vue-mapping@2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@phila/vue-mapping/-/vue-mapping-2.1.3.tgz#dc8e8437f7bf90c826679d78145666675517f487"
+  integrity sha512-R1+vq9g9SpVIjI4d31M029KidqJSHe4sOqsKku6S0MA52QsXdgyW2K80dQ2Pnc1QgGAtZGlrS4pgHIdmvRaK8g==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
