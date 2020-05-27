@@ -19,7 +19,11 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
-### 4.1.0 - 5/6/2020
+### 1.1.1 - 5/27/2020
+
+* upgrades all packages
+
+### 1.1.0 - 5/6/2020
 
 * uses minor releases of libraries:
   * @phila/vue-comps 2.1.1
