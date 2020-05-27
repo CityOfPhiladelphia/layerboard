@@ -19,9 +19,13 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
-### 1.1.1 - 5/27/2020
+### 1.1.2 - 5/27/2020
 
 * upgrades all packages
+
+### 1.1.1 - 5/7/2020
+
+* allows ordering of popups
 
 ### 1.1.0 - 5/6/2020
 
