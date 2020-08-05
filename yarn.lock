@@ -958,7 +958,7 @@
   resolved "https://registry.yarnpkg.com/@mapbox/jsonlint-lines-primitives/-/jsonlint-lines-primitives-2.0.2.tgz#ce56e539f83552b58d10d672ea4d6fc9adc7b234"
   integrity sha1-zlblOfg1UrWNENZy6k1vya3HsjQ=
 
-"@mapbox/mapbox-gl-draw@^1.1.2":
+"@mapbox/mapbox-gl-draw@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@mapbox/mapbox-gl-draw/-/mapbox-gl-draw-1.2.0.tgz#b6e5278afef65bd5d7d92366034997768e478ad9"
   integrity sha512-gMrP2zn8PzDtrs72FMJTPytCumX5vUn9R7IK38qBOVy9UfqbdWr56KYuNA/2X+jKn4FIOpmWf8CWkKpOaQkv7w==
@@ -1053,16 +1053,15 @@
     vue "^2.6.10"
     vuex "^3.1.2"
 
-"@phila/vue-mapping@2.1.13":
-  version "2.1.13"
-  resolved "https://registry.yarnpkg.com/@phila/vue-mapping/-/vue-mapping-2.1.13.tgz#0d10b1a3c1fc0d51b3b737ef3ea23c4ffff31c62"
-  integrity sha512-3XkEqyAQhxVVYigdXme+G3ASEokNcuO6wselTpNUYfeLAhNxyLUbytPJurxv7RujjK6FzEz2OnYBEMmtYWyZyw==
+"@phila/vue-mapping@https://github.com/CityOfPhiladelphia/phila-vue-mapping#a9905631e26536595d5ed7f7a976f4b73605cab0":
+  version "2.1.18"
+  resolved "https://github.com/CityOfPhiladelphia/phila-vue-mapping#a9905631e26536595d5ed7f7a976f4b73605cab0"
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
     "@fortawesome/free-solid-svg-icons" "^5.7.2"
     "@fortawesome/vue-fontawesome" "^0.1.5"
-    "@mapbox/mapbox-gl-draw" "^1.1.2"
+    "@mapbox/mapbox-gl-draw" "^1.2.0"
     "@turf/turf" "^5.1.6"
     Leaflet-PointInPolygon "https://github.com/CityOfPhiladelphia/Leaflet.PointInPolygon#a0d410f69aacf5f9165c4d01ccffeed824ccaed8"
     arcgis-to-geojson-utils "^1.0.1"
@@ -1079,6 +1078,7 @@
     leaflet-rotatedmarker "^0.2.0"
     leaflet-shape-markers "^1.0.6"
     leaflet-vector-icon "https://github.com/CityOfPhiladelphia/leaflet-vector-icon#c37571e92c66ce0003f22058f2d246b31d3941a5"
+    leaflet-vector-tile-layer "^0.4.0"
     lodash-es "^4.17.14"
     map-promisified "^0.4.0"
     mapbox-gl "^1.6.1"
@@ -7044,6 +7044,11 @@ leaflet-shape-markers@^1.0.4, leaflet-shape-markers@^1.0.6:
 "leaflet-vector-icon@https://github.com/CityOfPhiladelphia/leaflet-vector-icon#c37571e92c66ce0003f22058f2d246b31d3941a5":
   version "1.0.0"
   resolved "https://github.com/CityOfPhiladelphia/leaflet-vector-icon#c37571e92c66ce0003f22058f2d246b31d3941a5"
+
+leaflet-vector-tile-layer@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/leaflet-vector-tile-layer/-/leaflet-vector-tile-layer-0.4.0.tgz#11ed2855d643ba4b6215a73ed9155950015d12b7"
+  integrity sha512-3j7AWc4wz7WPat0clXFE1NfxT/Jc345IyDpXnR9xcZ8zlXi2ksdPSwFo2sK8g4138aGIi7zrC+RFwOh8FkMwNA==
 
 leaflet@1.5.1:
   version "1.5.1"
