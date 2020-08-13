@@ -157,7 +157,7 @@
           :position="'topright'"
           :link="'cyclomedia'"
           :img-src="'images/cyclomedia.png'"
-          @click="handleCyclomediaButtonClick"
+          @handle-cyclomedia-button-click="handleCyclomediaButtonClick"
         />
       </div>
 
@@ -812,6 +812,23 @@ export default {
       this.mapPanelContainerStyle.height = mapPanelHeight.toString() + 'px';
       this.mapPanelContainerStyle['min-height'] = mapPanelHeight.toString() + 'px';
       // this.mapPanelContainerStyle['overflow-y'] = 'auto';
+    },
+
+    handleCyclomediaButtonClick(e) {
+      console.log('handleCyclomediaButtonClick is running');
+      if (!this.cyclomediaInitializationBegun) {
+        this.$store.commit('setCyclomediaInitializationBegun', true);
+      }
+      const willBeActive = !this.$store.state.cyclomedia.active;
+
+      this.$store.commit('setCyclomediaActive', willBeActive);
+
+      // if (this.isMobileOrTablet) {
+      //   // console.log('isMobileOrTablet is true');
+      //   if (this.$store.state.pictometry.active) {
+      //     this.$store.commit('setPictometryActive', false);
+      //   }
+      // }
     },
 
   }, // end of methods

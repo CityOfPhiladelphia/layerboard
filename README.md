@@ -19,6 +19,10 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 1.1.5 - 8/13/2020
+
+* fixes bug with cyclomedia activation
+
 ### 1.1.4 - 7/29/2020
 
 * upgrades to all @phila/vue libraries
