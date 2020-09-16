@@ -19,6 +19,10 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 1.1.6 - 9/16/2020
+
+* fixes moving map to geocode location when you first geocode
+
 ### 1.1.5 - 8/13/2020
 
 * fixes bug with cyclomedia activation

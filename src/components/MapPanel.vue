@@ -592,6 +592,12 @@ export default {
     },
   },
   watch: {
+    // mapCenter(nextMapCenter) {
+    //   console.log('MapPanel.vue watch mapCenter is firing, nextMapCenter:', nextMapCenter);
+    //   let map = this.$store.state.map.map;
+    //   let center = L.latLng(nextMapCenter[1], nextMapCenter[0]);
+    //   map.setView(center);
+    // },
     windowDim(nextDim) {
       // console.log('mapPanel windowDim watch is firing, nextDim:', nextDim);
       this.handleWindowResize(nextDim);
@@ -602,7 +608,8 @@ export default {
       });
     },
     geocodeResult(nextGeocodeResult) {
-      if (nextGeocodeResult._featureId) {
+      // console.log('watch geocodeResult, nextGeocodeResult:', nextGeocodeResult);//, 'nextGeocodeResult._featureId:', nextGeocodeResult._featureId);
+      if (nextGeocodeResult && nextGeocodeResult._featureId) {
         this.$store.commit('setMapCenter', nextGeocodeResult.geometry.coordinates);
         this.$store.commit('setMapZoom', this.geocodeZoom);
       } else {
