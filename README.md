@@ -19,6 +19,10 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 1.1.7 - 9/16/2020
+
+* uses pvd 1.4.2 with updates for layerboard bugs
+
 ### 1.1.6 - 9/16/2020
 
 * fixes moving map to geocode location when you first geocode
