@@ -1,5 +1,6 @@
 <template>
   <div>
+    <philaHeader />
     <layerboard />
     <lb-footer />
   </div>
@@ -8,12 +9,14 @@
 <script>
 
 import Layerboard from './components/Layerboard.vue';
+import PhilaHeader from './components/PhilaHeader.vue';
 import LbFooter from './components/LbFooter.vue';
 
 export default {
   name: 'App',
   components: {
     Layerboard,
+    PhilaHeader,
     LbFooter,
   },
   mounted() {
