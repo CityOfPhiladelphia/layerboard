@@ -1053,10 +1053,9 @@
     vue "^2.6.11"
     vuex "^3.5.1"
 
-"@phila/vue-mapping@2.2.4":
+"@phila/vue-mapping@https://github.com/CityOfPhiladelphia/phila-vue-mapping#b4e8adbd8db9e8be07b5b53345950bbfedb95336":
   version "2.2.4"
-  resolved "https://registry.yarnpkg.com/@phila/vue-mapping/-/vue-mapping-2.2.4.tgz#73de00f29a6a4d84bc6413190bd5236c7321790b"
-  integrity sha512-FT104DuOPWx+lC24NXYEC0UAIttE0fGl2mE9scraLV8g9saeUf/edKVEPb5q4WHWgSvwNgTBfWnq1W40WEc9LQ==
+  resolved "https://github.com/CityOfPhiladelphia/phila-vue-mapping#b4e8adbd8db9e8be07b5b53345950bbfedb95336"
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.15"
     "@fortawesome/free-regular-svg-icons" "^5.7.2"
@@ -1070,7 +1069,7 @@
     blueimp-md5 "^2.10.0"
     date-fns "^2.8.1"
     esri-leaflet "^2.3.1"
-    esri-leaflet-legend "https://github.com/CityOfPhiladelphia/esri-leaflet-legend#8d42cbc1ed71c630fd8f9c6795877b5f7498b49f"
+    esri-leaflet-legend "https://github.com/CityOfPhiladelphia/esri-leaflet-legend#1dae0f8e728fddd249563c20ecbd9b3b71f94da3"
     esri-leaflet-renderers "2.0.6"
     leaflet "1.5.1"
     leaflet-easybutton "^2.3.0"
@@ -5185,9 +5184,9 @@ esrecurse@^4.1.0:
   dependencies:
     estraverse "^4.1.0"
 
-"esri-leaflet-legend@https://github.com/CityOfPhiladelphia/esri-leaflet-legend#8d42cbc1ed71c630fd8f9c6795877b5f7498b49f":
+"esri-leaflet-legend@https://github.com/CityOfPhiladelphia/esri-leaflet-legend#1dae0f8e728fddd249563c20ecbd9b3b71f94da3":
   version "2.0.1"
-  resolved "https://github.com/CityOfPhiladelphia/esri-leaflet-legend#8d42cbc1ed71c630fd8f9c6795877b5f7498b49f"
+  resolved "https://github.com/CityOfPhiladelphia/esri-leaflet-legend#1dae0f8e728fddd249563c20ecbd9b3b71f94da3"
   dependencies:
     esri-leaflet "^2.2.3"
     leaflet "^1.4.0"
