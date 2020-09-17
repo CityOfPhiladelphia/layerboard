@@ -19,6 +19,11 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 1.1.10 - 9/17/2020
+
+* adds a layer name if the checkbox is hidden
+* adds space between symbols and labels in legends
+
 ### 1.1.9 - 9/17/2020
 
 * uses pvc 2.1.12 that fixes checkboxes, allows placement of controls
