@@ -13,7 +13,7 @@
     "lintFix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@phila/vue-comps": "2.1.8",
+    "@phila/vue-comps": "2.1.10",
     "@phila/vue-datafetch": "1.4.2",
     "@phila/vue-mapping": "2.2.4",
     "vue": "^2.6.10",

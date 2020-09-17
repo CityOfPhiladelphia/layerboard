@@ -19,6 +19,10 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 1.1.8 - 9/17/2020
+
+* uses pvc 2.1.10 which adds infoBox.vue component
+
 ### 1.1.7 - 9/16/2020
 
 * uses pvd 1.4.2 with updates for layerboard bugs
