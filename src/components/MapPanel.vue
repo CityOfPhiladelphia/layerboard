@@ -10,7 +10,7 @@
       :class="{ 'mb-map-with-widget': this.$store.state.cyclomedia.active || this.$store.state.pictometry.active }"
       :center="mapCenter"
       :zoom="this.$store.state.map.zoom"
-      zoom-control-position="bottomright"
+      :zoom-control-position="zoomControlPosition"
       :min-zoom="this.$config.map.minZoom"
       :max-zoom="22"
       @l-click="handleMapClick"
@@ -129,10 +129,19 @@
       />
 
       <div v-once>
+        <location-control
+          v-if="geolocationEnabled"
+          v-once
+          :position="locationControlPosition"
+          @click="handleButtonClick"
+        />
+      </div>
+
+      <div v-once>
         <basemap-toggle-control
           v-if="shouldShowImageryToggle"
           v-once
-          :position="'topright'"
+          :position="basemapToggleControlPosition"
         />
       </div>
 
@@ -154,7 +163,7 @@
         <cyclomedia-button
           v-if="shouldShowCyclomediaButton"
           v-once
-          :position="'topright'"
+          :position="cyclomediaButtonPosition"
           :link="'cyclomedia'"
           :img-src="'images/cyclomedia.png'"
           @handle-cyclomedia-button-click="handleCyclomediaButtonClick"
@@ -166,15 +175,6 @@
         v-once
       >
         <measure-control :position="'bottomleft'" />
-      </div>
-
-      <div v-once>
-        <location-control
-          v-if="geolocationEnabled"
-          v-once
-          :position="'bottomright'"
-          @click="handleButtonClick"
-        />
       </div>
 
       <!-- search control -->
@@ -373,7 +373,34 @@ export default {
         return this.$config.addressInput.placeholder;
       }
       return null;
-
+    },
+    basemapToggleControlPosition() {
+      let value = 'topright';
+      if (this.$config.map.basemapToggleControlPosition) {
+        value = this.$config.map.basemapToggleControlPosition;
+      }
+      return value;
+    },
+    cyclomediaButtonPosition() {
+      let value = 'topright';
+      if (this.$config.cyclomedia.buttonPosition) {
+        value = this.$config.cyclomedia.buttonPosition;
+      }
+      return value;
+    },
+    locationControlPosition() {
+      let value = 'bottomright';
+      if (this.$config.geolocation.buttonPosition) {
+        value = this.$config.geolocation.buttonPosition;
+      }
+      return value;
+    },
+    zoomControlPosition() {
+      let value = 'bottomright';
+      if (this.$config.map.zoomControlPosition) {
+        value = this.$config.map.zoomControlPosition;
+      }
+      return value;
     },
     basemapSelectControlPosition() {
       if (this.isMobileOrTablet) {
@@ -584,11 +611,10 @@ export default {
 
     },
     measureControlEnabled() {
-      if (this.$config.measureControlEnabled === false) {
+      if (this.$config.map.measureControlEnabled === false) {
         return false;
       }
       return true;
-
     },
   },
   watch: {
