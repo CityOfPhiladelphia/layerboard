@@ -410,7 +410,7 @@ export default {
     basemapSelectControlPosition() {
       let value = 'topalmostright';
       if (this.$config.map.basemapSelectControlPosition) {
-        value = this.$config.map.basemapSelectControlPosition
+        value = this.$config.map.basemapSelectControlPosition;
       } else if (this.isMobileOrTablet) {
         value = 'topright';
       }
