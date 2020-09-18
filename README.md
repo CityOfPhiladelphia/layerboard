@@ -19,6 +19,14 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 1.1.12 - 9/18/2020
+
+* uses pvm 2.2.7 which changes the map address input
+
+### 1.1.11 - 9/18/2020
+
+* changes for streetsmart
+
 ### 1.1.10 - 9/17/2020
 
 * adds a layer name if the checkbox is hidden
