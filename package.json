@@ -13,7 +13,7 @@
     "lintFix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@phila/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#42b40cbfcfbfdc3cbba478ede33c17a43965137a",
+    "@phila/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#492dbe5c86fc605ac16712358313f8ac75e41415",
     "@phila/vue-datafetch": "1.4.2",
     "@phila/vue-mapping": "2.2.5",
     "vue": "^2.6.10",
