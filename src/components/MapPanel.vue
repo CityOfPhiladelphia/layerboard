@@ -128,6 +128,11 @@
         :h-side="'almostleft'"
       />
 
+      <control-corner
+        :v-side="'bottom'"
+        :h-side="'furtherleft'"
+      />
+
       <div v-once>
         <location-control
           v-if="geolocationEnabled"
@@ -403,11 +408,13 @@ export default {
       return value;
     },
     basemapSelectControlPosition() {
-      if (this.isMobileOrTablet) {
-        return 'topright';
+      let value = 'topalmostright';
+      if (this.$config.map.basemapSelectControlPosition) {
+        value = this.$config.map.basemapSelectControlPosition
+      } else if (this.isMobileOrTablet) {
+        value = 'topright';
       }
-      return 'topalmostright';
-
+      return value;
     },
     isMobileOrTablet() {
       return this.$store.state.isMobileOrTablet;
