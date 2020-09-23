@@ -86,6 +86,16 @@
         :attribution="tiledLayer.attribution"
       />
 
+      <esri-tiled-map-layer
+        v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
+        v-if="activeTopicConfig.tiledLayers && activeTopicConfig.tiledLayers.includes(key)"
+        :key="key"
+        :name="key"
+        :url="tiledLayer.url"
+        :z-index="tiledLayer.zIndex"
+        :attribution="tiledLayer.attribution"
+      />
+
       <vector-marker
         v-for="marker in markers"
         :key="marker.key"
@@ -705,6 +715,7 @@ export default {
       return newArrayArray;
     },
     shouldShowFeatureLayer(layer) {
+      // console.log('shouldShowFeatureLayer is running, layer:', layer);
       if (layer.rest.layerDefinition) {
         if (layer.rest.layerDefinition.minScale) {
           // console.log('minZoom for', layer.title, 'is', layer.rest.layerDefinition.minScale, typeof layer.rest.layerDefinition.minScale, 'and current scale is', this.scale, typeof this.scale);
