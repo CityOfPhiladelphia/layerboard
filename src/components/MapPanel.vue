@@ -87,8 +87,7 @@
       />
 
       <esri-tiled-map-layer
-        v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
-        v-if="activeTopicConfig.tiledLayers && activeTopicConfig.tiledLayers.includes(key)"
+        v-for="(tiledLayer, key) in currentTiledLayers"
         :key="key"
         :name="key"
         :url="tiledLayer.url"
@@ -344,6 +343,19 @@ export default {
     return data;
   },
   computed: {
+    currentTiledLayers() {
+      // console.log('currentTiledLayers is computing, this.activeTopicConfig.tiledLayers:', this.activeTopicConfig.tiledLayers);
+      let val = [];
+      if (this.activeTopicConfig.tiledLayers) {
+        let topicLayers = this.activeTopicConfig.tiledLayers;
+        for (let topicLayer of topicLayers) {
+          if (this.$store.state.map.tiledLayers.includes(topicLayer)) {
+            val.push(this.$config.map.tiledLayers[topicLayer]);
+          }
+        }
+      }
+      return val;
+    },
     geocodeZoom() {
       if (this.$config.map.geocodeZoom) {
         return this.$config.map.geocodeZoom;
@@ -684,6 +696,44 @@ export default {
     // this.handleWindowResize(25);
   },
   methods: {
+    // shouldShowTiledLayer(key) {
+    //   let value;
+    //   if (!activeTopicConfig.tiledLayers) {
+    //     value = false;
+    //   } else {
+    //     const valOrGetterType = typeof valOrGetter;
+    //     let val;
+    //
+    //     // fn
+    //     if (valOrGetterType === 'function') {
+    //       const state = this.$store.state;
+    //       // const controller = this.$controller;
+    //       const getter = valOrGetter;
+    //
+    //       // const getterText = String(getter);
+    //       // const depsRe = /state(\.\w+)+/g;
+    //       // const depsText = getterText.match(depsRe);
+    //       // const deps = depsText.map(eval);
+    //
+    //       const item = this.item;
+    //       // console.log('in evaluateSlot, item:', item);
+    //
+    //       // if this comp is associated with an "item" (generally some object
+    //       // from a list of things, e.g. dor parcels), pass the item itself
+    //       // as well when evaluating
+    //       if (item) {
+    //         val = getter(state, item);
+    //       } else {
+    //         // console.log('evaluateSlot, about to get value');
+    //         val = getter(state);
+    //         // console.log('state:', state, 'val:', val);
+    //       }
+    //     } else {
+    //       val = valOrGetter;
+    //     }
+    //   }
+    //   return value;
+    // },
     handleSearchFormSubmit(value) {
       console.log('MapPanel.vue handleSearchFormSubmit is running');
       this.$controller.handleSearchFormSubmit(value);

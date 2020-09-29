@@ -30,6 +30,7 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
       inputTagsFilter: '',
     },
     map: {
+      tiledLayers: [],
       mode: 'identifyFeatures',
       scale: null,
       webMap: null,
@@ -79,6 +80,9 @@ function createStore(config) { //}, bennyEndpoints, bennyRepresentation) {
     state: initialState,
     getters: {},
     mutations: {
+      setTiledLayers(state, payload) {
+        state.map.tiledLayers = payload;
+      },
       setClickMarkerLocation(state, payload) {
         state.map.clickMarkerLocation = payload;
       },
