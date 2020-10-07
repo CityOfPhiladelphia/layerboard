@@ -19,6 +19,13 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 1.1.13 - 10/7/2020
+
+* uses upgraded vue libraries:
+    * @phila/vue-mapping 2.2.9
+    * @phila/vue-comps 2.1.15
+    * @phila/vue-datafetch 1.4.3
+
 ### 1.1.12 - 9/18/2020
 
 * uses pvm 2.2.7 which changes the map address input
