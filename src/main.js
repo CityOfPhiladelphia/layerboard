@@ -20,6 +20,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import controllerMixin from '@phila/vue-datafetch/src/controller.js';
 
+import Router from 'vue-router';
+
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 L.esri = esri;
@@ -50,8 +52,21 @@ function initLayerboard(clientConfig, secondFile) {
     // create store
     const store = createStore(config);
 
+    Vue.use(Router);
+    let router = new Router({
+      mode: 'history',
+      routes: [
+        {
+          path: '/:address',
+          name: 'address-only',
+        },
+      ],
+    });
+
+
+
     // mix in controller
-    Vue.use(controllerMixin, { config, store });
+    Vue.use(controllerMixin, { config, store, router });
 
     Vue.component('font-awesome-icon', FontAwesomeIcon);
 
@@ -65,6 +80,7 @@ function initLayerboard(clientConfig, secondFile) {
     const vm = new Vue({
       el: config.el || '#layerboard',
       render: (h) => h(App),
+      router,
       store,
     });
 
