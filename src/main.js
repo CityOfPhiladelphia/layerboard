@@ -46,6 +46,8 @@ function initLayerboard(clientConfig, secondFile) {
       config = mergeDeep(config, secondFile);
     }
 
+    config.router.pattern = 'address-and-topic';
+
     // make config accessible from each component via this.$config
     Vue.use(configMixin, config);
 
@@ -62,8 +64,6 @@ function initLayerboard(clientConfig, secondFile) {
         },
       ],
     });
-
-
 
     // mix in controller
     Vue.use(controllerMixin, { config, store, router });
