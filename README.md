@@ -19,6 +19,10 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 1.1.14 - 10/27/2020
+
+* uses github actions for pushing to npmjs, uses vue router
+
 ### 1.1.13 - 10/7/2020
 
 * uses upgraded vue libraries:
