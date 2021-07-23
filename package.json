@@ -13,9 +13,9 @@
     "lintFix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@phila/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#37566dc166f9cff8d95ff1fe17427bf6cf4e9cf0",
-    "@phila/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#1ec060fa45a839270562b60aeae10ed30c84f188",
-    "@phila/vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#3aaab1a72306ba0f3ab5e3c6669802219e049a26",
+    "@phila/vue-comps": "https://github.com/CityOfPhiladelphia/phila-vue-comps#151ccf49578f9ca057c2ab7c0d95b0efa9f344fe",
+    "@phila/vue-datafetch": "https://github.com/CityOfPhiladelphia/phila-vue-datafetch#ff343aab502ded4bbdadcb9b3a2df23af3c462b3",
+    "@phila/vue-mapping": "https://github.com/CityOfPhiladelphia/phila-vue-mapping#41987533ce2487591d7a3aeb364afc9fcc4c40fd",
     "vue": "^2.6.10",
     "vue-router": "^3.4.7",
     "vuex": "^3.1.2"
@@ -39,5 +39,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "engines": {
+    "yarn": "YARN NO LONGER USED - use npm instead."
+  }
 }
