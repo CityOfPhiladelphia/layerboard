@@ -477,6 +477,7 @@ export default {
       return config || {};
     },
     activeTopicLayers() {
+      console.log('activeTopicLayers computed');
       if (!this.topics) {
         // if there are no topics, return all layers
         let titles = [];
@@ -493,15 +494,17 @@ export default {
       for (let component of activeTopicConfigComponents) {
         if (component.type === 'checkbox-set' || component.type === 'radio-button-set') {
           topicLayers = component.options.topicLayers;
+          // console.log('in activeTopicLayers computed, topicLayers:', topicLayers);
         }
       }
       let topicLayersKeys = [];
-      console.log('topicLayers:', topicLayers);
       if (topicLayers) {
         for (let topicLayer of topicLayers) {
-          topicLayersKeys.push(topicLayer.title);
+          // topicLayersKeys.push(topicLayer.title);
+          topicLayersKeys.push(this.evaluateSlot(topicLayer.title));
         }
       }
+      // console.log('topicLayers:', topicLayers, 'topicLayersKeys:', topicLayersKeys);
       return topicLayersKeys;
     },
     mapPanelContainerClass() {
@@ -696,6 +699,45 @@ export default {
     // this.handleWindowResize(25);
   },
   methods: {
+    evaluateSlot(valOrGetter, transforms = [], nullValue = '') {
+      console.log('evaluateSlot is running, this.item:', this.item, 'valOrGetter:', valOrGetter);
+      // check for null val/getter
+      if (!valOrGetter) {
+        return valOrGetter;
+      }
+
+      const valOrGetterType = typeof valOrGetter;
+      let val;
+
+      // fn
+      if (valOrGetterType === 'function') {
+        const state = this.$store.state;
+        const controller = this.$controller;
+        const getter = valOrGetter;
+
+        // const getterText = String(getter);
+        // const depsRe = /state(\.\w+)+/g;
+        // const depsText = getterText.match(depsRe);
+        // const deps = depsText.map(eval);
+
+        const item = this.item;
+        // console.log('in evaluateSlot, item:', item);
+
+        // if this comp is associated with an "item" (generally some object
+        // from a list of things, e.g. dor parcels), pass the item itself
+        // as well when evaluating
+        if (item) {
+          val = getter(state, item, controller);
+        } else {
+          // console.log('evaluateSlot, about to get value');
+          val = getter(state);
+          // console.log('state:', state, 'val:', val);
+        }
+      } else {
+        val = valOrGetter;
+      }
+      return val;
+    },
     // shouldShowTiledLayer(key) {
     //   let value;
     //   if (!activeTopicConfig.tiledLayers) {
