@@ -19,6 +19,11 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 2.0.0 - 7/26/2021
+
+* uses @phila packages that use npm for package commands
+* requires using npm for all package commands
+
 ### 1.1.14 - 10/27/2020
 
 * uses github actions for pushing to npmjs, uses vue router
