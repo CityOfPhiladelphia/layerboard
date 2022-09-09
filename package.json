@@ -13,23 +13,23 @@
     "lintFix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@phila/vue-comps": "3.0.0",
-    "@phila/vue-datafetch": "2.0.0",
-    "@phila/vue-mapping": "3.0.0",
+    "@phila/vue-comps": "3.0.5",
+    "@phila/vue-datafetch": "2.2.9",
+    "@phila/vue-mapping": "3.1.9",
     "esri-leaflet": "2.3.1",
     "leaflet": "1.5.1",
-    "vue": "^2.6.10",
-    "vue-router": "^3.4.7",
+    "vue": "^2.7.10",
+    "vue-router": "^3.6.5",
     "vuex": "^3.1.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.1",
-    "@vue/cli-plugin-eslint": "^4.1.1",
-    "@vue/cli-service": "^4.1.1",
+    "@vue/cli-plugin-babel": "^4.5.19",
+    "@vue/cli-plugin-eslint": "^4.5.19",
+    "@vue/cli-service": "^4.5.19",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.0.1",
-    "vue-template-compiler": "^2.6.10",
+    "vue-template-compiler": "^2.7.10",
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "postcss": {
