@@ -13,23 +13,23 @@
     "lintFix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@phila/vue-comps": "3.0.0",
-    "@phila/vue-datafetch": "2.0.0",
-    "@phila/vue-mapping": "3.0.0",
+    "@phila/vue-comps": "git+https://github.com/CityOfPhiladelphia/phila-vue-comps.git#66f1e39e630a56019dbe88addc41aa12e61f1601",
+    "@phila/vue-datafetch": "git+https://github.com/CityOfPhiladelphia/phila-vue-datafetch.git#a57a87071f1e551c27b217e27242ff466eccf5a9",
+    "@phila/vue-mapping": "git+https://github.com/CityOfPhiladelphia/phila-vue-mapping.git#76047beea73c06af69c6ee06e13c0aefb66dc326",
     "esri-leaflet": "2.3.1",
     "leaflet": "1.5.1",
-    "vue": "^2.6.10",
-    "vue-router": "^3.4.7",
+    "vue": "^2.7.10",
+    "vue-router": "^3.6.5",
     "vuex": "^3.1.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.1",
-    "@vue/cli-plugin-eslint": "^4.1.1",
-    "@vue/cli-service": "^4.1.1",
+    "@vue/cli-plugin-babel": "^4.5.19",
+    "@vue/cli-plugin-eslint": "^4.5.19",
+    "@vue/cli-service": "^4.5.19",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.0.1",
-    "vue-template-compiler": "^2.6.10",
+    "vue-template-compiler": "^2.7.10",
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "postcss": {
