@@ -19,6 +19,11 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 2.0.2 - 2/8/2023
+
+* uses upgraded @phila packages
+* ran package updates
+
 ### 2.0.1 - 9/9/2022
 
 * uses upgraded @phila packages
