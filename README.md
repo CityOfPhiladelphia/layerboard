@@ -19,6 +19,10 @@ See the examples [Openmaps](https://openmaps.phila.gov) and [StreetSmartPHL](htt
 
 ## Release Notes
 
+### 2.0.4 - 3/15/2023
+
+* uses @phila/vue-mapping 3.1.13 which fixes popout of cyclomedia
+
 ### 2.0.3 - 3/13/2023
 
 * allows using cyclomedia 23.2
