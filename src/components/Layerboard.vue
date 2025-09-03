@@ -57,7 +57,7 @@
     <popover
       v-if="popoverOpen"
       :options="popoverOptions"
-      :slots="{'text': popoverText}"
+      :slots="{ 'text': popoverText }"
     />
   </div>
 </template>
@@ -66,22 +66,18 @@
 import axios from 'axios';
 import TopicPanel from './TopicPanel.vue';
 import MapPanel from './MapPanel.vue';
-// import FooterTest from './FooterTest.vue';
-// console.log('FooterTest:', FooterTest)
 
 export default {
   name: 'Layerboard',
   components: {
     TopicPanel,
     MapPanel,
-    // FooterTest,
     CyclomediaWidget: () => import(/* webpackChunkName: "mbmb_pvm_CyclomediaWidget" */'@phila/vue-mapping/src/cyclomedia/Widget.vue'),
     PictometryWidget: () => import(/* webpackChunkName: "mbmb_pvm_PictometryWidget" */'@phila/vue-mapping/src/pictometry/Widget.vue'),
     PictometryLayer: () => import(/* webpackChunkName: "mbmb_pvm_PictometryLayer" */'@phila/vue-mapping/src/pictometry/Layer.vue'),
     PictometryPngMarker: () => import(/* webpackChunkName: "mbmb_pvm_PictometryPngMarker" */'@phila/vue-mapping/src/pictometry/PngMarker.vue'),
     PictometryViewCone: () => import(/* webpackChunkName: "mbmb_pvm_PictometryViewCone" */'@phila/vue-mapping/src/pictometry/ViewCone.vue'),
     Popover: () => import(/* webpackChunkName: "mbmb_pvc_Popover" */'@phila/vue-comps/src/components/Popover.vue'),
-    // Footer: () => import(/* webpackChunkName: "Footer" */'./Footer.vue'),
   },
   computed: {
     popoverOpen() {
@@ -115,10 +111,9 @@ export default {
       }
       const center = this.$config.map.center;
       return center;
-
     },
     cycloRotationAngle() {
-      return this.$store.state.cyclomedia.orientation.yaw * (180/3.14159265359);
+      return this.$store.state.cyclomedia.orientation.yaw * (180 / 3.14159265359);
     },
     cycloHFov() {
       return this.$store.state.cyclomedia.orientation.hFov;
@@ -136,7 +131,6 @@ export default {
         return false;
       }
       return true;
-
     },
     geocodeData() {
       return this.$store.state.geocode.data;
@@ -155,7 +149,6 @@ export default {
         return 'See Map';
       }
       return 'See Datasets';
-
     },
     shouldShowTopics() {
       return this.$store.state.shouldShowTopics;
@@ -166,16 +159,11 @@ export default {
   },
   watch: {
     pictometryShowAddressMarker(nextValue) {
-      // console.log('watch pictometryShowAddressMarker', nextValue);
     },
     windowDim(nextDim) {
       this.calculateShouldShowTopics();
       this.calculateShouldShowMap();
     },
-    // windowWidth(nextWidth) {
-    //   this.calculateShouldShowTopics();
-    //   this.calculateShouldShowMap();
-    // },
     fullScreenMapEnabled(nextValue) {
       this.calculateShouldShowTopics();
       this.calculateShouldShowMap();
@@ -192,7 +180,6 @@ export default {
     },
   },
   mounted() {
-    // console.log('cyclo', this.$config.cyclomedia.enabled, CyclomediaWidget);
     let defaultLayers = [];
 
     if (this.$config.initialPopover && window.location.hash == '') {
@@ -213,8 +200,6 @@ export default {
       }
     }
 
-    // console.log('Layerboard.vue mounted, this.$config.topics:', this.$config.topics, 'defaultLayers:', defaultLayers, 'this.$store.state.map.webMapLayersAndRest:', this.$store.state.map.webMapLayersAndRest);
-
     this.$store.commit('setDefaultLayers', defaultLayers);
     this.$store.commit('setWebMapActiveLayers', defaultLayers);
 
@@ -232,37 +217,21 @@ export default {
     this.handleWindowResize();
 
     const store = this.$store;
-    const knackUrl = "https://api.knackhq.com/v1/objects/object_4/records/export?type=json";
-    const params = {
-      // dataType: 'json'
-    };
-    const headers = {
-      'X-Knack-Application-Id': '550c60d00711ffe12e9efc64',
-      'X-Knack-REST-API-Key': '7bce4520-28dc-11e5-9f0a-4d758115b820',
-    };
-    axios.get(knackUrl, { params, headers }).then(response => {
-      const dataOut = response.data;
-      const records = dataOut.records;
-      const recordsFiltered = records.filter(record => record.field_12 === "API" || record.field_12 === "GeoService");
+    const cartoUrlQuery = `https://phl.carto.com:443/api/v2/sql?q= \
+    select url_text, COALESCE(representation, '') as representation \
+    from phl.knack_metadata_reps_endpoints_join \
+    WHERE ( format = 'API' OR format = 'GeoService' ) \
+    AND url_text IS NOT null`;
 
+    axios.get(cartoUrlQuery).then(response => {
+      const data = response.data.rows;
       let bennyEndpoints = {};
-
-      for (let record of recordsFiltered) {
-        const url = record.field_25.split('"')[1];
-        let url2;
-        if (url) {
-          url2 = url.split('query')[0].replace('https://', '').replace('http://', '').replace(/\/$/, "").toLowerCase();
-        } else {
-          url2 = null;
-        }
-        if (record.field_13_raw.length > 0) {
-          bennyEndpoints[url2] = record.field_13_raw[0].id;
-        } else {
-          bennyEndpoints[url2] = '';
-        }
-      }
+      data.map((datum) => {
+        const shortUrl = datum.url_text.split('query')[0].replace('https://', '').replace('http://', '').replace(/\/$/, "").toLowerCase();
+        bennyEndpoints[shortUrl] = datum.representation;
+      });
       store.commit('setBennyEndpoints', bennyEndpoints);
-    }, response => {
+    }, () => {
       console.log('AXIOS ERROR Layerboard.vue');
     });
   },
@@ -273,17 +242,14 @@ export default {
       this.$store.commit('setDidToggleTopicsOn', !prevVal);
     },
     calculateShouldShowTopics() {
-      // const windowWidth = this.windowWidth;
       const windowWidth = this.windowDim.width;
       const smallScreen = windowWidth < 750;
       const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
       const fullScreenMapEnabled = this.$store.state.fullScreenMapEnabled;
-      // console.log('calculateShouldShowTopics, smallScreen:', smallScreen, 'didToggleTopicsOn', didToggleTopicsOn, 'fullScreenMapEnabled', fullScreenMapEnabled);
       const shouldShowTopics = !smallScreen && !fullScreenMapEnabled || smallScreen && didToggleTopicsOn;
       this.$store.commit('setShouldShowTopics', shouldShowTopics);
     },
     calculateShouldShowMap() {
-      // const windowWidth = this.windowWidth;
       const windowWidth = this.windowDim.width;
       const notMobile = windowWidth > 750;
       const didToggleTopicsOn = this.$store.state.didToggleTopicsOn;
@@ -294,21 +260,14 @@ export default {
       const windowHeight = window.innerHeight;
       const rootElement = document.getElementById('mb-root');
       const rootStyle = window.getComputedStyle(rootElement);
-      // const rootHeight = rootStyle.getPropertyValue('height');
-      // const rootHeightNum = parseInt(rootHeight.replace('px', ''));
-      // const rootHeightNum = 100;
       const rootWidth = rootStyle.getPropertyValue('width');
       const rootHeight = rootStyle.getPropertyValue('height');
       const rootWidthNum = parseInt(rootWidth.replace('px', ''));
       const rootHeightNum = parseInt(rootHeight.replace('px', ''));
-
       const dim = {
         width: rootWidthNum,
         height: rootHeightNum,
       };
-
-      // console.log('Layerboard handleWindowResize is running, dim:', dim);
-      // this.$store.commit('setWindowWidth', rootWidthNum);
       this.$store.commit('setWindowDimensions', dim);
     },
   },
@@ -316,46 +275,41 @@ export default {
 </script>
 
 <style>
-  /*don't highlight any form elements*/
-  input:focus,
-  select:focus,
-  textarea:focus,
-  button:focus {
-    outline: none;
-  }
+/*don't highlight any form elements*/
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
 
-  /* standards applies padding to buttons, which causes some weirdness with
+/* standards applies padding to buttons, which causes some weirdness with
   buttons on the map panel. override here. */
-  button {
-    padding: inherit;
-  }
+button {
+  padding: inherit;
+}
 
-  .mb-root {
-    position: absolute;
-    bottom: 0;
-    top: 78px;
-    left: 0;
-    right: 0;
-    overflow: auto;
-  }
+.mb-root {
+  position: absolute;
+  bottom: 0;
+  top: 78px;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
 
+.datasets-button {
+  display: none;
+  height: 36px;
+  margin: 0;
+}
+
+/*small devices only*/
+/* @media screen and (max-width: 39.9375em) { */
+@media screen and (max-width: 750px) {
   .datasets-button {
-    display: none;
+    display: block;
     height: 36px;
-    margin: 0;
   }
-
-  .mb-panel {
-    /* height: 100%; */
-  }
-
-  /*small devices only*/
-  /* @media screen and (max-width: 39.9375em) { */
-  @media screen and (max-width: 750px) {
-    .datasets-button {
-      display: block;
-      height: 36px;
-    }
-  }
-
+}
 </style>
