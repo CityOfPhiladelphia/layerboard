@@ -1,4 +1,6 @@
-# layerboard ([@phila/layerboard](https://www.npmjs.com/package/@phila/layerboard) in [npmjs.com](https://npmjs.com))
+# layerboard
+
+This repository has been archived.  See [vue3-layerboard](https://github.com/CityOfPhiladelphia/vue3-layerboard) for current information.
 
 layerboard is a framework for creating app that are portals for viewing and downloading data from the City of Philadelphia.
 
